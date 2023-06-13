@@ -11,7 +11,7 @@
                         <a class="pdpLabel tbmargin" value="文字"></a>
                         <sa s_color="col77[this.areaIndex['华中']]"></sa>
                         <sf>
-                            <s_color><![CDATA[parseFloat({0})>0? '#FB5656':'#11E5BB']]></s_color>
+                            <value><![CDATA[parseFloat({0})>0? '#FB5656':'#11E5BB']]></value>
                         </sf>
                     </label>
                 </div>

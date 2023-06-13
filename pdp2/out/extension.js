@@ -1,8 +1,10 @@
-
-import * as vscode from 'vscode';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deactivate = exports.activate = void 0;
+const vscode = require("vscode");
 const prettier = require('prettier');
 const { DOMParser, Node } = require("xmldom");
-export function activate(context: vscode.ExtensionContext) {
+function activate(context) {
     let disposable = vscode.commands.registerCommand('pdp2.helloWorld', () => {
         console.log('Hello World!');
         // 获取当前激活的编辑器
@@ -18,7 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
             // 获取选中内容的文本
             let text = document.getText(selection);
-            parseXML(text)
+            parseXML(text);
             return;
             // 使用正则表达式匹配value子节点中cdata里面的JS代码
             const regex = /<value><!\[CDATA\[([\s\S]*?)\]\]><\/value>/g;
@@ -53,16 +55,14 @@ export function activate(context: vscode.ExtensionContext) {
             // 应用编辑操作
             vscode.workspace.applyEdit(edit);
         }
-
     });
-
     context.subscriptions.push(disposable);
 }
-function parseXML(xmlString: string) {
+exports.activate = activate;
+function parseXML(xmlString) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, "text/xml");
     const values = xmlDoc.getElementsByTagName("value");
-
     const results = [];
     for (let i = 0; i < values.length; i++) {
         const valueNode = values[i].childNodes[0];
@@ -70,12 +70,13 @@ function parseXML(xmlString: string) {
         const cdataContent = valueNode.textContent.trim();
         const lineNumber = valueNode.lineNumber;
         const columnNumber = valueNode.columnNumber;
-        console.log(`第${i}个:`, cdataContent, lineNumber, columnNumber)
+        console.log(`第${i}个:`, cdataContent, lineNumber, columnNumber);
         results.push({ content: cdataContent, line: lineNumber, column: columnNumber });
         // }
     }
-
     return results;
 }
 // This method is called when your extension is deactivated
-export function deactivate() { }
+function deactivate() { }
+exports.deactivate = deactivate;
+//# sourceMappingURL=extension.js.map
