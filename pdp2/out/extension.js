@@ -2,90 +2,60 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
-const prettier = require('prettier');
-const { DOMParser, Node } = require("xmldom");
+const xml2js = require('xml2js');
+// import { XMLParser, XMLBuilder, XMLValidator, X2jOptions } from "fast-xml-parser"; // 引入fast-xml-parser模块
 function activate(context) {
+    console.log('Congratulations, your extension "pdp2" is now active!');
     let disposable = vscode.commands.registerCommand('pdp2.helloWorld', () => {
-        console.log('Hello World!');
-        // 获取当前激活的编辑器
-        let editor = vscode.window.activeTextEditor;
-        if (editor) {
-            // 获取当前编辑器的文档
-            let document = editor.document;
-            // 获取当前编辑器的选中范围
-            let selection = editor.selection;
-            // 如果没有选中任何内容，就选中整个文档
-            if (selection.isEmpty) {
-                selection = new vscode.Selection(0, 0, document.lineCount - 1, document.lineAt(document.lineCount - 1).text.length);
+        vscode.window.showInformationMessage('Hello World from pdp2!');
+        const editor = vscode.window.activeTextEditor;
+        if (!editor)
+            return; // 检查编辑器是否激活
+        const text = editor.document.getText();
+        if (!text)
+            return; // 检查文档是否有文本
+        const parser = new xml2js.Parser({ locator: {} });
+        parser.parseString(text, (err, result) => {
+            if (err) {
+                console.error('Error parsing XML:', err);
+                return;
             }
-            // 获取选中内容的文本
-            let text = document.getText(selection);
-            var test = `<list type="script">
-            <value>
-      <![CDATA[
-        this.areaIndex = {};
-                                        for(var i = 0; i < this.col73.length; i++){
-          this.areaIndex[this.col73[i]] = i;
-        }                    
-      ]]>
-    </value>
-        </list>`;
-            parseXML(test);
-            return;
-            // 使用正则表达式匹配value子节点中cdata里面的JS代码
-            const regex = /<value><!\[CDATA\[([\s\S]*?)\]\]><\/value>/g;
-            let match;
-            // 创建一个编辑操作
-            let edit = new vscode.WorkspaceEdit();
-            // 遍历所有匹配结果
-            let index = 0;
-            while ((match = regex.exec(text)) !== null) {
-                index++;
-                console.log(`第${index}个匹配结果：${match[0]}`);
-                // 获取JS代码的内容和位置
-                let jsCode = match[1];
-                let jsStart = match.index + match[0].indexOf(jsCode);
-                let jsEnd = jsStart + jsCode.length;
-                // 获取cdata最开始缩进的空格数量
-                let indent = 0;
-                if (match[0] !== null) {
-                    indent = match[0].match(/^\s*/)[0].length + 2;
-                }
-                // 使用prettier提供的格式化函数来格式化JS代码，根据package.json中的配置，并添加缩进空格
-                let formattedJsCode = prettier.format(jsCode, {
-                    "singleQuote": true,
-                    "trailingComma": "es5",
-                    "semi": false,
-                    parser: 'babel',
+            const scriptsNode = result.root.scripts[0];
+            if (scriptsNode && scriptsNode.script) {
+                scriptsNode.script.forEach((script, index) => {
+                    const cdataContent = script.value[0];
+                    const lineNumber = script.$.start.line;
+                    const columnNumber = script.$.start.column;
+                    console.log(`Script ${index + 1}:`);
+                    console.log('Content:', cdataContent);
+                    console.log('Line:', lineNumber);
+                    console.log('Column:', columnNumber);
+                    console.log('----------------------');
                 });
-                formattedJsCode = formattedJsCode.replace(/^/gm, ' '.repeat(indent));
-                // 用格式化后的JS代码替换原来的JS代码
-                edit.replace(document.uri, new vscode.Range(document.positionAt(jsStart), document.positionAt(jsEnd)), formattedJsCode);
             }
-            // 应用编辑操作
-            vscode.workspace.applyEdit(edit);
-        }
+        });
+        // const validationResult = XMLValidator.validate(text); // 验证文本是否是合法的XML
+        // if (validationResult !== true) { // 使用类型断言来判断返回值是否是true
+        //     console.error(validationResult.err); // 打印错误信息
+        //     return;
+        // }
+        // try {
+        //     const options: Partial<X2jOptions> = { attributeNamePrefix: "@_", ignoreAttributes: false, cdataPropName: "__cdata", ignoreDeclaration: true }; // 声明一个Partial<X2jOptions>类型的选项对象
+        //     const parserObject = new XMLParser(options); // 创建一个解析器对象，并传入选项对象
+        //     const traversalObj = parserObject.parse(text, true); // 解析XML并获取一个遍历对象
+        //     const rootNode = parserObject.getFirstNode(traversalObj); // 获取根节点
+        //     console.log(rootNode); // { tagname: 'root', parent: '', child: [ 'a' ], attrsMap: {}, position: 1, startOffset: 0, endOffset: 34, line: 1, col: 1 }
+        //     const aNode = parserObject.getFirstChild(rootNode); // 获取a节点
+        //     console.log(aNode); // { tagname: 'a', parent: 'root', child: [ '#cdata' ], attrsMap: {}, position: 3, startOffset: 6, endOffset: 28, line: 1, col: 7 }
+        //     const cdataNode = parserObject.getFirstChild(aNode); // 获取CDATA节点
+        //     console.log(cdataNode); // { tagname: '#cdata', parent: 'a', val: 'hello', position: 4, startOffset: 11, endOffset: 23, line: 1, col: 12 }
+        // } catch (err) {
+        //     console.error(err); // 捕获可能抛出的异常
+        // }
     });
     context.subscriptions.push(disposable);
 }
 exports.activate = activate;
-function parseXML(xmlString) {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    const values = xmlDoc.getElementsByTagName("value");
-    const results = [];
-    for (let i = 0; i < values.length; i++) {
-        const valueNode = values[i].childNodes[0];
-        // if (valueNode.nodeType === Node.CDATA_SECTION_NODE) {
-        const cdataContent = valueNode.textContent;
-        const lineNumber = valueNode.lineNumber;
-        const columnNumber = valueNode.columnNumber;
-        console.log(`第${i}个:`, cdataContent, lineNumber, columnNumber);
-        results.push({ content: cdataContent, line: lineNumber, column: columnNumber });
-        // }
-    }
-    return results;
-}
 // This method is called when your extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;
