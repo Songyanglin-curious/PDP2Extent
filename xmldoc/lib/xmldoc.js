@@ -23,10 +23,14 @@
     /**
      * XmlElement is our basic building block. Everything is an XmlElement; even XmlDocument
      * behaves like an XmlElement by inheriting its attributes and functions.
+     * XmlElement是我们的基本构建块。一切都是XmlElement;甚至XmlDocument
+通过继承其属性和函数，*的行为类似于XmlElement。
      */
     function XmlElement(tag, parser) {
         // If you didn't hand us a parser (common case) see if we can grab one
         // from the current execution stack.
+        //如果你没有给我们一个解析器(通常情况下)，看看我们是否可以抓取一个
+        //从当前执行堆栈。
         if (!parser) {
             var delegate = delegates[delegates.length - 1];
 
@@ -41,14 +45,21 @@
         this.children = [];
         this.firstChild = null;
         this.lastChild = null;
+        // parent
+        this.parent = null;
 
         // Assign parse information
         this.line = parser ? parser.line : null;
         this.column = parser ? parser.column : null;
         this.position = parser ? parser.position : null;
         this.startTagPosition = parser ? parser.startTagPosition : null;
-    }
 
+        // 自定义添加属性
+        this.closeLine = null;
+        this.closeColumn = null;
+        this.closePosition = null;
+        this.closeStartTagPosition = null;
+    }
     // Private methods
 
     XmlElement.prototype._addChild = function (child) {
@@ -61,17 +72,26 @@
     };
 
     // SaxParser handlers
-
+    var currentNode = null;
     XmlElement.prototype._opentag = function (tag) {
+        console.log("开始标签", tag)
         var child = new XmlElement(tag);
-
+        child.parent = currentNode;
+        // currentNode = child;
         this._addChild(child);
-
         delegates.unshift(child);
+        currentNode = child;
     };
 
-    XmlElement.prototype._closetag = function () {
-        delegates.shift();
+    XmlElement.prototype._closetag = function (tag) {
+        console.log("结束标签", tag)
+        let toCloseNode = delegates.shift();
+        toCloseNode.closeLine = currentParser.line;
+        toCloseNode.closeColumn = currentParser.column;
+        toCloseNode.closePosition = currentParser.position;
+        toCloseNode.closeStartTagPosition = currentParser.startTagPosition;
+
+        currentNode = delegates[0];
     };
 
     XmlElement.prototype._text = function (text) {
@@ -87,6 +107,31 @@
 
         this._addChild(new XmlCDataNode(cdata));
     };
+    XmlElement.prototype._opencdata = function (cdata) {
+        this.val += cdata;
+
+        var child = new XmlCDataNode(cdata)
+        child.parent = currentNode;
+        child.line = currentParser.line;
+        child.column = currentParser.column;
+        child.position = currentParser.position;
+        child.startTagPosition = currentParser.startTagPosition;
+        // currentNode = child;
+        // this._addChild(child);
+        delegates.unshift(child);
+        currentNode = child;
+        // this._addChild(new XmlCDataNode(cdata));
+    };
+    XmlElement.prototype._closecdata = function (cdata) {
+
+        let toCloseNode = delegates.shift();
+        toCloseNode.closeLine = currentParser.line;
+        toCloseNode.closeColumn = currentParser.column;
+        toCloseNode.closePosition = currentParser.position;
+        toCloseNode.closeStartTagPosition = currentParser.startTagPosition;
+
+        currentNode = delegates[0];
+    };
 
     XmlElement.prototype._comment = function (comment) {
         if (typeof this.children === "undefined") return;
@@ -99,6 +144,29 @@
     };
 
     // Useful functions
+    XmlElement.prototype.getElementsByTagName = function (element, tagName) {
+        var result = [];
+
+        // 递归函数用于遍历子元素
+        function traverse(element) {
+            // 检查当前元素是否匹配指定的标签名称
+            if (element.name === tagName) {
+                result.push(element);
+            }
+
+            // 遍历子元素
+            if (element.children) {
+                for (var i = 0; i < element.children.length; i++) {
+                    traverse(element.children[i]);
+                }
+            }
+        }
+
+        // 调用递归函数开始遍历
+        traverse(element);
+
+        return result;
+    }
 
     XmlElement.prototype.eachChild = function (iterator, context) {
         for (var i = 0, l = this.children.length; i < l; i++)
@@ -247,6 +315,21 @@
 
     function XmlCDataNode(cdata) {
         this.cdata = cdata;
+        // this.children = [];
+        // parent
+        this.parent = null;
+
+        // Assign parse information
+        this.line = null;
+        this.column = null;
+        this.position = null;
+        this.startTagPosition = null;
+
+        // 自定义添加属性
+        this.closeLine = null;
+        this.closeColumn = null;
+        this.closePosition = null;
+        this.closeStartTagPosition = null;
     }
 
     XmlCDataNode.prototype.toString = function (options) {
@@ -280,6 +363,7 @@
     * XmlDocument是我们向用户公开的类;它使用sax解析器创建层次结构
     *的XmlElements。
      */
+    var currentParser = null;
     function XmlDocument(xml) {
         xml && (xml = xml.toString().trim());
 
@@ -291,7 +375,7 @@
         // 在解析器运行时将解析器公开给其他委托
         this.parser = sax.parser(true); // strict
         addParserEvents(this.parser);
-
+        currentParser = this.parser;
         //我们将使用文件作用域的"delegate "变量来记住我们当前是什么元素
         //解析;当我们深入到XML层次结构时，它们将从堆栈中推入和弹出。
         //使用全局变量是安全的，因为JS是单线程的。
@@ -310,11 +394,26 @@
     extend(XmlDocument.prototype, XmlElement.prototype);
 
     XmlDocument.prototype._opentag = function (tag) {
-        if (typeof this.children === "undefined")
+
+        if (typeof this.children === "undefined") {
+            console.log("根节点开始标签", tag)
             // the first tag we encounter should be the root - we'll "become" the root XmlElement
             XmlElement.call(this, tag);
+            currentNode = this;
+        }
+
         // all other tags will be the root element's children
         else XmlElement.prototype._opentag.apply(this, arguments);
+    };
+    // 文档解析结束标签
+    XmlDocument.prototype._closetag = function (tag) {
+        console.log("根节点结束标签", tag)
+        let toCloseNode = delegates.shift();
+
+        toCloseNode.closeLine = currentParser.line;
+        toCloseNode.closeColumn = currentParser.column;
+        toCloseNode.closePosition = currentParser.position;
+        toCloseNode.closeStartTagPosition = currentParser.startTagPosition;
     };
 
     XmlDocument.prototype._doctype = function (doctype) {
@@ -333,6 +432,8 @@
         parser.onclosetag = parser_closetag;
         parser.ontext = parser_text;
         parser.oncdata = parser_cdata;
+        parser.onopencdata = parser_opencdata;
+        parser.onclosecdata = parser_closecdata;
         parser.oncomment = parser_comment;
         parser.ondoctype = parser_doctype;
         parser.onerror = parser_error;
@@ -351,6 +452,12 @@
     function parser_cdata() {
         delegates[0] && delegates[0]._cdata.apply(delegates[0], arguments);
     }
+    function parser_opencdata() {
+        delegates[0] && delegates[0]._opencdata.apply(delegates[0], arguments);
+    }
+    function parser_closecdata() {
+        delegates[0] && delegates[0]._closecdata.apply(delegates[0], arguments);
+    }
     function parser_comment() {
         delegates[0] && delegates[0]._comment.apply(delegates[0], arguments);
     }
@@ -360,6 +467,7 @@
     function parser_error() {
         delegates[0] && delegates[0]._error.apply(delegates[0], arguments);
     }
+
 
     // a relatively standard extend method
     function extend(destination, source) {
