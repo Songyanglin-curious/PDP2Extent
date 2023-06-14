@@ -28,9 +28,8 @@
     <scripts>
         <script event="created">
             <list type="script">
-                <value>
-          <![CDATA[
-          this.imageIf = function(value) {
+                <value><![CDATA[
+                    this.imageIf = function(value) {
               if(value){
                   if(value == 0 ) 
                       return false;

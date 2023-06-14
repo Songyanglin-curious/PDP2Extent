@@ -20,7 +20,17 @@ function activate(context) {
             }
             // 获取选中内容的文本
             let text = document.getText(selection);
-            parseXML(text);
+            var test = `<list type="script">
+            <value>
+      <![CDATA[
+        this.areaIndex = {};
+                                        for(var i = 0; i < this.col73.length; i++){
+          this.areaIndex[this.col73[i]] = i;
+        }                    
+      ]]>
+    </value>
+        </list>`;
+            parseXML(test);
             return;
             // 使用正则表达式匹配value子节点中cdata里面的JS代码
             const regex = /<value><!\[CDATA\[([\s\S]*?)\]\]><\/value>/g;
@@ -67,7 +77,7 @@ function parseXML(xmlString) {
     for (let i = 0; i < values.length; i++) {
         const valueNode = values[i].childNodes[0];
         // if (valueNode.nodeType === Node.CDATA_SECTION_NODE) {
-        const cdataContent = valueNode.textContent.trim();
+        const cdataContent = valueNode.textContent;
         const lineNumber = valueNode.lineNumber;
         const columnNumber = valueNode.columnNumber;
         console.log(`第${i}个:`, cdataContent, lineNumber, columnNumber);
