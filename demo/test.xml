@@ -19,25 +19,24 @@
         </div>
     </ctrls>
     <css>
-    <![CDATA[.title{
-  background-color: #1D3B55;
-}
-
-}]]>
+    <![CDATA[
+        .title {
+          background-color: #1d3b55;
+        }
+    ]]>
   </css>
     <scripts>
         <script event="created">
             <list type="script">
-                <value><![CDATA[
-                    this.imageIf = function(value) {
-              if(value){
-                  if(value == 0 ) 
-                      return false;
-                                                                 else 
-                      return true;
-              }
-          }
-        ]]>
+                <value>
+                    <![CDATA[
+                        this.imageIf = function (value) {
+                          if (value) {
+                            if (value == 0) return false;
+                            else return true;
+                          }
+                        };
+                    ]]>
         </value>
             </list>
         </script>
@@ -47,12 +46,12 @@
             <list type="select" ds="ds99"></list>
             <list type="script">
                 <value>
-          <![CDATA[
-            this.areaIndex = {};
-                                            for(var i = 0; i < this.col73.length; i++){
-              this.areaIndex[this.col73[i]] = i;
-            }                    
-          ]]>
+                <![CDATA[
+                    this.areaIndex = {};
+                    for (var i = 0; i < this.col73.length; i++) {
+                      this.areaIndex[this.col73[i]] = i;
+                    }
+                ]]>
         </value>
             </list>
         </script>

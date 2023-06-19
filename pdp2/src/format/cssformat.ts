@@ -1,24 +1,20 @@
 import * as vscode from 'vscode';
 import { generateEmptyString } from '../utils/format';
 const xmldoc = require('../../../xmldoc/index.js');
-// 引入prettier库
-const prettier = require("prettier/standalone");
-// 引入js解析器插件
-const parserBabel = require("prettier/parser-babel");
-export default function jsFormat() {
+const prettier = require("prettier");
+export default function cssFormat() {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return; // 检查编辑器是否激活
     const document = editor.document;
     if (!document) return;
     const text = editor.document.getText();
     const xmlDomObj = new xmldoc.XmlDocument(text);
-    const scripts = xmlDomObj.getElementsByTagName('scripts');
+    const CssNodes = xmlDomObj.getElementsByTagName('css');
     let cdatas: any[] = [];
-    scripts.forEach((script: any) => {
-        var subCdatas = script.GetCdataByElementTagName('value');
+    CssNodes.forEach((css: any) => {
+        var subCdatas = css.GetCdataByElementTagName('css');
         cdatas = cdatas.concat(subCdatas)
     })
-    // const textEdits: vscode.TextEdit[] = [];
     // 创建一个WorkspaceEdit对象
     const edit = new vscode.WorkspaceEdit();
     for (let i = 0; i < cdatas.length; i++) {
@@ -27,7 +23,7 @@ export default function jsFormat() {
         let startPosition = new vscode.Position(cdata.line, cdata.column);
         let endPosition = new vscode.Position(cdata.closeLine, cdata.closeColumn);
         let range = new vscode.Range(startPosition, endPosition); // 创建一个范围对象
-        const formatedJs = formatJsString(value, cdata.column, editor);
+        const formatedJs = formatCsssString(value, cdata.column, editor);
         edit.replace(document.uri, range, formatedJs);
     }
     // 使用工作区应用编辑器对象来执行TextEdit数组中的所有操作
@@ -38,15 +34,17 @@ export default function jsFormat() {
 
 }
 
-function formatJsString(text: any, baseColumn: number, editor: vscode.TextEditor) {
+
+function formatCsssString(text: any, baseColumn: number, editor: vscode.TextEditor) {
+    let tabSize = editor.options.tabSize;
+
+    tabSize = tabSize ? Number(tabSize) : 4;
     try {
-        let tabSize = editor.options.tabSize;
-        tabSize = tabSize ? Number(tabSize) : 4;
         const formatted = prettier.format(text, {
             // 使用js解析器
-            parser: "babel",
-            // 使用引入的插件parserBabel格式化
-            plugins: [parserBabel],
+            parser: "css",
+            // // 使用引入的插件parserBabel格式化
+            // plugins: [parserBabel],
             // 设置使用空格而不是制表符来缩进
             useTabs: false
         });
@@ -65,10 +63,10 @@ function formatJsString(text: any, baseColumn: number, editor: vscode.TextEditor
             }
         }).join("\n") + "]]>";
         return indented;
-    } catch (error: any) {
-        vscode.window.showErrorMessage(error.message);
+    } catch (e: any) {
+        vscode.window.showErrorMessage(e.message);
         return text + "]]>";
     }
 
-}
 
+}
