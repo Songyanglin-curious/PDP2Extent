@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { generateEmptyString } from '../utils/format';
-const xmldoc = require('../../../xmldoc/index.js');
+// const xmldoc = require('../utils/xmldoc');
+const xmldoc = require('../utils/xmldoc/xmldoc.js');
 const prettier = require("prettier");
 export default function cssFormat() {
     const editor = vscode.window.activeTextEditor;

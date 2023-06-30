@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const format_1 = require("../utils/format");
-const xmldoc = require('../../../xmldoc/index.js');
+// const xmldoc = require('../utils/xmldoc');
+const xmldoc = require('../utils/xmldoc/xmldoc.js');
 const prettier = require("prettier");
 function cssFormat() {
     const editor = vscode.window.activeTextEditor;

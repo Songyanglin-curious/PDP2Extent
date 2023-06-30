@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
-const index_1 = require("./format/index");
+const format_1 = require("./format");
 function activate(context) {
     let disposable = vscode.commands.registerCommand('pdp2.designFormat', () => {
-        (0, index_1.designFormat)();
+        vscode.window.showInformationMessage('Hello World from pdp2!');
+        (0, format_1.designFormat)();
         return;
     });
     context.subscriptions.push(disposable);

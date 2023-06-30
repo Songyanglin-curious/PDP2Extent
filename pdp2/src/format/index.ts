@@ -1,7 +1,16 @@
-import cssFormat from "./cssformat";
-import jsFormat from "./jsformat";
 
+import { XmlDocument } from '../utils/xml'
+import * as vscode from 'vscode';
+// import cssFormat from "./cssformat";
+import jsFormat from "./jsformat";
 export function designFormat() {
-    jsFormat();
-    cssFormat();
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return; // 检查编辑器是否激活
+    const document = editor.document;
+    if (!document) return;
+
+    const text = editor.document.getText();
+    const xmlDomObj = new XmlDocument(text);
+    jsFormat(xmlDomObj);
+    // cssFormat();
 }

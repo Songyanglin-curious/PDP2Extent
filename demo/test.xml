@@ -19,15 +19,65 @@
         </div>
     </ctrls>
     <css>
-    <![CDATA[
+        <![CDATA[
         .title {
           background-color: #1d3b55;
         }
     ]]>
-  </css>
+    </css>
     <scripts>
         <script event="created">
             <list type="script">
+                <![CDATA[
+                    if (this.col_DEV_TYPE.length > 0) {
+                      this.isLine = this.col_DEV_TYPE[0] == "414";
+                    }
+                    
+                ]]>
+            </list>
+            <list type="file" value="dfaultdetail"></list>
+            <list type="script">
+                <![CDATA[
+                    this.loadData();
+                    this.doCancel = function () {
+                      this.isReadOnly = true;
+                      this.loadData();
+                    };
+                    this.doEdit = function () {
+                      if (this.isReadOnly) {
+                        this.isReadOnly = false;
+                        return;
+                      }
+                      var _this = this;
+                      PDP.exec(
+                        [
+                          {
+                            type: "modify",
+                            db: "SGC",
+                            sql: "sgc/fault_md:SaveFaultDetail",
+                            args: [
+                              this.id,
+                              this.pureValue(this.col_FHSS),
+                              this.pureValue(this.col_ZCDW),
+                              this.pureValue(this.col_YWDW),
+                              this.pureValue(this.col_CLQK),
+                              this.pureValue(this.col_GZXB),
+                              this.pureValue(this.col_GZCJ),
+                            ],
+                          },
+                        ],
+                        function (ret) {
+                          if (ret.check("保存数据")) _this.isReadOnly = true;
+                          _this.getFaultInfo();
+                        }
+                      );
+                    };
+                    this.getFaultTower();
+                    
+                ]]>
+            </list>
+            <list type="script">
+                <!-- 测试注释 -->
                 <value>
                     <![CDATA[
                         this.imageIf = function (value) {
@@ -36,8 +86,9 @@
                             else return true;
                           }
                         };
+                        
                     ]]>
-        </value>
+                </value>
             </list>
         </script>
         <script event="mounted">
@@ -46,13 +97,14 @@
             <list type="select" ds="ds99"></list>
             <list type="script">
                 <value>
-                <![CDATA[
-                    this.areaIndex = {};
-                    for (var i = 0; i < this.col73.length; i++) {
-                      this.areaIndex[this.col73[i]] = i;
-                    }
-                ]]>
-        </value>
+                    <![CDATA[
+                        this.areaIndex = {};
+                        for (var i = 0; i < this.col73.length; i++) {
+                          this.areaIndex[this.col73[i]] = i;
+                        }
+                        
+                    ]]>
+                </value>
             </list>
         </script>
     </scripts>

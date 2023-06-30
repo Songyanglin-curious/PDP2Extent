@@ -1,0 +1,21 @@
+{
+    "name": "JavaScript in HTML",
+    "scopeName": "source.js-in-html",
+    "patterns": [
+        {
+            "begin": "<script>",
+            "end": "</script>",
+            "contentName": "source.js",
+            "patterns": [
+                {
+                    "include": "source.js"
+                }
+            ]
+        }
+    ],
+    "repository": {
+        "source.js": {
+            "patterns": []
+        }
+    }
+}
