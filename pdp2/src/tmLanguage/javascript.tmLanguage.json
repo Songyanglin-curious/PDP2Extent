@@ -1,21 +1,46 @@
 {
-    "name": "JavaScript in HTML",
-    "scopeName": "source.js-in-html",
-    "patterns": [
-        {
-            "begin": "<script>",
-            "end": "</script>",
-            "contentName": "source.js",
-            "patterns": [
-                {
-                    "include": "source.js"
+    "scope": "source.js",
+    "settings": {
+        "foreground": "#C8C8C8",
+        "fontStyle": "",
+        "background": "",
+        "tokenColors": [
+            {
+                "scope": "source.js meta.group.braces.curly",
+                "settings": {
+                    "foreground": "#569CD6"
                 }
-            ]
-        }
-    ],
-    "repository": {
-        "source.js": {
-            "patterns": []
-        }
+            },
+            {
+                "scope": "source.js comment",
+                "settings": {
+                    "foreground": "#6A9955"
+                }
+            },
+            {
+                "scope": "source.js string",
+                "settings": {
+                    "foreground": "#CE9178"
+                }
+            },
+            {
+                "scope": "source.js keyword",
+                "settings": {
+                    "foreground": "#569CD6"
+                }
+            },
+            {
+                "scope": "source.js support.function",
+                "settings": {
+                    "foreground": "#DCDCAA"
+                }
+            },
+            {
+                "scope": "source.js constant.numeric",
+                "settings": {
+                    "foreground": "#B5CEA8"
+                }
+            }
+        ]
     }
 }

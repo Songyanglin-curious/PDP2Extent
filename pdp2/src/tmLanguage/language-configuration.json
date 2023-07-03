@@ -1,0 +1,69 @@
+{
+    "brackets": [
+        [
+            "<",
+            ">"
+        ],
+        [
+            "{",
+            "}"
+        ],
+        [
+            "[",
+            "]"
+        ],
+        [
+            "(",
+            ")"
+        ]
+    ],
+    "autoClosingPairs": [
+        {
+            "open": "<",
+            "close": ">"
+        },
+        {
+            "open": "{",
+            "close": "}"
+        },
+        {
+            "open": "[",
+            "close": "]"
+        },
+        {
+            "open": "(",
+            "close": ")"
+        }
+    ],
+    "languages": {
+        "pdp": {
+            "comments": {
+                "lineComment": "//",
+                "blockComment": [
+                    "/***",
+                    "*/"
+                ]
+            },
+            "brackets": [
+                [
+                    "<",
+                    ">"
+                ]
+            ],
+            "autoClosingPairs": [
+                {
+                    "open": "<",
+                    "close": ">"
+                }
+            ],
+            "cdata": {
+                "start": "<![CDATA[",
+                "end": "]]>",
+                "parent": [":matches(element.scripts *, element.scripts * *)"]
+            },
+            "embeddedLanguages": {
+                "source.js": "source.js"
+            }
+        }
+    }
+}

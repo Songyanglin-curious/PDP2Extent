@@ -25,6 +25,19 @@
                 "key": "ctrl+alt+p",
                 "when": "editorLangId == xml"
             }
+        ],
+        "languages": [
+            {
+                "id": "pdp2",
+                "extensions": [
+                    ".xml"
+                ],
+                "configuration": "./tmLanguage/language-configuration.json",
+                "path": "./javascript.tmLanguage.json"
+            }
+        ],
+        "activationEvents": [
+            "onLanguage:pdp2"
         ]
     },
     "scripts": {
