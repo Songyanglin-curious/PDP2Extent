@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.designFormat = void 0;
 const xml_1 = require("../utils/xml");
 const vscode = require("vscode");
-// import cssFormat from "./cssformat";
+const cssformat_1 = require("./cssformat");
 const jsformat_1 = require("./jsformat");
 function designFormat() {
     const editor = vscode.window.activeTextEditor;
@@ -14,8 +14,9 @@ function designFormat() {
         return;
     const text = editor.document.getText();
     const xmlDomObj = new xml_1.XmlDocument(text);
+    console.log(xmlDomObj);
     (0, jsformat_1.default)(xmlDomObj);
-    // cssFormat();
+    (0, cssformat_1.default)(xmlDomObj);
 }
 exports.designFormat = designFormat;
 //# sourceMappingURL=index.js.map

@@ -14,14 +14,16 @@ function jsFormat(xmlDomObj) {
     const document = editor.document;
     if (!document)
         return;
-    const scripts = xmlDomObj.getElementsByTagName('scripts');
+    const lists = xmlDomObj.getElementsByTagName('list');
     let cdatas = [];
-    scripts.forEach((script) => {
-        var subCdatas = script.GetCdataByElementTagName('value');
-        var subList = script.GetCdataByElementTagName('list');
-        cdatas = cdatas.concat(subCdatas);
-        cdatas = cdatas.concat(subList);
-    });
+    for (let i = 0; i < lists.length; i++) {
+        let list = lists[i];
+        let isScript = list.getAttribute('type') === 'script';
+        if (isScript) {
+            let subCdatas = list.GetAllCdata();
+            cdatas = cdatas.concat(subCdatas);
+        }
+    }
     // 创建一个WorkspaceEdit对象
     const edit = new vscode.WorkspaceEdit();
     const tabSize = editor.options.tabSize ? Number(editor.options.tabSize) : 4;
@@ -56,11 +58,11 @@ function formatJsString(text, startPosition, endPosition, tabSize) {
             parser: "babel",
             // 使用引入的插件parserBabel格式化
             plugins: [parserBabel],
-            // 设置使用空格而不是制表符来缩进
-            useTabs: false
-        });
+            // // 设置使用空格而不是制表符来缩进
+            // useTabs: false
+        }).trim();
         if (isOneLine) {
-            return ` <![CDATA[ ${formatted} ]]> `;
+            return `<![CDATA[ ${formatted} ]]>`;
         }
         // cdata偏移量
         //格式化内容每一行偏移量
@@ -69,11 +71,11 @@ function formatJsString(text, startPosition, endPosition, tabSize) {
         const formatedOffset = tagStartColumn + 2 * tabSize;
         // 其他情况
         // 在格式化后的字符串前面加上10个空格
-        const indented = formatted.split("\n").map((line, index, array) => {
+        let indented = formatted.split("\n").map((line, index, array) => {
             return (0, format_1.generateEmptyString)(formatedOffset) + line;
         }).join("\n");
         const cdataStart = `\n${(0, format_1.generateEmptyString)(cdataOffset)}<![CDATA[\n`;
-        const cdataEnd = `\n${(0, format_1.generateEmptyString)(cdataOffset)}]]>\n${(0, format_1.generateEmptyString)(tagStartColumn)}`;
+        let cdataEnd = `\n${(0, format_1.generateEmptyString)(cdataOffset)}]]>\n${(0, format_1.generateEmptyString)(tagStartColumn)}`;
         return cdataStart + indented + cdataEnd;
     }
     catch (error) {

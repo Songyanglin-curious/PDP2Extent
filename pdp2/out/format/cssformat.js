@@ -2,34 +2,38 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const format_1 = require("../utils/format");
-// const xmldoc = require('../utils/xmldoc');
-const xmldoc = require('../utils/xmldoc/xmldoc.js');
 const prettier = require("prettier");
-function cssFormat() {
+function cssFormat(xmlDomObj) {
     const editor = vscode.window.activeTextEditor;
     if (!editor)
         return; // 检查编辑器是否激活
     const document = editor.document;
     if (!document)
         return;
-    const text = editor.document.getText();
-    const xmlDomObj = new xmldoc.XmlDocument(text);
     const CssNodes = xmlDomObj.getElementsByTagName('css');
     let cdatas = [];
     CssNodes.forEach((css) => {
-        var subCdatas = css.GetCdataByElementTagName('css');
+        var subCdatas = css.GetAllCdata();
         cdatas = cdatas.concat(subCdatas);
     });
     // 创建一个WorkspaceEdit对象
     const edit = new vscode.WorkspaceEdit();
+    const tabSize = editor.options.tabSize ? Number(editor.options.tabSize) : 4;
     for (let i = 0; i < cdatas.length; i++) {
         const cdata = cdatas[i];
-        const value = cdata.cdata;
-        let startPosition = new vscode.Position(cdata.line, cdata.column);
-        let endPosition = new vscode.Position(cdata.closeLine, cdata.closeColumn);
+        const value = cdata.value;
+        const cdataParent = cdata.parent;
+        // 开始标签开始位置
+        let startTagPosition = document.positionAt(cdataParent.startTag.startPosition);
+        // 替换的范围
+        // 开始标签结束位置
+        let startPosition = document.positionAt(cdataParent.startTag.endPosition);
+        // 结束标签开始位置
+        let endPosition = document.positionAt(cdataParent.endTag.startPosition);
         let range = new vscode.Range(startPosition, endPosition); // 创建一个范围对象
-        const formatedJs = formatCsssString(value, cdata.column, editor);
-        edit.replace(document.uri, range, formatedJs);
+        let formatStr = formatCsssString(value, startTagPosition, endPosition, tabSize);
+        console.log(formatStr);
+        edit.replace(document.uri, range, formatStr);
     }
     // 使用工作区应用编辑器对象来执行TextEdit数组中的所有操作
     // vscode.workspace.applyEdit(new vscode.WorkspaceEdit().set(document.uri, textEdits));
@@ -38,38 +42,34 @@ function cssFormat() {
     });
 }
 exports.default = cssFormat;
-function formatCsssString(text, baseColumn, editor) {
-    let tabSize = editor.options.tabSize;
-    tabSize = tabSize ? Number(tabSize) : 4;
+function formatCsssString(text, startPosition, endPosition, tabSize) {
     try {
-        const formatted = prettier.format(text, {
-            // 使用js解析器
+        const isOneLine = startPosition.line === endPosition.line;
+        const formatted = prettier.format(text.trim(), {
             parser: "css",
-            // // 使用引入的插件parserBabel格式化
-            // plugins: [parserBabel],
             // 设置使用空格而不是制表符来缩进
-            useTabs: false
+            // useTabs: false
         });
-        const cdataLength = "<![CDATA[".length;
-        const lineLast = baseColumn - cdataLength;
-        const lineFirst = baseColumn - (cdataLength - tabSize);
+        if (isOneLine) {
+            return ` <![CDATA[ ${formatted} ]]> `;
+        }
+        // cdata偏移量
+        //格式化内容每一行偏移量
+        const tagStartColumn = startPosition.character;
+        const cdataOffset = tagStartColumn + tabSize;
+        const formatedOffset = tagStartColumn + 2 * tabSize;
+        // 其他情况
         // 在格式化后的字符串前面加上10个空格
-        const indented = "\n" + formatted.split("\n").map((line, index, array) => {
-            // 检查是否是最后一行
-            if (index === array.length - 1) {
-                // 如果是最后一行，就使用generateEmptyString(baseColumn - 4)来生成少4个空格的字符串
-                return (0, format_1.generateEmptyString)(lineLast) + line;
-            }
-            else {
-                // 如果不是最后一行，就使用generateEmptyString(baseColumn)来生成正常的空格字符串
-                return (0, format_1.generateEmptyString)(lineFirst) + line;
-            }
-        }).join("\n") + "]]>";
-        return indented;
+        const indented = formatted.split("\n").map((line, index, array) => {
+            return (0, format_1.generateEmptyString)(formatedOffset) + line;
+        }).join("\n");
+        const cdataStart = `\n${(0, format_1.generateEmptyString)(cdataOffset)}<![CDATA[\n`;
+        const cdataEnd = `\n${(0, format_1.generateEmptyString)(cdataOffset)}]]>\n${(0, format_1.generateEmptyString)(tagStartColumn)}`;
+        return cdataStart + indented + cdataEnd;
     }
-    catch (e) {
-        vscode.window.showErrorMessage(e.message);
-        return text + "]]>";
+    catch (error) {
+        vscode.window.showErrorMessage(error.message);
+        return ` <![CDATA[ ${text} ]]> `;
     }
 }
 //# sourceMappingURL=cssformat.js.map

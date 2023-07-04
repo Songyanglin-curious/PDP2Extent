@@ -179,6 +179,26 @@ XmlElement.prototype.getElementsByTagName = function (tagName) {
     traverse(this);
     return result;
 };
+//获取某个节点下面所有的cdata
+XmlElement.prototype.GetAllCdata = function () {
+    var cdataList = [];
+    // 递归函数用于遍历子元素
+    function traverse(node) {
+        // 检查当前元素是否为 CData 节点
+        if (node.type === "cdata") {
+            cdataList.push(node);
+        }
+        // 遍历子元素
+        if (node.children) {
+            for (var i = 0; i < node.children.length; i++) {
+                traverse(node.children[i]);
+            }
+        }
+    }
+    // 调用递归函数开始遍历
+    traverse(this);
+    return cdataList;
+};
 // 获取某个节点下符合条件的 CData 列表
 XmlElement.prototype.GetCdataByElementTagName = function (tagName) {
     var cdataList = [];
@@ -198,6 +218,12 @@ XmlElement.prototype.GetCdataByElementTagName = function (tagName) {
     // 调用递归函数开始遍历
     traverse(this);
     return cdataList;
+};
+//获取element的属性
+XmlElement.prototype.getAttribute = function (attrName) {
+    if (!this.attributes)
+        return undefined;
+    return this.attributes[attrName];
 };
 // 继承方法到原型链
 function extend(destination, source) {

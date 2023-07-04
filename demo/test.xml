@@ -6,12 +6,25 @@
             <a s_height="100%" s_width="100%" s_background-color="#071E2C"></a>
             <c>
                 <div id="div2_dl" desc="容器">
-
+                    <e>
+                        <onclick>
+                            <list type="script"><![CDATA[ this.click(); ]]></list>
+                        </onclick>
+                        <onchange>
+                            <list type="script">
+                                <value>
+                                    <![CDATA[
+                                        this.click1();
+                                    ]]>
+                                </value>
+                            </list>
+                        </onchange>
+                    </e>
                     <label id="label68_dl" desc="华中环比值" from="col77[this.areaIndex['华中']]">
                         <a class="pdpLabel tbmargin" value="文字"></a>
                         <sa s_color="col77[this.areaIndex['华中']]"></sa>
                         <sf>
-                            <value><![CDATA[parseFloat({0})>0? '#FB5656':'#11E5BB']]></value>
+                            <value><![CDATA[        parseFloat({0})>0? '#FB5656':'#11E5BB']]></value>
                         </sf>
                     </label>
                 </div>
@@ -20,10 +33,11 @@
     </ctrls>
     <css>
         <![CDATA[
-        .title {
-          background-color: #1d3b55;
-        }
-    ]]>
+            .title {
+              background-color: #1d3b55;
+            }
+            
+        ]]>
     </css>
     <scripts>
         <script event="created">
@@ -32,7 +46,6 @@
                     if (this.col_DEV_TYPE.length > 0) {
                       this.isLine = this.col_DEV_TYPE[0] == "414";
                     }
-                    
                 ]]>
             </list>
             <list type="file" value="dfaultdetail"></list>
@@ -73,7 +86,6 @@
                       );
                     };
                     this.getFaultTower();
-                    
                 ]]>
             </list>
             <list type="script">
@@ -86,7 +98,6 @@
                             else return true;
                           }
                         };
-                        
                     ]]>
                 </value>
             </list>
@@ -102,7 +113,6 @@
                         for (var i = 0; i < this.col73.length; i++) {
                           this.areaIndex[this.col73[i]] = i;
                         }
-                        
                     ]]>
                 </value>
             </list>

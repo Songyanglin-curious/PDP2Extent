@@ -1,7 +1,7 @@
 
 import { XmlDocument } from '../utils/xml'
 import * as vscode from 'vscode';
-// import cssFormat from "./cssformat";
+import cssFormat from "./cssformat";
 import jsFormat from "./jsformat";
 export function designFormat() {
     const editor = vscode.window.activeTextEditor;
@@ -11,6 +11,7 @@ export function designFormat() {
 
     const text = editor.document.getText();
     const xmlDomObj = new XmlDocument(text);
+    console.log(xmlDomObj)
     jsFormat(xmlDomObj);
-    // cssFormat();
+    cssFormat(xmlDomObj);
 }

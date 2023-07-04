@@ -11,14 +11,18 @@ export default function jsFormat(xmlDomObj: XmlDocument) {
     if (!editor) return; // 检查编辑器是否激活
     const document = editor.document;
     if (!document) return;
-    const scripts = xmlDomObj.getElementsByTagName('scripts');
+
+    const lists = xmlDomObj.getElementsByTagName('list');
     let cdatas: any[] = [];
-    scripts.forEach((script: any) => {
-        var subCdatas = script.GetCdataByElementTagName('value');
-        var subList = script.GetCdataByElementTagName('list');
-        cdatas = cdatas.concat(subCdatas)
-        cdatas = cdatas.concat(subList)
-    })
+    for (let i = 0; i < lists.length; i++) {
+        let list = lists[i];
+        let isScript = list.getAttribute('type') === 'script';
+        if (isScript) {
+            let subCdatas = list.GetAllCdata();
+            cdatas = cdatas.concat(subCdatas);
+        }
+    }
+
 
     // 创建一个WorkspaceEdit对象
     const edit = new vscode.WorkspaceEdit();
@@ -55,11 +59,11 @@ function formatJsString(text: any, startPosition: vscode.Position, endPosition: 
             parser: "babel",
             // 使用引入的插件parserBabel格式化
             plugins: [parserBabel],
-            // 设置使用空格而不是制表符来缩进
-            useTabs: false
-        });
+            // // 设置使用空格而不是制表符来缩进
+            // useTabs: false
+        }).trim();
         if (isOneLine) {
-            return ` <![CDATA[ ${formatted} ]]> `
+            return `<![CDATA[ ${formatted} ]]>`
         }
         // cdata偏移量
         //格式化内容每一行偏移量
@@ -68,11 +72,12 @@ function formatJsString(text: any, startPosition: vscode.Position, endPosition: 
         const formatedOffset = tagStartColumn + 2 * tabSize;
         // 其他情况
         // 在格式化后的字符串前面加上10个空格
-        const indented = formatted.split("\n").map((line: string, index: number, array: string[]) => {
+        let indented = formatted.split("\n").map((line: string, index: number, array: string[]) => {
             return generateEmptyString(formatedOffset) + line;
         }).join("\n");
         const cdataStart = `\n${generateEmptyString(cdataOffset)}<![CDATA[\n`
-        const cdataEnd = `\n${generateEmptyString(cdataOffset)}]]>\n${generateEmptyString(tagStartColumn)}`
+        let cdataEnd = `\n${generateEmptyString(cdataOffset)}]]>\n${generateEmptyString(tagStartColumn)}`;
+
         return cdataStart + indented + cdataEnd
     } catch (error: any) {
         vscode.window.showErrorMessage(error.message);
