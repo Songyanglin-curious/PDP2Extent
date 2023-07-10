@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<dsruninfo><![CDATA[
+        select '2018-6-30 14:55' as col1,'136' as col2,'85%' as col3,'' as col4,'' as col5,'' as col6,'92­°C' as col7,'正常' as col8,'3' as col9,'2' as col10
+        ]]></dsruninfo></ROOT>

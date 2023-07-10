@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <UpdateConfig>
+    <![CDATA[
+      DELETE FROM ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[YSH_MAP_CONFIG_USER where configname='{1}' AND userid={0};
+      INSERT INTO ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[YSH_MAP_CONFIG_USER (configname,value,userid) VALUES ({1},{2},{0});
+      ]]>    
+  </UpdateConfig>
+</ROOT>

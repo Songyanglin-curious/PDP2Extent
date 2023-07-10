@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <bk>
+  <GetAcList>
+    <![CDATA[select f.alarm_time,v.name,l.name,t.towername,f.alarm_level,f.alarm_position,f.distence,f.longitude,f.latitude,'','',f.alarm_status,f.alarm_line,t.tower_id
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_com_mountain_h_firealarm_{0} f
+join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_b l on f.alarm_line=l.id
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower t on l.id=t.line_id and f.alarm_tower=t.tower_id
+    left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dic_voltagetype v on l.voltage_type=v.code
+    WHERE f.alarm_time>={1} and f.alarm_time<{2}
+]]>
+  </GetAcList>
+  <GetDcList>
+    <![CDATA[select f.alarm_time,v.name,l.name,t.towername,f.alarm_level,f.alarm_position,f.distence,f.longitude,f.latitude,'','',f.alarm_status,f.alarm_line,t.tower_id
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_com_mountain_h_firealarm_{0} f
+join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_b l on f.alarm_line=l.id
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_r_tower t on l.id=t.line_id and f.alarm_tower=t.tower_id
+    left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dic_voltagetype v on l.voltage_type=v.code
+    WHERE f.alarm_time>={1} and f.alarm_time<{2}
+]]>
+  </GetDcList>
+  <GetAllDays>
+    <![CDATA[select distinct substr(to_char(alarm_time,'yyyy-MM-dd hh24:mi:ss'),0,10) 
+    from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_com_mountain_h_firealarm_{0}
+    ]]>
+  </GetAllDays>
+  <GetLineTower>
+    <![CDATA[
+    select alarm_tower,alarm_time,longitude,latitude,alarm_position,distence from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_com_mountain_h_firealarm_{3}
+where alarm_line={0} AND alarm_time>={1} and alarm_time<{2}]]>
+  </GetLineTower>
+  <GetAllEffectList>
+    <![CDATA[
+select station_id,is_forecast,alarm_time from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning_station where alarm_time>={0} and alarm_time<{1}
+UNION ALL
+SELECT DISTINCT line_id,is_forecast,alarm_time FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning_tower where alarm_time>={0} and alarm_time<{1}
+]]>
+  </GetAllEffectList>
+  <SkipSome>
+    <![CDATA[]]>
+  </SkipSome>
+  <GetLightCountP>
+    <![CDATA[select province_owner,province,count(1) c from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where alarm_time>={0} and alarm_time<{1} ]]>
+    <![CDATA[same:SkipSome]]>
+    <![CDATA[group by province_owner,province order by c desc]]>
+  </GetLightCountP>
+  <GetLightCountC>
+    <![CDATA[select city_owner,city,count(1) c from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where province_owner={2} and alarm_time>={0} and alarm_time<{1} group by city_owner,city order by c desc]]>
+  </GetLightCountC>
+  <GetLightCountD>
+    <![CDATA[select district_owner,district,count(1) c from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where city_owner={2} and alarm_time>={0} and alarm_time<{1} group by district_owner,district order by c desc]]>
+  </GetLightCountD>
+  <GetLightCountPTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(alarm_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where province_owner={2} and alarm_time>={0} and alarm_time<{1} 
+) a group by tm order by tm]]>
+  </GetLightCountPTime>
+  <GetLightCountCTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(alarm_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where city_owner={2} and alarm_time>={0} and alarm_time<{1} 
+) a group by tm order by tm]]>
+  </GetLightCountCTime>
+  <GetLightCountDTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(alarm_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where district_owner={2} and alarm_time>={0} and alarm_time<{1} 
+) a group by tm order by tm]]>
+  </GetLightCountDTime>
+  <GetLightCountAllTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(alarm_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where alarm_time>={0} and alarm_time<{1} ]]>
+    <![CDATA[same:SkipSome]]>
+    <![CDATA[
+) a group by tm order by tm]]>
+  </GetLightCountAllTime>
+  <GetLightPTime>
+    <![CDATA[
+SELECT alarm_time,longitude,latitude,1 as alarm_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where province_owner={2} and alarm_time>={0} and alarm_time<{1}  order by alarm_time
+]]>
+  </GetLightPTime>
+  <GetLightCTime>
+    <![CDATA[
+SELECT alarm_time,longitude,latitude,1 as alarm_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where city_owner={2} and alarm_time>={0} and alarm_time<{1}  order by alarm_time
+]]>
+  </GetLightCTime>
+  <GetLightDTime>
+    <![CDATA[
+SELECT alarm_time,longitude,latitude,1 as alarm_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where district_owner={2} and alarm_time>={0} and alarm_time<{1}  order by alarm_time
+]]>
+  </GetLightDTime>
+  <GetLightAllTime>
+    <![CDATA[
+SELECT alarm_time,longitude,latitude,1 as alarm_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where alarm_time>={0} and alarm_time<{1} ]]>
+    <![CDATA[same:SkipSome]]>
+    <![CDATA[ order by alarm_time]]>
+  </GetLightAllTime>
+  <GetEffectLine>
+    <![CDATA[select alarm_line,alarm_tower,0 as is_forecast,alarm_level from ]]>
+  <![CDATA[same:SearchCommonSql:SchemaName]]>
+  <![CDATA[sg_com_mountain_h_firealarm_{{2}} where alarm_time>={0} and alarm_time<{1}]]>
+  </GetEffectLine>
+  </bk>
+  <GetLineStat>
+    <![CDATA[
+    SELECT alarm_line,0,0,sum(fire_time) as fire_time from (
+    SELECT alarm_line,0,0,count(distinct alarm_time) as fire_time 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREALARM_2022 
+    where alarm_line is not null and length(alarm_line)>0 and alarm_time<{1} AND alarm_time>={0}
+    group by alarm_line
+    UNION ALL
+    SELECT DCLOUD_ID,0,0,count(distinct MONITORTIME) as fire_time 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ALARM_WILDFIRE_HN_INFO 
+    where DCLOUD_ID is not null and length(DCLOUD_ID)>0 and MONITORTIME<{1} AND MONITORTIME>={0}
+    group by DCLOUD_ID
+    UNION ALL
+    SELECT alarm_line,0,0,count(1) as fire_time
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREFORECAST_2022 
+    where alarm_line is not null and length(alarm_line)>0 and alarm_time<{1} AND alarm_time>={0} AND alarm_time>=sysdate
+    group by alarm_line
+    UNION ALL
+    SELECT DCLOUD_ID,0,0,COUNT(1)
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[HN_FORECASTINVERSION_WILDFIRE_INFO
+    where DCLOUD_ID IS NOT NULL and length(DCLOUD_ID)>0 and FUTURETIME<{1} AND FUTURETIME>={0} AND FUTURETIME>=sysdate
+    group by DCLOUD_ID
+    ) t group by alarm_line
+    ]]>
+  </GetLineStat>
+  <SkipRegion>
+    <![CDATA[AND (REGION LIKE '天津%' OR REGION LIKE '北京%' OR REGION LIKE '河北%' OR REGION LIKE '山西%' OR REGION LIKE '冀北%' OR REGION LIKE '山东%' OR REGION LIKE '蒙西%' OR REGION LIKE '内蒙古%')]]>
+  </SkipRegion>
+  <SkipProvince>
+    <![CDATA[AND (PROVINCE LIKE '天津%' OR PROVINCE LIKE '北京%' OR PROVINCE LIKE '河北%' OR PROVINCE LIKE '山西%' OR PROVINCE LIKE '冀北%' OR PROVINCE LIKE '山东%' OR PROVINCE LIKE '蒙西%' OR PROVINCE LIKE '内蒙古%')]]>
+  </SkipProvince>
+  <ChangeRegion>
+    <![CDATA[CASE WHEN REGION LIKE '内蒙古%' THEN '蒙西'
+ELSE SUBSTR(REGION,0,2) END AS  REGION]]>
+  </ChangeRegion>
+  <ChangePROVINCE>
+    <![CDATA[CASE WHEN PROVINCE LIKE '内蒙古%' THEN '蒙西'
+ELSE SUBSTR(PROVINCE,0,2) END AS  REGION]]>
+  </ChangePROVINCE>
+  <GetLightCountP>
+    <![CDATA[select region,region,count(1) c FROM (
+    SELECT ]]><![CDATA[same:ChangeRegion]]><![CDATA[ 
+    FROM (
+      SELECT DISTINCT REGION,ALARM_TIME,LONGITUDE,LATITUDE
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREALARM_2022 
+    where alarm_time>={0} and alarm_time<{1} ]]><![CDATA[same:SkipRegion]]><![CDATA[
+    ) A
+    union all
+    SELECT ]]><![CDATA[same:ChangeRegion]]><![CDATA[ 
+    FROM (
+      SELECT DISTINCT PROVINCE AS REGION,MONITORTIME,LON,LAT
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ALARM_WILDFIRE_HN_INFO 
+    where MONITORTIME>={0} and MONITORTIME<{1} ]]><![CDATA[same:SkipProvince]]><![CDATA[
+    ) A1
+    UNION ALL
+    SELECT ]]><![CDATA[same:ChangeRegion]]><![CDATA[  
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREFORECAST_2022 
+    where alarm_time>={0} and alarm_time<{1} and alarm_time>=sysdate ]]><![CDATA[same:SkipRegion]]><![CDATA[
+    UNION ALL
+    SELECT ]]><![CDATA[same:ChangePROVINCE]]><![CDATA[  
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[HN_FORECASTINVERSION_WILDFIRE_INFO 
+    where FUTURETIME>={0} and FUTURETIME<{1} and FUTURETIME>=sysdate ]]><![CDATA[same:SkipProvince]]><![CDATA[
+    ) a
+    group by region order by c desc]]>
+  </GetLightCountP>
+  <GetLightAllTime>
+    <![CDATA[
+SELECT distinct alarm_time,longitude,latitude,1 ,region
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREALARM_2022 
+where alarm_time>={0} and alarm_time<{1}
+UNION ALL
+SELECT DISTINCT MONITORTIME,lon,lat,1 ,province
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ALARM_WILDFIRE_HN_INFO 
+where MONITORTIME>={0} and MONITORTIME<{1}
+UNION ALL
+SELECT alarm_time,longitude,latitude,1 ,region
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREFORECAST_2022 
+where alarm_time>={0} and alarm_time<{1} AND alarm_time>=sysdate  
+UNION ALL
+SELECT FUTURETIME,LON,LAT,1 ,PROVINCE
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[HN_FORECASTINVERSION_WILDFIRE_INFO 
+where FUTURETIME>={0} and FUTURETIME<{1} AND FUTURETIME>=sysdate  
+order by alarm_time
+]]>
+  </GetLightAllTime>
+  <GetLineTower>
+    <![CDATA[select alarm_tower,alarm_tower,alarm_time,longitude,latitude,distence,region 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREALARM_2022 
+    where alarm_line={0} AND alarm_time>={1} and alarm_time<{2}
+    UNION ALL
+    select POLEID,POLEID,MONITORTIME,LON,LAT,DISTANCE,PROVINCE 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ALARM_WILDFIRE_HN_INFO 
+    where DCLOUD_ID={0} AND MONITORTIME>={1} and MONITORTIME<{2}
+    UNION ALL
+    select alarm_tower,alarm_tower,alarm_time,longitude,latitude,distence,region 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREFORECAST_2022 
+    where alarm_line={0} AND alarm_time>={1} and alarm_time<{2} AND alarm_time>=sysdate
+    UNION ALL
+    select POLEID,POLEID,FUTURETIME,LON,LAT,VALUE,PROVINCE 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[HN_FORECASTINVERSION_WILDFIRE_INFO 
+    where DCLOUD_ID={0} AND FUTURETIME>={1} and FUTURETIME<{2} AND FUTURETIME>=sysdate    
+    ]]>
+  </GetLineTower>
+  <GetLineWarn>
+    <![CDATA[select alarm_time,max(insert_time),max(alarm_level)||'','' 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREALARM_2022
+WHERE alarm_line={0} AND alarm_time>={1} AND alarm_time<{2} 
+group by alarm_time
+UNION ALL
+select MONITORTIME,MONITORTIME,ALARMLEVID||'','' 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ALARM_WILDFIRE_HN_INFO
+WHERE DCLOUD_ID={0} AND MONITORTIME>={1} AND MONITORTIME<{2} 
+UNION ALL
+select alarm_time,alarm_time,alarm_level||'','' 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREFORECAST_2022
+WHERE alarm_line={0} AND alarm_time>={1} AND alarm_time<{2} AND alarm_time>=sysdate
+UNION ALL
+select FUTURETIME,FUTURETIME,'','' 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[HN_FORECASTINVERSION_WILDFIRE_INFO
+WHERE DCLOUD_ID={0} AND FUTURETIME>={1} AND FUTURETIME<{2} AND FUTURETIME>=sysdate
+ORDER BY alarm_time DESC]]>
+  </GetLineWarn>
+</ROOT>

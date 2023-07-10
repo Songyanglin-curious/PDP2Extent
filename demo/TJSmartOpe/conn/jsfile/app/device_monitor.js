@@ -1,0 +1,1 @@
+_app.device_monitor = _app._dlg({ name: "设备在线监测", file: "sc_device_monitor", width: "100%", height: "100%" });

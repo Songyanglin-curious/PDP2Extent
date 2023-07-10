@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="1" desc="设备健康评估">
+	<inits>
+		<init id="jump" type="request" arg="m"></init>
+		<init id="deviceid" type="request" arg="deviceid"></init>
+		<init id="devicename" type="request" arg="devicename"></init>
+	</inits>
+	<consts>
+		<const id="HbCol" desc="要合并的表格列" type="string[]"></const>
+		<const id="HbData" desc="要合并的行" type="string[]"></const>
+		<const id="showdevname1" type="string"></const>
+		<const id="showdevname2" type="string"></const>
+		<const id="devDefect" desc="设备缺陷数据" type="object[]" fields="FindTime,Part,PartCategory,PartPosition,DefectDescribe,DefectLevel,DefectType,StartHandelTime,EndHandelTime,Source,Weather"></const>
+	</consts>
+	<datasources>
+		<datasource id="AssessmentValue" desc="主备设备缺陷" db="ConnMain" type="simple">
+			<sql>
+				<![CDATA[
+            select '实际评分(满分:100)' as icolAssessmentValue1,-14 as icolAssessmentValue2,-12 as icolAssessmentValue3,-4 as icolAssessmentValue4
+      ]]>
+			</sql>
+			<cols>
+				<col id="icolAssessmentValue1" desc="icolAssessmentValue1" name="icolAssessmentValue1"></col>
+				<col id="icolAssessmentValue2" desc="icolAssessmentValue2" name="icolAssessmentValue2"></col>
+				<col id="icolAssessmentValue3" desc="icolAssessmentValue3" name="icolAssessmentValue3"></col>
+				<col id="icolAssessmentValue4" desc="icolAssessmentValue4" name="icolAssessmentValue4"></col>
+			</cols>
+		</datasource>
+
+		<datasource id="pointRules" desc="主备设备缺陷2" db="ConnMain" type="simple">
+			<sql>
+				<![CDATA[
+
+             select '设备状态' as pointRules1,'本体' as pointRules2,'试验数据超标,可短期运行' as pointRules3,-6 as pointRules4
+            union all
+             select '设备状态' as pointRules1,'冷却器' as pointRules2,'试验数据超标,可短期维持运行' as pointRules3,-8 as pointRules4
+            union all
+             select '设备告警' as pointRules1,'本体' as pointRules2,'油位异常' as pointRules3,-6 as pointRules4
+            union all
+             select '设备告警' as pointRules1,'冷却器' as pointRules2,'轻瓦斯告警' as pointRules3,-6 as pointRules4
+            union all
+             select '家族缺陷' as pointRules1,'' as pointRules2,'指标不正常' as pointRules3,-4 as pointRules4
+      ]]>
+			</sql>
+			<cols>
+				<col id="pointRules1" desc="pointRules1" name="pointRules1"></col>
+				<col id="pointRules2" desc="pointRules2" name="pointRules2"></col>
+				<col id="pointRules3" desc="pointRules3" name="pointRules3"></col>
+				<col id="pointRules4" desc="pointRules4" name="pointRules4"></col>
+			</cols>
+		</datasource>
+		<datasource id="mainDefects" desc="主备设备缺陷1" db="ConnMain" type="simple">
+			<sql>
+				<![CDATA[
+            select sysdate as icolmainDefects2,'冷却器' as icolmainDefects3,'风冷' as icolmainDefects4,'进水' as icolmainDefects5,'冷却器进水造成了回路短路' as icolmainDefects6,'危急' as icolmainDefects7,'待处理' as icolmainDefects8,'' as icolmainDefects9,to_char(sysdate-2,'YYYY-MM-DD') as icolmainDefects10,'监控告警' as icolmainDefects11,'晴' as icolmainDefects12
+              union all 
+            select sysdate as icolmainDefects2,'本体' as icolmainDefects3,'风冷' as icolmainDefects4,'邮箱' as icolmainDefects5,'锈蚀严重' as icolmainDefects6,'严重' as icolmainDefects7,'正在处理' as icolmainDefects8,'' as icolmainDefects9,to_char(sysdate-2,'YYYY-MM-DD') as icolmainDefects10,'监控告警' as icolmainDefects11,'晴' as icolmainDefects12     
+           ]]>
+			</sql>
+			<cols>
+				<col id="icolmainDefects2" desc="icolmainDefects2" name="icolmainDefects2"></col>
+				<col id="icolmainDefects3" desc="icolmainDefects3" name="icolmainDefects3"></col>
+				<col id="icolmainDefects4" desc="icolmainDefects4" name="icolmainDefects4"></col>
+				<col id="icolmainDefects5" desc="icolmainDefects5" name="icolmainDefects5"></col>
+				<col id="icolmainDefects6" desc="icolmainDefects6" name="icolmainDefects6"></col>
+				<col id="icolmainDefects7" desc="icolmainDefects7" name="icolmainDefects7"></col>
+				<col id="icolmainDefects8" desc="icolmainDefects8" name="icolmainDefects8"></col>
+				<col id="icolmainDefects9" desc="icolmainDefects9" name="icolmainDefects9"></col>
+				<col id="icolmainDefects10" desc="icolmainDefects10" name="icolmainDefects10"></col>
+				<col id="icolmainDefects11" desc="icolmainDefects11" name="icolmainDefects11"></col>
+				<col id="icolmainDefects12" desc="icolmainDefects12" name="icolmainDefects12"></col>
+			</cols>
+		</datasource>
+
+		<datasource id="defects" desc="主备设备缺陷2" db="ConnMain" type="simple">
+			<sql>
+				<![CDATA[
+            select '压力异常' as icolhistory1,2 as icolhistory2,sysdate as icolhistory3
+      ]]>
+			</sql>
+			<cols>
+				<col id="icolhistory1" desc="icolhistory1" name="icolhistory1"></col>
+				<col id="icolhistory2" desc="icolhistory2" name="icolhistory2"></col>
+				<col id="icolhistory3" desc="icolhistory3" name="icolhistory3"></col>
+			</cols>
+		</datasource>
+	</datasources>
+	<ctrls>
+		<div id="div0" desc="根容器">
+			<a id="ahealth" class='wh100'></a>
+			<div>
+				<c>
+					<div>
+						<a s_display="flex" s_align-items="center" s_justify-content="center" s_margin-bottom="20px"></a>
+						<label>
+							<a value="设备健康评估" class="linearGradient"></a>
+						</label>
+					</div>
+
+					<div>
+						<div>
+							<a s_display="flex" s_align-items="center" s_justify-content="flex-start" s_margin-bottom="15px"></a>
+							<label>
+								<a value="" class="smallSign"></a>
+							</label>
+							<label>
+								<a value="设备健康总评估值"></a>
+							</label>
+							<label>
+								<a value="70" class="fontStyle"></a>
+							</label>
+						</div>
+						<itable id="itable1" from="AssessmentValue">
+							<a ref="itable1" s_margin-left="15px" s_margin-right="15px"></a>
+							<sa stripe="true" highlight-row="true" border="true" disabled-hover="true"></sa>
+							<c>
+								<icol id="icolAssessmentValue1" desc="分值组成" from="icolAssessmentValue1">
+									<a align="center" minWidth="100"></a>
+								</icol>
+								<icol id="icolAssessmentValue2" desc="设备状态" from="icolAssessmentValue2">
+									<a align="center" minWidth="100"></a>
+								</icol>
+								<icol id="icolAssessmentValue3" desc="设备告警" from="icolAssessmentValue3">
+									<a align="center" minWidth="100"></a>
+								</icol>
+								<icol id="icolAssessmentValue4" desc="家族缺陷" from="icolAssessmentValue4">
+									<a align="center" minWidth="100"></a>
+								</icol>
+							</c>
+						</itable>
+					</div>
+
+					<div>
+						<div>
+							<a s_display="flex" s_align-items="center" s_justify-content="flex-start" s_margin-top="15px" s_margin-bottom="15px"></a>
+							<label>
+								<a value="" class="smallSign"></a>
+							</label>
+							<label>
+								<sa value="showdevname1"></sa>
+							</label>
+						</div>
+
+						<itable id="itable2" from="pointRules">
+							<a ref="itable2" s_margin-left="15px" s_margin-right="15px"></a>
+							<sa stripe="true" highlight-row="true" border="true" disabled-hover="true"></sa>
+							<c>
+								<icol id="pointRules1" desc="扣分类型" from="pointRules1">
+									<a align="center" minWidth="150"></a>
+								</icol>
+								<icol id="pointRules2" desc="部件类型" from="pointRules2">
+									<a align="center" minWidth="80"></a>
+								</icol>
+								<icol id="pointRules3" desc="扣分描述" from="pointRules3">
+									<a align="center" minWidth="150"></a>
+								</icol>
+								<icol id="pointRules4" desc="扣分值" from="pointRules4">
+									<a align="center" minWidth="80"></a>
+								</icol>
+							</c>
+						</itable>
+
+						<label>
+							<a class="borderBottom"></a>
+						</label>
+					</div>
+
+					<div>
+						<div>
+							<a s_display="flex" s_align-items="center" s_justify-content="flex-start" s_margin-top="15px" s_margin-bottom="15px"></a>
+							<label>
+								<a value="" class="smallSign"></a>
+							</label>
+							<label>
+								<sa value="showdevname2"></sa>
+							</label>
+						</div>
+
+						<itable id="itable3" from="devDefect">
+							<a ref="itable3" s_margin-left="15px" s_margin-right="15px"></a>
+							<sa stripe="true" highlight-row="true" border="true" disabled-hover="true"></sa>
+							<c>
+								<icol desc="序号">
+									<a type="index" align="center" width="80"></a>
+								</icol>
+								<icol desc="缺陷发现时间" from="FindTime">
+									<a align="center" minWidth="50"></a>
+								</icol>
+								<icol desc="部件" from="Part">
+									<a align="center" minWidth="30"></a>
+								</icol>
+								<icol desc="部件种类" from="PartCategory">
+									<a align="center" minWidth="30"></a>
+								</icol>
+								<icol desc="部位" from="PartPosition" show="false">
+									<a align="center" minWidth="50"></a>
+								</icol>
+								<icol desc="缺陷描述" from="DefectDescribe">
+									<a align="center" minWidth="100"></a>
+								</icol>
+								<icol desc="缺陷程度" from="DefectLevel">
+									<a align="center" minWidth="30"></a>
+								</icol>
+								<icol desc="缺陷状态" from="DefectType">
+									<a align="center" minWidth="30"></a>
+								</icol>
+								<icol desc="开始处理时间" from="StartHandelTime">
+									<a align="center" minWidth="50"></a>
+								</icol>
+								<icol desc="计划完成时间" from="EndHandelTime">
+									<a align="center" minWidth="50"></a>
+								</icol>
+								<icol desc="来源" from="Source">
+									<a align="center" minWidth="30"></a>
+								</icol>
+								<icol desc="天气" from="Weather" show="false">
+									<a align="center" minWidth="30"></a>
+								</icol>
+							</c>
+						</itable>
+					</div>
+
+					<div>
+						<div>
+							<a s_display="flex" s_align-items="center" s_justify-content="flex-start" s_margin-top="15px" s_margin-bottom="15px"></a>
+							<label>
+								<a value="" class="smallSign"></a>
+							</label>
+							<label>
+								<a value="2#主变设备缺陷"></a>
+								<sa value="showdevname2"></sa>
+							</label>
+						</div>
+						<itable id="itable4" from="defects">
+							<a ref="itable4" s_margin-left="15px" s_margin-right="15px"></a>
+							<sa stripe="true" highlight-row="true" border="true" disabled-hover="true"></sa>
+							<c>
+								<icol id="icolhistory1" desc="告警类别" from="icolhistory1">
+									<a align="center" minWidth="150"></a>
+								</icol>
+								<icol id="icolhistory2" desc="发生次数" from="icolhistory2">
+									<a align="center" minWidth="80"></a>
+								</icol>
+								<icol id="icolhistory3" desc="最后一次发生警告时间" from="icolhistory3">
+									<a align="center" minWidth="150"></a>
+								</icol>
+							</c>
+						</itable>
+					</div>
+				</c>
+			</div>
+		</div>
+	</ctrls>
+	<css>
+		<![CDATA[
+    ]]>
+	</css>
+	<scripts>
+		<script event="created">
+			<list type="script">
+				<value>
+					<![CDATA[
+            var vm = this;
+            vm.showdevname1=vm.devicename+"扣分细则";
+            vm.showdevname2=vm.devicename+"设备告警";
+			this.getDevNumById = function(){
+				PDP.load("sgc/c:GetDevNumById",{id:this.deviceid},function(res){
+					if(res.check("获取设备编号",true)){
+						var devNum = res.value[0].DevNum;
+						vm.getDevDefectByDevNum(devNum);
+					}
+			  	})
+			}
+			
+			this.getDevDefectByDevNum = function(devNum){
+				  PDP.load("sc/archive_trans:GetUnhandelDevDefect",{devNum:devNum},function(res){
+					if(res.check("获取未处理设备缺陷数据",true)){
+						vm.devDefect = res.value
+	
+					}
+				})
+			}
+			
+			this.init = function(){
+				this.getDevNumById();
+			}
+			this.init();
+          ]]>
+				</value>
+			</list>
+			<list type="select" ds="AssessmentValue" async="true"></list>
+			<list type="select" ds="pointRules" async="true"></list>
+			<list type="select" ds="mainDefects" async="true"></list>
+			<list type="select" ds="defects" async="true"></list>
+		</script>
+		<script event="mounted">
+			<list type="script">
+				<value>
+					<![CDATA[
+            var _this = this;   
+          ]]>
+				</value>
+			</list>
+		</script>
+	</scripts>
+</root>

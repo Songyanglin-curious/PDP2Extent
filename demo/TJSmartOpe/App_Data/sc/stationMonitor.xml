@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+	<Ysp>
+		<QQ><![CDATA[ {}]]></QQ>
+	</Ysp>
+	<!-- 获取变电站名称 -->
+	<GetStationName type="sql" fields="StationName" args="id">
+		<![CDATA[ 
+        SELECT NAME FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_sc_station WHERE ID = {id};
+        ]]>
+	</GetStationName>
+
+	<!-- 获得电压等级 -->
+	<GetVolClass>
+		<![CDATA[ 
+    SELECT  distinct group_name, group_name FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_sc_station
+    ]]>
+	</GetVolClass>
+	<!-- 获得变电站 -->
+	<GetStation>
+		<![CDATA[ 
+		SELECT name,name FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_sc_station ORDER BY ID
+		]]>
+	</GetStation>
+	<!-- 根据电压获取变电站 -->
+	<GetStationByVoltage>
+		<![CDATA[same:GetStation]]>
+		<![CDATA[ WHERE group_name = {0} ORDER BY ID ]]>
+	</GetStationByVoltage>
+
+	<!-- 获得变电站 -->
+	<GetSubstation>
+		<![CDATA[ 
+    SELECT name,name FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_sc_station WHERE (group_name = {0} OR '' = {0}) ORDER BY ID
+    ]]>
+	</GetSubstation>
+	<GetSubstatibName>
+		<![CDATA[ 
+    SELECT name FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_sc_station WHERE (id = {0} OR '' = {0})
+    ]]>
+	</GetSubstatibName>
+	<!-- 获取的告警信息 -->
+	<GetAlert>
+		<![CDATA[ 
+    SELECT a.alert_time ,a.msg_type,  b.col3 AS device ,b.col0 AS substation,a.msg_content , b.col4,a.alert_level FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_alert_msg  a LEFT JOIN ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_sc_device  b ON a.device_id = b.id WHERE b.col0 = {0} AND a.alert_time BETWEEN {1} AND {2};
+    ]]>
+	</GetAlert>
+	<!-- 获取历史告警信息 -->
+	<GetOldAlert>
+		<![CDATA[ 
+    	SELECT a.alert_time ,a.msg_type,  b.col3 AS device ,b.col0 AS substation,a.msg_content , b.col4,a.alert_level FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_alert_msg  a LEFT JOIN ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_sc_device  b ON a.device_id = b.id WHERE b.col0 = {0} AND a.alert_time <{1};
+    ]]>
+	</GetOldAlert>
+
+	<GetAlertInfo type="union" fields="AlertTime,MsgType,DeviceName,StationName,MsgContent,DeviceCategory,AlertLevel" args="id">
+		<![CDATA[ 
+		
+		]]>
+	</GetAlertInfo  >
+	<test type="sql" >
+		<![CDATA[ 
+		
+		]]>
+	</test>
+
+</ROOT>

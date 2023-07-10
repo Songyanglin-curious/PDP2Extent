@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;" desc="资产信息">
+  <inits>
+    <init id="lst" type="request" arg="lst"></init>
+    <init id="col" type="request" arg="col"></init>
+    <init id="colname" type="request" arg="colname"></init>
+  </inits>
+  <consts>
+    <const id="option" type="object" arg=""></const>
+    <const id="optionyunxingyear" type="object" arg=""></const>
+    <const id="datalist" type="[]"></const>
+    <const id="Alllist" type="2d" length="2"></const>
+    <const id="hTbl" ></const>
+    <const id="contentstyle" type="object"></const>
+    <const id="names" ></const>
+  </consts>
+  <ctrls>
+  <div id="div0" desc="根容器">
+  <a  class="pdiv"></a>
+      <title-div id="t" style="flex:1;">
+        <a title='折旧年限值排行top5'></a>
+        <sa content-style='{ }'></sa>
+         <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+         <href >
+        <a s_float="right"></a>
+          <label value="查看更多"></label>
+          <e>
+            <onclick>
+              <list type="script" value="this.showMore(this.col);"></list>
+            </onclick>
+          </e>
+        </href>
+        <ecommonchart desc="图表">
+            <a ref="hchart2" s_width="100%" ></a>
+            <sa option="option" s_height="hTbl+'px'"></sa>
+        </ecommonchart>
+        <div>
+        <a ref="divbottom"></a>
+        <a id="container"></a>
+        <itable from="Alllist" >
+          <a class="smalltable"></a>
+          <sa border="true"  stripe="true" ></sa>
+          <icol desc="折旧年限" from="Alllist_0" ></icol>
+          <icol desc="年" from="Alllist_1" >
+          <a width="150px"></a>
+          <label>
+          <sa value="Alllist_1"></sa>
+          <sf value="parseFloat({0})"></sf>
+          </label>
+          </icol>
+        </itable>
+        </div>
+      </title-div>
+  </div>
+  </ctrls>
+  <css>
+    <![CDATA[
+
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsbzc" part="tobig"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          Ysh.Object.addHandle(this, "resize", function () {
+              var hAll = $(this.$el).height();
+              var hIf = $(this.$refs.divbottom).height();
+              this.hTbl = Math.max(hAll - hIf - 60, 200);
+              
+              
+          });
+          this.refresh = function(){
+              if(!this.lst)
+              this.lst = ProjectShanxi.getDevdataBytype();
+              var data = [];
+              data = this.lst.sort(function(x,y){return y.depreciableYear-x.depreciableYear}).slice(0,5);
+              this.Alllist = ProjectShanxi.DicttoArray(data,['devName','depreciableYear']);
+              var v = Ysh.Array.col(this.Alllist,1).map(function(value){return parseFloat(value)||0});
+              this.option = ProjectShanxi.Curve.getColumn3DOption( [['折旧年限', v ,'RGB(0,177,82)']] , Ysh.Array.col(this.Alllist,0) );
+              return;
+          }
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+         <![CDATA[
+            this.refresh();
+            this.$nextTick(function () {
+                this.resize();
+                this.$nextTick(function () {
+                  this.$refs.hchart2.resize();
+                  });
+            });
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

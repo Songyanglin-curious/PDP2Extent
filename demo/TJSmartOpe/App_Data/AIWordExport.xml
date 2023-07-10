@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetWholerunway>
+    <![CDATA[
+      SELECT type,runcount,allcount FROM TWHOLERUNWAY
+    ]]>
+  </GetWholerunway>
+  <GetImpplantrunway>
+    <![CDATA[
+      SELECT s.deptdesc,v.voltagedesc,w.rungencount,w.stopgencount,g.plimit as p,w.e
+      FROM TPLANTRUNWAY w
+      JOIN
+      TDEPARTMENT s ON w.plantid=s.departidx AND s.departtype=8
+      LEFT JOIN TVOLTAGE v ON s.voltageidx=v.voltageidx
+      LEFT JOIN (select plantid,SUM(UPPERLIMIT) AS plimit  from TGENLIMIT GROUP BY PLANTID) g ON w.plantid=g.plantid
+    ]]>
+  </GetImpplantrunway>
+  <GetImpunitrunway>
+    <![CDATA[
+      select p.deptdesc,g.devicename,g.upperlimit,r.e from tgenrunway r
+      JOIN tgenlimit g ON r.genid=g.genid
+      JOIN TDEPARTMENT p ON g.plantid=p.departidx
+    ]]>
+  </GetImpunitrunway>
+  <GetImpunitlinemain>
+    <![CDATA[
+        SELECT STANAME,OBJECTNAME FROM TSTOPDEVICE
+    ]]>
+  </GetImpunitlinemain>
+  <GetImplinerunway>
+    <![CDATA[
+        select l.devicename as devicename, 
+        case w.state when 1 then '投运' when '0' then '停运' end as putstate,w.I as ppower,w.i as elecurrent,l.ilimit as ratedampacity 
+        from tlinerunway w
+        left join tlinelimit l on l.lineid=w.lineid
+    ]]>
+  </GetImplinerunway>
+  <GetImpmainrunway>
+    <![CDATA[
+        select tp.deptdesc as stationname,tm.devicename as devicename,
+        case tw.state when 1 then '投运' when '0' then '停运' end as putstate,
+        tw.L as ppower,tm.hlimit as powerlimit 
+        from TTRANSRUNWAY tw
+        left join TTRANLIMIT tm on tm.transid=tw.transid
+        left join TDEPARTMENT tp on tm.stationid=tp.departidx
+    ]]>
+  </GetImpmainrunway>
+  <GetLoadlevel>
+    <![CDATA[
+        select E as preele,L as pload from TLOADDATA
+    ]]>
+  </GetLoadlevel>
+  <GetWarypreset>
+    <![CDATA[
+        select staname as stationname,Objectname as unitlinemainname,
+        case State when 1 then '投运' when '0' then '停运' end as putstate,
+        case "TYPE" when 1 then '计划读取' when 2 then '人工预设' end as presettype from TRUNWAYPRESET
+    ]]>
+  </GetWarypreset>
+  <GetImpsectionrunway>
+    <![CDATA[
+        select "name" as sectionname,state as putstate,"devname" as devicename,
+        "L" as ppower,"value" as staline  from TSECTIONRUNWAY sv
+        left join "tbcrosssection" tt on sv.sectionid=tt.sectionid
+    ]]>
+  </GetImpsectionrunway>
+  <GetBreakdownpreset>
+    <![CDATA[
+        select devicename as breakdownpart,
+        case devicetype when 1 then '线路' when 2 then '主变' end as parttype,"DESC" as breakdowndescrib,'' from TFAULTPRESET
+    ]]>
+  </GetBreakdownpreset>
+  <GetFocuspreinstall>
+    <![CDATA[
+        select case caretype when 1 then '默认关注' 
+        when 2 then '可选关注' 
+        when 3 then '特定关注' end as focustype,
+        carepoint as focuspoint,carecontent as carecontent from TCARPRESET
+    ]]>
+  </GetFocuspreinstall>
+  <GetPowercutinf>
+    <![CDATA[
+        select rownum,devicename as part,lostload as loadlose from TSTOPLOST
+    ]]>
+  </GetPowercutinf>
+  <GetOverloadinf>
+    <![CDATA[
+        select rownum,devicename as part,
+        case devicetype when 1 then '线路' when 2 then '主变' end as type,
+        to_char(capicity,'99999')||'A' as capacity,to_char(tide,'9999.9')||'A' as trend,
+        unit as loadpersent from TOVERLOAD
+    ]]>
+  </GetOverloadinf>
+  <GetPersonadjust>
+    <![CDATA[
+        select rownum,case "TYPE" when 1 then '调整出力' 
+        when 2 then '负荷转移' 
+        when 3 then '停机' 
+        when 4 then '拉路限电' 
+        when 5 then '启机' 
+        end as type,content from TOPERATEITEM 
+        where faid = {0}
+    ]]>
+  </GetPersonadjust>
+</ROOT>

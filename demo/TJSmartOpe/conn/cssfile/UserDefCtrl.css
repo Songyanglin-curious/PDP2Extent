@@ -1,0 +1,87 @@
+﻿body {
+}
+
+#btnAddCtrl
+{
+    background-color: #fff;
+    margin: 0px 35px 0px 0px;
+    border: 1px dotted #999999;
+    display: inline-block;
+    color: #999999;
+    font-size: 100%;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 120%;
+    width: 80px;
+}
+
+#btnAddCtrl:hover
+{
+    background-color: #fff;
+    margin: 0px 35px 0px 0px;
+    border: 1px dotted #000099;
+    display: inline-block;
+    color: #000099;
+    cursor: pointer;
+    line-height: 120%;
+    width: 80px;
+    font-weight: bold;
+}
+
+#divMain_edit
+{
+    height: 100%;
+    width: 100%;
+    background-color: #D3DCE7;
+}
+
+.input
+{
+    width: 120px;
+    text-align:center;
+    display: none;
+}
+
+#divMainCtrl
+{
+    width: 700px;
+    height: 600px;
+    background-color: #FFFFCC;
+    border: #919CD0 1px solid;
+    z-index: 100;
+    position: relative;
+    right: 0px;
+    left: 260px;
+    top: 50px;
+    visibility: hidden;
+}
+
+.delctrl
+{
+    padding: 0px;
+    margin: 0px;
+    width: 20px;
+    height: 20px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+.focus
+{
+    background-color: #FFFFCC;     
+    width:80px;   
+    line-height: 120%;
+}
+
+.lostfocus
+{
+    width:80px;
+    line-height: 120%;
+}
+
+
+
+
+

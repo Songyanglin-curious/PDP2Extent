@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds0><![CDATA[
+          select '' devicename,'' devicedesc,''  as staname,'' as subname
+        ]]></ds0>
+<ds1><![CDATA[
+		      select '' as stationname,'' as voltagename,'' AS bianyaqileixing,'投运' devicestate,'' factory_name,'' as lengquefangshi,
+		      '' as tiaoyafangshi,'' as chuchangriqi,
+		      '' devmode_name,
+		      '' AS gyceddy,
+		      '' AS zyceddy,
+		      '' AS dyceddy,
+		      '' rundept,'' as rundate
+        ]]></ds1></ROOT>

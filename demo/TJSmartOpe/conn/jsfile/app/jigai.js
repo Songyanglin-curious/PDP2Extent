@@ -1,0 +1,1 @@
+﻿_app.jigai = _app._dlg({ name: "技改大修", file: "sc_jgdx", width: "100%", height: "100%" }); 

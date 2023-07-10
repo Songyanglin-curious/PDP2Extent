@@ -1,0 +1,34 @@
+.btn-group-wrapper{
+    display: flex;
+    padding: 0 10px;
+}
+
+.btn-group-wrapper.column{
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-group-wrapper button{
+    flex: 1;
+}
+
+.btn-group-wrapper .btn-default{
+    background: #1c908a;
+    border-style: none;
+    padding: 10px;
+    color: #fff;
+    cursor: pointer;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-group-wrapper.especial{
+    content: '如需其他样式,把这条content属性删掉,自己在这添加';
+}
+
+.btn-group-wrapper .btn-select{
+    background: #13b8af;
+}

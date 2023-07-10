@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;" desc="资产信息">
+  <inits>
+    <init id="lst" type="request" arg="lst"></init>
+    <init id="col" type="request" arg="col"></init>
+    <init id="colname" type="request" arg="colname"></init>
+    <init id="devtype" type="request" arg="devtype"></init>
+  </inits>
+  <consts>
+    <const id="option" type="object" arg=""></const>
+    <const id="optionyunxingyear" type="object" arg=""></const>
+    <const id="datalist" type="[]"></const>
+    <const id="Alllist" type="2d" length="2"></const>
+    <const id="hTbl" ></const>
+    <const id="contentstyle" type="object"></const>
+    <const id="names" ></const>
+    <const id="col" arg="salvageAsset"></const>
+  </consts>
+  <ctrls>
+  <div id="div0" desc="根容器">
+  <a  class="pdiv"></a>
+      <title-div id="t" style="flex:1;">
+        <a title='资产残值排行top5' title1="单位：万元"></a>
+        <sa content-style='{ }'></sa>
+      <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+       <div>
+        <a class="f rr"></a>
+         <href >
+        <a s_float="right"></a>
+          <label value="查看更多"></label>
+          <e>
+            <onclick>
+              <list type="script" value="this.showMore(this.col);"></list>
+            </onclick>
+          </e>
+        </href>
+        </div>
+        <ecommonchart desc="图表">
+            <a ref="hchart2" s_width="100%" ></a>
+            <sa option="option" s_height="hTbl+'px'"></sa>
+        </ecommonchart>
+        <div>
+        <a ref="divbottom"></a>
+        <a id="container"></a>
+        <itable from="Alllist" >
+          <a class="smalltable"></a>
+          <sa border="true"  stripe="true" ></sa>
+          <icol desc="资产残值" from="Alllist_0" ></icol>
+          <icol desc="金额/万元" from="Alllist_1" >
+          <a width="150px"></a>
+          
+          </icol>
+        </itable>
+        </div>
+      </title-div>
+  </div>
+  </ctrls>
+  <css>
+    <![CDATA[
+
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsbzcdetail" part="zcxx"></list>
+      <list type="file" value="dsbzc" part="tobig"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.refresh = function(){
+              if(!this.lst)
+              this.lst = ProjectShanxi.getDevdataBytype();
+              var data = [];
+              data = this.lst.sort(function(x,y){return y.salvageAsset-x.salvageAsset}).slice(0,5);
+              this.Alllist = ProjectShanxi.DicttoArray(data,['devName','salvageAsset']);
+              var v = Ysh.Array.col(this.Alllist,1).map(function(value){return parseFloat(value)||0});
+              this.option = ProjectShanxi.Curve.getBar3DOption( [['资产残值', v ,'RGB(136,198,91)']] , Ysh.Array.col(this.Alllist,0) ,true);
+              return;
+          }
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+         <![CDATA[
+            this.refresh();
+            this.$nextTick(function () {
+                this.resize();
+            });
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

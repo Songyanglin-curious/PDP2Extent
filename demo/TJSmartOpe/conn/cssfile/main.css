@@ -1,0 +1,1054 @@
+﻿/*v=1.20.311.1*/
+a:active { text-decoration: underline; font-size: 14px; }
+a:hover { text-decoration: underline; color: #002E5B;   font-size: 14px;}
+a:link { font-size: 14px; /*text-decoration: underline;*/ }
+a:visited { color: #002E5B; /*text-decoration: underline;*/ font-size: 14px; }
+/*a {color:black}*/
+body { font-size: 14px; color:black; font-family: 黑体; }
+img { border: 0px; }
+table { word-break: break-all; }
+textarea {    border: solid 1px #acb9c1;    color: #444444;    margin-left: 0px;}
+td {    font-size: 10pt;}
+
+/*********************** 按钮样式超链接 **********************/
+.aButton { color:#1a827c;border :#1a827c 1px solid;height:24px;padding:5px 10px 5px 10px }
+.aButton:link { color:#1a827c;border :#1a827c 1px solid;height:24px;padding:5px 10px 5px 10px }
+.aButton:visited { color:#1a827c;border :#1a827c 1px solid;height:24px;padding:5px 10px 5px 10px }
+.aButton:hover { color:#ffffff;background-color:#1a827c;text-decoration: none }
+/*********************** 时间控件样式 ************************/
+.time_left {border-left: solid 1px #acb9c1;border-right: none;border-top: solid 1px #acb9c1;border-bottom: solid 1px #acb9c1;}
+.time_right {border-right: solid 1px #acb9c1;border-left: none;border-top: solid 1px #acb9c1;border-bottom: solid 1px #acb9c1;}
+.time_middle {border-right: none;border-left: none;border-top: solid 1px #acb9c1;border-bottom: solid 1px #acb9c1;text-align:right;}
+.time_container { vertical-align:middle }
+.time_input {border-right: none;border-left: none;border-top: solid 1px #acb9c1;border-bottom: solid 1px #acb9c1;text-align:right;}
+.time_unit {border-right: none;border-left: none;border-top: solid 1px #acb9c1;border-bottom: solid 1px #acb9c1;text-align:center;}
+/*********************** 上传控件的样式 ************************/
+.delbtn { margin: 4px; border: 0px; text-decoration: none; color: Red !important; font-weight: bold; }
+.file { float: left; margin-right: 4px; }
+.Uploader {   float: right; }
+.Gray { 	filter: gray; }
+/*********************************************/
+.bottomCss
+{
+    background-image: url(/i/bottom1.jpg);
+}
+
+.divCss
+{
+    height: 25px;
+    vertical-align: bottom;
+}
+.divCss span
+{
+    font-weight: bold;
+    color: Red;
+}
+
+.middleCss
+{
+    width: 100%;
+    height: 100%;
+    border-left: solid 1px #acb9c1;
+    border-right: solid 1px #acb9c1;
+    vertical-align: top;
+}
+.sBottomCss
+{
+    background-image: url(/i/sBottom1.jpg);
+}
+.sMiddleCss
+{
+    width: 100%;
+    border-left: solid 1px #acb9c1;
+    border-right: solid 1px #acb9c1;
+    vertical-align: top;
+}
+.sTitle
+{
+    background-color:#dae4ea;
+    color:#000;
+    font-weight: bold;
+}
+.sTitle_Old
+{
+    background-image: url(/i/sTitle1.jpg);
+    font-weight: bold;
+}
+
+.titleCss
+{
+    font-size: 14pt;
+    font-weight: bold;
+    font-family: 黑体;
+    color: #444444;
+    vertical-align: middle;
+}
+.titleNewCss{
+	color: #167e79;
+	font-size: 15pt;
+	font-weight: bold;
+}
+.topCss
+{
+    background-image: url(/i/top1.jpg);
+}
+.topTitle
+{
+    background-image: url(/i/toptitle1.jpg);
+}
+.trCss
+{
+    height: 25px;
+}
+
+.backImg
+{
+    background-image: url('/i/backImg.jpg');
+    background-repeat: repeat-x;
+    width: 100%;
+    height: 100%;
+}
+html { width:100%;height:100%; }
+.bodyCss
+{
+    margin: 5px;
+    background-color: #dbdbdb;
+    border: 0px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+.checkstyle
+{
+    border-right: transparent 0px;
+    border-top: transparent 0px;
+    border-left: transparent 0px;
+    border-bottom: transparent 0px;
+    background-color: transparent;
+    font-size: 10pt;
+    color: #444444;
+}
+/*****************************ListEdit样式******************************/
+.tdEditCell
+{
+    border-bottom: solid 1px #a6c4d4;
+    border-left: solid 1px #a6c4d4;
+    border-right: solid 1px #a6c4d4;
+    /*padding-left:2px;padding-right:2px;*/
+    padding:2px;
+}
+/*****************************以下为表格用Css****************************/
+.tbCellall
+{
+    border-bottom: solid 1px #acb9c1;
+    border-left: solid 1px #acb9c1;
+    border-right: solid 1px #acb9c1;
+    border-top: solid 1px #acb9c1;
+    background-color: #ffffff;
+    height: 30px;
+    color: #444444;
+}
+.tbCellboth
+{
+    border-bottom: solid 1px #a6c4d4;
+    border-left: solid 1px #a6c4d4;
+    border-right: solid 1px #a6c4d4;
+    background-color: #ffffff;
+    padding-left: 2px;
+    padding-right:2px;
+    height: 30px;
+    color: #444444;
+}
+.tbCellboth_Old
+{
+    border-bottom: solid 1px #acb9c1;
+    border-left: solid 1px #acb9c1;
+    border-right: solid 1px #acb9c1;
+    background-color: #ffffff;
+    padding-left: 2px;
+    padding-right:2px;
+    height: 30px;
+    color: #444444;
+}
+.tempCell
+{
+    /*border-bottom: solid 1px #acb9c1;
+    border-left: solid 1px #acb9c1;
+    border-right: solid 1px #acb9c1;*/
+    border:1 solid #a6c4d4;
+    background-color: #D7F5FF;
+    padding-left: 2px;
+    padding-right:2px;
+    height: 30px;
+    color: #ffffff;
+}
+.trFirst
+{
+    background-color: #FFFFFF;
+}
+.trSecond
+{
+    background-color: #f5f8f9;
+}
+.tbLeftCss
+{
+    border-bottom: solid 1px #acb9c1;
+    border-left: solid 1px #acb9c1;
+    background-color: #ffffff;
+    height: 25px;
+}
+
+.tbRightCss
+{
+    border-bottom: solid 1px #acb9c1;
+    border-right: solid 1px #acb9c1;
+    background-color: #ffffff;
+    height: 25px;
+}
+
+.tbTopCss
+{
+    border-top: solid 1px #acb9c1;
+    background-color: #e3eaed;
+    height: 25px;
+}
+
+.tbBothCss
+{
+    border-bottom: solid 1px #acb9c1;
+    border-left: solid 1px #acb9c1;
+    border-right: solid 1px #acb9c1;
+    height: 25px;
+}
+
+.grid 
+{
+	background-color:#a2b1ce;
+	vertical-align:middle;
+	color:#012c6d;
+}
+
+/*****************************以下为按钮Css*****************************/
+.btnDefault {  color:#1a827c;border :#1a827c 1px solid;background-color:#ffffff;height:24px;padding:3px 0px 0px 0px;BEHAVIOR: url('/conn/cssfile/button.htc'); }
+.btnOver { color:#ffffff;border :#1a827c 1px solid;background-color:#1a827c;height:24px;padding:3px 0px 0px 0px; cursor:pointer; }
+.btnSave
+{
+    background-image: url(/i/save.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnRelationEx
+{
+    background-image: url(/i/relation.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnUnSave
+{
+    background-image: url(/i/unSave.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnNewNote
+{
+    background-image: url(/i/newNote.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnUnNewNote
+{
+    background-image: url(/i/unNewNote.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnSearch
+{
+    background-image: url(/i/search.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnChakan
+{
+    background-image: url(/i/search.jpg);
+    width: 77px;
+    height: 29px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnChaXun
+{
+    background-image: url(/i/chax.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnGetData
+{
+    background-image: url(/i/GetData.gif);
+    width: 98px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnMakeEfile
+{
+    background-image: url(/i/MakeEfile.gif);
+    width: 95px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnUploadEfile
+{
+    background-image: url(/i/UploadEfile.gif);
+    width: 95px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnDownEfile
+{
+    background-image: url(/i/DownEfile.gif);
+    width: 95px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnEdit
+{
+    background-image: url(/i/editex.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnClose
+{
+    background-image: url(/i/close.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnGuanBi
+{
+    background-image: url(/i/guanbi.gif);
+    width: 59px;
+    height: 22px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnOK
+{
+    background-image: url(/i/ok.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnCancel
+{
+    background-image: url(/i/cancel.gif);
+    width: 61px;
+    height: 24px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnAdd
+{
+    background-image: url(/i/add.gif);
+    width: 61px;
+    height: 24px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnAddNew
+{
+    background-image: url(/i/addNew.png);
+    width: 98px;
+    height: 33px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnCopy
+{
+	background-image: url(/i/copy.gif);
+	width: 61px;
+	height: 24px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnConfirm
+{
+	background-image: url(/i/confirm.gif);
+	width: 61px;
+	height: 24px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnCancelConfirm
+{
+	background-image: url(/i/cancel.gif);
+	width: 61px;
+	height: 24px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnCopyNew
+{
+    background-image: url(/i/copy.png);
+    width: 98px;
+    height: 33px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnOkNew
+{
+    background-image: url(/i/4.png);
+    width: 98px;
+    height: 33px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnImportNew
+{
+    background-image: url(/i/import.gif);
+    width: 61px;
+    height: 24px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnUnAdd
+{
+    background-image: url(/i/unAdd.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnDelete
+{
+    background-image: url(/i/delete1.gif);
+    width: 61px;
+    height: 24px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnUnDelete
+{
+    background-image: url(/i/unDelete.gif);
+    width: 61px;
+    height: 24px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnSDelete
+{
+    background-image: url(/i/sDelete.gif);
+    width: 51px;
+    height: 22px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnUnSDelete
+{
+    background-image: url(/i/unSDelete.gif);
+    width: 51px;
+    height: 22px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnFurnish
+{
+    background-image: url(/i/furnish.gif);
+    width: 51px;
+    height: 22px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnSOK
+{
+    background-image: url(/i/sok.gif);
+    width: 51px;
+    height: 22px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnSCancel
+{
+    background-image: url(/i/scancel.gif);
+    width: 51px;
+    height: 22px;
+    background-color: Transparent;
+    border: 0;
+}
+.btnBack
+{
+    background-image: url(/i/back.gif);
+    width: 60px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnModifyBt
+{
+    background-image: url(/i/modifybt.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnTJNBTZ
+{
+    background-image: url(/i/tjnbtz.gif);
+    width: 113px;
+    height: 25px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnModify
+{
+    background-image: url(/i/modify.gif);
+    width: 51px;
+    height: 22px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnUnModify
+{
+    background-image: url(/i/unModify.gif);
+    width: 51px;
+    height: 22px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnUpDuty
+{
+    background-image: url(/i/upDuty.gif);
+    width: 75px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnBaoCun
+{
+    background-image: url(/i/baocun.gif);
+    width: 59px;
+    height: 22px;
+    border: 0;
+    cursor: hand;
+    background-color: Transparent;  
+}
+.btnDownDuty
+{
+    background-image: url(/i/downDuty.gif);
+    width: 75px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnProp
+{
+    background-image: url(/i/modifyProp.gif);
+    width: 120px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnCloseGraph
+{
+    background-image: url(/i/Grahid.gif);
+    width: 81px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnRela
+{
+    background-image: url(/i/czp.gif);
+    width: 99px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnOpenGraph
+{
+    background-image: url(/i/Graopen.gif);
+    width: 99px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnPrint
+{
+    background-image: url(/i/print.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnExport
+{
+    background-image: url(/i/export.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnPrintView
+{
+    background-image: url(/i/printView.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnLook
+{
+    background-image: url(/i/ck.gif);
+    background-color: transparent;
+    width: 61px;
+    height: 24px;
+    border: 0;
+}
+.btnChangDuty
+{
+    background-image: url(/i/changDuty.gif);
+    background-color: Transparent;
+    width: 73px;
+    height: 24px;
+    border: 0;
+}
+.btnUnChangDuty
+{
+    background-image: url(/i/unChangDuty.gif);
+    background-color: transparent;
+    width: 73px;
+    height: 24px;
+    border: 0;
+}
+.btnPassWork
+{
+    background-image: url(/i/passwork.gif);
+    background-color: Transparent;
+    width: 73px;
+    height: 24px;
+    border: 0;
+}
+.btnUnPassWork
+{
+    background-image: url(/i/unpasswork.gif);
+    background-color: transparent;
+    width: 73px;
+    height: 24px;
+    border: 0;
+}
+.btnCancelPassWork
+{
+    background-image: url(/i/cancelpasswork.gif);
+    background-color: Transparent;
+    width: 73px;
+    height: 24px;
+    border: 0;
+}
+.btnCarryWork
+{
+    background-image: url(/i/carrywork.gif);
+    background-color: Transparent;
+    width: 73px;
+    height: 24px;
+    border: 0;
+}
+.btnUnCarryWork
+{
+    background-image: url(/i/uncarrywork.gif);
+    background-color: transparent;
+    width: 73px;
+    height: 24px;
+    border: 0;
+}
+.btnCurDuty
+{
+    background-image: url(/i/curDuty.gif);
+    background-color: Transparent;
+    border: 0;
+    width: 110px;
+    height: 24px;
+}
+.btnHistoryDuty
+{
+    background-image: url(/i/historyDuty.gif);
+    background-color: Transparent;
+    border: 0;
+    width: 110px;
+    height: 24px;
+}
+.btnChangeCurPerSon
+{
+    background-image: url(/i/changeCurPerson.gif);
+    background-color: Transparent;
+    border: 0;
+    width: 61px;
+    height: 24px;
+}
+.btnLastDuty
+{
+    background-image: url(/i/lastDuty.gif);
+    background-color: transparent;
+    border: 0;
+    width: 110px;
+    height: 24px;
+}
+.btnRelation
+{
+    background-image: url(/i/icoRela.gif);
+    background-color: Transparent;
+    border: 0;
+    width: 16px;
+    height: 14px;
+}
+.btnClear
+{
+    background-image: url(/i/clear.gif);
+    background-color: Transparent;
+    border: 0;
+    width: 61px;
+    height: 24px;
+}
+.btnNew
+{
+    background-image: url(/i/new.gif);
+    background-color: Transparent;
+    border: 0;
+    width: 61px;
+    height: 24px;
+}
+.btnReturn
+{
+    background-image: url(/i/back.gif);
+    width: 60px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnAddFolder
+{
+    background-image: url(/i/addFolder.jpg);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnAddFile
+{
+    background-image: url(/i/addFile.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnUpload
+{
+    background-image: url(/i/upload.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnSearchFile
+{
+    background-image: url(/i/searchFile.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnReturnParent
+{
+    background-image: url(/i/returnParent.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnNewDuty
+{
+    background-image: url(/i/newDuty.gif);
+    width: 120px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnNewUser
+{
+    background-image: url(/i/useradd.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnRoleSet
+{
+    background-image: url(/i/roleset.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnRoleDel
+{
+    background-image: url(/i/roledel.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnWorkFlow
+{
+    background-image: url(/i/workflow.gif);
+    width: 73px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnInvalid
+{
+    background-image: url(/i/invalid.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnNotice
+{
+    background-image: url(/i/noticeAdd.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnMerge
+{
+    background-image: url(/i/hb.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnChangCurDuty
+{
+    background-image: url(/i/changeCurDuty.gif);
+    width: 98px;
+    height: 24px;
+    cursor: pointer;
+    border: 0;
+    background-color: Transparent;
+}
+.btnStat
+{
+	background-image: url(/i/stat.gif);
+	width: 61px;
+	height: 24px;cursor:pointer;
+    border: 0;
+    background-color: Transparent;
+}
+.btnStartDuty
+{
+	background-image: url(/i/startDuty.gif);
+	width: 100px;
+	height: 24px;cursor:pointer;
+    border: 0;
+    background-color: Transparent;
+}
+.btnDutyCopy
+{
+	background-image: url(/i/copyDuty.gif);
+	width: 86px;
+	height: 24px;cursor:pointer;
+    border: 0;
+    background-color: Transparent;
+}
+.btnKickBack
+{
+    background-image: url(/i/backto.gif);
+    width: 73px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnGetBack
+{
+    background-image: url(/i/qh.gif);
+    width: 62px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnKick
+{
+    background-image: url(/i/dh.gif);
+    width: 62px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnPassNext
+{
+    background-image: url(/i/passnext.gif);
+    width: 61px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnReMove
+{
+    background-image: url(/i/remove.gif);
+    width: 86px;
+    height: 24px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnSmallUpdate
+{
+    background-image: url(/i/notetype1.gif);
+    width: 10px;
+    height: 10px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnSmallDelete
+{
+    background-image: url(/i/toDel.gif);
+    width: 10px;
+    height: 10px;
+    border: 0;
+    background-color: Transparent;
+}
+.btnSmallSave
+{
+    background-image: url(/i/toSave.gif);
+    width: 10px;
+    height: 10px;
+    border: 0;
+    background-color: Transparent;
+}
+.flow_button
+{color:#1a827c;border :#1a827c 1px solid;background-color:#ffffff;height:24px;padding:3px 0px 0px 0px;BEHAVIOR: url('/conn/cssfile/button.htc');
+ /*   border-right: #ACB9C2 1px solid;
+    border-top: #ACB9C2 1px solid;
+    font-size: 13px;
+    font-weight: bold;
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#FDFDFD, EndColorStr=#EAEAEA);
+    border-left: #ACB9C2 1px solid;
+    height: 24px;
+    color: #5C5C5C;
+    padding-top: 2px;
+    border-bottom: #ACB9C2 1px solid;*/
+}
+.btnGoLeft
+{
+    background-image: url(/i/goleft.gif);
+    width: 51px;
+    height: 24px;
+}
+.btnGoRight
+{
+    background-image: url(/i/goright.gif);
+    width: 51px;
+    height: 24px;
+}
+
+/*********************** 未知样式 *****************************/
+#mask
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10%;
+    height: 100%;
+    background: #BBBBFF;
+    filter: alpha(opacity=30);
+    z-index: 100000;
+    visibility: hidden;
+}
+/***********文本下拉样式*********/
+
+ul, li
+{
+    margin: 0;
+    padding: 0;
+}
+#wrap
+{
+    width: 650px;
+    margin: 0 auto;
+}
+.autoDis
+{
+    position: absolute;
+    overflow: hidden;
+}
+.autoDis p
+{
+    line-height: 25px;
+    cursor: default;
+    padding: 0 5px;
+}
+.autoDis li
+{
+    line-height: 25px;
+    cursor: default;
+    padding: 0 5px;
+    white-space: nowrap;
+    background-color: #fff;
+}
+.autoDis li a
+{
+    text-decoration: none;
+}
+.autoDis li a:hover
+{
+    text-decoration: underline;
+}
+.autoDis .cur
+{
+    background: #ccc;
+}
+
+.blacktime {
+    background-color: #575757;
+}
+
+    .blacktime input {
+        background-color: #575757;
+        color: white;
+    }
+
+.sgantt_box {
+    padding: 0 5px;
+}
+
+.sgantt_bar {
+    position: relative;
+    width: 100%;
+    height: 50%; 
+}
+
+.sgantt_item {
+    position: absolute;
+    height: 100%;
+    border-radius: 4px;
+}

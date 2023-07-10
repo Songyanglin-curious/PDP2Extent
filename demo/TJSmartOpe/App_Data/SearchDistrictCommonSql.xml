@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <SchemaName>
+    <![CDATA[ys_db.]]>
+  </SchemaName>
+  <SchemaAppName>
+    <![CDATA[ys_db.]]>
+  </SchemaAppName>
+  <SchemaNameTower>
+    <![CDATA[SG_DATACENTER.]]>
+  </SchemaNameTower>
+  <SchemaNameStation>
+    <![CDATA[SG_DATACENTER.]]>
+  </SchemaNameStation>
+  <SchemaPG>
+    <![CDATA[ys_db.public.]]>
+  </SchemaPG>
+  <UpTowerToPG>
+    <![CDATA[
+    false
+    ]]>
+  </UpTowerToPG>
+  <SchemaNameEms>
+    <![CDATA[ys_db_ems.]]>
+  </SchemaNameEms>
+</ROOT>

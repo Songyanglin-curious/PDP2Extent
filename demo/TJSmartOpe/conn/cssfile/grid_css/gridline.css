@@ -1,0 +1,180 @@
+﻿@charset "utf-8";
+/* CSS Document */
+#grid
+{
+    background: #FFFFFF;
+    position: absolute;
+    z-index: -1;
+}
+
+#selectArea
+{
+    background-color: #B9A6FB;
+    filter:alpha(opacity=50);
+    position: absolute;
+    border: 2px groove #A78FF8;
+    z-index: 50;
+}
+
+#divResize
+{
+    border: 2px solid red;
+    position: absolute;
+    z-index: 15;
+}
+
+#divDialog
+{
+	width: 300px;
+	display: none;
+	height: 200px;
+	background-color: #FFF;
+	border: 1px solid #000;
+}
+
+#divDialog .divTitle
+{
+	height: 25px;
+	font-size: 14px;
+	background-color: #3366cc;
+	position: relative;
+	line-height: 25px;
+	color: #fff;
+}
+
+#divDialog .imgClose
+{
+	width: 24px;
+	height: 24px;
+	position: absolute;
+	right: 5px;
+	top: 0;
+	cursor: pointer;
+}
+
+#divDialog .divButtons
+{
+	position: absolute;
+	left: 100px;
+	top: 170px;
+	cursor: pointer;
+}
+
+#divEditDataBase
+{
+	left: 135px;
+	position: absolute;
+	display: none;
+	background-color: #FFF;
+	border: 1px solid #000;
+	z-index: 100;
+}
+
+#divEditDataBase .divTitle
+{
+	height: 25px;
+	font-size: 14px;
+	background-color: #3366cc;
+	position: relative;
+	line-height: 25px;
+	color: #fff;
+}
+
+#divEditDataBase .imgDatabase
+{
+	width: 24px;
+	height: 24px;
+	position: absolute;
+}
+
+#divEditDataBase .spanDrag
+{
+	padding-left: 30px;
+	position: absolute;
+	width: 465px;
+	font-size: 14px;
+	color: #fff;
+}
+
+#divEditDataBase .imgClose
+{
+	width: 24px;
+	height: 24px;
+	position: absolute;
+	right: 5px;
+	top: 0;
+	cursor: pointer;
+}
+
+#divEditDataBase .divContent
+{
+	overflow-y: auto;
+	height: 200px;
+}
+
+#divEditDataBase .divContent table
+{
+	text-align: center;
+	width: 100%;
+	border-left: 1px solid lightblue;
+	border-top: 1px solid lightblue;
+            table-layout: fixed;
+}
+
+#divEditDataBase .divContent table tr td
+{
+	border-right: 1px solid lightblue;
+	border-bottom: 1px solid lightblue;
+            }
+
+            #divEditDataBase .divContent table tr:first-child
+            {
+                background-color: lightblue;
+            }
+
+            #divEditDataBase .divContent table td
+            {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+}
+
+#divEditDataBase .divDataBase
+{
+	position: absolute;
+	left: 5px;
+	bottom: 53px;
+	width: 440px;
+}
+
+#divEditDataBase .divCol
+{
+	position: absolute;
+	left: 5px;
+	bottom: 2px;
+	width: 440px;
+	height: 50px;
+	overflow-y: auto;
+	border: 1px solid darkblue;
+	line-height: 120%;
+}
+
+#divEditDataBase .divCol span
+{
+	background-color: #CCE7BA;
+	cursor: pointer;
+	position: relative;
+}
+
+#divEditDataBase .divButtons
+{
+	position: absolute;
+	right: 2px;
+	bottom: 2px;
+	cursor: pointer;
+}
+
+#divEditDataBase .trSelected
+{
+	background-color: #D7F5FF;
+}

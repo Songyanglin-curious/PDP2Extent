@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+	<GetLines db="SGAPP" type="sql" fields="Id">
+		<![CDATA[ 
+    SELECT id FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[YSH_LINE_HBZC WHERE ID IS NOT NULL
+    ]]>
+	</GetLines>
+	<GetStations db="SGAPP" type="sql" fields="Id">
+		<![CDATA[ 
+    SELECT id FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[YSH_STATION_HBZC WHERE ID IS NOT NULL
+    ]]>
+	</GetStations>
+	<GetLinesByVoltage db="SGAPP" type="sql" fields="Id,Name" args="v">
+		<![CDATA[ 
+    SELECT id,name FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[YSH_LINE_HBZC WHERE ID IS NOT NULL AND voltage={v} ORDER BY NAME
+    ]]>
+	</GetLinesByVoltage>
+	<GetDcLines db="SGAPP" type="sql" fields="Id,Name">
+		<![CDATA[ 
+    SELECT id,name FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[YSH_LINE_HBZC WHERE ID IS NOT NULL AND voltage LIKE '±%' ORDER BY NAME
+    ]]>
+	</GetDcLines>
+
+
+	
+
+
+</ROOT>

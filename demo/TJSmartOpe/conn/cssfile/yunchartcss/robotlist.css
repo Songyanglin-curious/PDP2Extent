@@ -1,0 +1,243 @@
+﻿::-webkit-scrollbar {
+    display: none;
+    width: 0px
+}
+#robot {
+    border: solid 0px #808080;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    position: relative;
+}
+
+    #robot > #divContent {
+        height: 90%;
+        width: 100%;
+        padding-top: 30px;
+        padding-bottom: 80px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background-color: transparent;
+        opacity: 1;
+        -ms-overflow-style: none;
+        overflow: -moz-scrollbars-none;
+    }
+        #robot > #divContent:before {
+            content:"";
+            display:block;
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+            background: #303751;
+            position: absolute;
+        } 
+    #robot > #divTop {
+        height: 30px;
+        position: absolute;
+        top: 0px;
+        width: 100%;
+        z-index: 150;
+        /*background-color: #fafafa;*/
+        background: #1c1f30;
+    }
+
+    #robot > #divBottom {
+        height: 80px;
+        position: absolute;
+        bottom: 0px;
+        padding: 20px 0px 20px 0px;
+        width: 100%;
+        background: #1c1f30;
+    }
+
+.mainQ::after {
+    content: "";
+    display: block;
+    height: 0;
+    visibility: hidden;
+    clear: both;
+}
+
+.mainP, .mainQ {
+    float: right;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#divTop img {
+    width: 20px;
+    height: 20px;
+}
+
+#input_info {
+    max-width: 800px;
+    border: none;
+}
+
+.divRobotSay, .divAskSay {
+    /*width: 100%;*/
+    height: auto;
+    padding: 0px;
+    margin: 5px 0px;
+    position: relative;
+}
+
+    .divRobotSay > .LUser {
+        position: absolute;
+        left: 5px;
+        top: 10px;
+        width: 30px;
+        height: 30px;
+    }
+
+.LUser > img {
+    width: 40px;
+    height: 40px;
+}
+
+.divRobotSay > .RSay {
+    /*width: 100%;*/
+    height: auto;
+    padding: 5px 10px 5px 50px;
+}
+
+.RSay > img {
+    max-width: 100%;
+}
+
+.divRobotSay .RSayContent {
+    /*width: 100%;*/
+    height: auto;
+    padding: 10px;
+    margin: 0px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    background-color: #e7ecf1;
+}
+
+.divAskSay > .RUser {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+.RUser > img {
+    width: 40px;
+    height: 40px;
+}
+
+.divAskSay > .LSay {
+    width: 100%;
+    height: auto;
+    padding: 5px 50px 5px 10px;
+}
+
+.divAskSay .LSayContent {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin: 0px;
+    border-radius: 5px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    background-color: #21b8c6;
+    color: #ffffff;
+}
+
+table {
+    width: 100%;
+    height: auto;
+}
+
+tr {
+    height: 20px;
+    padding: 2px 0px;
+}
+
+td {
+    border: solid 1px #7c7f80;
+}
+
+/*by mike by mike by mike */
+/*mike again mike again mike again*/
+.divRobotSay .RSayContent {
+    margin-top: 2px;
+}
+
+.divAskSay .LSayContent {
+    margin-top: 2px;
+}
+
+.RSayContent {
+    float: left;
+}
+
+.RSay:after {
+    content: "888";
+    visibility: hidden;
+    display: block;
+    clear: both;
+    height: 1px;
+    overflow: hidden;
+}
+
+.divAskSay .LSayContent {
+    width: auto;
+}
+
+.LSayContent {
+    float: right;
+}
+
+.LSay:after {
+    content: "888";
+    visibility: hidden;
+    display: block;
+    clear: both;
+    height: 1px;
+    overflow: hidden;
+}
+
+.divRobotSay > .RSay {
+    height: auto;
+    padding: 5px 10px 5px 60px;
+}
+
+.divAskSay > .LSay {
+    padding: 5px 60px 5px 10px;
+}
+
+.LUser > .mikeleftspeakicon {
+    width: 11px;
+    height: 16px;
+    position: absolute;
+    left: 46px;
+    top: 7px;
+}
+
+.RUser > .mikerightspeakicon {
+    width: 11px;
+    height: 16px;
+    position: absolute;
+    right: 36px;
+    top: 7px;
+}
+
+.btn {
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-color: #666666;
+}
+.LUser:after{
+	content: "air";
+	display: block;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-family: "华文细黑";
+    position: absolute;
+    left: 18px;
+}

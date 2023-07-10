@@ -1,0 +1,109 @@
+﻿body
+{
+    font: 12px Arial, Helvetica, sans-serif;
+    color: #000;
+}
+#container
+{
+    width: 100%;
+    font: 12px Arial, Helvetica, sans-serif;
+    color: #000;
+}
+H1
+{
+    font-size: 11px;
+    margin: 0px;
+    width: 100%;
+    cursor: pointer;
+    height: 22px;
+    line-height: 20px;
+}
+H1 a
+{
+    display: block;
+    padding-top: 1px;
+    padding-right: 8px;
+    padding-bottom: 0px;
+    padding-left: 8px;
+    width: 97%;
+    color: #000;
+    height: 22px;
+    text-decoration: none;
+    moz-outline-style: none;
+    background-image: url(/i/chart_title.gif);
+    background-repeat: repeat-x;
+}
+.chartcontent
+{
+    padding-left: 8px;
+}
+.chartstyle1
+{
+    width: 90%;
+    height: auto;
+    margin: 0px auto;
+    margin-bottom: 5px;
+    border: 1px solid #96C2F1;
+    background-color: #EFF7FF;
+}
+.chartstyle1 h5
+{
+    margin: 1px;
+    background-color: #B2D3F5;
+    height: auto;
+}
+#btn_seleRange
+{
+    width: 21px;
+    height: 16px;
+    background-image: url('../../i/srbtn.jpg');
+    border:0;
+}
+.selectposition
+{
+    border:0;
+    height: 14px;
+    width: 165px;
+}
+#btn_seleRange:hover
+{
+    background-image: url('../../i/srbtnhover.jpg');
+    border: 0;
+}
+#div_txtSelect
+{
+    border: 1px solid #C0C0C0;
+    height: 18px;
+    width: 188px;
+    margin-left:4px;
+}
+.td_cellSelect
+{
+    height:25px;border:solid 1px lightsteelblue;
+    vertical-align:middle;
+    text-align:center;
+    padding-left:4px;    
+}
+#shinkdiv_txtSelect
+{
+    border: 1px solid #C0C0C0;
+    height: 18px;
+}
+#shinkbtn_seleRange
+{
+    width: 21px;
+    height: 16px;
+    background-image: url('../../i/ssbtn.jpg');
+    border:0;
+}
+#shinkbtn_seleRange:hover
+{
+    background-image: url('../../i/ssbtnhover.jpg');
+    border: 0;
+}
+#shinkseletext
+{
+    border:0;
+    height: 14px;
+    width: 215px;
+}

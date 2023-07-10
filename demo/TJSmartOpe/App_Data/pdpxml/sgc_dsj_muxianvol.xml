@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds_data><![CDATA[
+          SELECT V.V_ID, V.V_NAME || '母线' AS V_NAME, ISNULL(CCOUNT, 0) AS CCOUNT, ISNULL(CUP, 0) AS CUP, ISNULL(CDOWN, 0) AS CDOWN, 
+          ISNULL(MAXV, 0) AS MAXV, ISNULL(MINV, 0) AS MINV, V_VALUE FROM
+          (SELECT DISTINCT V.V_ID, V_NAME, V_VALUE from "MONITORSIGNAL"."B_DEVICE" D
+          JOIN "MONITORSIGNAL"."B_VOLTAGE" V ON D.VOLID = V.V_ID WHERE DTID = 2) V
+          LEFT JOIN 
+          (
+	          SELECT D.VOLID, COUNT(DISTINCT YCEVENT.DEVICEID) AS CCOUNT FROM MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+	          JOIN "MONITORSIGNAL"."B_DEVICE" D ON YCEVENT.DEVICEID = D.DEV_ID
+	          WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND DTID = 2
+	          GROUP BY D.VOLID
+          ) X ON V.V_ID = X.VOLID
+          LEFT JOIN 
+          (
+	          SELECT D.VOLID, COUNT(DISTINCT YCEVENT.DEVICEID) AS CUP, MAX(CUR_VALUE) AS MAXV FROM MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+	          JOIN "MONITORSIGNAL"."B_DEVICE" D ON YCEVENT.DEVICEID = D.DEV_ID
+	          WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 1 AND DTID = 2
+	          GROUP BY D.VOLID
+          ) Y ON V.V_ID = Y.VOLID
+          LEFT JOIN 
+          (
+	          SELECT D.VOLID, COUNT(DISTINCT YCEVENT.DEVICEID) AS CDOWN, MIN(CUR_VALUE) AS MINV FROM MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+	          JOIN "MONITORSIGNAL"."B_DEVICE" D ON YCEVENT.DEVICEID = D.DEV_ID
+            JOIN "MONITORSIGNAL"."B_VOLTAGE" V ON D.VOLID = V.V_ID
+	          WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 2 AND DTID = 2 AND CUR_VALUE / V.V_VALUE > 0.8
+	          GROUP BY D.VOLID
+          ) Z ON V.V_ID = Z.VOLID
+          ORDER BY V_ID
+        ]]></ds_data>
+<ds_data_history><![CDATA[
+          SELECT V.V_ID, V.V_NAME || '母线' AS V_NAME, ISNULL(CUP, 0) + ISNULL(CDOWN, 0) AS CCOUNT, ISNULL(CUP, 0) AS CUP, ISNULL(CDOWN, 0) AS CDOWN, 
+          ISNULL(MAXV, 0) AS MAXV, ISNULL(MINV, 0) AS MINV, ISNULL(SUMMAXTIME, 0) AS SUMMAXTIME, ISNULL(SUMMINTIME, 0) AS SUMMINTIME, TO_CHAR(MAXSTIME, 'mm-dd hh24:mi') AS MAXSTIME, V_VALUE FROM
+          (SELECT DISTINCT V.V_ID, V_NAME, V_VALUE from "MONITORSIGNAL"."B_DEVICE" D
+          JOIN "MONITORSIGNAL"."B_VOLTAGE" V ON D.VOLID = V.V_ID WHERE DTID = 2) V
+          LEFT JOIN 
+          (
+	          SELECT D.VOLID, COUNT(DISTINCT YCEVENT.DEVICEID) AS CCOUNT, MAX(STARTTIME) AS MAXSTIME FROM MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+	          JOIN "MONITORSIGNAL"."B_DEVICE" D ON YCEVENT.DEVICEID = D.DEV_ID
+	          WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND DTID = 2
+	          GROUP BY D.VOLID
+          ) X ON V.V_ID = X.VOLID
+          LEFT JOIN 
+          (
+	          SELECT D.VOLID, COUNT(DISTINCT YCEVENT.DEVICEID) AS CUP, MAX(CUR_VALUE) AS MAXV, SUM(DATEDIFF(SS, STARTTIME, ISNULL(ENDTIME, GETDATE()))) AS SUMMAXTIME 
+            FROM MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+	          JOIN "MONITORSIGNAL"."B_DEVICE" D ON YCEVENT.DEVICEID = D.DEV_ID
+	          WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 1 AND DTID = 2
+	          GROUP BY D.VOLID
+          ) Y ON V.V_ID = Y.VOLID
+          LEFT JOIN 
+          (
+	          SELECT D.VOLID, COUNT(DISTINCT YCEVENT.DEVICEID) AS CDOWN, MIN(CUR_VALUE) AS MINV, SUM(DATEDIFF(SS, STARTTIME, ISNULL(ENDTIME, GETDATE()))) AS SUMMINTIME
+            FROM MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+	          JOIN "MONITORSIGNAL"."B_DEVICE" D ON YCEVENT.DEVICEID = D.DEV_ID
+            JOIN "MONITORSIGNAL"."B_VOLTAGE" V ON D.VOLID = V.V_ID
+	          WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 2 AND DTID = 2 AND CUR_VALUE / V.V_VALUE > 0.8
+	          GROUP BY D.VOLID
+          ) Z ON V.V_ID = Z.VOLID
+          ORDER BY V_ID
+        ]]></ds_data_history>
+<ds_up><![CDATA[
+          SELECT DEVICEID, TO_CHAR(ISNULL(EXCEEDLIMITTIME, STARTTIME), 'mm-dd hh24:mi') AS STARTTIME, S.S_NAME, Y.D5000NAME, DEVICENAME, ISNULL(EXCEEDLIMITVALUE ,CUR_VALUE) AS CUR_VALUE, CNUM, SUMTIME FROM (
+          SELECT ROW_NUMBER() OVER(PARTITION BY A.DEVICEID ORDER BY STARTTIME) AS RN, STARTTIME, EXCEEDLIMITTIME, ENDTIME, STATIONIDX, A.DEVICEID, D5000NAME, DEVICENAME, EXCEEDLIMITVALUE, CUR_VALUE, CNUM, SUMTIME 
+          FROM MONITORSIGNAL.TBYCOVEREVENT A
+          JOIN(
+			      SELECT DEVICEID, D5000NAME, COUNT(1) AS CNUM, SUM(DATEDIFF(SS, STARTTIME, ISNULL(ENDTIME, GETDATE()))) AS SUMTIME FROM MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+			      JOIN MONITORSIGNAL.B_DEVICE D ON YCEVENT.DEVICEID = D.DEV_ID
+			      WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 1 AND DTID = 2 AND VOLID = {2}
+			      GROUP BY DEVICEID, D5000NAME
+          ) B ON A.DEVICEID=B.DEVICEID AND A.STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 1) Y
+          JOIN MONITORSIGNAL.B_SUBSTATION S ON Y.STATIONIDX = S.S_ID        
+          WHERE RN = 1
+          ORDER BY EXCEEDLIMITTIME, S_NAME
+        ]]></ds_up>
+<ds_up_history><![CDATA[
+          SELECT DEVICEID, TO_CHAR(ISNULL(EXCEEDLIMITTIME, STARTTIME), 'mm-dd hh24:mi') AS STARTTIME, S.S_NAME, Y.D5000NAME, DEVICENAME, ISNULL(EXCEEDLIMITVALUE ,CUR_VALUE) AS CUR_VALUE, CNUM, SUMTIME, DAYS FROM (
+          SELECT ROW_NUMBER() OVER(PARTITION BY A.DEVICEID ORDER BY STARTTIME) AS RN, STARTTIME, EXCEEDLIMITTIME, ENDTIME, STATIONIDX, A.DEVICEID, D5000NAME, DEVICENAME, EXCEEDLIMITVALUE, CUR_VALUE, CNUM, SUMTIME, DAYS
+          FROM MONITORSIGNAL.TBYCOVEREVENT A
+          JOIN(
+			      SELECT DEVICEID, D5000NAME, COUNT(1) AS CNUM, SUM(DATEDIFF(SS, STARTTIME, ISNULL(ENDTIME, GETDATE()))) AS SUMTIME, COUNT(DISTINCT TO_CHAR(STARTTIME, 'YYYYMMDD')) AS DAYS FROM MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+			      JOIN MONITORSIGNAL.B_DEVICE D ON YCEVENT.DEVICEID = D.DEV_ID
+			      WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 1 AND DTID = 2 AND VOLID = {2}
+			      GROUP BY DEVICEID, D5000NAME
+          ) B ON A.DEVICEID=B.DEVICEID AND A.STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 1) Y
+          JOIN MONITORSIGNAL.B_SUBSTATION S ON Y.STATIONIDX = S.S_ID        
+          WHERE RN = 1
+          ORDER BY EXCEEDLIMITTIME, S_NAME
+        ]]></ds_up_history>
+<ds_down><![CDATA[
+          SELECT DEVICEID, TO_CHAR(ISNULL(EXCEEDLIMITTIME, STARTTIME), 'mm-dd hh24:mi') AS STARTTIME, S.S_NAME, Y.D5000NAME, DEVICENAME, ISNULL(EXCEEDLIMITVALUE ,CUR_VALUE) AS CUR_VALUE, CNUM, SUMTIME FROM (
+          SELECT ROW_NUMBER() OVER(PARTITION BY A.DEVICEID ORDER BY STARTTIME) AS RN, STARTTIME, EXCEEDLIMITTIME, ENDTIME, STATIONIDX, A.DEVICEID, D5000NAME, DEVICENAME, EXCEEDLIMITVALUE, CUR_VALUE, CNUM, SUMTIME
+          FROM MONITORSIGNAL.TBYCOVEREVENT A
+          JOIN(
+			          SELECT DEVICEID, D5000NAME, COUNT(1) AS CNUM, SUM(DATEDIFF(SS, STARTTIME, ISNULL(ENDTIME, GETDATE()))) AS SUMTIME from MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+			          JOIN MONITORSIGNAL.B_DEVICE D ON YCEVENT.DEVICEID = D.DEV_ID
+			          WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 2 AND DTID = 2 AND VOLID = {2} AND CUR_VALUE / {{3}} > 0.8
+			          GROUP BY DEVICEID, D5000NAME
+          ) B on A.DEVICEID = B.DEVICEID AND A.STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 2 AND CUR_VALUE / {{3}} > 0.8) Y
+          JOIN MONITORSIGNAL.B_SUBSTATION S ON Y.STATIONIDX = S.S_ID        
+          WHERE RN = 1
+          ORDER BY EXCEEDLIMITTIME, S_NAME
+        ]]></ds_down>
+<ds_down_history><![CDATA[
+          SELECT DEVICEID, TO_CHAR(ISNULL(EXCEEDLIMITTIME, STARTTIME), 'mm-dd hh24:mi') AS STARTTIME, S.S_NAME, Y.D5000NAME, DEVICENAME, ISNULL(EXCEEDLIMITVALUE ,CUR_VALUE) AS CUR_VALUE, CNUM, SUMTIME, DAYS FROM (
+          SELECT ROW_NUMBER() OVER(PARTITION BY A.DEVICEID ORDER BY STARTTIME) AS RN, STARTTIME, EXCEEDLIMITTIME, ENDTIME, STATIONIDX, A.DEVICEID, D5000NAME, DEVICENAME, EXCEEDLIMITVALUE, CUR_VALUE, CNUM, SUMTIME, DAYS 
+          FROM MONITORSIGNAL.TBYCOVEREVENT A
+          JOIN(
+			      SELECT DEVICEID, D5000NAME, COUNT(1) AS CNUM, SUM(DATEDIFF(SS, STARTTIME, ISNULL(ENDTIME, GETDATE()))) AS SUMTIME, COUNT(DISTINCT TO_CHAR(STARTTIME, 'YYYYMMDD')) AS DAYS FROM MONITORSIGNAL.TBYCOVEREVENT YCEVENT
+			      JOIN MONITORSIGNAL.B_DEVICE D ON YCEVENT.DEVICEID = D.DEV_ID
+			      WHERE STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 2 AND DTID = 2 AND VOLID = {2} AND CUR_VALUE / {{3}} > 0.8
+			      GROUP BY DEVICEID, D5000NAME
+          ) B ON A.DEVICEID=B.DEVICEID AND A.STARTTIME BETWEEN {0} AND {1} AND SIGNALTYPE = '线电压' AND OVER_TYPE = 2 AND CUR_VALUE / {{3}} > 0.8) Y
+          JOIN MONITORSIGNAL.B_SUBSTATION S ON Y.STATIONIDX = S.S_ID        
+          WHERE RN = 1
+          ORDER BY EXCEEDLIMITTIME, S_NAME
+        ]]></ds_down_history>
+<ds_record_year><![CDATA[
+        select STARTTIME, case when OVER_TYPE = 1 then '越上限' else '越下限' end as OVERTYPE, 
+        CASE WHEN OVER_TYPE = 1 THEN round(GREAT(ifnull(EXCEEDLIMITVALUE,CUR_VALUE), CUR_VALUE),1) ELSE round(LEAST(IFNULL(EXCEEDLIMITVALUE,CUR_VALUE), CUR_VALUE),1) END as curvalue, 
+        datediff(ss,STARTTIME,case when ENDTIME is null then getdate() else ENDTIME end) as minute
+        from MONITORSIGNAL.TBYCOVEREVENT a
+        where STARTTIME>=trunc({0},'year') AND DEVICEID = {1} AND mod(to_number(OVER_TYPE),2)={2} AND CUR_VALUE / {{3}} > 0.8 order by STARTTIME
+        ]]></ds_record_year>
+<ds_record_month><![CDATA[
+        select STARTTIME, case when OVER_TYPE = 1 then '越上限' else '越下限' end as OVERTYPE, 
+        CASE WHEN OVER_TYPE = 1 THEN round(GREAT(ifnull(EXCEEDLIMITVALUE,CUR_VALUE), CUR_VALUE),1) ELSE round(LEAST(ifnull(EXCEEDLIMITVALUE,CUR_VALUE), CUR_VALUE),1) END as curvalue, 
+        datediff(ss,STARTTIME,case when ENDTIME is null then getdate() else ENDTIME end) as minute
+        from MONITORSIGNAL.TBYCOVEREVENT a
+        where STARTTIME>=trunc({0},'month') AND DEVICEID = {1} AND mod(to_number(OVER_TYPE),2)={2} AND CUR_VALUE / {{3}} > 0.8 order by STARTTIME
+        ]]></ds_record_month>
+<ds_record_day><![CDATA[
+        select to_char(STARTTIME,'mm-dd hh24:mi') as STARTTIME, case when OVER_TYPE = 1 then '越上限' else '越下限' end as OVERTYPE, 
+        CASE WHEN OVER_TYPE = 1 THEN round(GREAT(ifnull(EXCEEDLIMITVALUE,CUR_VALUE), CUR_VALUE),1) ELSE round(LEAST(ifnull(EXCEEDLIMITVALUE,CUR_VALUE), CUR_VALUE),1) END as curvalue, 
+        datediff(ss,STARTTIME,case when ENDTIME is null then getdate() else ENDTIME end) as minute, STARTTIME as realstarttime
+        from MONITORSIGNAL.TBYCOVEREVENT a
+        WHERE STARTTIME BETWEEN {0} AND {1} AND DEVICEID = {2} AND OVER_TYPE = {3} AND CUR_VALUE / {{4}} > 0.8 order by STARTTIME
+        ]]></ds_record_day>
+<ds_history_record><![CDATA[
+        select to_char(STARTTIME,'mm-dd hh24:mi') as STARTTIME, case when OVER_TYPE = 1 then '越上限' else '越下限' end as OVERTYPE, 
+        CASE WHEN OVER_TYPE = 1 THEN round(GREAT(ifnull(EXCEEDLIMITVALUE,CUR_VALUE), CUR_VALUE),1) ELSE round(LEAST(ifnull(EXCEEDLIMITVALUE,CUR_VALUE), CUR_VALUE),1) END as curvalue, 
+        datediff(ss,STARTTIME,case when ENDTIME is null then getdate() else ENDTIME end) as minute, STARTTIME as realstarttime
+        from MONITORSIGNAL.TBYCOVEREVENT a
+        WHERE STARTTIME BETWEEN {0} AND {1} AND DEVICEID = {2} AND OVER_TYPE = {3} AND CUR_VALUE / {{4}} > 0.8 order by STARTTIME
+        ]]></ds_history_record>
+<ds_voltagechart><![CDATA[
+        select a.datatime,a.datavalue as val1,round(b.datavalue,1) as val2 from (
+          select convert(int,to_char(DATATIME,'hh24')) as datatime, to_char(round(DATAVALUE,1),'FM999.0') as datavalue from MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}} 
+          where DATATIME between {0} and {1} and DEVICEID={2}
+          and ISFORECAST=0
+          union all
+          select convert(int,to_char(DATATIME,'hh24')) as datatime, '-' from MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}} 
+          where DATATIME between {0} and {1} and DEVICEID={2}
+          and ISFORECAST=1
+        ) a join         
+        (        
+          select convert(int,to_char(DATATIME,'hh24')) as datatime, DATAVALUE as datavalue from MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}} 
+          where DATATIME between {0} and {1} and DEVICEID={2}
+        ) b on a.datatime=b.datatime order by a.datatime
+        ]]></ds_voltagechart>
+<ds_capracchart><![CDATA[
+          SELECT H, CAPVALUE, 0 - RACVALUE AS RACVALUE, CSUM, 0 - RSUM AS RSUM, GREAT(CSUM, ABS(RSUM)) AS GC, 0 - GREAT(CSUM, ABS(RSUM)) AS GR FROM 
+          (
+            SELECT H, CAPVALUE, RACVALUE, (
+            SELECT SUM(ISNULL(DP.MVARNOM, 0)) AS MVARNOM FROM PSGRAPH_DATA.TBUSCONNDEVICE{{3}} A
+            JOIN MONITORSIGNAL.B_DEVICE D ON A.DEVICENAME = D.D5000NAME AND D.DTID = 5
+            LEFT JOIN MONITORSIGNAL.B_DEVICEPARAM DP ON D.DEV_ID = DP.DEVID
+            WHERE A.MAINDEVICENAME = {2}) AS CSUM, 
+            (SELECT ISNULL(SUM(DP.MVARNOM), 0) AS MVARNOM FROM PSGRAPH_DATA.TBUSCONNDEVICE{{3}} A
+            JOIN MONITORSIGNAL.B_DEVICE D ON A.DEVICENAME = D.D5000NAME AND D.DTID = 6
+            LEFT JOIN MONITORSIGNAL.B_DEVICEPARAM DP ON D.DEV_ID = DP.DEVID
+            WHERE A.MAINDEVICENAME = {2}) AS RSUM FROM DUAL
+            LEFT JOIN
+            (
+             SELECT HOUR(DATATIME) AS H, CAPVALUE, RACVALUE FROM MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}}
+             WHERE DATATIME BETWEEN {0} AND {1} AND DEVICEID = {4}
+            ) C ON 1=1
+          ) M ORDER BY H
+        ]]></ds_capracchart>
+<ds_history_capracchart><![CDATA[
+          SELECT H, CAPVALUE, 0 - RACVALUE AS RACVALUE, CSUM, 0 - RSUM AS RSUM, GREAT(CSUM, ABS(RSUM)) AS GC, 0 - GREAT(CSUM, ABS(RSUM)) AS GR FROM 
+          (
+            SELECT H, CAPVALUE, RACVALUE, (
+            SELECT SUM(ISNULL(DP.MVARNOM, 0)) AS MVARNOM FROM PSGRAPH_DATA.TBUSCONNDEVICE{{3}} A
+            JOIN MONITORSIGNAL.B_DEVICE D ON A.DEVICENAME = D.D5000NAME AND D.DTID = 5
+            LEFT JOIN MONITORSIGNAL.B_DEVICEPARAM DP ON D.DEV_ID = DP.DEVID
+            WHERE A.MAINDEVICENAME = {2}) AS CSUM, 
+            (SELECT ISNULL(SUM(DP.MVARNOM), 0) AS MVARNOM FROM PSGRAPH_DATA.TBUSCONNDEVICE{{3}} A
+            JOIN MONITORSIGNAL.B_DEVICE D ON A.DEVICENAME = D.D5000NAME AND D.DTID = 6
+            LEFT JOIN MONITORSIGNAL.B_DEVICEPARAM DP ON D.DEV_ID = DP.DEVID
+            WHERE A.MAINDEVICENAME = {2}) AS RSUM FROM DUAL
+            LEFT JOIN
+            (
+             SELECT HOUR(DATATIME) AS H, CAPVALUE, RACVALUE FROM MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}}
+             WHERE DATATIME BETWEEN {0} AND {1} AND DEVICEID = {4}
+            ) C ON 1=1      
+          ) M ORDER BY H
+        ]]></ds_history_capracchart>
+<ds_muxianbyq><![CDATA[
+        select devicename as val from PSGRAPH_DATA.TBUSCONNDEVICE{{1}} where maindevicename={0} and typeidx=38
+        ]]></ds_muxianbyq>
+<ds_history_muxianbyq><![CDATA[
+        select devicename as val from PSGRAPH_DATA.TBUSCONNDEVICE{{1}} where maindevicename={0} and typeidx=38
+        ]]></ds_history_muxianbyq>
+<ds_muxianbyqqudangwei><![CDATA[
+        select convert(int,to_char(DATATIME,'hh24')) as datatime, devicestate as datavalue 
+        from MONITORSIGNAL.TBTRANSFORMERDAYPOINT{{3}} a
+        join PSGRAPH_DATA.TDEVICE{{3}} b on a.base_dev_id=b.devicestrid
+        where datatime between {0} and {1} and b.devicename={2}
+        order by datatime asc
+        ]]></ds_muxianbyqqudangwei>
+<ds_history_muxianbyqqudangwei><![CDATA[
+        select convert(int,to_char(DATATIME,'hh24')) as datatime, devicestate as datavalue 
+        from MONITORSIGNAL.TBTRANSFORMERDAYPOINT{{3}} a
+        join PSGRAPH_DATA.TDEVICE{{3}} b on a.base_dev_id=b.devicestrid
+        where datatime between {0} and {1} and b.devicename={2}
+        order by DATATIME asc
+        ]]></ds_history_muxianbyqqudangwei>
+<ds_byqmuxian><![CDATA[
+        select maindevicename as val from PSGRAPH_DATA.TBUSCONNDEVICE{{1}} where devicename={0}
+        ]]></ds_byqmuxian>
+<ds_byqmuxianvoltage><![CDATA[
+        select a.datatime,a.datavalue as val1,round(b.datavalue,1) as val2 from (
+          select convert(int,to_char(DATATIME,'hh24')) as datatime, to_char(round(DATAVALUE,1),'FM999.0') as datavalue from MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}} 
+          where DATATIME between {0} and {1} and DEVICENAME={2}
+          and ISFORECAST=0
+          union all
+          select convert(int,to_char(DATATIME,'hh24')) as datatime, '-' from MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}} 
+          where DATATIME between {0} and {1} and DEVICENAME={2}
+          and ISFORECAST=1
+        ) a join         
+        (        
+          select convert(int,to_char(DATATIME,'hh24')) as datatime, DATAVALUE as datavalue from MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}} 
+          where DATATIME between {0} and {1} and DEVICENAME={2}
+        ) b on a.datatime=b.datatime order by a.datatime
+        ]]></ds_byqmuxianvoltage>
+<ds_history_voltagechart><![CDATA[
+        select a.datatime,a.datavalue as val1,round(b.datavalue,1) as val2 from (
+          select convert(int,to_char(DATATIME,'hh24')) as datatime, to_char(round(DATAVALUE,1),'FM999.0') as datavalue from MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}} 
+          where DATATIME between {0} and {1} and DEVICEID={2}
+          and ISFORECAST=0
+          union all
+          select convert(int,to_char(DATATIME,'hh24')) as datatime, '-' from MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}} 
+          where DATATIME between {0} and {1} and DEVICEID={2}
+          and ISFORECAST=1
+        ) a join         
+        (        
+          select convert(int,to_char(DATATIME,'hh24')) as datatime, DATAVALUE from MONITORSIGNAL.TBBUSBARVOLDAYPOINT{{3}} 
+          where DATATIME between {0} and {1} and DEVICEID={2}
+        ) b on a.datatime=b.datatime order by a.datatime
+        ]]></ds_history_voltagechart>
+<ds_switch><![CDATA[
+        select a.MAINDEVICENAME, round(P,1), round(Q,1), round(to_number(FACTOR),3)*100 || '%' from PSGRAPH_DATA.TBUSMONITORSIGNALDEV{{2}} a
+        left join MONITORSIGNAL.TBSWITCHDAYPOINT{{2}} b on a.MAINDEVICENAME=b.SWITCH_NAME AND DATATIME={0}
+        where BUSDEVICENAME={1}
+        order by 1
+        ]]></ds_switch>
+<ds_history_switch><![CDATA[
+        select a.MAINDEVICENAME, round(P,1), round(Q,1), round(to_number(FACTOR),3)*100 || '%' from PSGRAPH_DATA.TBUSMONITORSIGNALDEV{{2}} a
+        left join MONITORSIGNAL.TBSWITCHDAYPOINT{{2}} b on a.MAINDEVICENAME=b.SWITCH_NAME AND DATATIME={0}
+        where BUSDEVICENAME={1}
+        order by 1
+        ]]></ds_history_switch></ROOT>

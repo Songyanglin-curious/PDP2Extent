@@ -1,0 +1,76 @@
+.ivu-table {
+	width: inherit;
+	height: 100%;
+	max-width: 100%;
+	overflow: hidden;
+	color: var(--tbl-color);
+	font-size: var(--tbl-font-size);
+	background-color: var(--tbl-background);
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.ivu-table-wrapper-with-border {
+	border: var(--tbl-border);
+	border-bottom: 0;
+	border-right: 0;
+}
+
+.ivu-table:before,
+.ivu-table-border:after {
+    /*background-color: var(--tbl-border);*/ 
+    background-color: var(--tbl-border-color);
+}
+
+.ivu-table-border td, .ivu-table-border th {
+	border-right: var(--tbl-th-border);
+}
+.ivu-table th {
+	height: 40px;
+	white-space: nowrap;
+	overflow: hidden;
+	background-color: var(--tbl-th-background);				
+}
+
+.ivu-table td {
+	background-color: var(--tbl-td-background);
+	-webkit-transition: background-color .2s ease-in-out;
+	transition: background-color .2s ease-in-out;
+}
+
+.ivu-table-header thead tr th {
+	position: relative;
+	height: 100%;
+	padding: 8px 0;
+	color: var(--tbl-th-color);
+	font-size: var(--tbl-th-font-size);
+}
+.ivu-table td, .ivu-table th {
+	min-width: 0;
+	height: var(--tbl-td-height);
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	/*text-align: left;*/
+	text-overflow: ellipsis;
+	vertical-align: middle;
+	border-bottom: var(--tbl-th-border);
+}
+
+.ivu-table-stripe .ivu-table-body tr:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr:nth-child(2n) td {
+	background-color: var(--tbl-tr2n-background);
+}
+
+.ivu-table-stripe .ivu-table-body tr.ivu-table-row-hover td, 
+.ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-hover td {
+	background-color: var(--tbl-tr-hover-background);
+}
+
+.ivu-table-stripe .ivu-table-body tr:nth-child(2n).ivu-table-row-hover td, 
+.ivu-table-stripe .ivu-table-fixed-body tr:nth-child(2n).ivu-table-row-hover td {
+	background-color: var(--tbl-tr-2n-hover-background);
+}
+
+.ivu-table-row-highlight td, .ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-highlight:nth-child(2n) td, tr.ivu-table-row-highlight.ivu-table-row-hover td {
+	background-color: var(--tbl-tr-highlight-background);
+}
+

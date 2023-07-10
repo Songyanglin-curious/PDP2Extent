@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds_data><![CDATA[      
+				SELECT to_char(start_time)as start_time, s.stationname, case when a.devicename is null or a.devicename = '' then '公用设备间隔' else a.devicename end as devicename, b.signal, case se.signaldec
+				when '1' then '事故'
+				when '2' then '异常'
+				when '3' then '越限'
+				when '4' then '变位'
+				when '5' then '告知'
+				else se.signaldec end as signaldesc, explaindesc, a.frecount as rule, to_char(end_time)as end_time, '未关联' as sstate, a.id
+          FROM MONITORSIGNAL.DBDEFECT_SIGNAL a
+				join MONITORSIGNAL.DBSIGNALTABLED5000{{2}} b on a.accordid=b.signalid
+				JOIN monitorsignal.DBSIGNALEXPLAIN se ON a.frequency_id = se.id and se.ismain = 1
+				JOIN monitorsignal.tbstation s ON a.stationidx = s.stationidx
+				WHERE start_time<{1} and (end_time>{0} or end_time is null)
+        and defecttype in(3,9)
+          order by start_time	  
+        ]]></ds_data>
+<ds_signalinfo><![CDATA[      
+          SELECT 
+				signal_time, s.StationName, a.signal_name, case when restrain_flag>0 then '抑制' else '' end || ' ' || isnull(b.token_type, '') as state
+          FROM ({{1}}) a
+          JOIN tbstation s ON a.stationidx = s.stationidx
+        left join (
+					select dev_name, token_type, settime, restoretime from (
+						select ROW_NUMBER() OVER(PARTITION BY setid ORDER BY restoreid) rn, dev_name, token_type, settime, restoretime
+						from (
+							select a.id as setid, b.id as restoreid, a.dev_name, a.token_type, a.occur_time as settime, b.occur_time as restoretime from (
+							select id, occur_time, devname AS DEV_NAME, replace(STATUSNAME,'设置','') as token_type from "MONITORSIGNAL"."P_OP_TOKENINFO" where STATUSNAME like '%设置%') a left join (
+							select id, occur_time, devname AS DEV_NAME, replace(STATUSNAME,'解除','') as token_type from "MONITORSIGNAL"."P_OP_TOKENINFO" where STATUSNAME like '%解除%') b on a.token_type=b.token_type and a.dev_name=b.dev_name and a.id<b.id
+						)
+					) where rn = 1
+				) b on a.devicename=b.dev_name and a.signal_time>=b.settime and (a.signal_time<=b.restoretime or b.restoretime is null)
+          WHERE accordid = {0} and reason_id = 5 and signal_time>={2} and signal_time<={3}
+          ORDER BY signal_time
+        ]]></ds_signalinfo>
+<ds_view_day><![CDATA[
+        select b.dayid || {3} as col_value ,count(col_value) as col_count  from (
+         SELECT
+				{{2}} as col_value
+				FROM ({{1}}) a
+				WHERE accordid = {0} and reason_id = 5 and a.signal_time >= {5} and a.signal_time <= {6}
+				) A
+        right join
+        (
+        {{4}}
+        ) B on A.col_value = b.dayid
+				group by b.dayid
+				order by col_value
+				]]></ds_view_day>
+<ds_defectsignal><![CDATA[
+				select to_char(start_time) as start_time, to_char(ifnull(end_time, sysdate)) as end_time 
+				from MONITORSIGNAL.DBDEFECT_SIGNAL where id={0}				  
+			]]></ds_defectsignal></ROOT>

@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds_repair><![CDATA[
+          SELECT DTNAME, COUNT(*) AS NUM1 FROM "ESDC_ODS"."T_REPAIRWRIJH" A
+          JOIN "MONITORSIGNAL"."B_DEVICE{{0}}" D ON D.OMSID IN A.EQUIPIDS
+          JOIN "MONITORSIGNAL"."B_DEVICETYPE" DT ON D.DTID = DT.DT_ID
+				  WHERE BEGINTIME BETWEEN SUBSTR(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' AND SUBSTR(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+          GROUP BY DTNAME        
+				]]></ds_repair>
+<ds_defect><![CDATA[
+				  select a.QXFL, ifnull(c.num,0) as finish, ifnull(b.num,0)-ifnull(c.num,0) as notfinish, ifnull(d.num,0) as overtime from (
+				  select '危急缺陷' as QXFL,0 as NUM
+				  union all
+				  select '严重缺陷' as QXFL,0 as NUM
+				  union all
+				  select '一般缺陷' as QXFL,0 as NUM
+				  ) a left join (
+				  select QXFL || '缺陷' AS QXFL,COUNT(*) as num from (
+				  select case when defectlevel = 1 then '危急' when defectlevel = 2 then '严重' else '一般' end as qxfl from "ESDC_ODS"."T_DEFECT_MANAGE" A
+				  JOIN "MONITORSIGNAL"."B_SUBSTATION{{0}}" S ON A.STATIONID = S.OMSID AND ISMONITOR = 1
+				  where xq_time between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+				  AND defectlevel IS NOT NULL AND TYPE = 1
+				  ) x group by QXFL
+				  ) b on a.QXFL=b.QXFL left join (
+				  select QXFL || '缺陷' AS QXFL, COUNT(*) as num from (
+				  select case when defectlevel = 1 then '危急' when defectlevel = 2 then '严重' else '一般' end as qxfl from "ESDC_ODS"."T_DEFECT_MANAGE" A
+				  JOIN "MONITORSIGNAL"."B_SUBSTATION{{0}}" S ON A.STATIONID = S.OMSID AND ISMONITOR = 1
+				  where happentime between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND xq_time<=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+				  and defectlevel IS NOT NULL AND TYPE = 1
+				  ) x group by QXFL
+				  ) c on a.QXFL=c.QXFL left join (
+        		  select QXFL,COUNT(*) as num from (
+				  select GDSJ,QXFL || '缺陷' AS QXFL,DATEADD(day,(case QXFL when '危急' then 1 when '严重' then 7 when '一般' then 90 end), happentime) AS XQMAXTIME from (
+				  select case when defectlevel = 1 then '危急' when defectlevel = 2 then '严重' else '一般' end as qxfl, ys_time as gdsj, happentime from "ESDC_ODS"."T_DEFECT_MANAGE" A
+				  JOIN "MONITORSIGNAL"."B_SUBSTATION{{0}}" S ON A.STATIONID = S.OMSID AND ISMONITOR = 1
+				  where happentime between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+				  and defectlevel IS NOT NULL AND TYPE = 1
+				  ) x ) y
+				  where GDSJ IS NULL AND XQMAXTIME<GETDATE()
+				  group by QXFL
+				  ) d on a.QXFL=d.QXFL
+          order by QXFL
+        ]]></ds_defect>
+<ds_defect1><![CDATA[
+				  select a.QXFL, ifnull(c.num,0) as finish, ifnull(b.num,0)-ifnull(c.num,0) as notfinish, ifnull(d.num,0) as overtime from (
+				  select '危急缺陷' as QXFL,0 as NUM
+				  union all
+				  select '严重缺陷' as QXFL,0 as NUM
+				  union all
+				  select '一般缺陷' as QXFL,0 as NUM
+				  ) a left join (
+				  select QXFL || '缺陷' AS QXFL,COUNT(*) as num from (
+				  select case when defectlevel = 1 then '危急' when defectlevel = 2 then '严重' else '一般' end as qxfl from "ESDC_ODS"."T_DEFECT_MANAGE" A
+				  JOIN "MONITORSIGNAL"."B_SUBSTATION{{0}}" S ON A.STATIONID = S.OMSID AND ISMONITOR = 1
+				  where xq_time between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+				  AND defectlevel IS NOT NULL AND TYPE = 2
+				  ) x group by QXFL
+				  ) b on a.QXFL=b.QXFL left join (
+				  select QXFL || '缺陷' AS QXFL, COUNT(*) as num from (
+				  select case when defectlevel = 1 then '危急' when defectlevel = 2 then '严重' else '一般' end as qxfl from "ESDC_ODS"."T_DEFECT_MANAGE" A
+				  JOIN "MONITORSIGNAL"."B_SUBSTATION{{0}}" S ON A.STATIONID = S.OMSID AND ISMONITOR = 1
+				  where happentime between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND xq_time<=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+				  and defectlevel IS NOT NULL AND TYPE = 2
+				  ) x group by QXFL
+				  ) c on a.QXFL=c.QXFL left join (
+        		  select QXFL,COUNT(*) as num from (
+				  select GDSJ,QXFL || '缺陷' AS QXFL,DATEADD(day,(case QXFL when '危急' then 1 when '严重' then 7 when '一般' then 90 end), happentime) AS XQMAXTIME from (
+				  select case when defectlevel = 1 then '危急' when defectlevel = 2 then '严重' else '一般' end as qxfl, ys_time as gdsj, happentime from "ESDC_ODS"."T_DEFECT_MANAGE" A
+				  JOIN "MONITORSIGNAL"."B_SUBSTATION{{0}}" S ON A.STATIONID = S.OMSID AND ISMONITOR = 1
+				  where happentime between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+				  and defectlevel IS NOT NULL AND TYPE = 2
+				  ) x ) y
+				  where GDSJ IS NULL AND XQMAXTIME<GETDATE()
+				  group by QXFL
+				  ) d on a.QXFL=d.QXFL
+          order by QXFL
+        ]]></ds_defect1>
+<ds_oiltemp><![CDATA[
+          SELECT * FROM 
+          (SELECT TOP 5 S_NAME || '/' ||DEVICEDESC AS DEVICENAME, CURVALUE AS NUM1 FROM (
+          SELECT DEVICEID, DEVICENAME AS DEVICEDESC, STATIONIDX, MAX(MAXTEMPERATURE) AS CURVALUE FROM MONITORSIGNAL.TBYCOVER_OIL{{0}}
+          WHERE STARTTIME BETWEEN SUBSTR(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' AND SUBSTR(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+          AND DATEDIFF(SS,STARTTIME,CASE WHEN ENDTIME IS NULL THEN GETDATE() ELSE ENDTIME END)>=60 AND MAXTEMPERATURE < 100
+          GROUP BY DEVICEID, DEVICENAME, STATIONIDX) M
+          JOIN "MONITORSIGNAL"."B_SUBSTATION{{0}}" S ON M.STATIONIDX = S.S_ID AND S.ISMONITOR = 1
+          ORDER BY CURVALUE DESC) A ORDER BY NUM1
+        ]]></ds_oiltemp></ROOT>

@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="36" desc="线路目录">
+  <includes>
+    <![CDATA[/conn/cssfile/shengchan/stylesheet.css;/conn/cssfile/shengchan/common.css]]>
+  </includes>
+  <inits>
+    <init id="close" type="request" arg="close"></init>
+  </inits>
+  <consts>
+    <const id="dsAC500" desc="交流500kV"></const>
+    <const id="dsAC1000" desc="交流1000kV"></const>
+    <const id="dsDC" desc="直流"></const>
+  </consts>
+  <ctrls>
+    <div id="div0" desc="根容器" style="width:100%;height:100%;padding-left:100px" class="catalog-bk">
+      <img src="/i/sgc/close.png" style="cursor:pointer;position:absolute ;right:20px;top:10px;z-index:2;">
+        <e>
+          <onclick>
+            <list type="script" value="this.doClose();"></list>
+          </onclick>
+        </e>
+      </img>
+      <div style="position:absolute;left:40px;top:100px;">
+        <ul style="text-align:left">
+          <!-- <li style="list-style:revert;cursor:pointer;" onclick="vLayout.changeMode(1)">变电站</li>
+                    <li style="list-style:revert;cursor:pointer;" onclick="vLayout.changeMode(2)">线路</li> -->
+          <div class="station_button_new" onclick="vLayout.changeMode(1)"></div>
+          <div class="line_button_select" onclick="vLayout.changeMode(2)"></div>
+        </ul>
+      </div>
+      <div style="overflow: hidden;height: 100%;padding:40px 0;margin-left:110px">
+        <div style="overflow: auto;height: 100%;">
+          <div class='scstationgroup asc' style='color:#7fdcff;background-image: url(/i/sgc/shengchan/catalog/dc.png)'>直流</div>
+          <div>
+            <a class=" f ww"></a>
+            <loop id="loop1" from="dsDC">
+              <div style="cursor:pointer">
+                <a class="scstationlink mt10  ml10 f jc ac"></a>
+                <!-- <img title="设备搜索界面" src="/i/sgc/shengchan/catalog/l.png" class="btn-jxt" /> -->
+                <label>
+                  <sa value="item_loop1.Name"></sa>
+                </label>
+                <!-- <img title="显示三维图" src="/i/sgc/shengchan/catalog/r.png" class="btn-3d" /> -->
+                <e>
+                  <onclick args="item_loop1">
+                    <![CDATA[
+                      vMain.gotoApp("line3d", { lineItemId:item_loop1.Id,lineName:item_loop1.Name });
+                      vLayout.panel = "";
+                      ]]>
+                  </onclick>
+                </e>
+              </div>
+            </loop>
+          </div>
+          <div class='scstationgroup asc' style='color:#7fdcff;background-image: url(/i/sgc/shengchan/catalog/1000.png)'>交流1000kV</div>
+          <div>
+            <a class=" f ww"></a>
+            <loop id="loop1" from="dsAC1000">
+              <div style="cursor:pointer">
+                <a class="scstationlink mt10  ml10 f jc ac"></a>
+                <!-- <img title="设备搜索界面" src="/i/sgc/shengchan/catalog/l.png" class="btn-jxt" /> -->
+                <label>
+                  <sa value="item_loop1.Name"></sa>
+                </label>
+                <!-- <img title="显示三维图" src="/i/sgc/shengchan/catalog/r.png" class="btn-3d" /> -->
+                <e>
+                  <onclick args="item_loop1">
+                    <![CDATA[
+                      vMain.gotoApp("line3d", { lineItemId:item_loop1.Id,lineName:item_loop1.Name });
+                      vLayout.panel = "";
+                      ]]>
+                  </onclick>
+                </e>
+              </div>
+            </loop>
+          </div>
+          <div class='scstationgroup asc' style='color:#ffa5b1;background-image: url(/i/sgc/shengchan/catalog/500.png)'>交流500kV</div>
+          <div>
+            <a class=" f ww"></a>
+            <loop id="loop1" from="dsAC500">
+              <div style="cursor:pointer">
+                <a class="scstationlink mt10  ml10 f jc ac"></a>
+                <!-- <img title="设备搜索界面" src="/i/sgc/shengchan/catalog/l.png" class="btn-jxt" /> -->
+                <label>
+                  <sa value="item_loop1.Name"></sa>
+                </label>
+                <!-- <img title="显示三维图" src="/i/sgc/shengchan/catalog/r.png" class="btn-3d" /> -->
+                <e>
+                  <onclick args="item_loop1">
+                    <![CDATA[
+                                        vMain.gotoApp("line3d", { lineItemId:item_loop1.Id,lineName:item_loop1.Name });
+                                        vLayout.panel = "";
+                                        ]]>
+                  </onclick>
+                </e>
+              </div>
+            </loop>
+          </div>
+        </div>
+      </div>
+      s
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+                    let vm = this;
+            this.doClose = function () {
+                if (this.close)
+                    this.close();
+            }
+            this.showJxt = function(s) {
+            var s = s.split('.')[1];
+            vApp.openSVG(s);
+            }
+            this.show3D = function(s) {
+            var s = s.split('.')[1];
+            vApp.open3D(s);
+            }
+            this.showDevice = function(s) {
+            vApp.showDevice(s);
+            }
+            this.init = function(){
+                PDP.load("sc/zc:GetDcLines",{ },function(res){
+                    if(res.check("获取500kV电压等级线路",true)){
+                        vm.dsDC = res.value
+                    }
+                })
+                PDP.load("sc/zc:GetLinesByVoltage",{v:"1000kV"},function(res){
+                    if(res.check("获取1000kV电压等级线路",true)){
+                        vm.dsAC1000 = res.value
+                    }
+                })
+                PDP.load("sc/zc:GetLinesByVoltage",{v:"500kV"},function(res){
+                    if(res.check("获取500kV电压等级线路",true)){
+                        vm.dsAC500 = res.value
+                    }
+                })
+            }
+            
+            this.init()
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

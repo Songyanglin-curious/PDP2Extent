@@ -1,0 +1,31 @@
+
+                  <c>
+                    <icol desc="序号">
+                      <a width="50px" type="index"></a>
+                    </icol>
+                      <icol desc="电压等级" from="lstFinish_1">
+                        <a width="90px" s_text-align="center" sortable="1" dtype="voltage"></a>
+                      </icol>
+                      <icol desc="设备" from="lstFinish_3">
+                        <a s_text-align="center" sortable="1"></a>
+                        <ysh-card>
+                          <a card="line"></a>
+                          <sa id="lstFinish_2" text="lstFinish_3"></sa>
+                        </ysh-card>
+                      </icol>
+                      <icol desc="停电时间" from="lstFinish_4">
+                        <a width="98" s_text-align="center" sortable="1"></a>
+                        <label from="lstFinish_4">
+                          <sf from="Ysh.Time.formatString({0},'[m]/[d]')"></sf>
+                        </label>
+                        <label>
+                          <a value="-"></a>
+                        </label>
+                        <label from="lstFinish_5">
+                          <sf from="Ysh.Time.formatString({0},'[m]/[d]')"></sf>
+                        </label>
+                      </icol>
+                    <icol desc="状态" from="lstFinish_6">
+                      <a width="60px" filterable="1"></a>
+                    </icol>
+                  </c>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds0><![CDATA[
+		      SELECT '温度越限' as col1,'1' as col2,'2021-08-28 06:55:26' as col3
+         union all
+           SELECT '差流越限' as col1,'3' as col2,'2021-08-28 06:55:26' as col3
+           union all
+           SELECT '潮流越限' as col1,'0' as col2,'2021-08-28 06:55:26' as col3
+            union all
+           SELECT '温度越限' as col1,'1' as col2,'2021-08-28 06:55:26' as col3
+         union all
+           SELECT '差流越限' as col1,'3' as col2,'2021-08-28 06:55:26' as col3
+           union all
+           SELECT '潮流越限' as col1,'0' as col2,'2021-08-28 06:55:26' as col3
+            union all
+             SELECT '温度越限' as col1,'1' as col2,'2021-08-28 06:55:26' as col3
+         union all
+           SELECT '差流越限' as col1,'3' as col2,'2021-08-28 06:55:26' as col3
+           union all
+           SELECT '潮流越限' as col1,'0' as col2,'2021-08-28 06:55:26' as col3
+            union all
+             SELECT '潮流越限' as col1,'0' as col2,'2021-08-28 06:55:26' as col3
+        ]]></ds0></ROOT>

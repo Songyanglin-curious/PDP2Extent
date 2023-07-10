@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetCurStationTypeStat>
+    <![CDATA[select type,sum(substation_capacity)/10.0,sum(transfm_num),sum(substation_num)  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_rpt_trans_s_year where sta_year=year(sysdate) group by type order by type]]>
+  </GetCurStationTypeStat>
+  <GetCurPlantTypeStat>
+    <![CDATA[select type,sum(generator_capacity)/10.0,sum(generator_num),sum(plant_num) from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_rpt_gen_s_year where sta_year=year(sysdate) group by type]]>
+  </GetCurPlantTypeStat>
+  <GetGenStatData>
+    <![CDATA[select * from (
+select nvl(a.grid,b.grid) as grid,nvl(a.plant_type,b.plant_type) as plant_type,nvl(a.y,b.y) as syear,nvl(a.m,b.m) as smonth,nvl(a.c,0) as rcount,nvl(b.c,0) as ecount from (
+ select grid,plant_type,y,m,count(1) c from (
+ select p.connective_pg_id as grid,p.plant_type, year(g.operate_date) as y,month(g.operate_date) as m from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_generator_b g
+ join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_plant_b p on g.st_id=p.id
+ where g.operate_date is not null
+) group by grid,plant_type,y,m
+) a full join (
+ select grid,plant_type,y,m,count(1) c from (
+ select p.connective_pg_id as grid,p.plant_type, year(g.expiry_date) as y,month(g.expiry_date) as m from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_generator_b g
+ join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_plant_b p on g.st_id=p.id
+ where g.expiry_date is not null
+) group by grid,plant_type,y,m
+) b on a.grid=b.grid and a.plant_type=b.plant_type and a.y=b.y and a.m=b.m
+) order by plant_type,SYEAR,SMONTH]]>
+  </GetGenStatData>
+  <GetGenStat>
+    <![CDATA[SELECT PLANT_TYPE,SYEAR,SMONTH,RCOUNT,ECOUNT FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_DEV_PLANT_S_GEN ORDER BY PLANT_TYPE,SYEAR,SMONTH]]>
+  </GetGenStat>
+  <GetGenCapStat>
+    <![CDATA[SELECT PLANT_TYPE,SYEAR,SMONTH,RCAP/10.0,ECAP/10.0 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_DEV_PLANT_S_GEN ORDER BY PLANT_TYPE,SYEAR,SMONTH]]>
+  </GetGenCapStat>
+  <GetTransStat>
+    <![CDATA[SELECT VOLTAGE_TYPE,SYEAR,SMONTH,RCOUNT,ECOUNT FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_dev_station_s_trans ORDER BY VOLTAGE_TYPE,SYEAR,SMONTH]]>
+  </GetTransStat>
+  <GetTransCapStat>
+    <![CDATA[SELECT VOLTAGE_TYPE,SYEAR,SMONTH,RCAP/10.0,ECAP/10.0 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_dev_station_s_trans ORDER BY VOLTAGE_TYPE,SYEAR,SMONTH]]>
+  </GetTransCapStat>
+  <GetAllPlantList>
+    <![CDATA[    
+    SELECT A.ID,A.MAX_VOLTAGE_TYPE,C.CAPACITY,A.CONNECTIVE_PG_ID,A.DCC_ID,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE,A.PLANT_TYPE,A.NAME_ABBREVIATION
+    FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PLANT_B AS A 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PLANT_S AS C ON A.ID=C.ID AND C.VOLTAGE_TYPE=9999 AND C.STATE_CODE=1003
+    ]]>
+  </GetAllPlantList>
+  <GetAllStationList>
+    <![CDATA[    
+    SELECT A.ID,A.TOP_AC_VOLTAGE_TYPE,C.transformation_capacity AS CAPACITY,A.PG_ID,A.DCC_ID,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE,A.TOP_AC_VOLTAGE_TYPE,A.NAME
+    FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_B AS A 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_S AS C ON A.ID=C.ID AND C.VOLTAGE_TYPE=9999
+    UNION ALL
+    SELECT A.ID,A.DC_VOLTAGE_TYPE,C.transformation_capacity,A.PG_ID,A.DCC_ID,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE,DC_VOLTAGE_TYPE,A.NAME
+    FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B AS A 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_S AS C ON A.ID=C.ID
+    ]]>
+  </GetAllStationList>
+  <test>
+    <![CDATA[insert into ysh_rpt_trans_cur (voltage_type,station_count,transfm_count,transformation_capacity)
+SELECT NVL(A.VOLTAGE_TYPE,B.VOLTAGE_TYPE) AS VOLTAGE_TYPE,NVL(B.STATIONS,0),NVL(A.C,0),NVL(A.CAP,0) FROM (
+SELECT VOLTAGE_TYPE,COUNT(1) AS C,SUM(MVA_RATE) AS CAP FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_pwrtransfm_b
+WHERE RUNNING_STATE=1003 AND VOLTAGE_TYPE IS NOT NULL
+GROUP BY VOLTAGE_TYPE
+) A FULL JOIN (
+SELECT VOLTAGE_TYPE,SUM(C) AS STATIONS FROM (
+SELECT TOP_AC_VOLTAGE_TYPE AS VOLTAGE_TYPE,COUNT(1) AS C FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_SUBSTATION_B WHERE OPERATE_STATE=1003
+GROUP BY TOP_AC_VOLTAGE_TYPE
+UNION ALL
+SELECT DC_VOLTAGE_TYPE,COUNT(1) FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_CONVERSUBSTATION_B WHERE OPERATE_STATE=1003
+GROUP BY DC_VOLTAGE_TYPE
+) GROUP BY VOLTAGE_TYPE
+) B ON A.VOLTAGE_TYPE=B.VOLTAGE_TYPE;
+
+    
+ insert into ysh_dev_station_s_trans
+ (voltage_type,syear,smonth,rcount,ecount,rcap,ecap)
+ select nvl(a.voltage_type,b.voltage_type),nvl(a.y,b.y),nvl(a.m,b.m),nvl(a.c,0),nvl(b.c,0),0,0 from (
+ select voltage_type,y,m,count(1) c from (
+ select g.voltage_type, year(g.operate_date) as y,month(g.operate_date) as m from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_pwrtransfm_b g
+ where g.operate_date is not null and g.voltage_type is not null
+) group by voltage_type,y,m
+) a full join (
+ select voltage_type,y,m,count(1) c from (
+ select g.voltage_type, year(g.expiry_date) as y,month(g.expiry_date) as m from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_pwrtransfm_b g
+ where g.expiry_date is not null and g.voltage_type is not null
+) group by voltage_type,y,m
+) b on a.voltage_type=b.voltage_type and a.y=b.y and a.m=b.m;
+]]>
+  </test>
+  <dump>
+    <GetCurStationTypeStat>
+      <![CDATA[select type,sum(substation_capacity)/10.0,sum(transfm_num),sum(substation_num)  from ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_rpt_trans_s_year where sta_year=year(sysdate) group by type order by type]]>
+    </GetCurStationTypeStat>
+    <GetCurStationTypeStat1>
+      <![CDATA[SELECT voltage_type,transformation_capacity/10.0,transfm_count,station_count from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_rpt_trans_cur order by voltage_type]]>
+    </GetCurStationTypeStat1>
+    <GetThisYearTransStat>
+      <![CDATA[SELECT SMONTH,VOLTAGE_TYPE,RCOUNT FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_dev_station_s_trans WHERE SYEAR=YEAR(CAST({0} AS TIMESTAMP)) AND SMONTH<=MONTH(CAST({1} AS TIMESTAMP)) ORDER BY SMONTH]]>
+    </GetThisYearTransStat>
+    <GetThisYearTransStat1>
+      <![CDATA[select m,voltage_type as t,count(1) c from (
+ select month(operate_date) as m,voltage_type 
+ from ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_pwrtransfm_b 
+ where operate_date>={0} and operate_date<={1}
+) group by m,voltage_type order by m]]>
+    </GetThisYearTransStat1>
+    <GetCurPlantTypeStat>
+      <![CDATA[select type,sum(generator_capacity)/10.0,sum(generator_num),sum(plant_num) from ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_rpt_gen_s_year where sta_year=year(sysdate) group by type]]>
+    </GetCurPlantTypeStat>
+    <GetCurPlantTypeStat1>
+      <![CDATA[SELECT P.PLANT_TYPE,SUM(S.CAPACITY/10.0) AS CAP,SUM(S.GEN_COUNT) AS GEN,COUNT(1) AS PLANTS 
+FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PLANT_B P JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PLANT_S S
+ ON P.ID=S.ID AND S.VOLTAGE_TYPE=9999 AND S.STATE_CODE=1003
+ WHERE P.OPERATE_STATE=1003
+ GROUP BY P.PLANT_TYPE]]>
+    </GetCurPlantTypeStat1>
+    <GetThisYearGenStat>
+      <![CDATA[SELECT SMONTH,PLANT_TYPE,RCOUNT FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_DEV_PLANT_S_GEN WHERE SYEAR=YEAR(CAST({0} AS TIMESTAMP)) AND SMONTH<=MONTH(CAST({1} AS TIMESTAMP)) ORDER BY SMONTH]]>
+    </GetThisYearGenStat>
+    <GetThisYearGenStat1>
+      <![CDATA[select m,plant_type as t,count(1) c from (
+ select month(g.operate_date) as m,p.plant_type 
+ from ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_generator_b g
+ JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_plant_b p on g.st_id=p.id
+ where g.operate_date>={0} and g.operate_date<={1}
+) group by m,plant_type order by m]]>
+    </GetThisYearGenStat1>
+    <GetYearPlantTypeStat>
+      <![CDATA[SG_RPT_GEN_S_MONTH,SG_RPT_GEN_S_YEAR]]>
+    </GetYearPlantTypeStat>
+    <GetThisYearTransCapStat>
+      <![CDATA[SELECT SMONTH,VOLTAGE_TYPE,RCAP/10.0 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_dev_station_s_trans WHERE SYEAR=YEAR(CAST({0} AS TIMESTAMP)) AND SMONTH<=MONTH(CAST({1} AS TIMESTAMP)) ORDER BY SMONTH]]>
+    </GetThisYearTransCapStat>
+    <GetThisYearPlantCapStat>
+      <![CDATA[SELECT SMONTH,PLANT_TYPE,RCAP/10.0 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_DEV_PLANT_S_GEN WHERE SYEAR=YEAR(CAST({0} AS TIMESTAMP)) AND SMONTH<=MONTH(CAST({1} AS TIMESTAMP)) ORDER BY SMONTH]]>
+    </GetThisYearPlantCapStat>
+  </dump>
+</ROOT>

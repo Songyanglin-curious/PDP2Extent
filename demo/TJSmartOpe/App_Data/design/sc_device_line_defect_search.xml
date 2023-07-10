@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="36" desc="线路搜索表格">
+    <includes>
+    <![CDATA[/conn/cssfile/ctrl/itable.css]]>
+  </includes>
+    <inits>
+        <init id="filter" type="request" arg="filter"></init>
+    </inits>
+    <consts>
+        <const id="conditions"></const>
+        <const id="show" type="bool" arg="true"></const>
+        <const id="lst" type="2d" length="30"></const>
+        <const id="hTbl" type="number" arg="300"></const>
+        <const id="loading" type="bool" arg="false"></const>
+        <const id="searchkey"></const>
+        <const id="isShowNoImgText" type="bool" arg="false"></const>
+        <const id="m"></const>
+    </consts>
+    <ctrls>
+        <div id="container" desc="根容器" style="width:100%;height:100%;background-color:#013a46b3">
+            <search from="conditions" xml="shengchan/line_defect_search"></search>
+            <div ref="divIf">
+                <search-block id="sb0" show="show">
+                    <sa conditions="conditions"></sa>
+                    <e>
+                        <sizechanged>
+              <![CDATA[this.$nextTick(function() {this.resize();});]]>
+            </sizechanged>
+                    </e>
+                </search-block>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;height:30px;line-height:30px;">
+                    <image style="cursor:pointer;width:51px;height:14px;margin-left:10px;">
+                        <sa src="show"></sa>
+                        <sf from="{0}?'︽收起':'︾展开'" src="{0}?'/i/sgc/shengchan/foldbtn.png':'/i/sgc/shengchan/expandbtn.png'"></sf>
+                        <e>
+                            <onclick>
+                                <list type="script" value="this.changeExpand();"></list>
+                            </onclick>
+                        </e>
+                    </image>
+                    <div class="search-item" style="justify-content:center;margin-right:10px;">
+                        <label type="button" class="button selected" value="重置">
+                            <e>
+                                <onclick>
+                                    <list type="script" value="this.resetConditions();"></list>
+                                </onclick>
+                            </e>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- 共用一个 conditions 上面点击后会修改 conditions 引发下边useful 监听的触发-->
+            <div style="padding:10px;background-color:#013f4c">
+                <a id="container"></a>
+                <div ref="divResult">
+                    <search-useful id="result" title="设备查询>" ref="search">
+                        <sa conditions="conditions"></sa>
+                        <e>
+                            <onchange>
+                                <list type="script" value="this.search();"></list>
+                            </onchange>
+                        </e>
+                    </search-useful>
+                </div>
+                <pagetable from="lst" v-loading="'loading'">
+                    <a highlight-field="lst_16"></a>
+                    <sa height="hTbl" border="true" items="20" stripe="true" click-highlight="true"></sa>
+                    <!-- <e>
+                        <on-row-dblclick>
+                            <![CDATA[this.dblclick(row,index);]]>
+                        </on-row-dblclick>
+                    </e> -->
+                    <icol desc="" type="expand" width="30px">
+                        <table class="intbl-tbl" style="width:100%">
+                            <tr>
+                                <td style="color:#b2f6ff">缺陷详情</td>
+                                <td colspan="5" style="color:#ffffff">
+                                    <label from="lst_16"></label>
+                                </td>
+                                <td style="color:#b2f6ff;">缺陷图片</td>
+
+                                <td colspan="5" style="color:#ffffff;">
+                                    <div style="width:100%; position:relative;background:#0E545A">
+                                        <a v-fulltowindow=""></a>
+                                        <!-- <a id="defectImgId"></a> -->
+                                        <sa s_height="getDefectImgStyle(this.params)"></sa>
+
+                                        <img style=" height:100%;width:100%;position:relative;" onerror="this.src = '/i/sgc/shengchan/no_img.png';this.onerror = null;this.style.width = '100%'">
+
+                                            <sa src="getDefectUrl(this.params)"></sa>
+
+                                        </img>
+                                        <label style="top:50%;left:50%;position:absolute;margin-top:-10px;" show="!params.row.lst_29">
+                                            <a value="无图片"></a>
+
+                                        </label>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                            <tr>
+
+                            </tr>
+                        </table>
+
+                    </icol>
+                    <icol desc="序号" type="index" width="50px"></icol>
+                    <icol desc="年度" from="lst_0"></icol>
+                    <icol desc="线路名称" from="lst_1"></icol>
+                    <icol desc="发现时间" from="lst_2" format="111000" sortable="1"></icol>
+                    <icol desc="交直流" from="lst_3"> </icol>
+                    <icol desc="电压等级" from="lst_4">
+                        <a dtype="voltage" sortable="1"></a>
+                        <label from='lst_4'>
+                            <sf from="{0} + 'kV'"></sf>
+                        </label>
+                    </icol>
+                    <icol desc="起始杆塔" from="lst_5">
+                        <a sortable="1"></a>
+                    </icol>
+                    <icol desc="终点杆塔" from="lst_6"></icol>
+                    <icol desc="部件" from="lst_7"></icol>
+                    <icol desc="部件种类" from="lst_8"></icol>
+                    <icol desc="部位" from="lst_9"></icol>
+                    <icol desc="缺陷描述" from="lst_10"></icol>
+                    <icol desc="缺陷等级" from="lst_11"></icol>
+                    <icol desc="巡视伦次" from="lst_12"></icol>
+                    <icol desc="出资单位" from="lst_13"></icol>
+                    <icol desc="资产单位" from="lst_14"></icol>
+                    <icol desc="运维单位" from="lst_15"></icol>
+
+
+                </pagetable>
+            </div>
+        </div>
+    </ctrls>
+    <scripts>
+        <script event="created">
+            <list type="file" value="defect_search" part="line"></list>
+            <list type="script">
+                <value>
+                    <![CDATA[ 
+                    var vm = this;
+                    this.lock = false;
+                    this.showNoImgText = function(){
+                        this.loack = true;
+                        this.isShowNoImgText = true;
+                    }
+                    this.checkImgExist = function (src, successCallback, errorCallback) {
+                        var img = new Image()
+                        img.src = src
+                        img.onload = function () {
+                            successCallback(src);
+                        }
+                        img.onerror = function () {
+                            errorCallback();
+                        }
+                
+                    }
+                    this.getDefectUrl = function(params){
+                        var row = params.row;
+                        var imgName = row.lst_4 + 'kV' + row.lst_1 + row.lst_5 + "塔" + row.lst_16 + ".jpg";
+                        var id = row.lst_17;
+                        var find = this.lst.find(item => item[17] == id);
+                        this.checkImgExist("/i/sgc/shengchan/linedefect/" + encodeURIComponent(imgName),()=>{
+                           
+                            find[29] = true;
+                            row.lst_29 = true;
+                        },()=>{
+                            find[29] = false;
+                            row.lst_29 = false;
+                        })
+                        return "/i/sgc/shengchan/linedefect/" + encodeURIComponent(imgName)
+                        
+                         
+                    }
+                    this.getDefectImgStyle = function(params){
+                        var haveImg = params.row.lst_29;
+                        return haveImg ? "400px" : "60px";
+                    }
+                    this.m = null;
+                    this.maxBlock = function() {
+                    if (this.m) {
+                    this.m.restore();
+                    this.m = null;
+                    } else
+                    this.$nextTick(()=>{
+                        var img = document.getElementById("defectImgId");
+                        this.m = Ysh.Web.maxElement(img);
+                        this.resize();
+                    }) 
+                    
+                    
+                    }
+                    ]]>
+                </value>
+            </list>
+        </script>
+        <script event="mounted">
+            <list type="script">
+                <value>
+          <![CDATA[
+          /*this.resize();*/
+          ]]>
+        </value>
+            </list>
+        </script>
+    </scripts>
+</root>

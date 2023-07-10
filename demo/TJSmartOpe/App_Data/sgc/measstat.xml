@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetGridStats>
+    <![CDATA[SELECT id,max(max_value) FROM nt_db:sg_con_pwrgrid_h_sta_structure_year where meas_type={0} group by id]]>
+  </GetGridStats>
+</ROOT>

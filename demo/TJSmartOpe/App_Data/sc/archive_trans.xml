@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+    <!-- 根据设备编号获得设备缺陷数据 -->
+    <GetUnhandelDevDefect  type="sql"  args="devNum" fields="FindTime,Part,PartCategory,PartPosition,DefectDescribe,DefectLevel,DefectType,StartHandelTime,EndHandelTime,Source,Weather">
+        <![CDATA[ 
+        select defect_find_time,part ,part_type,'',defect_describe,defect_level,defect_type,registrant_time,xiaoque_time,find_way,''  FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_quexian WHERE dev_num = {devNum} AND defect_type != '结束'
+    ]]>
+    </GetUnhandelDevDefect>
+    <!-- 根据设备编号获得设备缺陷数据 -->
+    <GetDevDefectByDevNum  type="sql"  args="devNum,startTime,endTime" fields="FindTime,Part,PartCategory,PartPosition,DefectDescribe,DefectLevel,DefectType,StartHandelTime,EndHandelTime,Source,Weather">
+        <![CDATA[ 
+        select defect_find_time,part ,part_type,'',defect_describe,defect_level,defect_type,registrant_time,xiaoque_time,find_way,''  FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_quexian WHERE dev_num = {devNum} AND defect_find_time >= {startTime} AND defect_find_time < {endTime}
+    ]]>
+    </GetDevDefectByDevNum>
+
+    <!-- 获取设备检修数据 -->
+    <GetDevJXByDevNum type="sql"  args="devNum,startTime,endTime" fields="StartOverhaulTime,EndOverhaulTime,WorkContent">
+        <![CDATA[ 
+        select work_time,registrant_time,work_content FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_jx_year WHERE dev_num = {devNum} AND work_time >= {startTime} AND work_time < {endTime}
+        ]]>
+    </GetDevJXByDevNum>
+
+    <!-- 获取技改数据 -->
+    <GetJigaiData type="sql" fields="objID,name,startYear,startTime,endTime" args="devId,startTime,endTime">
+        <![CDATA[
+        SELECT
+            obj_id,
+            project_name,
+            project_start_year,
+            project_start_time,
+            project_end_time
+        FROM
+            ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_jigai
+        WhERE project_start_time >={startTime}  AND project_start_time <= {endTime} AND dev_num = {devId}
+        ORDER BY project_start_time 
+        ]]>
+    </GetJigaiData>
+    <!-- 获取大修数据 -->
+    <GetDaxiuData type="sql" fields="objID,name,startYear,startTime,endTime" args="devId,startTime,endTime">
+        <![CDATA[
+        SELECT
+            obj_id,
+            project_name,
+            project_start_year,
+            project_start_time,
+            project_end_time
+        FROM
+            ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_daxiu
+        WhERE project_start_time >={startTime}  AND project_start_time <= {endTime} AND  dev_num = {devId}
+        ORDER BY project_start_time 
+        ]]>
+    </GetDaxiuData>
+
+    <!-- 获取设备价值数据 -->
+    <GetDevValue>
+        <![CDATA[ 
+        select '资产编码' ,assets_num,'规格型号' ,specification_model,'折旧年限' ,depreciable_year,'累计折旧' ,round(accumulated_depreciation /10000 , 2) || '万元' ,
+       '资产名称' ,assets_name,'资产化日期' ,TO_CHAR(zibenhua_day,'yyyy-mm-dd'),'应折月份' ,depreciable_month,'本月累计折旧' ,round(current_month_depreciation /10000 , 2) || '万元',
+       '资产数量' , assets_quantity || unit   ,'资产增加方式' ,assets_add_way,'开始计提折旧日期', TO_CHAR(start_depreciable,'yyyy-mm-dd'),'净残值率' ,residual_rate,
+        '购置日期' ,TO_CHAR(acquisition_day,'yyyy-mm-dd'),'资产状态' ,assets_state,'资产原值' ,round(init_assets_value/10000 , 2) || '万元','折旧码' ,depreciation_num,
+        '资产存放地点' ,assets_position,'保管人' ,custodian,'资产净值' ,round(assets_net/10000 , 2) || '万元','折旧码描述' ,depreciation_describe,
+        '供应商' ,supplier,'具体运行维护部门' ,jtyxwhdw,'资产残值' ,round(assets_salvage/10000 , 2) || '万元','电压等级' ,voltage_class,
+        '制造厂商' ,manufacturer ,'维护单位及部门',maintain_dept,'相关费用' ,related_fees,'资产使用情况' ,asset_usage
+        from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_gdzc WHERE id = {0}
+        ]]>
+    </GetDevValue>
+</ROOT>

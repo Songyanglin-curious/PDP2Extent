@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetStationYwdw db="SGC" type="union" args="" fields="id,name,companyname">
+    <station db="SGC">
+      <![CDATA[SELECT s.ID, s.NAME,c.NAME FROM 
+    ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_SUBSTATION_B s LEFT JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_ORG_COMPANY_B c ON s.MANAGE_DEPT_ID=c.ID
+    WHERE TOP_AC_VOLTAGE_TYPE<1004 AND (DCC_ID='0021990101' OR DCC_ID IN (SELECT ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_ORG_DCC_B WHERE PARENT_ID='0021990101'))]]></station>
+    <conver db="SGC">
+      <![CDATA[SELECT s.ID, s.NAME,c.NAME FROM 
+    ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_CONVERSUBSTATION_B s LEFT JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_ORG_COMPANY_B c ON s.MANAGE_DEPT_ID=c.ID
+    WHERE s.OWNER='990101']]></conver>
+  </GetStationYwdw>
+  <GetDeviceAssets  fields="devid,devname,devtype,staname,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,wctzy,ksjtzjrq">
+    <![CDATA[
+    SELECT D.ID, D.COL3 AS DEVNAME, D.COL4 AS DEVTYPE, D.COL0 AS STANAME,
+    round(G.INIT_ASSETS_VALUE/10000 ,2), round(G.ASSETS_NET/10000 ,2), 
+    round(G.ASSETS_SALVAGE/10000 ,2), round(G.ACCUMULATED_DEPRECIATION/10000 ,2), G.DEPRECIABLE_YEAR, G.COMPLATE_TIZU_MONTH, G.START_DEPRECIABLE
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE D
+    JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_GDZC G ON D.ID = G.ID
+    ORDER BY G.COMPLATE_TIZU_MONTH ASC
+    ]]>
+  </GetDeviceAssets>
+
+  <xml type="text" datatype="json">
+    <![CDATA[{"a":1}]]>
+  </xml>
+
+  <GetStationYear type="union" fields="stid,time" datatype="2d">
+    <station db="SGC"><![CDATA[SELECT ID, OPERATE_DATE FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_SUBSTATION_B WHERE TOP_AC_VOLTAGE_TYPE<1004 AND (DCC_ID='0021990101' OR DCC_ID IN (SELECT ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_ORG_DCC_B WHERE PARENT_ID='0021990101'))]]></station>
+    <conver db="SGC"><![CDATA[SELECT ID, OPERATE_DATE FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_CONVERSUBSTATION_B WHERE OWNER='990101']]></conver>
+  </GetStationYear>
+  <GetDeviceCount db="SGAPP" type="sql" fields="name,count,voltage">
+    <![CDATA[ 
+    SELECT COL4,COUNT(COL4),COL5
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE WHERE COL5 LIKE '直流%' OR COL5 IN ('交流500kV','交流1000kV')
+    GROUP BY COL4,COL5
+    ]]>
+  </GetDeviceCount>
+  <top5>
+    <deviceType db="SGAPP"  fields="type">
+      <![CDATA[ 
+      SELECT DISTINCT COL4  FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE WHERE COL4 IS NOT NULL
+      ]]>
+    </deviceType>
+    <factory db="SGAPP" args="type" fields="factory,count">
+      <![CDATA[SELECT TOP 5 col8,c FROM (SELECT col8,count(1) as c FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE WHERE col4={type} GROUP BY col8) ORDER BY c]]>
+    </factory>
+    <factoryd db="SGAPP" args="type" fields="factory,count"><![CDATA[same:top5/factory]]><![CDATA[ desc]]></factoryd>
+    <model db="SGAPP" args="type" fields="factory,model,count">
+      <![CDATA[SELECT TOP 5 col8,col7,c FROM (SELECT col8,col7,count(1) as c FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE WHERE col4={type} GROUP BY col8,col7) ORDER BY c]]>
+    </model>
+    <modeld db="SGAPP" args="type" fields="factory,model,count"><![CDATA[same:top5/model]]><![CDATA[ desc]]></modeld>
+  </top5>
+  <GetLines db="SGAPP" type="sql" fields="id,name,time,length,voltage">
+    <![CDATA[SELECT IDX,NAME,OPERATE_DATE,LENGTH,VOLTAGEDESC FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaName]]><![CDATA[YSH_SC_LINE_B]]>
+  </GetLines>
+
+
+  <GetDevices db="SGAPP" type="sql" fields="station,deviceName,type,voltage,model,manufacturer,useTime" datatype="2d">
+    <![CDATA[ 
+    SELECT COL0,COL3,COL4,COL5,COL7,NVL(f.ABBR,COL8),COL10 
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE d
+    LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_GUD_FACTORY f ON d.col8=f.NAME
+    WHERE COL10 IS NOT NULL
+    ORDER BY COL10
+    ]]>
+  </GetDevices>
+
+
+
+  <GetStationCount db="SGAPP" type="sql" fields="Voltage,Count">
+    <![CDATA[ 
+    SELECT GROUP_NAME, COUNT(GROUP_NAME)
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_STATION
+    GROUP BY GROUP_NAME
+    ]]>
+  </GetStationCount>
+  <GetStationCapacity db="SGAPP" type="sql" fields="Voltage,Capacity">
+    <![CDATA[ 
+	SELECT COL5 ,SUM(CAST(COL16 as int))
+	FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE
+	WHERE COL16 IS NOT NULL
+	GROUP BY (COL5)
+	]]>
+  </GetStationCapacity>
+  <GetLineCount db="SGAPP" type="sql" fields="Voltage,Count">
+    <![CDATA[ 
+	SELECT VOLTAGE,COUNT(VOLTAGE)
+	FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_LINE_HBZC
+	WHERE ID IS NOT NULL
+	GROUP BY VOLTAGE
+	]]>
+  </GetLineCount>
+
+  <GetStations db="SGAPP" type="sql" fields="id,name,area,voltage,dcloud_id">
+    <![CDATA[ 
+    SELECT ID,NAME,GRID_NAME,GROUP_NAME,DCLOUD_ID FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_STATION WHERE NAME IS NOT NULL
+    ]]>
+  </GetStations>
+
+  <GetDeviceDetailStart>
+
+    <![CDATA[SELECT d.Id,START_DEPRECIABLE,COMPLATE_TIZU_MONTH,COl0,COl3, COL5 ,COL7, COL8,COL10,round(INIT_ASSETS_VALUE/10000 ,2) , round(ASSETS_NET/10000 ,2), round(ASSETS_SALVAGE/10000 ,2), round(ACCUMULATED_DEPRECIATION/10000 ,2), DEPRECIABLE_YEAR,]]>
+  </GetDeviceDetailStart>
+  <GetDeviceDetailEnd>
+    <![CDATA[ FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE d LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_GDZC z ON d.id=z.id WHERE d.col4 like '%{type}%'  ORDER BY COMPLATE_TIZU_MONTH ASC]]>
+  </GetDeviceDetailEnd>
+  <DeviceDetail>
+    <Trans db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,lqfs,capacity">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[COL15,col16]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </Trans>
+    <Breaker db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,jgxs,czjg,mhjz">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[COL24,COL25,COL26]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </Breaker>
+    <Switch db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,eddl,zhldz,jgxs,czxs">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[col34,col35,col36,col37]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </Switch>
+    <Reactor db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,lqfs,jyjz,dcjg,capacity,eddk,eddkl,eddg">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[col39,col40,col41,col42,col43,col44,col45]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </Reactor>
+    <Capacitor db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,jyjz,nbbhfs,dtbhfs,dtrl,zzrl">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[col46,col47,col48,col49,col50]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </Capacitor>
+    <Current db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,jgxs,jylx,mfxs,eddlb,clzqj,bhzqj">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[col51,col52,col53,col54,col55,col56]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </Current>
+    <pt db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,jyjz,jgxs,txjg,rzsl">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[col57,col58,col59,col60]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </pt>
+    <Lightning db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,pdbj,mxjs,dbcy,czcy,qdlcsz,zxdlcsz">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[col61,col62,col63,col64,col65,col66]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </Lightning>
+    <Generatrix db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,jgxs,azfs,length">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[col67,col68,col69]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </Generatrix>
+    <Combined db="SGAPP" type="sql" args="type" fields="id,ksjtzjrq,wctzy,station,devName,voltage,model,factory,useTime,initAsset,netAsset,salvageAsset,accumulatedAepreciation,depreciableYear,zhlx,ctfs,jcxfs,edsf6,bjsf6,breakNum,switchNum,grandNum,reactorNum,ctNum,ptNum">
+      <![CDATA[same:GetDeviceDetailStart]]><![CDATA[col70,col71,col72,col73,col74,col75,col76,col77,col78,col79,col80]]><![CDATA[same:GetDeviceDetailEnd]]>
+    </Combined>
+  </DeviceDetail>
+</ROOT>

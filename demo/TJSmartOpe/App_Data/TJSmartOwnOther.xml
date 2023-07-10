@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetCrossLineInfo desc="计算和某条线跨越的线路信息">
+    <![CDATA[    
+   select gid,name,st_astext(st_intersection(a.geom, b.geom))
+from ]]>
+   <![CDATA[same:SearchDistrictCommonSql:SchemaPG]]>
+   <![CDATA[acline_dcline_info a,(select geom from ]]>
+   <![CDATA[same:SearchDistrictCommonSql:SchemaPG]]>
+   <![CDATA[acline_dcline_info where gid='{0}')b
+where st_crosses(a.geom,b.geom) ='t' and voltagetype in(1001,1002,1003,2000,2001,2002,2003,2004)
+    ]]>
+  </GetCrossLineInfo>
+  <DelLineCrossInfoById>
+    <![CDATA[
+     delete from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_con_linecross_info where lineid = '{0}'
+    ]]>
+  </DelLineCrossInfoById>
+  <SaveLineCrossInfo>
+    <![CDATA[
+    insert into ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_con_linecross_info(lineid,crosslineid,crosslinename,longitude,latitude)    VALUES('{0}','{1}','{2}','{3}','{4}')
+    ]]>
+  </SaveLineCrossInfo>
+  <UpdateTowerPos desc="计算杆塔在线路的位置百分比，该表结果用来计算三跨两侧的杆塔">
+    <![CDATA[
+    TRUNCATE ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaPG]]>
+    <![CDATA[towerpoint_pos;
+insert into ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaPG]]>
+    <![CDATA[towerpoint_pos 
+select t.gid,st_line_locate_point(a.geom,t.geom) as pos,t.lineid
+from towerpoint t 
+left join acline_dcline_info a  on a.gid=t.lineid ;
+    ]]>
+  </UpdateTowerPos>
+  <GetLineCrossTowerInfo desc="计算某条线路和其他线路跨域的两侧杆塔">
+    <![CDATA[
+   select r_tower.gid as lineid,t.gid as towerid FROM
+(
+select l.gid,min(t.pos) as tp_a
+from(
+select gid, name,st_line_locate_point(a.geom,((ST_DumpPoints( st_intersection(a.geom, b.geom))).geom)) as temppos
+from acline_dcline_info a,(select geom from acline_dcline_info where gid='{0}')b
+where st_crosses(a.geom,b.geom) ='t' and voltagetype in(1001,1002,1003,2000,2001,2002,2003,2004)
+)l
+left join towerpoint_pos t on l.gid=t.lineid and t.pos>0.000001 and t.pos<1   and t.pos>l.temppos
+group by l.gid
+union 
+select l.gid,max(t.pos)  as tp_a
+from(
+select gid, name,st_line_locate_point(a.geom,((ST_DumpPoints( st_intersection(a.geom, b.geom))).geom)) as temppos
+from acline_dcline_info a,(select geom from acline_dcline_info where gid='{0}')b
+where st_crosses(a.geom,b.geom) ='t' and voltagetype in(1001,1002,1003,2000,2001,2002,2003,2004)
+)l
+left join towerpoint_pos t on l.gid=t.lineid and t.pos>0.000001 and t.pos<1   and t.pos<l.temppos
+group by l.gid
+) r_tower
+left join towerpoint_pos t on r_tower.gid=t.lineid and r_tower.tp_a=t.pos
+where t.gid is not null
+order by r_tower.gid
+    ]]>
+  </GetLineCrossTowerInfo>
+  <GetRailWayCrossTowerInfo desc="计算某条铁路和其他线路跨域的两侧杆塔">
+    <![CDATA[
+    select r_tower.gid as lineid,t.gid as towerid FROM
+(
+select l.gid,min(t.pos) as tp_a
+from(
+select gid, name,st_line_locate_point(st_setsrid(a.geom,4326),((ST_DumpPoints( st_intersection( st_setsrid(a.geom,4326), b.geom))).geom)) as temppos
+from acline_dcline_info a,(select geom from railway_gcj02_single )b
+where st_crosses(st_setsrid(a.geom,4326),b.geom) ='t' and voltagetype in(1001,1002,1003,2000,2001,2002,2003,2004)
+)l
+left join towerpoint_pos t on l.gid=t.lineid and t.pos>0.000001 and t.pos<1   and t.pos>l.temppos
+group by l.gid
+union 
+select l.gid,max(t.pos)  as tp_a
+from(
+select gid, name,st_line_locate_point(st_setsrid(a.geom,4326),((ST_DumpPoints( st_intersection(st_setsrid(a.geom,4326), b.geom))).geom)) as temppos
+from acline_dcline_info a,(select geom from railway_gcj02_single)b
+where st_crosses(st_setsrid(a.geom,4326),b.geom) ='t' and voltagetype in(1001,1002,1003,2000,2001,2002,2003,2004)
+)l
+left join towerpoint_pos t on l.gid=t.lineid and t.pos>0.000001 and t.pos<1   and t.pos<l.temppos
+group by l.gid
+) r_tower
+left join towerpoint_pos t on r_tower.gid=t.lineid and r_tower.tp_a=t.pos
+where t.gid is not null
+order by r_tower.gid
+    ]]>
+  </GetRailWayCrossTowerInfo>
+  <GetConvexHullInfo>
+    <![CDATA[    
+   select st_astext(ST_ConcaveHull(ST_GeomFromText('MULTIPOINT({0})'),0.99))
+    ]]>
+  </GetConvexHullInfo>
+  <GetLineChannelInfo>
+    <![CDATA[
+    select line_id,groupid,starttowerno,endtowerno,voltage_type,baselineid from ys_db.ysh_tower_densechannel_result_bak
+    ]]>
+  </GetLineChannelInfo>
+  <GetLineChannelInfo_bak>
+    <![CDATA[
+    select line_id,groupid,starttowerno,endtowerno,voltage_type  from ys_db.ysh_tower_densechannel_result
+where line_id=baselineid 
+    ]]>
+  </GetLineChannelInfo_bak>
+ <GetLineChannelPolyInfo>
+    <![CDATA[
+select   line_id,groupid,starttowerno,endtowerno,b.voltage_type,b.polygon,b.center,b.range from 
+  (  select line_id,groupid,starttowerno,endtowerno,a.voltage_type  from ys_db.ysh_tower_densechannel_result a where a. line_id=a.baselineid ) C
+    left join ys_db.ysh_towerchannelpolyInfo b on c.groupid=b.id
+    ]]>
+  </GetLineChannelPolyInfo>
+  </ROOT>

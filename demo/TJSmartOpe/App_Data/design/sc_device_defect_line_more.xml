@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="36" desc="线路搜索表格">
+    <includes>
+    <![CDATA[/conn/cssfile/ctrl/itable.css]]>
+  </includes>
+    <inits>
+        <init id="statisticType" type="request" arg="type"></init>
+    </inits>
+    <consts>
+        <const id="conditions"></const>
+        <const id="show" type="bool" arg="true"></const>
+        <const id="lst" type="2d" length="30"></const>
+        <const id="hTbl" type="number" arg="300"></const>
+        <const id="loading" type="bool" arg="false"></const>
+        <const id="searchkey"></const>
+        <const id="isShowNoImgText" type="bool" arg="false"></const>
+        <const id="m"></const>
+        <const id="tableData" type="object[]" fields="statistic,defect,count"></const>
+        <const id="tableTitle"></const>
+        <const id="tableCountTitle"></const>
+    </consts>
+    <ctrls>
+        <div id="container" desc="根容器" style="width:100%;height:100%;background-color:#013a46b3">
+            <search from="conditions" xml="shengchan/line_defect_more"></search>
+            <div ref="divIf">
+                <search-block id="sb0" show="show">
+                    <sa conditions="conditions"></sa>
+                    <e>
+                        <sizechanged>
+              <![CDATA[this.$nextTick(function() {this.resize();});]]>
+            </sizechanged>
+                    </e>
+                </search-block>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;height:30px;line-height:30px;">
+                    <image style="cursor:pointer;width:51px;height:14px;margin-left:10px;">
+                        <sa src="show"></sa>
+                        <sf from="{0}?'︽收起':'︾展开'" src="{0}?'/i/sgc/shengchan/foldbtn.png':'/i/sgc/shengchan/expandbtn.png'"></sf>
+                        <e>
+                            <onclick>
+                                <list type="script" value="this.changeExpand();"></list>
+                            </onclick>
+                        </e>
+                    </image>
+                    <div class="search-item" style="justify-content:center;margin-right:10px;">
+                        <label type="button" class="button selected" value="重置">
+                            <e>
+                                <onclick>
+                                    <list type="script" value="this.resetConditions();"></list>
+                                </onclick>
+                            </e>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- 共用一个 conditions 上面点击后会修改 conditions 引发下边useful 监听的触发-->
+            <div style="padding:10px;background-color:#013f4c">
+                <a id="container"></a>
+                <div ref="divResult">
+                    <search-useful id="result" title="设备查询>" ref="search">
+                        <sa conditions="conditions"></sa>
+                        <e>
+                            <onchange>
+                                <list type="script" value="this.search();"></list>
+                            </onchange>
+                        </e>
+                    </search-useful>
+                </div>
+                <pagetable from="tableData" v-loading="'loading'">
+                    <a highlight-field="lst_16"></a>
+                    <sa height="hTbl" border="true" items="20" stripe="true" click-highlight="true"></sa>
+                    <e>
+                        <on-row-dblclick>
+                        <![CDATA[this.dblclick(row,index);]]>
+                        </on-row-dblclick>
+                    </e>
+
+                    <!-- <icol desc="序号" type="index" width="50px"></icol> -->
+                    <icol from="statistic">
+                        <a title="page.tableTitle"></a>
+                    </icol>
+                    <icol desc="缺陷等级" from="defect">
+                        <a sortable="1"></a>
+                    </icol>
+                    <icol from="count">
+                        <a sortable="1" title="page.tableCountTitle"></a>
+                    </icol>
+
+                </pagetable>
+            </div>
+        </div>
+    </ctrls>
+    <scripts>
+        <script event="created">
+            <list type="file" value="defect_search" part="line_statistic"></list>
+            <list type="script">
+                <value>
+                    <![CDATA[ 
+                    
+                    
+                    
+                    ]]>
+                </value>
+            </list>
+        </script>
+        <script event="mounted">
+            <list type="script">
+                <value>
+          <![CDATA[
+          /*this.resize();*/
+          ]]>
+        </value>
+            </list>
+        </script>
+    </scripts>
+</root>

@@ -1,0 +1,387 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>日期时间选择</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <meta content="MSHTML 6.00.2600.0" name="GENERATOR">
+</head>
+<style>
+    <!
+    -- a:link
+    {
+        text-decoration: none;
+        color: #0000ff;
+    }
+    a:visited
+    {
+        text-decoration: none;
+        color: #0000ff;
+    }
+    a:active
+    {
+        text-decoration: none;
+    }
+    a:hover
+    {
+        text-decoration: none;
+        color: #ff6600;
+    }
+    -- ></style>
+<body bgcolor="White" onload="fload()" style="margin: 0px;" scroll="no">
+    <div style="height: 80%; width: 100%">
+        <script language="javascript" src="/conn/jsfile/inthelper.js">
+        </script>
+        <script language="javascript"><!--
+            var dtCur = window.dialogArguments;
+            if (dtCur == "" || dtCur == undefined) {
+                dtCur = new Date();
+            } else {
+                if(dtCur.indexOf(" ") != -1)
+                    dtCur = dtCur.substring(0, (dtCur.indexOf(" ")));
+                var startindex, endindex, len;
+                var year, mon, day;
+                len = dtCur.length;
+                startindex = dtCur.indexOf("-");
+                endindex = dtCur.indexOf("-", startindex + 1);
+                var bfailed = false;
+                try {
+                    year = parseInt(dtCur.substring(0, startindex), 10);
+                    mon = parseInt(dtCur.substring(startindex + 1, endindex), 10);
+                    day = parseInt(dtCur.substring(endindex + 1, len), 10);
+                    if (isNaN(year) || isNaN(mon) || isNaN(day))
+                        bfailed = true;
+                    else {
+                        dtCur = new Date(year, mon - 1, day);
+                        if ((dtCur.getFullYear() != year) || (dtCur.getMonth() != mon - 1) || (dtCur.getDate() != day))
+                            bfailed = true;
+                    }
+                } catch (e) {
+                    bfailed = true;
+                }
+                if (bfailed) {
+                    alert("已有的日期有错误，必须是yyyy-mm-dd格式！");
+                    dtCur = new Date();
+                }
+            }
+            function getWholeTime(t) {
+                if (typeof (t) == "undefined") return "";
+                if (t == "") return "";
+                if (t.indexOf(" ") == -1)
+                    t += " 00:00:00";
+                t = t.substring(t.indexOf(" ") + 1);
+                var s1, s2, h, m, s;
+                s1 = t.indexOf(":");
+                if (s1 < 0)
+                    return "";
+                s2 = t.indexOf(":", s1 + 1);
+                if (s2 < 0)
+                    return "";
+                h = t.substring(0, s1);
+                h = TrimLeftZero(h);
+                if (!IsPositiveIntEx(h))
+                    return "";
+                m = t.substring(s1 + 1, s2);
+                m = TrimLeftZero(m);
+                if (!IsPositiveIntEx(m))
+                    return "";
+                s = t.substring(s2 + 1, t.length);
+                s = TrimLeftZero(s);
+                if (!IsPositiveIntEx(s))
+                    return "";
+                if (h == 0 && m == 0 && s == 0)
+                    return "00:00:00";
+                return getTimeStr(h, m, s);
+            }
+
+            function getTimeStr(h, m, s) {
+                if (h == 0 && m == 0 && s == 0)
+                    return "";
+                var ret = "";
+                if ((h < 0) || (h > 23) || (m < 0) || (m > 59) || (s < 0) || (s > 59))
+                    return "";
+                if (h < 10)
+                    ret = "0";
+                ret += (h + ":");
+                if (m < 10)
+                    ret += "0";
+                ret += (m + ":");
+                if (s < 10)
+                    ret += "0";
+                return ret + s;
+            }
+
+            function selectTime(h, m, s) {
+                hour.selectedIndex = h;
+                minute.selectedIndex = m;
+                second.selectedIndex = s
+            }
+--></script>
+        <script src="/conn/jsfile/calendar.js"></script>
+        <script type="text/javascript">            //复写calendar的方法
+            function fSetSelected(aCell) {
+                var iOffset = 0;
+                var iYear = parseInt(tbSelYear.value);
+                var iMonth = parseInt(tbSelMonth.value);
+                aCell.bgColor = gcBG;
+                with (aCell.children["cellText"]) {
+                    var iDay = parseInt(innerText);
+                    if (color == gcGray)
+                        iOffset = (Victor < 10) ? -1 : 1;
+                    if (color == gcGray) {
+                        iOffset = (iDay < 15) ? 1 : -1;
+                    }
+                    iMonth += iOffset;
+                    if (iMonth < 1) {
+                        iYear--;
+                        iMonth = 12;
+                    } else if (iMonth > 12) {
+                        iYear++;
+                        iMonth = 1;
+                    }
+                }
+                giYear = iYear;
+                giMonth = iMonth;
+                giDay = iDay;
+                var arrObj = document.getElementsByTagName("FONT");
+                for (var i = 0; i < arrObj.length; i++) {
+                    if (arrObj[i].innerText.indexOf("选择") != -1) {
+                        arrObj[i].innerText = "选择: " + giYear + "/" + giMonth + "/" + giDay;
+                        break;
+                    }
+                }
+            }
+        </script>
+        <script language="javascript"><!--
+            function fload() {
+                fPopCalendar(document.all.txt1, document.all.txt1);
+                var tm = getWholeTime(window.dialogArguments);
+                if (tm == "") {
+                    var dt = new Date();
+                    selectTime(dt.getHours(), dt.getMinutes(), dt.getSeconds());
+                }
+                else {
+                    selectTime(tm.substr(0, 2), tm.substr(3, 2), tm.substr(6, 2));
+                }
+            }
+
+            function fkeydown() {
+                if (event.keyCode == 27) {
+                    event.returnValue = null;
+                    window.returnValue = null;
+                    window.close();
+                }
+            }
+
+            function fSetDate(iYear, iMonth, iDay) {
+                //VicPopCal.style.visibility = "hidden";
+                if ((iYear == 0) && (iMonth == 0) && (iDay == 0)) {
+                    gdCtrl.value = "";
+                } else {
+                    iMonth = iMonth + 100 + "";
+                    iMonth = iMonth.substring(1);
+                    iDay = iDay + 100 + "";
+                    iDay = iDay.substring(1);
+                    gdCtrl.value = iYear + "-" + iMonth + "-" + iDay;
+                }
+
+                for (i in goSelectTag)
+                    goSelectTag[i].style.visibility = "visible";
+                goSelectTag.length = 0;
+                if (gdCtrl.value == "")
+                    window.returnValue = "";
+                else if (onSelectTime() == 0)
+                    window.returnValue = gdCtrl.value;
+                else
+                    window.returnValue = gdCtrl.value + " " + onSelectTime();
+                window.close();
+            }
+
+            function onSelectTime() {
+                return getTimeStr(hour.value, minute.value, second.value);
+            }
+            function clearTime() {
+                hour.selectedIndex = 0;
+                minute.selectedIndex = 0;
+                second.selectedIndex = 0;
+            }
+            document.onkeydown = fkeydown;
+--></script>
+        <input id="txt1" style="display: none">
+    </div>
+    <div style="height: 20%; background-color: #D6DFF7; width: 100%">
+        <table cellpadding="0" cellspacing="0" style="width: 100%; height: 100%;">
+            <tr>
+                <td style="text-align: center; vertical-align: middle;">
+                    <table cellpadding="1" cellspacing="1">
+                        <tr valign="middle" height="25px">
+                            <td>
+                                <select id="hour">
+                                    <option value="0">00</option>
+                                    <option value="1">01</option>
+                                    <option value="2">02</option>
+                                    <option value="3">03</option>
+                                    <option value="4">04</option>
+                                    <option value="5">05</option>
+                                    <option value="6">06</option>
+                                    <option value="7">07</option>
+                                    <option value="8">08</option>
+                                    <option value="9">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                </select>
+                                :
+                            </td>
+                            <td>
+                                <select id="minute">
+                                    <option value="0">00</option>
+                                    <option value="1">01</option>
+                                    <option value="2">02</option>
+                                    <option value="3">03</option>
+                                    <option value="4">04</option>
+                                    <option value="5">05</option>
+                                    <option value="6">06</option>
+                                    <option value="7">07</option>
+                                    <option value="8">08</option>
+                                    <option value="9">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                    <option value="32">32</option>
+                                    <option value="33">33</option>
+                                    <option value="34">34</option>
+                                    <option value="35">35</option>
+                                    <option value="36">36</option>
+                                    <option value="37">37</option>
+                                    <option value="38">38</option>
+                                    <option value="39">39</option>
+                                    <option value="40">40</option>
+                                    <option value="41">41</option>
+                                    <option value="42">42</option>
+                                    <option value="43">43</option>
+                                    <option value="44">44</option>
+                                    <option value="45">45</option>
+                                    <option value="46">46</option>
+                                    <option value="47">47</option>
+                                    <option value="48">48</option>
+                                    <option value="49">49</option>
+                                    <option value="50">50</option>
+                                    <option value="51">51</option>
+                                    <option value="52">52</option>
+                                    <option value="53">53</option>
+                                    <option value="54">54</option>
+                                    <option value="55">55</option>
+                                    <option value="56">56</option>
+                                    <option value="57">57</option>
+                                    <option value="58">58</option>
+                                    <option value="59">59</option>
+                                </select>
+                                :
+                            </td>
+                            <td>
+                                <select id="second">
+                                    <option value="0">00</option>
+                                    <option value="1">01</option>
+                                    <option value="2">02</option>
+                                    <option value="3">03</option>
+                                    <option value="4">04</option>
+                                    <option value="5">05</option>
+                                    <option value="6">06</option>
+                                    <option value="7">07</option>
+                                    <option value="8">08</option>
+                                    <option value="9">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                    <option value="32">32</option>
+                                    <option value="33">33</option>
+                                    <option value="34">34</option>
+                                    <option value="35">35</option>
+                                    <option value="36">36</option>
+                                    <option value="37">37</option>
+                                    <option value="38">38</option>
+                                    <option value="39">39</option>
+                                    <option value="40">40</option>
+                                    <option value="41">41</option>
+                                    <option value="42">42</option>
+                                    <option value="43">43</option>
+                                    <option value="44">44</option>
+                                    <option value="45">45</option>
+                                    <option value="46">46</option>
+                                    <option value="47">47</option>
+                                    <option value="48">48</option>
+                                    <option value="49">49</option>
+                                    <option value="50">50</option>
+                                    <option value="51">51</option>
+                                    <option value="52">52</option>
+                                    <option value="53">53</option>
+                                    <option value="54">54</option>
+                                    <option value="55">55</option>
+                                    <option value="56">56</option>
+                                    <option value="57">57</option>
+                                    <option value="58">58</option>
+                                    <option value="59">59</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr valign="middle" height="25px">
+                            <td colspan="3" align="center" style='font-size: 12px'>
+                                &nbsp;<a href="#" onclick='clearTime();'>归零时间</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

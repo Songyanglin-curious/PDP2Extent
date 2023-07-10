@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetZBYQID>
+    <![CDATA[select dcloud_id,dcloud_name 
+    from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_pwrtransfm_c c
+    join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tdevice_pms_sx m on c.d5000_id=m.devicestrid
+    where m.pmsid={0} and c.owner='610000' ]]>
+  </GetZBYQID>
+  <GetDLQID>
+    <![CDATA[select dcloud_id,dcloud_name 
+    from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_breaker_c c
+    join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tdevice_pms_sx m on c.d5000_id=m.devicestrid
+    where m.pmsid={0} and c.owner='610000' ]]>
+  </GetDLQID>
+  <GetGLKGID>
+    <![CDATA[select dcloud_id,dcloud_name 
+    from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_DIS_C c
+    join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tdevice_pms_sx m on c.d5000_id=m.devicestrid
+    where m.pmsid={0} and c.owner='610000' ]]>
+  </GetGLKGID>
+  <GetMXID>
+    <![CDATA[select dcloud_id,dcloud_name 
+    from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_busbar_c c
+    join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tdevice_pms_sx m on c.d5000_id=m.devicestrid
+    where m.pmsid={0} and c.owner='610000' ]]>
+  </GetMXID>
+</ROOT>

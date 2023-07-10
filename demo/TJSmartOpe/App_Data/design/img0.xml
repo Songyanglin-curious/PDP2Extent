@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="36" desc="表格">
+  <inits>
+    <init id="src" type="request" arg="src"></init>
+  </inits>
+  <consts>
+    <const id="path"></const>
+  </consts>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <s width="100%" height="100%"></s>
+      <img>
+        <sa src="path"></sa>
+      </img>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+         this.path = "/i/sgc/" + this.src+".png";
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

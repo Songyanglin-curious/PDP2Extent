@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+
+    <getDefectInfo type="sql" args="startTime,endTime" fields="DefectFindTime,StationLine,DefectDeviceName,DefectState,DefectDescribe,RemoveDefectTime,SpanDeadline,DefectNum,Severity,RemoveDefectState,DeviceType,DeviceNum,DCloudId,DefectLevel">
+        <![CDATA[ 
+        SELECT  A.DEFECT_FIND_TIME,A.STATION_LINE,A.DEFECT_DEV,A.DEFECT_TYPE,A.DEFECT_DESCRIBE,A.XIAOQUE_TIME,A.SPAN_EXPIRE,A.DEFECT_NUM,A.DEFECT_LEVEL,A.IS_XIAOQUE,A.DEV_TYPE,A.DEV_NUM,'01129901010009',DEFECT_LEVEL
+        FROM ]]>
+        <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+        <![CDATA[ 
+        YSH_SC_QUEXIAN AS A
+        WHERE A.DEFECT_FIND_TIME >= {startTime} AND A.DEFECT_FIND_TIME < {endTime}
+        ORDER BY A.DEFECT_FIND_TIME DESC
+        ]]>
+    </getDefectInfo>
+
+
+    <GetDefectDetail type="sql" args="defectNum"
+        fields="DEFECT_DEV,DEV_TYPE,STATION_LINE,DEFECT_NUM,DEFECT_LEVEL,DEFECT_BELONG_DEPT,DEFECT_TYPE,DEFECT_DESCRIBE,DEFECT_FIND_TIME,IS_DEFERRAL_XIAOQUE,SPAN_EXPIRE,XIAOQUE_TIME,DEV_NUM,VOLTAGE_CLASS,DEV_MODEL,DEV_CATEGORY,MANUFACTURER,PART,PART_TYPE,IS_FAMILY_DEFECT,STATION_OR_LINE,REGISTRANT_TIME,START_USE_DAY,REGISTRANTER,FINDER,FINDER_DEPT,FIND_TEAM,FIND_WAY,BELONGS_CITY,CURRENT_HANDELER,TECHNOLOGY_CAUSE,RESPONSIBLE_CAUSE,XIAOQUE_DEPT,XIAOQUE_TEAM,XIAOQUE_PERSON,LEFTOVER_PROBLEM,ACCEPTANCE_DEPT,ACCEPTANCE_TEAM,ACCEPTANCE_PERSON,ACCEPTANCE_TIME,ACCEPTANCE_OPINION,IS_HIDDEN_DANGER,DEFECT_CONTENT,HANDEL_RESULT,COMPLETE_STATE">
+        <![CDATA[ 
+        SELECT  
+        DEFECT_DEV,DEV_TYPE,STATION_LINE,
+        DEFECT_NUM,DEFECT_LEVEL,DEFECT_BELONG_DEPT,
+        DEFECT_TYPE,DEFECT_DESCRIBE,DEFECT_FIND_TIME,
+        IS_DEFERRAL_XIAOQUE,SPAN_EXPIRE,XIAOQUE_TIME,
+        DEV_NUM,VOLTAGE_CLASS,DEV_MODEL,
+        DEV_CATEGORY,MANUFACTURER,PART,
+        PART_TYPE,IS_FAMILY_DEFECT,STATION_OR_LINE,
+        REGISTRANT_TIME,START_USE_DAY,REGISTRANTER,
+        FINDER,FINDER_DEPT,FIND_TEAM,
+        FIND_WAY,BELONGS_CITY,CURRENT_HANDELER,
+        TECHNOLOGY_CAUSE,RESPONSIBLE_CAUSE,XIAOQUE_DEPT,
+        XIAOQUE_TEAM,XIAOQUE_PERSON,LEFTOVER_PROBLEM,
+        ACCEPTANCE_DEPT,ACCEPTANCE_TEAM,ACCEPTANCE_PERSON,
+        ACCEPTANCE_TIME,ACCEPTANCE_OPINION,IS_HIDDEN_DANGER,
+        DEFECT_CONTENT,HANDEL_RESULT,COMPLETE_STATE
+        FROM ]]>
+        <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+        <![CDATA[ 
+        YSH_SC_QUEXIAN WHERE DEFECT_NUM = {defectNum}
+        ]]>
+    </GetDefectDetail>
+
+
+    <!-- 获取线路缺陷简略数据 -->
+    <getLineDefectInfo type="sql" args="startTime,endTime" fields="FIND_DAY,LINE_NAME,START_TOWER_NAME,DEFECT_LEVEL,BJ,DEFECT_DESCRIBE,BJZL,VOL,DEFECT_DETAIL,D_CLOUD_ID,ID">
+        <![CDATA[ 
+        SELECT  A.FIND_DAY,A.LINE_NAME,A.START_TOWER_NAME,A.DEFECT_LEVEL,A.BJ,A.DEFECT_DESCRIBE,A.BJZL,A.VOL,A.DEFECT_DETAIL,A.D_CLOUD_ID,A.ID
+        FROM ]]>
+        <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+        <![CDATA[ 
+        YSH_SC_LINE_QUEXIAN AS A
+        WHERE A.FIND_DAY >= {startTime} AND A.FIND_DAY < {endTime}
+        ORDER BY A.FIND_DAY DESC
+        ]]>
+    </getLineDefectInfo>
+    <!-- 获取一条线路缺陷的详情 -->
+    <GetLineDefectDetail type="sql" args="ID"
+        fields="LINE_NAME,START_TOWER_NAME,END_TOWER_NAME,LINE_YEAR,VOL,AC_DC,YWBQ,RWLX,XSLC,CZDW,ZCDW,YWDW,FIND_DAY,DEFECT_LEVEL,DEFECT_DESCRIBE,BJZL,BJ,BW,DEFECT_DETAIL">
+        <![CDATA[ 
+        SELECT  
+        LINE_NAME,START_TOWER_NAME,END_TOWER_NAME,
+        LINE_YEAR,VOL,AC_DC,
+        YWBQ,RWLX,XSLC,
+        CZDW,ZCDW,YWDW,
+        FIND_DAY,DEFECT_LEVEL,DEFECT_DESCRIBE,
+        BJZL,BJ,BW,
+        DEFECT_DETAIL
+        FROM ]]>
+        <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+        <![CDATA[ 
+        YSH_SC_LINE_QUEXIAN WHERE ID = {ID}
+        ]]>
+    </GetLineDefectDetail>
+    <!-- 线路缺陷图片 -->
+    <GetLineDefectImg type="text" fields="url" args="lineID,towerName" datatype="2d">
+        /i/sgc/shengchan/linedefect/1.jpg
+        /i/sgc/shengchan/linedefect/2.jpg
+        /i/sgc/shengchan/linedefect/3.jpg
+        /i/sgc/shengchan/linedefect/4.jpg
+        /i/sgc/shengchan/linesdefect/5.jpg
+    </GetLineDefectImg>
+
+    <!-- 获取线路缺陷统计字段 -->
+    <!--DEFECT_LEVEL,LINE_NAME,BW,BJ,SCCJ,  -->
+    <getLineDefectStatistic type="sql" args="startTime,endTime" fields="DEFECT_LEVEL,LINE_NAME,BW,BJ,YWDW">
+        <![CDATA[ 
+        SELECT  DEFECT_LEVEL,LINE_NAME,BW,BJ,YWDW
+        FROM ]]>
+        <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+        <![CDATA[ 
+        YSH_SC_LINE_QUEXIAN 
+        WHERE FIND_DAY >= {startTime} AND FIND_DAY < {endTime}
+        ORDER BY FIND_DAY DESC
+        ]]>
+    </getLineDefectStatistic>
+
+    <!-- 获取杆塔列表 -->
+    <GetACTowerByLineIDAndNO db="SGC" args="lineID,towerNo" fields="id,longitude,latitude,lineID,towerNo">
+        <![CDATA[ 
+        SELECT  A.TOWER_ID,B.LONGITUDE,B.LATITUDE,A.LINE_ID,A.TOWERNO FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_ACLINE_R_TOWER AS A
+        LEFT JOIN  ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TOWER_B AS B ON B.ID = A.TOWER_ID
+        WHERE A.LINE_ID = {lineID} AND A.TOWERNO IN ({{towerNo}})
+        ]]>
+    </GetACTowerByLineIDAndNO>
+    <GetDCTowerByLineIDAndNO db="SGC" args="lineID,towerNo" fields="id,longitude,latitude,lineID,towerNo">
+        <![CDATA[ 
+        SELECT  A.TOWER_ID,B.LONGITUDE,B.LATITUDE,A.LINE_ID,A.TOWERNO FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_DCLINE_R_TOWER AS A
+        LEFT JOIN  ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TOWER_B AS B ON B.ID = A.TOWER_ID
+        WHERE A.LINE_ID = {lineID} AND A.TOWERNO IN ({{towerNo}})
+        ]]>
+    </GetDCTowerByLineIDAndNO>
+</ROOT>

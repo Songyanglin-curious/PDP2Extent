@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;" desc="线路年限">
+  <inits>
+  </inits>
+  <consts>
+    <const id="optioncount" type="object" arg=""></const>
+    <const id="optionyunxingyear" type="object" arg=""></const>
+    <const id="datalist" type="[]"></const>
+    <const id="list" ></const>
+    <const id="listnew" type="2d" length="10"></const>
+    <const id="listold" type="2d" length="10"></const>
+    <const id="hTbl" ></const>
+    <const id="contentstyle" type="object"></const>
+    <const id="names" ></const>
+  </consts>
+  <ctrls>
+  <div >
+  <a class="pdiv"></a>
+    <div>
+      <a class="f" ref="divtop"  s_width="100%"></a>
+      <sa s_height="hTbl+'px'"></sa>
+      <title-div style="flex:1;" id="t">
+        <a title='线路总体数量统计' title1="单位：条"></a>
+        <sa content-style='{ }'></sa>
+         <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+        <div >
+          <a s_height="50px" id="divhtml"></a>
+          <label>
+          <a class="nametext"/>线路总数量
+          </label>
+          <label>
+          <a class="numtext"/>
+          <sa value="list[list.length-1]"></sa>
+          </label>
+        </div>  
+        <highchart desc="图表">
+            <a ref="hchart" s_width="100%"  ></a>
+            <sa option="optioncount" s_height="(hTbl - 110)+'px'" ></sa>
+        </highchart>
+        
+      </title-div>
+      <title-div style="flex:2;" id="tt">
+        <a title='线路运行年限统计' title1="单位：条" s_margin-left="10px"></a>
+        <sa content-style='{ }' isShowIcon="false"></sa>
+         <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+        <ecommonchart desc="图表">
+            <a ref="hchart2" s_width="100%" ></a>
+            <sa option="optionyunxingyear" s_height="(hTbl - 160)+'px'" ></sa>
+        </ecommonchart>
+        <table from="list" >
+            <a  class="common-table" width="100%" height="100px"></a>
+          <tr>
+              <td>
+                 <a class="tab-twotitle"></a>
+              <label >
+              <a value="运行年限"></a>
+              </label>
+              <label >类型 </label>
+            </td>
+              <repeat type="number" start="0" length="4" offset="1">
+                  <c>
+                    <td style="text-align:center">
+                      <label from="names[{item}]"></label>
+                    </td>
+                  </c>
+                </repeat>
+              <td ><a v-text="'总计'"></a></td>
+          </tr>
+          <tr>
+              <td ><a v-text="'线路'"></a></td>
+              <repeat type="number" start="0" length="5" offset="1">
+                  <c>
+                    <td style="text-align:center">
+                      <label from="list[{item}]"></label>
+                    </td>
+                  </c>
+                </repeat>
+          </tr>
+        </table>
+      </title-div>
+    </div>
+    <div>
+    <a class="f" ref="divbottom" s_width="100%"></a>
+      <title-div>
+        <a title='线路年限排行top5' title1=" " class="f1" s_margin-top="10px" ></a>
+        <sa content-style="contentstyle"  isShowIcon="false"></sa>
+          <div>
+            <a class=" f dc " s_width="50%" s_padding="5px"></a>
+            <label>
+                <a class="tab-title" value="最新线路top5"></a>
+            </label>
+            <div>
+              <a id="container"></a>
+              <itable from="listnew" >
+                <a class="smalltable" width="100%"></a>
+                <sa  border="true"  stripe="true" ></sa>
+                <icol desc="线路名称" from="listnew_1" >
+                  <a minWidth="100"></a>
+                </icol>
+                <icol desc="投运时间" from="listnew_2" format="111000"></icol>
+                <icol desc="运行年限(年)" from="listnew_4">
+                  <label from="listnew_5">
+                  <sf from="parseInt({0})"></sf>
+                  </label>
+                </icol>            
+              </itable>
+            </div>
+          </div>
+          <div>
+          <a class=" f dc " s_width="50%" s_padding="5px"></a>
+            <label>
+              <a class="tab-title" value="最久线路top5"></a>
+            </label>
+            <div>
+              <a id="container"></a>
+              <itable from="listold" >
+                <a class="smalltable" width="100%"></a>
+                <sa  border="true"  stripe="true" ></sa>
+                <icol desc="线路名称" from="listold_1" >
+                  <a minWidth="100"></a>
+                </icol>
+                <icol desc="投运时间" from="listold_2" format="111000"></icol>
+                <icol desc="运行年限(年)" from="listold_4">
+                  <label from="listold_5">
+                  <sf from="parseInt({0})"></sf>
+                  </label>
+                </icol>
+              </itable>
+            </div>
+          </div>
+      </title-div>
+    </div>
+  </div>
+  </ctrls>
+  <css>
+    <![CDATA[
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsbzc" part="lineleft"></list>
+      <list type="file" value="dsbzc" part="tobig"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+         <![CDATA[
+            this.refresh();
+            
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

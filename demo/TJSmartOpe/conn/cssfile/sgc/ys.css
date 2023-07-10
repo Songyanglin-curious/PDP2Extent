@@ -1,0 +1,326 @@
+/*v=1.20.609.1*/
+.ys {
+    position: absolute;
+    z-index: 9;
+}
+
+.ys-caption {
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 42px;
+    font-weight: normal;
+    font-stretch: normal;
+    letter-spacing: 2px;
+    color: #ffffff;
+    top: 0px;
+    left: 50%;
+    width: 992px;
+    margin-left: -496px;
+    height: 69px;
+    background-image: url(/i/sgc/yanshi/captionbk.png);
+    background-repeat: no-repeat;
+    text-align: center
+}
+
+.ys-sub {
+    top: 70px;
+    background-image: url(/i/sgc/yanshi/subbk.png);
+    background-repeat: no-repeat;
+    width: 287px;
+    height: 60px;
+    left: 50%;
+    margin-left: -144px;
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 31px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 16px;
+    letter-spacing: 2px;
+    color: #ffffff;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.ys-legend {
+    background-image: url(/i/sgc/yanshi/legendbk.png);
+    background-repeat: no-repeat;
+    width: 424px;
+    height: 41px;
+    top: 70px;
+    right: 100px;
+}
+
+.ys-legend-left {
+    display: inline-block;
+    float: left;
+    width: 160px;
+    height: 21px;
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 22px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 16px;
+    letter-spacing: 0px;
+    color: #ffffff;
+    margin-top: 6px;
+    margin-left: 50px;
+    cursor: pointer;
+}
+
+.ys-legend-right {
+    display: inline-block;
+    float: right;
+    width: 200px;
+    height: 21px;
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 22px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 16px;
+    letter-spacing: 0px;
+    color: #ffffff;
+    margin-top: 14px;
+    margin-right: -14px;
+    cursor: pointer;
+}
+
+.ys-statistics {
+    top: 90px;
+    left: 79px;
+    width: 489px;
+    height: 709px;
+    background-image: url(/i/sgc/yanshi/statbk1.png);
+    opacity: 0.6;
+    padding: 14px;
+}
+
+.ys-statistics-bar {
+    top: 90px;
+    left: 0px;
+    width: 39px;
+    height: 160px;
+    background-image: url(/i/sgc/yanshi/statbar.png);
+    opacity: 0.6;
+}
+
+.ys-statistics-caption {
+    width: 18px;
+    height: 114px;
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 19px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 19px;
+    letter-spacing: 0px;
+    color: #ffffff;
+    position: absolute;
+    top: 12px;
+    right: 13px;
+    cursor: pointer;
+}
+
+.ys-statistics-box {
+    position: absolute;
+    left: 0px;
+    top: 14px;
+    font-size: 0;
+    width: 434px;
+    height: 600px;
+    padding-left: 40px;
+}
+
+.ys-statistics-sum {
+    position: absolute;
+    bottom: 20px;
+    left: 40px;
+}
+
+.ys-statistics-sum-item {
+    display: inline-block;
+}
+
+.ys-statistics-sum-title {
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 14px;
+    letter-spacing: 0px;
+    color: #fff;
+}
+
+.ys-statistics-sum-value {
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 25px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 35px;
+    letter-spacing: 0px;
+    color: #ff0000;
+}
+
+.ys-statistics-up {
+    position: absolute;
+    top: 25px;
+    left: 15px;
+}
+
+.ys-statistics-down {
+    position: absolute;
+    left: 15px;
+    bottom: 5px;
+}
+
+.ys-statistics-block {
+    width: 184px;
+    height: 191px;
+    position: relative;
+    display: inline-block;
+    margin-top: 15px;
+    margin-right: 12px;
+}
+
+.ys-statistics-block-s {
+    width: 184px;
+    height: 148px;
+    position: relative;
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 12px;
+}
+.ys-statistics-block-bkimg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.ys-statistics-block-select {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+}
+
+.ys-statistics-content-img {
+    width: 194px;
+    height: 256px;
+}
+
+.ys-statistics-block-name {
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 25px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 16px;
+    letter-spacing: 1px;
+    color: #6dbbe6;
+    position: absolute;
+    top: 17px;
+    left: 11px;
+}
+
+.ys-statistics-content {
+    position: absolute;
+    bottom: 18px;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.ys-statistics-content-row {
+    display: flex;
+    align-items: center;
+}
+
+.ys-statistics-content-name {
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 10px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 14px;
+    letter-spacing: 0px;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    text-shadow: 2px 2px 8px #6dbbe6;
+    width: 80px;
+}
+
+.ys-statistics-content-value {
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 30px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 30px;
+    letter-spacing: 0px;
+    color: #6dbbe6;
+    display: inline-block;
+    text-shadow: 2px 2px 8px #6dbbe6;
+}
+
+.ys-legend-content {
+    top: 156px;
+    right: 95px;
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 17px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 24px;
+    letter-spacing: 1px;
+    color: #6dbbe6;
+}
+
+.ys-player-button {
+    width: 182px;
+    height: 182px;
+    top: 146px;
+    right: 226px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ys-button-text {
+    width: 66px;
+    height: 66px;
+    font-family: AdobeHeitiStd-Regular;
+    font-size: 31px;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 34px;
+    letter-spacing: 2px;
+    color: #ffffff;
+}
+
+.ys-chart-box {
+    width: 398px;
+    height: 243px;
+    background-image: url(/i/sgc/yanshi/kuang.png);
+    padding: 10px;
+}
+
+.ys-chart-circle1 {
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    z-index: -1;
+}
+
+.ys-chart-circle2 {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    z-index: -1;
+}
+
+.ys-chart-circle3 {
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    z-index: -1;
+}
+
+.ys-chart-circle4 {
+    position: absolute;
+    z-index: -1;
+    bottom: -50px;
+    left: -50px;
+}

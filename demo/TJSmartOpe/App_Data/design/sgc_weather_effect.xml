@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" desc="影响列表">
+  <inits>
+    <init id="tm" type="request" arg="tm"></init>
+    <init id="tp" type="request" arg="tp"></init>
+  </inits>
+  <consts>
+    <const id="alltypes" desc="类型" arg="s,厂站,l,线路" type="2d" length="2"></const>
+    <const id="curtype" desc="当前选中" arg="s" type="string"></const>
+    <const id="lst" type="2d" length="7"></const>
+    <const id="showTower" type="bool" arg="false"></const>
+    <const id="showLevel" type="bool" arg="false"></const>
+    <const id="showDialog" type="bool" arg="false"></const>
+    <const id="jxpUrl"></const>
+    <const id="height" arg="100%"></const>
+  </consts>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a s_height="100%" s_width="100%"></a>
+      <c>
+        <div id="div2" desc="容器">
+          <a class="title-bar"></a>
+          <c>
+            <yshtab id="yshtab15" desc="标签卡" from="curtype" source="alltypes">
+              <a tabstyle="nbTab"></a>
+              <e>
+                <onclick>
+                  <list type="script" value="this.clickTab();"></list>
+                </onclick>
+              </e>
+            </yshtab>
+          </c>
+        </div>
+        <div id="divPage">
+          <a s_height="calc(100% - 40px)" s_font-size="0"></a>
+          <itable from="lst">
+            <sa stripe="true"></sa>
+            <e>
+              <on-row-click>
+                <list type="script">
+                  <value>
+                    <![CDATA[ProjectSGC.Map.locate('',row.lst_0)]]>
+                  </value>
+                </list>
+              </on-row-click>
+            </e>
+            <c>
+              <icol desc="序号" show="false">
+                <a width="60px" type="index"></a>
+              </icol>
+              <icol desc="操作">
+                <a width="60"></a>
+                <img>
+                  <a s_width="14px" s_height="14px" src="/i/sgc/operate/locate.png"></a>
+                  <s cursor="pointer"></s>
+                  <e>
+                    <onclick.stop>
+                      <list type="script">
+                        <value>
+                          <![CDATA[this.locateRow(this.params.row);]]>
+                        </value>
+                      </list>
+                    </onclick.stop>
+                  </e>
+                </img>
+                <img show="false">
+                  <a s_width="14px" s_height="14px" s_margin-left="3px" src="/i/sgc/operate/effect.png"></a>
+                  <s cursor="pointer"></s>
+                  <e>
+                    <onclick.stop>
+                      <list type="script">
+                        <value>
+                          <![CDATA[this.showJxp(this.params.row);]]>
+                        </value>
+                      </list>
+                    </onclick.stop>
+                  </e>
+                </img>
+              </icol>
+              <icol desc="所属电网" from="lst_4">
+                <ysh-card>
+                  <a card="grid"></a>
+                  <sa id="lst_3" text="lst_4"></sa>
+                </ysh-card>
+              </icol>
+              <icol desc="电压等级" from="lst_2">
+                <a sortable="1" dtype="voltage" sortType="desc"></a>
+              </icol>
+              <icol desc="名称" from="lst_1">
+                <ysh-card>
+                  <sa card="getCard()" id="lst_0" text="lst_1"></sa>
+                </ysh-card>
+              </icol>
+              <icol desc="杆塔段" from="lst_5" show="showTower"></icol>
+              <icol show="showLevel" desc="强度" from="lst_6"></icol>
+            </c>
+          </itable>
+        </div>
+        <imodal desc="对话框" from="showDialog">
+          <a width="90%" s_height="100%" ref="detailModal" cancel-text=" "></a>
+          <c>
+            <iframe show="showDialog">
+              <a id="frmJxp" s_border="0" s_width="100%"></a>
+              <sa src="jxpUrl" s_height="height"></sa>
+            </iframe>
+          </c>
+        </imodal>
+      </c>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="file" value="deffect"></list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+            ProjectSGC.require(["voltage","grid"]);
+            this.refresh();
+            this.resize();
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

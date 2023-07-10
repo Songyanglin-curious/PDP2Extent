@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetStationByDcc>
+    <![CDATA[
+      SELECT ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_SUBSTATION_B WHERE DCC_ID={0}
+      UNION ALL
+      SELECT ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_PLANT_B WHERE DCC_ID={0}
+      UNION ALL
+      SELECT ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_CONVERSUBSTATION_B WHERE DCC_ID={0}
+    ]]>
+  </GetStationByDcc>
+  <GetLineByDcc>
+    <![CDATA[
+    SELECT ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_ACLINE_B WHERE DISPATCH_ORG_ID={0}
+    UNION ALL
+    SELECT ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_DCLINE_B WHERE DISPATCH_ORG_ID={0}
+    ]]>
+  </GetLineByDcc>
+  <GetPlantByDcc>
+    <![CDATA[
+    SELECT L.ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_ACLINE_B L 
+    JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_PLANT_B P ON L.START_ST_ID=P.ID
+    WHERE P.DCC_ID={0} and P.operate_state=1003
+    UNION 
+    SELECT L.ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_ACLINE_B L 
+    JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_PLANT_B P ON L.END_ST_ID=P.ID
+    WHERE P.DCC_ID={0} and P.operate_state=1003
+  ]]>
+  </GetPlantByDcc>
+</ROOT>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+  <TEMP>
+    <Content>
+      <![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<G w="{0}" h="{1}" bgc="0,0,0">
+    <Layer name="第0平面" show="1" >
+{3}
+{2}
+{4}
+{5}
+	</Layer>
+</G>]]>
+    </Content>
+    <File>/g/{0}.g</File>
+    <statemp>
+      <![CDATA[<Substation id="{0}" x="{1}" y="{2}" tfr="rotate(0) scale(1,1)" devref="#{3}" keyid="{4}" key_name="{5}" voltype="{6}" />]]>      
+    </statemp>
+    <linetemp>
+      <![CDATA[<Line id="{0}" lc="255,0,0" lw="2" ls="1" d="{1}" keyid="{2}" key_name="{3}" voltype="{4}" />]]>      
+    </linetemp>
+    <fonttemp>
+      <![CDATA[<Text id="{0}" x="{1}" y="{2}" fs="{3}" ts="{4}" lc="255,0,255" ls="1" lw="1" wm="1" tfr="rotate(0) scale(1,1)" />]]>      
+    </fonttemp>
+    <bordertemp>
+      <![CDATA[<polyline d="{0}" lw="3" />]]>
+    </bordertemp>
+  </TEMP>	
+  <CFG>
+    <statype1001>火电.bdz.icn.g:火电</statype1001>
+    <statype1002>水电.bdz.icn.g:水电</statype1002>
+    <statype1003>核电.bdz.icn.g:核电</statype1003>
+    <statype1004>风电.bdz.icn.g:风电</statype1004>
+    <statype1005>光伏.bdz.icn.g:光伏</statype1005>
+    <statype1006>抽蓄.bdz.icn.g:抽蓄</statype1006>
+    <statype2001>变电站.bdz.icn.g:变电站</statype2001>
+    <statype2002>开关站.bdz.icn.g:开关站</statype2002>
+    <statype2003>牵引站.bdz.icn.g:牵引站</statype2003>
+    <statype2004>串补站.bdz.icn.g:串补站</statype2004>
+    <statype3001>换流站.bdz.icn.g:换流站</statype3001>
+    <statype3002>直流接地站.bdz.icn.g:直流接地站</statype3002>
+    <statype2005>开关站.bdz.icn.g:开关站</statype2005>
+    <statype2006>变电站.bdz.icn.g:变电站</statype2006>
+    <statype1007>风光一体.bdz.icn.g:风光一体</statype1007>
+    <statype1008>光热一体.bdz.icn.g:光热一体</statype1008>
+  </CFG>
+</ROOT>

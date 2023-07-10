@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds0><![CDATA[
+        SELECT SIGNAL_NAME AS signal,CASE CUSTOMIZED_GROUP WHEN '0' THEN '事故' WHEN '1' THEN '异常' WHEN '3' THEN '变位' 
+		    WHEN '4' THEN '告知' ELSE NULL END AS SIGNALTYPE,count(1) AS signalcount,MAX(SIGNAL_TIME) AS signaltime 
+		    FROM ({{3}})A
+		    --JOIN MONITORSIGNAL.DBDEFECT_SIGNAL_TJ B ON B.ID=A.OWNEREVENT AND A.REASON_ID=5 AND ISMANAGE=1
+        WHERE A.devicename={0} AND SIGNAL_TIME>={{1}} AND SIGNAL_TIME<={{2}}
+        --AND SIGNAL_NAME IS NOT NULL AND DEFECTTYPE=1
+        GROUP BY SIGNAL_NAME,CUSTOMIZED_GROUP
+        ]]></ds0></ROOT>

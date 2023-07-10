@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="11" desc="事故跳闸记录">
+  <inits>
+    <init id="init1" desc="设备id" type="request" arg="deviceid"></init>
+    <init id="init9" desc="厂家" type="request" arg="facname"></init>
+    <init id="init10" desc="型号" type="request" arg="model"></init>
+    <init id="area0" desc="地区后缀" type="request" arg="areasuffix"></init>
+    <init id="init_starttime" desc="开始时间" type="request" arg="starttime"></init>
+    <init id="init_endtime" desc="结束时间" type="request" arg="endtime"></init>
+    <init id="swi" desc="切换" type="request" arg="swidw"></init>
+  </inits>
+  <consts>
+    <const id="const11" desc="语句" arg="" type="string"></const>
+    <const id="const1" desc="变量" type="string"></const>
+    <const id="const2" desc="变量" type="string"></const>
+    <const id="const3" desc="变量" type="string"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds0" desc="设备列表" db="ConnMain" type="simple">
+      <sql>
+        <![CDATA[
+		      SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+         union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+           union all
+          SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+         union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+           union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+         union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+           union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+         union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+           union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+         union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+           union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+         union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+           union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+         union all
+           SELECT '2021-08-27 06:55:16' as col1,'北京.安定站/500kV.5010开关跳闸' as col2
+        ]]>
+      </sql>
+      <cols>
+        <col id="col1" desc="col1" name="col1"></col>
+        <col id="col2" desc="col2" name="col2"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a id="aaccidenttrip" s_width="100%"></a>
+      <c>
+        <div>
+          <a s_display="flex" s_align-items="center" s_justify-content="center" s_margin-bottom="20px"></a>
+          <label>
+            <a value="事故跳闸记录" class="linearGradient"></a>
+          </label>
+        </div>
+        <div id="div3" desc="容器">
+          <a s_font-size="14px" s_padding-bottom="10px"></a>
+          <c>
+            <label id="label8" desc="文字">
+              <a s_color="#fff" value="安定站最近版本历史跳闸记录"></a>
+            </label>
+            <label id="label8" desc="文字">
+              <a value=">>更多" s_margin-left="80px" s_color="#85D8E0"></a>
+            </label>
+          </c>
+        </div>
+        <itable id="itable1" from="ds0">
+          <a ref="itable1" s_margin-left="15px" s_margin-right="15px"></a>
+          <sa stripe="true"  highlight-row="true" border="true" disabled-hover="true" ></sa>
+          <c>
+            <icol id="icol1" desc="最近越限时间" from="col1">
+              <a align="center" minWidth="60"></a>
+            </icol>
+            <icol id="icol2" desc="跳闸事件" from="col2">
+              <a align="center" minWidth="60"></a>
+            </icol>
+          </c>
+        </itable>
+      </c>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="select" ds="ds0" async="true"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          //this.select_ds1();
+		        this.const11 = "使用"+this.init9+"   "+this.init10+"型号的其它主变有：";
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

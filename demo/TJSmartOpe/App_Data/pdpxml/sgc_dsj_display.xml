@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds_dcc><![CDATA[
+        select dispatchshortname,dispatchdesc from "MONITORSIGNAL"."B_DISPATCH" where owner={0}
+      ]]></ds_dcc></ROOT>

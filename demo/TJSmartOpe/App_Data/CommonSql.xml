@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <RefreshDataLink>
+    <![CDATA[
+      DECLARE @space VARCHAR(50),@gridspace VARCHAR(50),@dsname VARCHAR(50),@dsdesc VARCHAR(50),
+      @dsarg VARCHAR(50),@filter VARCHAR(50),@sysobj VARCHAR(50),@syscol VARCHAR(50),@sysprop VARCHAR(50)
+
+      SET @space='{0}'          /*数据源对应的数据库名*/
+      SET @gridspace='{1}'          /*DIP600所在的数据库名*/
+      SET @dsname='{2}'         /*对应tbDataSource中的dsname*/
+      SET @dsdesc='{3}'       /*对应tbDataSource中的dsdesc*/
+      SET @dsarg='{4}'          /*对应tbDataSource中的dsarg*/
+      SET @filter='{5}'  /*过滤对应的表(如流程,用逗号分割)*/
+      
+      IF exists(select charindex('2000',t.a) from (select substring(@@VERSION,0,27) a) t)
+      BEGIN
+      SET @sysobj='dbo.sysobjects'
+      SET @syscol='dbo.syscolumns'
+      SET @sysprop='dbo.sysproperties'
+      END
+      ELSE
+      BEGIN
+      SET @sysobj='sys.objects'
+      SET @syscol='sys.columns'
+      SET @sysprop='sys.extended_properties'
+      END
+
+      DECLARE @sql VARCHAR(8000)
+      IF(len(@gridspace)>0)
+      SET @sql='USE '+@gridspace+''
+      SET @sql=@sql+' delete from tbDataSource where dsname ='''+@dsname+''' delete from tbDataTable where dsname ='''+@dsname+''' delete from tbDataColumn where dsname ='''+@dsname+''' '
+      SET @sql=@sql+' INSERT INTO tbDataSource(dsname,dstype,dsdesc,dsarg) VALUES('''+@dsname+''',0,'''+@dsdesc+''','''+@dsarg+''')'
+      SET @sql=@sql+' DECLARE @name VARCHAR(50)'
+      IF(len(@space)>0)
+      SET @sql=@sql+' USE '+@space+''
+      SET @sql=@sql+' DECLARE cur0 CURSOR FOR SELECT name FROM '+@sysobj+' WHERE xtype=''U'''
+      IF(len(@filter)>0)
+      SET @sql=@sql+' AND name not like ''%'+replace(@filter,',','%'' and name not like ''%')+'%'' '
+      SET @sql=@sql+'OPEN cur0
+      FETCH next FROM cur0 INTO @name
+      WHILE @@FETCH_STATUS=0
+      BEGIN'
+      IF(len(@gridspace)>0)
+      SET @sql=@sql+' USE '+@gridspace+''
+      SET @sql=@sql+' IF(NOT EXISTS(SELECT * FROM tbDataTable WHERE dsname='''+@dsname+''' AND tblname=@name AND tbldesc=@name ))'
+      SET @sql=@sql+' INSERT INTO tbDataTable (dsname,tblname,tbldesc) VALUES('''+@dsname+''',@name,@name)
+      FETCH next FROM cur0 INTO @name
+      END
+      CLOSE cur0
+      DEALLOCATE cur0'
+      SET @sql=@sql+' DECLARE @tablename VARCHAR(50)'
+      IF(len(@gridspace)>0)
+      SET @sql=@sql+' USE '+@gridspace+''
+      SET @sql=@sql+' DECLARE cur1 CURSOR FOR SELECT tblname FROM tbDataTable
+      OPEN cur1
+      FETCH next FROM cur1 INTO @tablename'
+      SET @sql=@sql+' WHILE @@FETCH_STATUS=0
+      BEGIN
+      DECLARE @colname VARCHAR(50)
+      DECLARE @coldesc VARCHAR(50)
+      '
+      IF(len(@space)>0)
+      SET @sql=@sql+' USE '+@space+''
+      SET @sql=@sql+' DECLARE cur2 CURSOR FOR 
+      SELECT a.name,CAST(CASE WHEN b.value IS NULL THEN a.name ELSE b.value END AS VARCHAR(100)) AS ''desc'' FROM '+@syscol+' a LEFT JOIN '+@sysprop+' b ON a.id=b.id AND a.colid=b.smallid
+       WHERE a.id in (SELECT id FROM '+@sysobj+' WHERE name=@tablename)
+      OPEN cur2
+      FETCH next FROM cur2 INTO @colname,@coldesc
+      WHILE @@FETCH_STATUS=0
+      BEGIN'
+      IF(len(@gridspace)>0)
+      SET @sql=@sql+' USE '+@gridspace+''
+      SET @sql=@sql+' IF(NOT EXISTS(SELECT * FROM tbDataColumn WHERE dsname='''+@dsname+''' AND tblname=@tablename AND colname=@colname))
+      INSERT INTO tbDataColumn (dsname,tblname,colname,coldesc) VALUES('''+@dsname+''',@tablename,@colname,@coldesc)'
+      SET @sql=@sql+' FETCH next FROM cur2 INTO @colname,@coldesc
+      END
+      CLOSE cur2
+      DEALLOCATE cur2
+      FETCH next FROM cur1 INTO @tablename
+      END
+      CLOSE cur1
+      DEALLOCATE cur1'
+
+      EXEC(@sql)
+    ]]>
+  </RefreshDataLink>
+  <GetConfigGroup>
+    <![CDATA[
+     SELECT DISTINCT cfggroup FROM dbPDPConfig WHERE cfggroup<>'' and busing=1 ORDER BY cfggroup
+    ]]>
+  </GetConfigGroup>
+  <GetConfigsByGroup>
+    <![CDATA[
+    SELECT * FROM dbPDPConfig WHERE cfggroup='{0}' and busing=1 order by cfgname
+    ]]>
+  </GetConfigsByGroup>
+  <GetConfigById>
+    <![CDATA[
+    SELECT * FROM dbPDPConfig WHERE cfgid='{0}'
+    ]]>
+  </GetConfigById>
+  <UpdateConfigById>
+    <![CDATA[
+    UPDATE dbPDPConfig
+     SET cfgvalue = '{1}'
+    WHERE cfgid = {0}
+    ]]>
+  </UpdateConfigById>
+  <GetOptionDescByName>
+    <![CDATA[
+    SELECT cfgOptionValue,cfgOptionDesc FROM dbPDPConfigOptionList WHERE cfgname='{0}'
+    ]]>
+  </GetOptionDescByName>
+  <GetTableByValues>
+    <![CDATA[
+    SELECT keyname,keydesc,keytype,defvalue,iscommon FROM tbCtrlConfig WHERE tagname='{0}' AND cfgname='{1}'
+    ]]>
+  </GetTableByValues>
+  <GetCtrlOptions>
+    <![CDATA[
+    SELECT optionvalue,optiondesc FROM tbListCtrlOption WHERE cfgid=(
+SELECT TOP 1 cfgid FROM tbCtrlConfig WHERE tagname='{0}' AND keyname='{1}') ORDER BY optiondesc
+    ]]>
+  </GetCtrlOptions>
+  <GetModuleInfo>
+    <![CDATA[(SELECT l.* FROM tbModuleInfo l left join tbModuleInfo m on l.pmoduleid=m.moduleid) a]]>
+  </GetModuleInfo>
+  <CheckInput>
+    <All>
+      <c1><![CDATA[\`~!$#^&*{}''<>~！#]]]></c1>
+    </All>
+    <defaultmain.aspx>
+      <c1><![CDATA[]]></c1>
+    </defaultmain.aspx>
+  </CheckInput>
+</ROOT>

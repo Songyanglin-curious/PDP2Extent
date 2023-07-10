@@ -1,0 +1,102 @@
+
+.time-line-ac{
+    display: flex;
+    align-items: center;
+
+}
+.mr20{
+    margin-right: 10px;
+}
+.mb20{
+    margin-bottom: 10px;;
+}
+.time-line-point{
+    width: 8px;
+    height: 8px;
+    background: #009ACA;
+    border-radius: 50%;
+    overflow: hidden;
+    
+}
+.direction-left{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.direction-right{
+    display: flex;
+}
+.item-year{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: url(/i/sgc/shengchan/jigai/year.png) no-repeat ;
+    background-size:cover;
+}
+.time-link-line{
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+.item-month{
+    width: 25px;
+    height: 25px;
+    background: #009AC8;
+    border-radius: 50%;
+    position: relative;
+}
+.month-conten{
+    color: #009AC8;
+    width: 30px;
+    position: absolute;
+    bottom: 30px;
+    left: 0px;
+
+}
+.item-proj{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #0035FF;
+    position: relative;
+    cursor: pointer;
+}
+.item-proj-finally{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #9A989D;
+    position: relative;
+    cursor: pointer;
+}
+.proj-conten-up{
+    position: absolute;
+    bottom: 30px;
+    left: -50px;
+    width: 140px;
+    color: #fff;
+    cursor: pointer;
+}
+.proj-conten-down{
+    position: absolute;
+    top: 30px;
+    left: -50px;
+    width: 140px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.link-left{
+    display: flex;
+}
+.link-right{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.link-left-item{
+
+}
+.link-right-item{
+
+}

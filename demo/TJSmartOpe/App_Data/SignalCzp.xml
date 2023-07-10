@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <Jianxiu>
+    <type></type>
+    <conn>AI</conn>
+    <sql>
+      <![CDATA[SELECT top 1 id,fullcontent,repairtime FROM optkuser.tRepairMessage where repairtime>{0} AND repairtime<{1} order by repairtime; ]]>
+    </sql>
+    <starttime>y,y,-2</starttime>
+    <timespan>365</timespan>
+    <timecol>2</timecol>
+  </Jianxiu>
+  <Signal>
+    <type></type>
+    <conn>SIG</conn>
+    <sql>
+      <![CDATA[SELECT top 1 CAST(signal_id AS VARCHAR) || ',TBSIGNALBASIS_MODEL',signal_name,risk,SETTIME 
+      FROM MONITORSIGNAL.TBSIGNALBASIS_MODEL 
+      where SETSIGNAL=1 and SETTIME>{0} AND SETTIME<{1} order by SETTIME ]]>
+    </sql>
+    <starttime>m,m,-1</starttime>
+    <timespan>365</timespan>
+    <timecol>3</timecol>
+  </Signal>
+  <Signal1>
+    <type>m</type>
+    <conn>SIG</conn>
+    <sql>
+      <![CDATA[SELECT top 1 CAST(signal_id AS VARCHAR) || ',TBSIGNALBASIS_{Y}_{M}',signal_name,risk,signal_time 
+      FROM MONITORSIGNAL.TBSIGNALBASIS_{Y}_{M} 
+      where SETSIGNAL=1 and signal_time>{0} AND signal_time<{1} order by signal_time ]]>
+    </sql>
+    <starttime>m,m,-1</starttime>
+    <timespan>365</timespan>
+    <tablename>MONITORSIGNAL.TBSIGNALBASIS_{Y}_{M}</tablename>
+    <timecol>3</timecol>
+  </Signal1>
+</ROOT>
+

@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetTyphoonList>
+    <![CDATA[select B.ID,B.ID AS TYPHOON_CODE,B.CH_NAME,B.EN_NAME,B.START_DATETIME,B.END_DATETIME,L.TYPHOON_TIME,L.PROVINCE||L.CITY||L.DISTRICT
+ from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_COM_TYPHOON_B B
+    LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_LANDING L ON B.ID=L.ID AND L.FORCAST_ORG=0
+    WHERE B.START_DATETIME<{1} AND B.START_DATETIME>={0} AND B.CH_NAME LIKE '%{2}%' AND B.ID LIKE '9005'||REPLACE({3},'__','')||'%'
+    ORDER BY B.START_DATETIME DESC
+    ]]>
+  </GetTyphoonList>
+  <GetTyphoonList1>
+    <![CDATA[select ID,TYPHOON_CODE,CH_NAME,EN_NAME,START_DATETIME,END_DATETIME from OSP_JSCLOUD.SG_WEATHER_TYPHOON_DEF
+    WHERE START_DATETIME<{1} AND END_DATETIME>{0} AND CH_NAME LIKE '%{2}%']]>
+  </GetTyphoonList1>
+  <GetTyphoonLoadingById>
+    <![CDATA[select forcast_org, district_centercoordinate as pt,typhoon_time,province,city from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_typhoon_landing where id={0}]]>
+  </GetTyphoonLoadingById>
+  <GetTyphoonInfoById>
+    <![CDATA[
+select 
+DATE_TIME,LONGITUDE,LATITUDE,MAX_WIND_VELOCITY,MIN_PRESSURE
+,ID,'' AS SUBTYPE1,RADIUS7,RADIUS10,MOVE_VELOCITY,MOVE_DIRECTION,0 AS DATATYPE,'real' as clss,'' AS ORG,RADIUS12
+ from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_COM_TYPHOON_H_PATH_{{1}}
+ WHERE ID='{0}'
+ ORDER BY DATE_TIME]]>
+  </GetTyphoonInfoById>
+  <GetTyphoonForeInfoById>
+    <![CDATA[
+select 
+TYPHOON_TIME AS DATE_TIME,LNG AS LONGITUDE,LAT AS LATITUDE,WIND_VELOCITY AS MAX_WIND_VELOCITY,PRESSURE AS MIN_PRESSURE
+,f.ID,'' AS SUBTYPE1,'' AS RADIUS7,'' AS RADIUS10,'' AS MOVE_VELOCITY,'' AS MOVE_DIRECTION,1 AS DATATYPE,'fore'||f.forcast_org as clss,o.name as orgname,'' AS RADIUS12
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_com_typhoon_h_forcast_{{3}} f
+join (SELECT id,forcast_org,max(forcast_time) as forcast_time
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_com_typhoon_h_forcast_{{3}} 
+group by id, forcast_org
+) g on f.id=g.id and f.forcast_org=g.forcast_org and f.forcast_time=g.forcast_time
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dic_forcastorg o ON f.forcast_org=o.code
+where f.id='{0}' AND TYPHOON_TIME>{1} /*AND TYPHOON_TIME<{2}*/ and f.forcast_org<>2004
+order by f.forcast_org,typhoon_time,f.forcast_time desc]]>
+  </GetTyphoonForeInfoById>
+  <GetEffectLineAC>
+    <![CDATA[SELECT L.ID,V.NAME AS VOLNAME,L.NAME,P.NAME AS GRIDNAME,D.NAME AS DISPATCHNAME 
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT R JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B L ON R.AFFECT_TYPE=2 AND AFFECT_OBJ_ID=L.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON L.GRID_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID
+    WHERE R.TYPHOON_ID={0} AND R.START_TIME<={1} AND R.END_TIME>{1}]]>
+  </GetEffectLineAC>
+  <GetEffectLineDC>
+    <![CDATA[SELECT L.ID,V.NAME AS VOLNAME,L.NAME,P.NAME AS GRIDNAME,D.NAME AS DISPATCHNAME 
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT R JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B L ON R.AFFECT_TYPE=2 AND AFFECT_OBJ_ID=L.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON L.GRID_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID
+    WHERE R.TYPHOON_ID={0} AND R.START_TIME<={1} AND R.END_TIME>{1}]]>
+  </GetEffectLineDC>
+  <GetEffectLine>
+    <![CDATA[SELECT * FROM (]]><![CDATA[same:GetEffectLineAC]]><![CDATA[
+    UNION
+    ]]><![CDATA[same:GetEffectLineDC]]><![CDATA[) A ORDER BY VOLNAME DESC,NAME ]]>
+  </GetEffectLine>
+  <GetEffectStation>
+    <![CDATA[same:sgc/main:GetEffectStation:]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT R:R.AFFECT_TYPE=1 AND AFFECT_OBJ_ID=S.ID:R.TYPHOON_ID={0} AND R.START_TIME<={1} AND R.END_TIME>{1}]]>
+  </GetEffectStation>
+  <GetEffectPlant>
+    <![CDATA[same:sgc/main:GetEffectPlant:]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT R:R.AFFECT_TYPE=3 AND AFFECT_OBJ_ID=S.ID:R.TYPHOON_ID={0} AND R.START_TIME<={1} AND R.END_TIME>{1}]]>
+  </GetEffectPlant>
+  <GetReportDept>
+    <![CDATA[
+SELECT '__' AS ID,'全部' AS NAME
+UNION ALL
+SELECT SUBSTR(ID,5,6) AS ID,NAME_ABBREVIATION AS NAME FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B WHERE ID IN (
+SELECT DISTINCT '0021'||SUBSTR(ID,5,6) FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_COM_TYPHOON_B
+)]]>
+  </GetReportDept>
+  <GetEffectDevice>
+    <![CDATA[    
+    select o.ID,o.NAME,  o.GRID_ID,volid,V.NAME AS VOLNAME,P.NAME AS GRIDNAME,AFFECT_TYPE  FROM (
+    SELECT s.id,S.NAME,S.PG_ID AS GRID_ID,S.TOP_AC_VOLTAGE_TYPE  as volid,R.TYPHOON_ID ,R.START_TIME,R.END_TIME, R.AFFECT_TYPE
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT R 
+     JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_SUBSTATION_B S ON R.AFFECT_TYPE=1 AND AFFECT_OBJ_ID=S.ID
+     union all 
+     SELECT L.ID,L.NAME,L.GRID_ID   AS GRID_ID,L.VOLTAGE_TYPE as volid,R.TYPHOON_ID,R.START_TIME ,R.END_TIME, R.AFFECT_TYPE
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT R
+    JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_ACLINE_B L ON R.AFFECT_TYPE=2 AND AFFECT_OBJ_ID=L.ID
+    union all
+    SELECT L.ID,L.NAME,L.GRID_ID   AS GRID_ID,L.VOLTAGE_TYPE as volid ,R.TYPHOON_ID,R.START_TIME,R.END_TIME, R.AFFECT_TYPE
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT R 
+    JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_DCLINE_B L ON R.AFFECT_TYPE=2 AND AFFECT_OBJ_ID=L.ID
+    union all
+    SELECT S.ID,S.NAME,S.CONNECTIVE_PG_ID  AS GRID_ID,S.MAX_VOLTAGE_TYPE as volid,R.TYPHOON_ID,R.START_TIME,R.END_TIME, R.AFFECT_TYPE
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT R
+     JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_PLANT_B S ON R.AFFECT_TYPE=3 AND AFFECT_OBJ_ID=S.ID
+    ) o left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DIC_VOLTAGETYPE V ON o.volid=V.CODE LEFT JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_PWRGRID_B P ON concat(SUBSTR(o.GRID_ID,1,6),'0000')=P.ID 
+    WHERE o.TYPHOON_ID={0} AND o.START_TIME<={1} AND o.END_TIME>{2}
+    ]]>
+  </GetEffectDevice>
+  <GetTyphoonline>
+    <![CDATA[SELECT NVL(R.ID,F.ID) AS ID,R.TM AS REALTIME,F.TM AS FORETIME FROM (
+SELECT AFFECT_OBJ_ID AS ID,MIN(START_TIME) AS TM FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT a
+where AFFECT_TYPE=2 AND TYPHOON_ID={0} AND IS_FORECAST=0
+GROUP BY AFFECT_OBJ_ID
+) R FULL JOIN (
+SELECT AFFECT_OBJ_ID AS ID,MIN(START_TIME) AS TM FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT a
+where AFFECT_TYPE=2 AND TYPHOON_ID={0} AND IS_FORECAST={1}
+GROUP BY AFFECT_OBJ_ID
+) F ON R.ID=F.ID
+    ]]>
+  </GetTyphoonline>
+  <GetTyphoonBDZ>
+    <![CDATA[SELECT NVL(R.ID,F.ID) AS ID,R.TM AS REALTIME,F.TM AS FORETIME FROM (
+SELECT AFFECT_OBJ_ID AS ID,MIN(START_TIME) AS TM FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT a
+where AFFECT_TYPE=1 AND TYPHOON_ID={0} AND IS_FORECAST=0
+GROUP BY AFFECT_OBJ_ID
+) R FULL JOIN (
+SELECT AFFECT_OBJ_ID AS ID,MIN(START_TIME) AS TM FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT a
+where AFFECT_TYPE=1 AND TYPHOON_ID={0} AND IS_FORECAST={1}
+GROUP BY AFFECT_OBJ_ID
+) F ON R.ID=F.ID
+    ]]>
+  </GetTyphoonBDZ>
+  <GetTyphoonQYZ>
+    <![CDATA[select ID AS TYPHOON_CODE,CH_NAME,EN_NAME,to_char(START_DATETIME,'mm-dd hh:mm'),to_char(END_DATETIME,'mm-dd hh:mm')
+ from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_COM_TYPHOON_B where typhoonID={0}
+    ORDER BY START_DATETIME DESC
+    ]]>
+  </GetTyphoonQYZ>
+  <GetTyphoonDC>
+    <![CDATA[SELECT NVL(R.ID,F.ID) AS ID,R.TM AS REALTIME,F.TM AS FORETIME FROM (
+SELECT AFFECT_OBJ_ID AS ID,MIN(START_TIME) AS TM FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT a
+where AFFECT_TYPE=3 AND TYPHOON_ID={0} AND IS_FORECAST=0
+GROUP BY AFFECT_OBJ_ID
+) R FULL JOIN (
+SELECT AFFECT_OBJ_ID AS ID,MIN(START_TIME) AS TM FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT a
+where AFFECT_TYPE=3 AND TYPHOON_ID={0} AND IS_FORECAST={1}
+GROUP BY AFFECT_OBJ_ID
+) F ON R.ID=F.ID
+    ]]>
+  </GetTyphoonDC>
+  <GetPassPathById>
+    <![CDATA[select TYPHOON_TIME,LATITUDE,LONGITUDE,CITY,REGION 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_typhoon_passingarea where typhoon_id='{0}' and type='path' order by typhoon_time,CITY,REGION
+]]>
+  </GetPassPathById>
+  <GetForePathById>
+    <![CDATA[select TYPHOON_TIME,LATITUDE,LONGITUDE,CITY,REGION,FORCAST_ORG
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_typhoon_passingarea p
+join (
+select typhoon_id as id,forcast_org as org,max(forcast_time) as ftime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_typhoon_passingarea where type='forcast'
+group by typhoon_id,forcast_org
+) g on p.typhoon_id=g.id and p.forcast_org=g.org and p.forcast_time=g.ftime
+where typhoon_id='{0}' and type='forcast' order by typhoon_time,CITY,REGION]]>
+  </GetForePathById>
+  <GetRegions>
+    <![CDATA[select distinct region,districtname,parentregion,level from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaName]]><![CDATA[sg_con_district where level<>'district' order by region]]>
+  </GetRegions>
+  <GetZyxl>
+    <![CDATA[SELECT NVL(R.ID,F.ID) AS ID,R.START_TIME,F.START_TIME FROM (
+SELECT AFFECT_OBJ_ID AS ID,MIN(START_TIME) AS START_TIME FROM YSH_TYPHOON_AFFECT WHERE AFFECT_TYPE=2 AND TYPHOON_ID='{0}' AND IS_FORECAST=0 GROUP BY AFFECT_OBJ_ID
+) R FULL JOIN (
+SELECT AFFECT_OBJ_ID AS ID,MIN(START_TIME) AS START_TIME FROM YSH_TYPHOON_AFFECT WHERE AFFECT_TYPE=2 AND TYPHOON_ID='{0}' AND IS_FORECAST=1 GROUP BY AFFECT_OBJ_ID
+) F ON R.ID=F.ID]]>
+  </GetZyxl>
+  <GetAllEffectList>
+    <![CDATA[SELECT AFFECT_TYPE,AFFECT_OBJ_ID,0 AS F FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT where TYPHOON_ID={0} AND IS_FORECAST=0-- AND START_TIME<={1}
+UNION ALL
+SELECT AFFECT_TYPE,AFFECT_OBJ_ID,1 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT where TYPHOON_ID={0} AND IS_FORECAST={2}-- AND START_TIME>{1}
+]]>
+  </GetAllEffectList>
+  <GetEffectPlantList>
+    <![CDATA[SELECT s.capacity,AFFECT_OBJ_ID,0 AS F 
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT a
+LEFT JOIN ]]>
+<![CDATA[same:SearchCommonSql:SchemaName]]>
+<![CDATA[SG_CON_PLANT_S s ON a.AFFECT_OBJ_ID=s.id AND s.VOLTAGE_TYPE=9999 AND s.state_code=1003
+where AFFECT_TYPE=3 AND TYPHOON_ID={0} AND IS_FORECAST=0-- AND START_TIME<={1}
+UNION ALL
+SELECT s.capacity,AFFECT_OBJ_ID,1 
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT a 
+LEFT JOIN ]]>
+<![CDATA[same:SearchCommonSql:SchemaName]]>
+<![CDATA[SG_CON_PLANT_S s ON a.AFFECT_OBJ_ID=s.id AND s.VOLTAGE_TYPE=9999 AND s.state_code=1003
+where AFFECT_TYPE=3 AND TYPHOON_ID={0} AND IS_FORECAST={2}-- AND START_TIME>{1}
+]]>
+  </GetEffectPlantList>
+  <GetTimeEffect>
+    <![CDATA[select affect_type,affect_obj_id,typhoon_radius
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TYPHOON_AFFECT 
+    where typhoon_id={0} and start_time<={1} and end_time>={1} and is_forecast={2}]]>
+  </GetTimeEffect>
+  <GetPassMaxTime>
+    <![CDATA[
+    select max(typhoon_time),type from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_typhoon_passingarea where typhoon_id='{0}' group by type ORDER BY type
+]]>
+  </GetPassMaxTime>
+  <GetPassRegion>
+    <![CDATA[SELECT DISTINCT REGION FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_typhoon_passingarea WHERE TYPE='path' and typhoon_id='{0}']]>
+  </GetPassRegion>
+</ROOT>

@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetAllEffectList>
+    <![CDATA[
+select station_id,is_forecast,alarm_time from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning_station where alarm_time>={0} and alarm_time<{1}
+UNION ALL
+SELECT DISTINCT line_id,is_forecast,alarm_time FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning_tower where alarm_time>={0} and alarm_time<{1}
+]]>
+  </GetAllEffectList>
+  <SkipSome>
+    <![CDATA[]]>
+  </SkipSome>
+  <GetLightCountP>
+    <![CDATA[select province_owner,province,count(1) c from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where alarm_time>={0} and alarm_time<{1} ]]>
+    <![CDATA[same:SkipSome]]>
+    <![CDATA[group by province_owner,province order by c desc]]>
+  </GetLightCountP>
+  <GetLightCountC>
+    <![CDATA[select city_owner,city,count(1) c from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where province_owner={2} and alarm_time>={0} and alarm_time<{1} group by city_owner,city order by c desc]]>
+  </GetLightCountC>
+  <GetLightCountD>
+    <![CDATA[select district_owner,district,count(1) c from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where city_owner={2} and alarm_time>={0} and alarm_time<{1} group by district_owner,district order by c desc]]>
+  </GetLightCountD>
+  <GetLightCountPTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(alarm_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where province_owner={2} and alarm_time>={0} and alarm_time<{1} 
+) a group by tm order by tm]]>
+  </GetLightCountPTime>
+  <GetLightCountCTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(alarm_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where city_owner={2} and alarm_time>={0} and alarm_time<{1} 
+) a group by tm order by tm]]>
+  </GetLightCountCTime>
+  <GetLightCountDTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(alarm_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where district_owner={2} and alarm_time>={0} and alarm_time<{1} 
+) a group by tm order by tm]]>
+  </GetLightCountDTime>
+  <GetLightCountAllTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(alarm_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where alarm_time>={0} and alarm_time<{1} ]]>
+    <![CDATA[same:SkipSome]]>
+    <![CDATA[
+) a group by tm order by tm]]>
+  </GetLightCountAllTime>
+  <GetLightPTime>
+    <![CDATA[
+SELECT alarm_time,longitude,latitude,1 as alarm_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where province_owner={2} and alarm_time>={0} and alarm_time<{1}  order by alarm_time
+]]>
+  </GetLightPTime>
+  <GetLightCTime>
+    <![CDATA[
+SELECT alarm_time,longitude,latitude,1 as alarm_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where city_owner={2} and alarm_time>={0} and alarm_time<{1}  order by alarm_time
+]]>
+  </GetLightCTime>
+  <GetLightDTime>
+    <![CDATA[
+SELECT alarm_time,longitude,latitude,1 as alarm_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where district_owner={2} and alarm_time>={0} and alarm_time<{1}  order by alarm_time
+]]>
+  </GetLightDTime>
+  <GetLightAllTime>
+    <![CDATA[
+SELECT alarm_time,longitude,latitude,1 as alarm_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_fire where alarm_time>={0} and alarm_time<{1} ]]>
+    <![CDATA[same:SkipSome]]>
+    <![CDATA[ order by alarm_time]]>
+  </GetLightAllTime>
+  <GetEffectLine>
+    <![CDATA[select alarm_line,alarm_tower,0 as is_forecast,alarm_level from ]]>
+  <![CDATA[same:SearchCommonSql:SchemaName]]>
+  <![CDATA[sg_com_mountain_h_firealarm_{{2}} where alarm_time>={0} and alarm_time<{1}]]>
+  </GetEffectLine>
+</ROOT>

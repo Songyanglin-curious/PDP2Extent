@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetVoltageConfig>
+    <![CDATA[
+    select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[VOLTAGE_CONFIG]]>
+  </GetVoltageConfig>
+  <GetModeRuleConfig>
+    <![CDATA[
+    select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[YSH_MODERULE_CONFIG]]>
+  </GetModeRuleConfig>
+  <GetMapConfig>
+    <![CDATA[
+    select A.CONFIGNAME,A.ID,ISNULL(B.VALUE,A.VALUE) AS VALUE
+ from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[YSH_MAP_CONFIG a 
+left join
+]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[YSH_MAP_CONFIG_USER b on a.CONFIGNAME = B.CONFIGNAME and B.userid='{0}' ]]>
+  </GetMapConfig>
+  <GetTowerInfoByParam>
+    <![CDATA[
+    select TOWER_ID AS ID,TOWERNO AS TOWERNUM,LONGITUDE,LATITUDE,LINE_ID AS LINEID,ANGLE,TYPE AS VOLTAGE  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[SG_YSH_TOWER  {0}    ]]>
+  </GetTowerInfoByParam>
+  <UpdateTowerInfoByID>
+    <![CDATA[
+    update ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[SG_YSH_TOWER set {0} where TOWER_ID={1} ]]>
+  </UpdateTowerInfoByID>
+  <GetTowerAngleInfo>
+    <![CDATA[    
+     select TOWER_ID AS ID, TOWERNO AS TOWERNUM ,LONGITUDE,LATITUDE,ANGLE,TYPE AS VOLTAGE
+  from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[SG_YSH_TOWER   WHERE LINE_ID = {0}
+    ]]>
+  </GetTowerAngleInfo>
+  <GetBigDataConfig>
+    <![CDATA[
+    select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[YSH_MAP_CONFIG]]>
+  </GetBigDataConfig>
+
+  <GetMapUser>
+    <![CDATA[
+    select * from  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_map_user]]>
+  </GetMapUser>
+  <GetMapUserByKey>
+    <![CDATA[
+    select * from  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_map_user where key='{0}']]>
+  </GetMapUserByKey>
+  <GetMapUserInterface>
+    <![CDATA[
+   select a.*,b.interfacename from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_map_user_interface a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_map_interface b on a.interface_id = b.id
+order by user_id ]]>
+  </GetMapUserInterface>
+  <InsertRegionHeight>
+    <![CDATA[
+      insert into ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_districtlocation_info(region, voltage, height) 
+VALUES('{0}', '{1}', '{2}');
+    ]]>
+  </InsertRegionHeight>
+  <TowerDenseChannel>
+    <![CDATA[
+    select * from  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_tower_densechannel_result
+    ]]>
+  </TowerDenseChannel>
+  <TowerSameOrder>
+    <![CDATA[
+    select line_id,tower_id,voltage,draw_order from  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_tower_same_order
+    ]]>
+  </TowerSameOrder>
+  <DoubleLineInfo>
+    <![CDATA[
+    select * from  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_dev_doubleline
+    ]]>
+  </DoubleLineInfo>
+  <GetRegionRange>
+    <![CDATA[
+      select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_districtrange_info {0}
+    ]]>
+  </GetRegionRange>
+  <UpdateRegionRange-old>
+    <![CDATA[
+      update ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_districtrange_info set coordinaterange = '{1}' ,height='{2}',orientation='{3}'
+WHERE region ='{0}'
+    ]]>
+  </UpdateRegionRange-old>
+<UpdateRegionRange>
+    <![CDATA[
+      update ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_district_info set coordinaterange = '{1}' ,height='{2}',orientation='{3}'
+WHERE region ='{0}'
+    ]]>
+  </UpdateRegionRange>
+  <InsertRegionRange>
+    <![CDATA[
+      insert into ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_districtrange_info(region, coordinaterange,height,orientation) 
+VALUES('{0}', '{1}','{2}','{3}')
+    ]]>
+  </InsertRegionRange>
+  <GetCityCenterCoordinate>
+    <![CDATA[
+      select region ,rangecoordinate as RANGE,districtname as NAME,centercoordinate as CENTERLONLAT,namecoordinate,pwname,linecolor,color,lineopacity,opacity,linewidth from ]]>
+       <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ ysh_district_centerinfo  {0}
+    ]]>
+  </GetCityCenterCoordinate>
+  <UpdateCityCenterCoordinate>
+    <![CDATA[
+      update ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_district_centerinfo set namecoordinate = '{1}' 
+WHERE region ='{0}'
+    ]]>
+  </UpdateCityCenterCoordinate>
+  <GetYshDclineMark>
+    <![CDATA[
+      select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_dcline_mark {0}
+    ]]>
+  </GetYshDclineMark>
+  <GetYshlineNameMark>
+    <![CDATA[
+      select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_line_name_position {0}
+    ]]>
+  </GetYshlineNameMark>
+  <GetYshlineNameInfo>
+    <![CDATA[
+      select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_linename_info {0}
+    ]]>
+  </GetYshlineNameInfo>
+  <GetSectionInfo>
+    <![CDATA[
+     select line_id,id,end_id,direction,section_order,longitude,latitude,towerid,section_img,voltage_type,special_type,line_state from  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_section_b 
+     union  
+     select * from ]]>
+     <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+     <![CDATA[ysh_con_sectionauto_b]]>
+  </GetSectionInfo>
+  <DelSectionInfo>
+    <![CDATA[
+      delete from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_section_b   where id='{0}' and special_type={1}
+    ]]>
+  </DelSectionInfo>
+  <InsertSectionInfo>
+    <![CDATA[
+    INSERT INTO    ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_section_b    ( line_id,  id,  end_id,direction,   section_order, section_img,  longitude,  latitude,towerid ,voltage_type,special_type,line_state)
+    VALUES     ( '{0}', '{1}','{2}','{3}','{4}', '{5}','{6}','{7}','{8}','{9}',{10},1003) ]]>
+  </InsertSectionInfo>
+  <UpdateSectionInfo>
+    <![CDATA[
+    update ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_section_b set {0} where line_id ='{1}' and id = '{2}' and special_type={3} ]]>
+  </UpdateSectionInfo>
+  <GetSectionLineInfo>
+    <![CDATA[
+     select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_sectionline_b 
+     union 
+ select * from ]]>
+<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_sectionlineauto_b 
+    ]]>
+  </GetSectionLineInfo>
+  <InsertSectionLineInfo>
+    <![CDATA[
+    delete from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_sectionline_b where id ={0} and special_type={3};
+   INSERT INTO ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_sectionline_b    ( id, section_color,  points,special_type )    VALUES  ( '{0}', '{1}','{2}',{3} ) ;]]>
+  </InsertSectionLineInfo>
+    <GetEmsTextInfo>
+    <![CDATA[
+     select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameEms]]>
+    <![CDATA[ysh_ems_font {0}
+    ]]>
+  </GetEmsTextInfo>
+  <GetEmsSectionLineInfo>
+    <![CDATA[
+     select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameEms]]>
+    <![CDATA[ysh_ems_sectionline_b {0}
+    ]]>
+  </GetEmsSectionLineInfo>
+  <GetStationLineImgConfig>
+    <![CDATA[
+     select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_stationlinecolor
+    ]]>
+  </GetStationLineImgConfig>
+<GetVoltageConfigSpecial>
+    <![CDATA[
+    select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[VOLTAGE_CONFIG_SPECIAL]]>
+  </GetVoltageConfigSpecial>
+<GetBaseSectionLineInfo>
+    <![CDATA[
+     select s.id,sc.dev_id from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_section_b s left join  ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SECTION_R_CONSTITUTE sc on s.id=sc.id  ]]>
+  </GetBaseSectionLineInfo>
+ <InsertAutoSectionInfo>
+    <![CDATA[
+    INSERT INTO    ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_sectionauto_b    ( line_id,  id,  end_id,direction,   section_order, section_img,  longitude,  latitude,towerid ,voltage_type,special_type,line_state)
+    VALUES     ( '{0}', '{1}','{2}','{3}','{4}', '{5}','{6}','{7}','{8}','{9}',{10},{11} ) ]]>
+  </InsertAutoSectionInfo>
+<InsertAutoSectionLineInfo>
+    <![CDATA[
+   INSERT INTO ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+    <![CDATA[ysh_con_sectionlineauto_b    ( id, section_color,  points,special_type )    VALUES  ( '{0}', '{1}','{2}',{3} ) ;]]>
+  </InsertAutoSectionLineInfo>
+<GetYshDistrictInfo>
+    <![CDATA[
+     select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_district_info where region = {0}  or pregion={0}
+    ]]>
+  </GetYshDistrictInfo>
+<GetYshLstDistrictInfo>
+    <![CDATA[
+     select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[ysh_district_info where region in ({0})
+    ]]>
+  </GetYshLstDistrictInfo>
+</ROOT>
+

@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root includes="/conn/jsfile/sgc/tq.js" maxid="24" desc="空白页">
+  <inits>
+    <init id="tm" desc="默认时间" type="request" arg="tm"></init>
+    <init id="srcid" desc="气象站id" type="request" arg="srcid"></init>
+    <init id="fsrcid" desc="预测气象站id" type="request" arg="fsrcid"></init>
+    <init id="showname" desc="显示名称" type="request" arg="showname"></init>
+    <init id="needclose" type="request" arg="needclose"></init>
+  </inits>
+  <consts>
+    <const id="cur_time" desc="刷新时间" arg="s" type="time"></const>
+    <const id="cur_time_str" arg="d" type="time"></const>
+    <const id="today" arg="d" type="time"></const>
+    <const id="moment" arg="s" type="time"></const>
+    <const id="start_time" desc="搜索开始时间"></const>
+    <const id="next_time"></const>
+    <const id="cur_day"></const>
+    <const id="next_day1"></const>
+    <const id="next_day2"></const>
+    <const id="start_day15"></const>
+    <const id="end_day15"></const>
+    <const id="data24option"></const>
+    <const id="data15option"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds_today" desc="今日天气" db="SGAPP" type="xml" node="sgc/tq:GetDayForecast">
+      <cols>
+        <col id="col_today_srcid" desc="srcid" name="srcid" from="srcid"></col>
+        <col id="col_today_fsrcid" desc="fsrcid" name="fsrcid" from="fsrcid"></col>
+        <col id="col_today_start" desc="starttime" name="starttime" from="cur_day"></col>
+        <col id="col_today_end" desc="endtime" name="endtime" from="next_day1"></col>
+        <col id="coli4_today" from="today"></col>
+        <col id="col_today_max" desc="temperate" name="MAXT"></col>
+        <col id="col_today_min" desc="temperate" name="MINT"></col>
+        <col id="col_today_type" desc="weather" name="WTYPE"></col>
+      </cols>
+    </datasource>
+    <datasource id="ds_tomorrow" desc="明日天气" db="SGAPP" type="xml" node="sgc/tq:GetDayForecast">
+      <cols>
+        <col id="col_tomorrow_srcid" desc="srcid" name="srcid" from="srcid"></col>
+        <col id="col_tomorrow_fsrcid" desc="fsrcid" name="fsrcid" from="fsrcid"></col>
+        <col id="col_tomorrow_start" desc="starttime" name="starttime" from="next_day1"></col>
+        <col id="col_tomorrow_end" desc="endtime" name="endtime" from="next_day2"></col>
+        <col id="coli4_tomorrow" from="today"></col>
+        <col id="col_tomorrow_max" desc="temperate" name="MAXT"></col>
+        <col id="col_tomorrow_min" desc="temperate" name="MINT"></col>
+        <col id="col_tomorrow_type" desc="weather" name="WTYPE"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsWeather24" desc="天气信息" db="SGAPP" type="xml" node="sgc/tq:GetHourForecast">
+      <cols>
+        <col id="coli1" from="srcid"></col>
+        <col id="coli11" from="fsrcid"></col>
+        <col id="coli2" from="start_time"></col>
+        <col id="coli3" from="next_time"></col>
+        <col id="coli4" from="moment"></col>
+        <col id="col_WEATHER_CONDITION_RESULT" desc="WEATHER_CONDITION_RESULT" name="WEATHER_CONDITION_RESULT"></col>
+        <col id="col_HUMIDITY" desc="HUMIDITY" name="HUMIDITY"></col>
+        <col id="col_TEMPERATURE" desc="TEMPERATURE" name="TEMPERATURE"></col>
+        <col id="col_FORECASTTIME" desc="FORECASTTIME" name="FORECASTTIME"></col>
+        <col id="col_WIND_DIR_RESULT" desc="WIND_DIR_RESULT" name="WIND_DIR_RESULT"></col>
+        <col id="col_WIND_LEVEL_RESULT" desc="WIND_LEVEL_RESULT" name="WIND_LEVEL_RESULT"></col>
+        <col id="col_WINDSPEED" desc="WINDSPEED" name="WINDSPEED"></col>
+        <col id="col_PRESSURE" desc="PRESSURE" name="PRESSURE"></col>
+        <col id="col_TIEMSPAN" desc="TIEMSPAN" name="TIEMSPAN"></col>
+        <col id="col_RAIN" desc="RAIN" name="RAIN"></col>
+        <col id="col_CLOUD" desc="CLOUD" name="CLOUD"></col>
+        <col id="col_WIND_DIRECTION" desc="WIND_DIRECTION" name="WIND_DIRECTION"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsWeather15" desc="天气信息" db="SGAPP" type="xml" node="sgc/tq:GetDayForecast15">
+      <cols>
+        <col id="coli1_15" from="srcid"></col>
+        <col id="coli11_15" from="fsrcid"></col>
+        <col id="coli2_15" from="start_day15"></col>
+        <col id="coli3_15" from="end_day15"></col>
+        <col id="coli4_15" from="today"></col>
+        <col id="col_15_FORECASTTIME" desc="FORECASTTIME" name="FORECASTTIME"></col>
+        <col id="col_15_MAXT" desc="MAXT" name="MAXT"></col>
+        <col id="col_15_MINT" desc="MINT" name="MINT"></col>
+        <col id="col_15_WTYPE1" desc="WTYPE1" name="WTYPE1"></col>
+        <col id="col_15_WTYPE2" desc="WTYPE2" name="WTYPE2"></col>
+        <col id="col_15_WINDDIR" desc="WINDDIR" name="WINDDIR"></col>
+        <col id="col_15_WINDPOWER" desc="WINDPOWER" name="WINDPOWER"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <c>
+        <div id="divLocation">
+          <a class="title-bar1"></a>
+          <c>
+            <div id="div22">
+              <c>
+                <image id="image2" desc="图片">
+                  <a src="/i/sgc/tq/location.png" class="ml"></a>
+                </image>
+                <label id="label3" desc="文字">
+                  <a s_color="rgb(23,179,236)" s_margin-left="5px"></a>
+                  <sa value="showname"></sa>
+                </label>
+                <label id="label4" desc="文字">
+                  <a s_margin-left="20px"></a>
+                  <sa value="cur_day"></sa>
+                  <sf value="getDayString({0})"></sf>
+                </label>
+                <label id="label5" desc="文字">
+                  <a s_margin-left="20px"></a>
+                  <sa value="ds_today"></sa>
+                  <sf value="getMinMaxTemperature({0})"></sf>
+                </label>
+                <label id="label6" desc="文字">
+                  <a s_margin-left="20px"></a>
+                  <sa value="col_today_type"></sa>
+                </label>
+                <label id="label7" desc="文字">
+                  <a value="|" s_margin-left="20px"></a>
+                </label>
+                <label id="label8" desc="文字">
+                  <a s_margin-left="20px"></a>
+                  <sa value="next_day1"></sa>
+                  <sf value="getDayString({0})"></sf>
+                </label>
+                <label id="label9" desc="文字">
+                  <a s_margin-left="20px"></a>
+                  <sa value="ds_tomorrow"></sa>
+                  <sf value="getMinMaxTemperature({0})"></sf>
+                </label>
+                <label id="label10" desc="文字">
+                  <a s_margin-left="20px"></a>
+                  <sa value="col_tomorrow_type"></sa>
+                </label>
+              </c>
+            </div>
+            <span id="span0">
+              <a s_float="right"></a>
+              <sa s_margin-right="needclose"></sa>
+              <sf s_margin-right="{0}?'35px':'5px'"></sf>
+              <c>
+                <time id="time24" from="cur_time_str">
+                  <a dtstyle="2" disstyle="111000"></a>
+                  <e>
+                    <onchange>
+                      <list type="script" value="this.refreshTime(this.cur_time_str);this.doSearch();"></list>
+                    </onchange>
+                  </e>
+                </time>
+                <label id="label15" desc="文字">
+                  <a value="更新时间：" s_display="none" s_vertical-align="middle"></a>
+                </label>
+                <label id="label16" desc="文字" from="cur_time">
+                  <a s_display="none" s_margin-right="5px" s_vertical-align="middle"></a>
+                  <sf from="Ysh.Time.formatString(Ysh.Time.toString({0}),'110')"></sf>
+                </label>
+                <image id="image17" desc="图片">
+                  <a src="/i/sgc/tq/refresh.png" s_display="none" s_vertical-align="middle"></a>
+                  <e>
+                    <onclick>
+                      <list type="script" value="this.refreshTime();this.doSearch();"></list>
+                    </onclick>
+                  </e>
+                </image>
+              </c>
+            </span>
+          </c>
+        </div>
+        <foldbar id="foldbar1">
+          <a class="title-bar1"></a>
+          <c>
+            <label id="lbl1">
+              <a value="24小时天气" class="ml"></a>
+            </label>
+          </c>
+        </foldbar>
+        <div id="divForecastChart">
+          <a ref="divForecastChart" s_height="280px" s_min-width="800px"></a>
+          <c>
+            <ecommonchart id="echart20" desc="图表">
+              <sa option="data24option"></sa>
+            </ecommonchart>
+          </c>
+        </div>
+        <foldbar id="foldbar3">
+          <a class="title-bar1"></a>
+          <c>
+            <label id="lbl3">
+              <a value="7日天气" class="ml"></a>
+            </label>
+          </c>
+        </foldbar>
+        <div id="divForecast15">
+          <a ref="divForecast15" s_height="340px" s_min-width="800px"></a>
+          <c>
+            <ecommonchart id="echart22" desc="图表">
+              <sa option="data15option"></sa>
+            </ecommonchart>
+          </c>
+        </div>
+      </c>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+          //this.cur_time = new Date(Ysh.Time.parseDate('2018-09-11'));
+		if (this.tm)
+		this.cur_time_str = this.tm;
+          this.ProjectSGC = ProjectSGC;
+          this.getMinMaxTemperature = function(ds) {
+            if (ds.length == 0) return "";
+            return ProjectSGC.Number.i(ds[0][0]) + "/" + ProjectSGC.Number.i(ds[0][1])+"℃";
+          }
+          this.getDayString = function(tm) {
+            var d = Ysh.Time.diff('d',tm,Ysh.Time.getTimeStart(new Date(),'d'));
+            switch (d) {
+              case 0:return "今天";
+              case 1:return "昨天";
+              case 2:return "前天";
+              case -1:return "明天";
+              case -2:return "后天";
+              default:
+              return tm.getDate() + "日";
+            }
+          }
+          this.refreshChart=function() {
+            var data24 = ProjectSGC.timeLeftJoin(this.start_time,this.next_time,'h',1,this.dsWeather24,9,3);
+            var xtime = Ysh.Array.to1d(data24,3,function(v) { return Ysh.Time.formatString(v,"110"); });
+            var temperature = Ysh.Array.to1d(data24,2,ProjectSGC.Number.i);
+            var arrType = Ysh.Array.to1d(data24,0);
+            var arrAir = Ysh.Array.to1d(data24,1,ProjectSGC.Number.i);
+            var arrWind  = Ysh.Array.to1d(data24,5);
+            var echart20width;
+            if(this.$refs.divForecastChart){
+                echart20width = this.$refs.divForecastChart.clientWidth;
+            }else{
+                echart20width = 1135;
+            }
+            this.data24option = SGCWeather.getOption24(xtime,temperature,arrType,arrAir,arrWind,echart20width);
+            var data15 = ProjectSGC.timeLeftJoin(this.start_day15,this.end_day15,'d',1,this.dsWeather15,7,0);
+            var xtime = Ysh.Array.to1d(data15,0,function(v) { return Ysh.Time.formatString(v,"111000"); });
+            var arrMaxTemp = Ysh.Array.to1d(data15,1,ProjectSGC.Number.i);
+            var arrMaxType = Ysh.Array.to1d(data15,3);
+            var arrMinTemp = Ysh.Array.to1d(data15,2,ProjectSGC.Number.i);
+            var arrMinType = Ysh.Array.to1d(data15,4);
+            var arrWindD = Ysh.Array.to1d(data15,5);
+            var arrWindP = Ysh.Array.to1d(data15,6);
+            var echart22width;
+            if(this.$refs.divForecast15){
+                echart22width = this.$refs.divForecast15.clientWidth;
+            }else{
+                echart22width = 1135;
+            }
+            this.data15option = SGCWeather.getOption15(xtime, arrMaxTemp, arrMaxType, arrMinTemp, arrMinType, arrWindD, arrWindP, echart22width);
+          }
+          ]]>
+        </value>
+      </list>
+      <list type="script">
+        <value>
+          <![CDATA[          
+          this.refreshTime = function(tm) {
+            //this.cur_time = new Date();
+            this.cur_time = tm ? new Date(Ysh.Time.parseDate(tm)) : new Date();
+            this.start_time = Ysh.Time.getTimeStart(this.cur_time,'h');
+            this.next_time = Ysh.Time.add('d',1,this.start_time);
+            this.cur_day = Ysh.Time.getTimeStart(this.cur_time,'d');
+            this.next_day1 = Ysh.Time.add('d',1,this.cur_day);
+            this.next_day2 = Ysh.Time.add('d',2,this.cur_day);
+            this.start_day15 = Ysh.Time.add('d',-3,this.cur_day);
+            this.end_day15 = Ysh.Time.add('d',4,this.cur_day);
+          }
+          this.refreshTime(this.tm||Ysh.Time.toString(this.today));
+          this.doSearch = function() {
+          ]]>
+        </value>
+      </list>
+      <list type="select" ds="ds_today"></list>
+      <list type="select" ds="ds_tomorrow"></list>
+      <list type="select" ds="dsWeather24"></list>
+      <list type="select" ds="dsWeather15"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.refreshChart();
+          }
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.doSearch();
+            Ysh.Object.addHandle(this,"resize",function() {this.refreshChart();},true);
+            this.resize();
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

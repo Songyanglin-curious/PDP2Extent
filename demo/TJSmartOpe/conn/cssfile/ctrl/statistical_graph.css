@@ -1,0 +1,75 @@
+
+/*应用flex布局，默认主轴X向（水平向、横向）*/
+.f{
+	display: flex;
+}
+
+/*忽略自身空间，分配容器空间*/
+.f1{
+	flex: 1;
+}
+
+/*主轴Y向（竖直向、纵向）*/
+.dc{
+	flex-direction: column;
+}
+/* 主轴x右向左 */
+.rr{
+    flex-direction: row-reverse;
+}
+/*模块间距*/
+.model-padding{
+    padding: 5px;
+    background-color: #03313C;
+}
+
+.assets-page{
+    background: #00303C;
+    padding: 10px;
+    min-width:1900px;
+}
+
+/*组件相关*/
+/** title-div */
+.title-div{
+    display: flex;
+    flex-direction: column;
+    height:100%;
+    overflow: hidden;
+}
+.wrapper-title {
+    /* display: block; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background: url(/i/sgc/xinjiang/wrappertitle.png) no-repeat 0 30px / 100% 60%; */
+    /* background-color: #0b535b; */
+    background-color: #103C47;
+    /* margin: 25px 0 20px 0px; */
+    /* padding-bottom: 20px; */
+    /* align-items: center; */
+    /* text-align: center; */
+    border: #2f96c3 1px solid;
+    padding: 10px;
+    /* border-bottom: none; */
+   
+}
+
+.wrapper-title> span {
+    font-size: 16px;
+    /* background-image: -webkit-linear-gradient(#94e7ff,#f8fdff); */
+    /* -webkit-background-clip: text; */
+    /* -webkit-text-fill-color: transparent; */
+    /* font-family: kaiti; */
+    letter-spacing: 5px;
+    font-weight: 800;
+}
+
+.wrapper-content{
+    border: #2f96c3 1px solid;
+    background-color: #103C47;
+    padding:5px;
+    flex:1 0 0;
+    border-top: 'none';
+    border-top: none;
+}

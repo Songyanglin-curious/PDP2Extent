@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="11" desc="空白页">
+    <includes>
+        <![CDATA[ /conn/cssfile/mikeNewStyle.css]]>
+    </includes>
+
+    <inits></inits>
+    <consts>
+        <const id="inpSerachKeyWord" desc="关键字" arg=""></const>
+        <const id="dateSelRange" desc="选中的时间范围" arg=""></const>
+        <const id="startDate" desc="开始时间"></const>
+        <const id="endDate" desc="结束时间"></const>
+        <const id="dataSubstation" desc="变电站数据"></const>
+        <const id="selSubstation" desc="选中的变电站" arg="全部"></const>
+        <const id="dsInterval" desc="间隔数据" type="2d" length="2" arg="全部,全部"></const>
+        <const id="selInterval" desc="选中间隔" arg="全部"></const>
+        <const id="dsDevice" desc="设备数据" type="2d" length="2" arg="全部,全部"></const>
+        <const id="selDevice" desc="选中的设备" arg="全部"></const>
+        <const id="dsMonitorClass" desc="监测类型数据源"></const>
+        <const id="selMonitorClass" desc="选中的监测类型" arg="全部"></const>
+
+        <const id="alertTable" desc="告警表格数据" type="2d" length="5"></const>
+        <const id="h0" desc="表格高"></const>
+
+        <const id="dataTempalte" desc="模板数据" type="2d" length="7"></const>
+        <const id="templateName" desc="模板名称"></const>
+        <const id="modal1" desc="模板modal显示标识符" type="bool" arg="false"></const>
+
+        <const id="conditions"></const>
+    </consts>
+    <datasources>
+        <datasource id="dsSubstation" desc="变电站" db="ConnMain" type="xml" node="sc/alertSearch:GetSubstation">
+            <cols>
+                <col id="substation_id" desc="选择值" name="id"></col>
+                <col id="substation_value" desc="展示值" name="substation_value"></col>
+            </cols>
+        </datasource>
+    </datasources>
+    <ctrls>
+        <div id="div0" desc="根容器" style="width:100%;height:100%;background-color:#013a46b3">
+            <a s_width="100%"></a>
+
+            <div style=" display: flex;flex-direction: column;height: 100vh;">
+                <div desc="头部容器">
+                    <a class="layout-top f jb"></a>
+                    <div>
+                        <a class="ml20"></a>
+                        <label style="font-size:24px;margin-left: 180px;">
+                            <a value="告警窗"></a>
+                        </label>
+                    </div>
+                    <div>
+                        <button style="margin-right: 80px;">
+                            <a type="button" class="default-btn mt10" value="关闭"></a>
+                            <e>
+                                <onclick>
+                                    <list type="script" value="this.CloseModal();"></list>
+                                </onclick>
+                            </e>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <a class="ml10 mt10 mb10"></a>
+                    <label style="font-size:16px">
+                        <a class="box-title" value="实时告警查询："></a>
+                    </label>
+                </div>
+
+                <div>
+                    <a class="ml10 "></a>
+                    <button>
+                        <a type="button" class="default-btn " value="返回"></a>
+                        <e>
+                            <onclick>
+                                <list type="script" value="this.Back();"></list>
+                            </onclick>
+                        </e>
+                    </button>
+                </div>
+                <div style="display:flex; height:100%;flex: 1;">
+                    <div desc="左侧筛选容器" style="flex: 0 0 300px;height: 100%;display: flex;flex-direction: column;justify-content: space-between; padding:0 10px;">
+                        <div>
+                            <div>
+                                <a class="mt10"></a>
+                                <label style="font-size:16px">
+                                    <a class="box-title" value="查询条件"></a>
+                                </label>
+                            </div>
+                            <div>
+
+
+                                <div>
+                                 
+                                    <a class="f jb ac input-default mb10"></a>
+                                    <label>
+                                        <a value="关键字:"></a>
+                                    </label>
+
+                                    <iinput desc="关键词输入框" from="inpSerachKeyWord" style="width:150px">
+                                        <a placeholder="请输入关键字"></a>
+                                        <e>
+                                            <on-blur>
+                                                <list type="script">
+                                                    <value>
+                                                        <![CDATA[
+                                                        this.SearchkeyWord();
+                                                        ]]>
+                                                    </value>
+                                                </list>
+                                            </on-blur>
+                                            <on-enter>
+                                                <list type="script" value="this.SearchkeyWord();"></list>
+                                            </on-enter>
+                                        </e>
+                                    </iinput>
+                                </div>
+                                <div>
+
+                                    <div>
+                                        <a class="f jb ac input-default mb10"></a>
+                                        <label>
+                                            <a value="开始时间:"></a>
+                                        </label>
+                                        <idate desc="开始" from="startDate" style="width:150px">
+                                            <a type="date" placeholder="选择时间范围"></a>
+                                        </idate>
+                                    </div>
+                                    <div >
+                                        <a class="f jb ac input-default mb10"></a>
+                                        <label>
+                                            <a value="结束时间:"></a>
+                                        </label>
+                                        <idate desc="结束" from="endDate" style="width:150px">
+                                            <a type="date" placeholder="选择时间范围"></a>
+                                        </idate>
+                                    </div>
+
+
+                                </div>
+                                <div>
+                                    <a class="f jb ac mb10"></a>
+                                    <label>
+                                        <a value="变电站:"></a>
+                                    </label>
+                                    <iselect desc="变电站下拉框" from="selSubstation" source="dataSubstation" style="width:150px;">
+                                        <a class="medium-default-select"></a>
+                                        <e>
+                                            <on-open-change>
+                                                <list type="script" value="this.SelectSubstation()"></list>
+                                            </on-open-change>
+                                        </e>
+                                    </iselect>
+                                </div>
+                                <div>
+                                    <a class="f jb ac mb10"></a>
+                                    <label>
+                                        <a value="间隔:"></a>
+                                    </label>
+                                    <iselect desc="间隔下拉框" from="selInterval" source="dsInterval" style="width:150px;">
+                                        <e>
+                                            <on-open-change>
+                                                <list type="script" value="this.SelectInterval()"></list>
+                                            </on-open-change>
+
+                                        </e>
+                                    </iselect>
+                                </div>
+                                <div>
+                                    <a class="f jb ac mb10"></a>
+                                    <label>
+                                        <a value="设备:"></a>
+                                    </label>
+                                    <iselect desc="设备下拉框" from="selDevice" source="dsDevice" style="width:150px;"></iselect>
+                                </div>
+                                <div>
+                                    <a class="f jb ac mb10"></a>
+                                    <label>
+                                        <a value="监测类型:"></a>
+                                    </label>
+                                    <iselect desc="变电站下拉框" from="selMonitorClass" source="dsMonitorClass" style="width:150px;"></iselect>
+                                </div>
+
+                            </div>
+
+                            <div >
+                                <a class=" mt10 f jb ac mb10"></a>
+                                <button>
+                                    <a type="button" class="default-btn" value="保存模板"></a>
+                                    <e>
+                                        <onclick>
+                                            <list type="script" value="this.ShowSaveTemplate();"></list>
+                                        </onclick>
+                                    </e>
+                                </button>
+                                <button>
+                                    <a type="button" class="default-btn" value="查询"></a>
+                                    <e>
+                                        <onclick>
+                                            <list type="script" value="this.Enquiry();"></list>
+                                        </onclick>
+                                    </e>
+                                </button>
+                            </div>
+                            <div desc="模板" style="border: 1px solid #ffffff70;">
+                                <a class="mt10"></a>
+                                <scrolltable id="itable0" desc="iview表格" from="dataTempalte">
+                                    <a ref="itable0"></a>
+                                    <sa stripe="true" border="true" item-height="45" height="250"></sa>
+                                    <e>
+                                        <on-row-click>
+                                            <list type="script" value="this.SelectTemplate(row,index)"></list>
+                                        </on-row-click>
+                                    </e>
+                                    <icol id="icol0" desc="模板名称" from="dataTempalte_0">
+                                        <a minWidth="200"></a>
+                                    </icol>
+                                </scrolltable>
+                            </div>
+                        </div>
+                        <div>
+                            <imodal from="modal1">
+                                <sa title="templateName"></sa>
+                                <e>
+                                    <on-ok>
+                                        <list type="script" value="this.SaveTemplate()"></list>
+                                    </on-ok>
+                                </e>
+                                <div style="color:#000">
+                                    <div style=" display: flex;align-items: center;justify-content: space-around;">
+                                        <label>
+                                            <a value="模板名称:"></a>
+                                        </label>
+
+                                        <iinput desc="关键词输入框" from="templateName" style="width:300px"></iinput>
+                                    </div>
+                                    <div style=" display: flex;align-items: center;justify-content: center;">
+                                        <a class="mt10"></a>
+                                        <button>
+                                            <a type="button" class="default-btn" value="保存"></a>
+                                            <e>
+                                                <onclick>
+                                                    <list type="script" value="this.SaveTemplate();"></list>
+                                                </onclick>
+                                            </e>
+                                        </button>
+                                    </div>
+                                </div>
+                            </imodal>
+                        </div>
+                        <div >
+                            <a class="f jc ac mb10"></a>
+                            <button style="margin-right:10px">
+                                <a type="button" class="default-btn" value="选择模板"></a>
+                                <e>
+                                    <onclick>
+                                        <list type="script" value="this.SelectTemplate();"></list>
+                                    </onclick>
+                                </e>
+                            </button>
+                            <button style="margin-left:10px">
+                                <a type="button" class="default-btn" value="保存模板"></a>
+                                <e>
+                                    <onclick>
+                                        <list type="script" value="this.ShowSaveTemplate();"></list>
+                                    </onclick>
+                                </e>
+                            </button>
+                        </div>
+                    </div>
+                    <div desc="右侧表格容器" style="flex:1;margin-right:10px;">
+                        <a id="table"></a>
+                        <scrolltable desc="iview表格" from="alertTable">
+                            <sa stripe="true" border="true" height="h0" item-height="35"></sa>
+                            <c>
+                                <icol desc="序号">
+                                    <a type="index" width="50"></a>
+                                </icol>
+                                <icol desc="告警时间" from="alertTable_0">
+                                    <a minwidth="120" align="center"></a>
+                                </icol>
+                                <icol desc="变电站" from="alertTable_1">
+                                    <a minwidth="120" align="center"></a>
+                                </icol>
+                                <icol desc="设备名称" from="alertTable_2">
+                                    <a minwidth="120" align="center"></a>
+                                </icol>
+                                <icol desc="监测类型" from="alertTable_3">
+                                    <a minwidth="120" align="center"></a>
+                                </icol>
+                                <icol desc="告警内容" from="alertTable_4">
+                                    <a minwidth="120" align="center"></a>
+                                </icol>
+                            </c>
+                        </scrolltable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ctrls>
+    <css>
+        <![CDATA[ 
+        .station-select-wrap{
+            display:flex;
+            align-items:center;
+            justify-content: space-between;
+            margin-bottom:15px;
+        }
+        .template .ivu-scroll-loader{
+            height:0;
+        }
+        ]]>
+    </css>
+    <scripts>
+        <script event="created">
+            <list type="select" ds="dsSubstation"></list>
+            <list type="script">
+                <value>
+                    <![CDATA[
+        //初始化时间
+        
+        this.startDate = new Date()
+        this.endDate = new Date()
+         this.CloseModal = function(){
+
+         }
+         this.Back = function(){
+
+         }
+         //关键字搜索
+         this.SearchkeyWord = function(){
+            console.log(this.inpSerachKeyWord)
+            let o = PDP.read('ConnMain',"sc/alertSearch:GetAlertKeyWord",[this.inpSerachKeyWord])
+            if(o.isOK && o.value){
+                console.log(o)
+                this.alertTable = o.value
+            }
+         }
+         //获取变电站数据
+         this.Getsubstation = function(){
+            this.dataSubstation = [["全部","全部"]].concat(this.dsSubstation)
+         }
+         this.Getsubstation();
+         
+         this.SelectSubstation = function(){
+            //根据选择的变电站获取间隔数据
+          
+            let reqData = "";
+            if(this.selSubstation === "全部"){
+                reqData = ""
+            }else{
+                reqData = this.selSubstation
+            }
+            let o = PDP.read('ConnMain',"sc/alertSearch:GetInterval",[reqData])
+            if(o.isOK && o.value){
+                this.dsInterval = [["全部","全部"]].concat(o.value)
+            }
+           
+         }
+
+         this.SelectInterval =function(){
+            
+            //根据选择的间隔获取设备数据
+          
+            let reqData = "";
+            if(this.selInterval === "全部"){
+                reqData = ""
+            }else{
+                reqData = this.selInterval
+            }
+            let o = PDP.read('ConnMain',"sc/alertSearch:GetDevice",[reqData])
+            if(o.isOK && o.value){
+                this.dsDevice = [["全部","全部"]].concat(o.value)
+            }
+         }
+         this.dsMonitorClass = [
+            ["全部","全部"],
+            ["油色谱","油色谱"],
+            ["内部温度","内部温度"],
+            ["振动","振动"],
+            ["铁芯接地","铁芯接地"],
+            ["机械特性","机械特性"],
+            ["局部放电","局部放电"],
+            ["SF6监测","SF6监测"],
+         ]
+
+         this.Enquiry = function(){
+            //查询数据
+            let selData = [this.selSubstation,this.selInterval,this.selDevice,this.selMonitorClass]
+            let reqData = selData.map(item =>{
+                if(item === "全部"){
+                    return "";
+                }else{
+                    return item;
+                }
+            })
+            
+            if(this.startDate && this.endDate){
+
+                let startTime = Ysh.Time.formatString(this.startDate,"111000")+ " " + "00:00:00"
+                let endTime = Ysh.Time.formatString(this.endDate,"111000") + " " + "23:59:59"
+               
+                if(Ysh.Time.Check.compare(this.startDate,this.endDate) >0){
+                    startTime = Ysh.Time.formatString(this.endDate,"111000") + " " + "23:59:59"
+                    endTime = Ysh.Time.formatString(this.startDate,"111000")+ " " + "00:00:00"
+                }
+            
+                let v = PDP.read('ConnMain',"sc/alertSearch:GetTimeAlertData",[reqData[0],reqData[1],reqData[2],reqData[3],startTime,endTime])
+                if(v.isOK && v.value){
+                
+                    this.alertTable = v.value
+                }
+            }else if(this.startDate && !this.endDate){
+                let startTime = Ysh.Time.formatString(this.startDate,"111000")+ " " + "00:00:00"
+                let endTime = Ysh.Time.formatString(new Date(),"111111") 
+                let v = PDP.read('ConnMain',"sc/alertSearch:GetTimeAlertData",[reqData[0],reqData[1],reqData[2],reqData[3],startTime,endTime])
+                if(v.isOK && v.value){
+                
+                    this.alertTable = v.value
+                }
+            }else if(!this.startDate && this.endDate){
+                let endTime = Ysh.Time.formatString(this.endDate,"111000") + " " + "23:59:59"
+                let o = PDP.read('ConnMain',"sc/alertSearch:GetAlertData",[reqData[0],reqData[1],reqData[2],reqData[3],endTime])
+                if(o.isOK && o.value){
+                    this.alertTable = o.value
+                }
+            }
+
+
+            
+         }
+         this.Enquiry()
+
+         //模拟模板数据
+         //[模板名称，变电站，间隔，设备，监测类型，开始时间，结束时间]
+         this.dataTempalte = [
+            ["模板1",'全部','全部','全部','全部',new Date(),new Date],
+            ["模板2","2.安定站",'全部','全部','全部',new Date(),new Date],
+            ["模板3","1.昌平站",'全部','全部','全部',new Date(),new Date],
+            ["模板4",'全部','全部','全部','全部',new Date(),new Date],
+            ["模板5",'全部','全部','全部','全部',new Date(),new Date],
+            ["模板6",'全部','全部','全部','全部',new Date(),new Date],
+            ["模板7",'全部','全部','全部','全部',new Date(),new Date],
+
+         ]
+         this.SelectTemplate = function(item) {
+   
+
+            this.dataSubstation = [[item.dataTempalte_1,item.dataTempalte_1]];
+            this.selSubstation = item.dataTempalte_1;
+            this.dsInterval = [[item.dataTempalte_2,item.dataTempalte_2]];
+            this.selInterval = item.dataTempalte_2;
+            this.dsDevice = [[item.dataTempalte_3,item.dataTempalte_3]];
+            this.selDevice = item.dataTempalte_3;
+            this.dsMonitorClass = [[item.dataTempalte_4,item.dataTempalte_4]];
+            this.selMonitorClass = item.dataTempalte_4;
+            this.startDate = item.dataTempalte_5;
+            this.endDate = item.dataTempalte_6;
+            this.Enquiry ();
+         }
+         this.ShowSaveTemplate = function(){
+            this.modal1 = true;
+         }
+         this.SaveTemplate = function(){
+            if(!this.templateName){
+                alert("请输入模板名")
+            }else{
+                let arr = [];
+                arr[0] = this.templateName
+                arr[1] = this.selSubstation
+                arr[2] = this.selInterval
+                arr[3] = this.selDevice
+                arr[4] = this.selMonitorClass
+                arr[5] = this.startDate
+                arr[6] = this.endDate
+            }
+
+         }
+        
+          ]]>
+                </value>
+            </list>
+        </script>
+        <script event="mounted">
+            <list type="script">
+                <value>
+                    <![CDATA[
+                    this.h0 = $("#table").height()-10;
+          ]]>
+                </value>
+            </list>
+        </script>
+    </scripts>
+</root>

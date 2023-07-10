@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetAllSource>
+    <![CDATA[SELECT ID,NAME,LONGITUDE,LATITUDE FROM ]]>
+  <![CDATA[same:SearchCommonSql:SchemaName]]>
+  <![CDATA[SG_COM_WEATHERSTATION_B]]>
+  </GetAllSource>
+</ROOT>

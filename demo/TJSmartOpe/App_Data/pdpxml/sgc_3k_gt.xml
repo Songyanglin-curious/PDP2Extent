@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds4><![CDATA[
+        SELECT 1 FROM SG_DEV_TOWER_B WHERE 1=0
+        ]]></ds4></ROOT>

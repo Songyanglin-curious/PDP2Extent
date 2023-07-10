@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+    <Conditions db="SGAPP" sql="GetAllData" remarks="公共的条件可以写在外边，不同类型可以类型里">
+        <Group type="group" multi="">
+            <acOrDc name="交直流" db="SGAPP" type="list" src="GetAllACDC" if="WhereACDC"></acOrDc>
+
+            <voltage name="电压等级" db="SGAPP" type="list" src="GetAllVOL" if="WhereVOL"></voltage>
+        </Group>
+        <Group type="group">
+            <defectLevel name="缺陷等级" multi="" db="SGAPP" type="list" src="GetAllDefectLevel" if="WhereDefectLevel"></defectLevel>
+            <fxrq name="发现日期" db="SGAPP" type="date" format="yyyy年MM月dd日" vformat="TO_DATE('{0:yyyy-MM-dd}','yyyy-mm-dd')" ifcol="FIND_DAY"></fxrq>
+        </Group>
+        <bj name="部件" db="SGAPP" type="list" src="GetAllBJ" if="WhereBJ"></bj>
+        <bw name="部位" db="SGAPP" type="list" src="GetAllBW" if="WhereBW"></bw>
+
+        <ywdw name="运维单位" dismulti="true" db="SGAPP" type="list" src="GetAllYWDW" if="WhereYWDW"></ywdw>
+
+        <name name="关键字" placeholder="请输入线路名称/部件" type="text" value="" ifcol="LINE_NAME,BJ" dismulti="1"></name>
+
+    </Conditions>
+    <GetAllData>
+        <![CDATA[SELECT ]]>
+        <![CDATA[same:BaseCols]]>
+        <![CDATA[]]>
+        <![CDATA[same:BaseSrc]]>
+        <![CDATA[ WHERE 1=1 {0}]]>
+    </GetAllData>
+    <cols>
+        <![CDATA[
+        年度    线路名称    发现时间    交直流  电压等级    起始杆塔    终点杆塔    部件    部件种类    部位    缺陷描述    缺陷等级    巡视伦次    出资单位    资产单位    运维单位
+        ---------------------收缩列表
+        缺陷详情
+        ]]>
+    </cols>
+    <BaseCols>
+        <![CDATA[
+        LINE_YEAR,LINE_NAME,FIND_DAY,AC_DC,VOL,START_TOWER_NAME,END_TOWER_NAME,BJ,BJ,BW,DEFECT_DESCRIBE,DEFECT_LEVEL,XSLC,CZDW,ZCDW,YWDW,DEFECT_DETAIL,ID
+        ]]>
+    </BaseCols>
+    <BaseSrc>
+        <![CDATA[ FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_LINE_QUEXIAN ]]>
+    </BaseSrc>
+    <GetAllACDC>
+        <![CDATA[select DISTINCT AC_DC,AC_DC from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_LINE_QUEXIAN WHERE length(AC_DC) > 0]]>
+    </GetAllACDC>
+    <GetAllDefectLevel>
+        <![CDATA[select DISTINCT DEFECT_LEVEL,DEFECT_LEVEL,CASE DEFECT_LEVEL
+        WHEN '危急缺陷' THEN 1
+        WHEN '严重缺陷' THEN 2
+        WHEN '一般缺陷' THEN 3
+        ELSE 4
+      END AS SORT_ORDER from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_LINE_QUEXIAN WHERE length(DEFECT_LEVEL) > 0 ORDER BY SORT_ORDER]]>
+    </GetAllDefectLevel>
+    <GetAllVOL>
+        <![CDATA[select DISTINCT VOL,concat(VOL,'kV'),CAST(VOL AS DECIMAL(10, 0)) AS VOL_NUM from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_LINE_QUEXIAN WHERE length(VOL) > 0 ORDER BY VOL_NUM DESC]]>
+    </GetAllVOL>
+    <GetAllBJ>
+        <![CDATA[select DISTINCT BJ,BJ from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_LINE_QUEXIAN WHERE length(BJ) > 0]]>
+    </GetAllBJ>
+    <GetAllYWDW>
+        <![CDATA[SELECT '国网蒙东','国网蒙东电力']]>
+        <![CDATA[same:BaseSrc]]>
+        <![CDATA[ UNION ]]>
+        <![CDATA[SELECT '国网天津','国网天津电力']]>
+        <![CDATA[same:BaseSrc]]>
+        <![CDATA[ UNION ]]>
+        <![CDATA[SELECT '国网河北','国网河北电力']]>
+        <![CDATA[same:BaseSrc]]>
+        <![CDATA[ UNION ]]>
+        <![CDATA[SELECT '国网山东','国网山东电力']]>
+        <![CDATA[same:BaseSrc]]>
+        <![CDATA[ UNION ]]>
+        <![CDATA[SELECT '国网山西','国网山西电力']]>
+        <![CDATA[same:BaseSrc]]>
+        <![CDATA[ UNION ]]>
+        <![CDATA[SELECT '国网冀北','国网冀北电力']]>
+        <![CDATA[same:BaseSrc]]>
+        <![CDATA[ UNION ]]>
+        <![CDATA[SELECT '京隆','京隆电力']]>
+        <![CDATA[same:BaseSrc]]>
+        <![CDATA[ UNION ]]>
+        <![CDATA[SELECT '内蒙古','内蒙古超高压']]>
+        <![CDATA[same:BaseSrc]]>
+    </GetAllYWDW>
+    <!-- <GetAllYWDW>
+        <![CDATA[select DISTINCT YWDW,YWDW from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_LINE_QUEXIAN WHERE length(YWDW) > 0]]>
+    </GetAllYWDW> -->
+
+    <GetAllBW>
+        <![CDATA[select DISTINCT BW,BW from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_LINE_QUEXIAN WHERE length(BW) > 0]]>
+    </GetAllBW>
+
+    <WhereACDC>
+        <![CDATA[ AND AC_DC IN ({0})]]>
+    </WhereACDC>
+    <WhereDefectLevel>
+        <![CDATA[ AND DEFECT_LEVEL IN ({0})]]>
+    </WhereDefectLevel>
+    <WhereVOL>
+        <![CDATA[ AND VOL IN ({0})]]>
+    </WhereVOL>
+    <WhereBJ>
+        <![CDATA[ AND BJ IN ({0})]]>
+    </WhereBJ>
+    <WhereYWDW>
+        <![CDATA[ AND YWDW like '%{{0}}%']]>
+    </WhereYWDW>
+
+    <WhereBW>
+        <![CDATA[ AND BW IN ({0})]]>
+    </WhereBW>
+
+
+</ROOT>

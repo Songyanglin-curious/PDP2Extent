@@ -1,0 +1,73 @@
+﻿@charset "utf-8";
+/* CSS Document */
+body {
+    background-color: buttonface;
+    margin: 17px 0px 0px 17px;
+    border: none;
+    overflow: hidden;
+}
+
+.t_area {
+    border: solid 1px Gray;
+    vertical-align: middle;
+    overflow-y: visible;
+}
+
+.btn {
+    height: 21px;
+}
+
+.tbContent .trSelected {
+    color: #f00;
+    font-weight: bold;
+}
+
+#dvDialog
+{
+    width: 640px;
+    display: none;
+    height: 480px;
+    background-color: #FFF;
+    border: 1px solid #000;
+}
+
+    #dvDialog .dvTitle
+    {
+        height: 25px;
+        font-size: 14px;
+        background-color: #3366cc;
+        position: relative;
+        line-height: 25px;
+        color: #fff;
+    }
+
+        #dvDialog .dvTitle span
+        {
+            left: 20px;
+            position: relative;
+        }
+
+    #dvDialog .imgClose
+    {
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        right: 5px;
+        top: 0;
+        cursor: pointer;
+    }
+
+    #dvDialog .dvButtons
+    {
+        position: absolute;
+        left: 520px;
+        top: 440px;
+        cursor: pointer;
+    }
+
+#txtDialog
+{
+    width: 100%;
+    height: 400px;
+    font-size: 10pt;
+}

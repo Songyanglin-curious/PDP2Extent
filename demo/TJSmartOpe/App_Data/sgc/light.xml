@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetAllEffectList>
+    <![CDATA[
+select station_id,is_forecast,date_time from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning_station where date_time>={0} and date_time<{1}
+UNION ALL
+SELECT DISTINCT line_id,is_forecast,date_time FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning_tower where date_time>={0} and date_time<{1}
+]]>
+  </GetAllEffectList>
+  <SkipSome>
+    <![CDATA[and province_owner not in (530000,450000,440000,520000,460000,710000,810000,820000) ]]>
+  </SkipSome>
+  <SkipRegion>
+    <![CDATA[AND (REGION LIKE '天津%' OR REGION LIKE '北京%' OR REGION LIKE '河北%' OR REGION LIKE '山西%' OR REGION LIKE '冀北%' OR REGION LIKE '山东%' OR REGION LIKE '蒙西%' OR REGION LIKE '内蒙古%')]]>
+  </SkipRegion>
+  <ChangeRegion>
+    <![CDATA[CASE WHEN REGION LIKE '内蒙古%' THEN '蒙西'
+ELSE SUBSTR(REGION,0,2) END AS  REGION]]>
+  </ChangeRegion>
+  <GetLightCountP>
+    <![CDATA[select region,region,count(1) c FROM (
+    SELECT ]]><![CDATA[same:ChangeRegion]]><![CDATA[  
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 
+    where date_time>={0} and date_time<{1} ]]><![CDATA[same:SkipRegion]]><![CDATA[
+    UNION ALL
+    SELECT ]]><![CDATA[same:ChangeRegion]]><![CDATA[  
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGWARN_2022 
+    where date_time>={0} and date_time<{1} and date_time>=sysdate ]]><![CDATA[same:SkipRegion]]><![CDATA[
+    ) a
+    group by region order by c desc]]>
+  </GetLightCountP>
+  <GetLightCountPBK>
+    <![CDATA[select province_owner,province,count(1) c from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where date_time>={0} and date_time<{1} ]]>
+    <![CDATA[same:SkipSome]]>
+    <![CDATA[group by province_owner,province order by c desc]]>
+  </GetLightCountPBK>
+  <GetLightCountC>
+    <![CDATA[select city_owner,city,count(1) c from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where province_owner={2} and date_time>={0} and date_time<{1} group by city_owner,city order by c desc]]>
+  </GetLightCountC>
+  <GetLightCountD>
+    <![CDATA[select district_owner,district,count(1) c from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where city_owner={2} and date_time>={0} and date_time<{1} group by district_owner,district order by c desc]]>
+  </GetLightCountD>
+  <GetLightCountPTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(date_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where province_owner={2} and date_time>={0} and date_time<{1} 
+) a group by tm order by tm]]>
+  </GetLightCountPTime>
+  <GetLightCountCTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(date_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where city_owner={2} and date_time>={0} and date_time<{1} 
+) a group by tm order by tm]]>
+  </GetLightCountCTime>
+  <GetLightCountDTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(date_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where district_owner={2} and date_time>={0} and date_time<{1} 
+) a group by tm order by tm]]>
+  </GetLightCountDTime>
+  <GetLightCountAllTime>
+    <![CDATA[select tm,count(1) as c from (
+SELECT to_char(date_time,'yyyy-mm-dd hh:mi:')||'00' as tm FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where date_time>={0} and date_time<{1} ]]>
+    <![CDATA[same:SkipSome]]>
+    <![CDATA[
+) a group by tm order by tm]]>
+  </GetLightCountAllTime>
+  <GetLightPTime>
+    <![CDATA[
+SELECT date_time,longitude,latitude,peak_current 
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 
+where region={2} and date_time>={0} and date_time<{1} 
+UNION ALL
+SELECT date_time,longitude,latitude,NULL 
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGWARN_2022 
+where region={2} and date_time>={0} and date_time<{1} and date_time>=sysdate  order by date_time
+]]>
+  </GetLightPTime>
+  <GetLightPTimeBK>
+    <![CDATA[
+SELECT date_time,longitude,latitude,peak_current FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where province_owner={2} and date_time>={0} and date_time<{1}  order by date_time
+]]>
+  </GetLightPTimeBK>
+  <GetLightCTime>
+    <![CDATA[
+SELECT date_time,longitude,latitude,peak_current 
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 
+where region={2} and date_time>={0} and date_time<{1}  order by date_time
+]]>
+  </GetLightCTime>
+  <GetLightCTimeBK>
+    <![CDATA[
+SELECT date_time,longitude,latitude,peak_current FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where city_owner={2} and date_time>={0} and date_time<{1}  order by date_time
+]]>
+  </GetLightCTimeBK>
+  <GetLightDTime>
+    <![CDATA[
+SELECT date_time,longitude,latitude,peak_current 
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 
+where region={2} and date_time>={0} and date_time<{1}  order by date_time
+]]>
+  </GetLightDTime>
+  <GetLightDTimeBK>
+    <![CDATA[
+SELECT date_time,longitude,latitude,peak_current FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where district_owner={2} and date_time>={0} and date_time<{1}  order by date_time
+]]>
+  </GetLightDTimeBK>
+  <GetLightAllTime>
+    <![CDATA[
+SELECT date_time,longitude,latitude,peak_current,region
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 
+where date_time>={0} and date_time<{1}
+UNION ALL
+SELECT date_time,longitude,latitude,NULL ,region
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGWARN_2022 
+where date_time>={0} and date_time<{1} AND date_time>=sysdate  order by date_time
+]]>
+  </GetLightAllTime>
+  <GetLightAllTimeBK>
+    <![CDATA[
+SELECT date_time,longitude,latitude,peak_current FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lightning_district where date_time>={0} and date_time<{1} ]]>
+    <![CDATA[same:SkipSome]]>
+    <![CDATA[ order by date_time]]>
+  </GetLightAllTimeBK>
+  <GetEffectLine>
+    <![CDATA[SELECT line_id,2 as affect_type,0,date_time 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 
+    where date_time<{1} AND date_time>{0}]]>
+  </GetEffectLine>
+  <GetEffectLineBK>
+    <![CDATA[SELECT affect_obj_id,affect_type,is_forecast,lightning_time from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning where affect_type=2 /*AND lightning_time>2*/ AND start_time<{1} AND end_time>{0}]]>
+  </GetEffectLineBK>
+  <GetLineTower>
+    <![CDATA[select alarm_tower,alarm_tower,date_time,longitude,latitude,region
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 
+    where line_id={0} AND date_time>={1} and date_time<{2}
+    UNION ALL
+    select alarm_tower,alarm_tower,date_time,longitude,latitude ,region
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGWARN_2022 
+    where line_id={0} AND date_time>={1} and date_time<{2} AND date_time>=sysdate
+    ]]>
+  </GetLineTower>
+  <GetLineTowerBK>
+    <![CDATA[select tower_id_start,tower_id_end,date_time,lightning_longitude,lightning_latitude from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning_tower 
+where line_id={0} AND date_time>={1} and date_time<{2}]]>
+  </GetLineTowerBK>
+  <GetLineStat>
+    <![CDATA[SELECT line_id,0,0,count(1) as lightning_time 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 
+    where date_time<{1} AND date_time>={0} and line_id is not null
+    group by line_id
+    UNION ALL
+    SELECT line_id,0,0,count(1) as lightning_time
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGWARN_2022 
+    where date_time<{1} AND date_time>={0} AND date_time>=sysdate and line_id is not null
+    group by line_id
+    ]]>
+  </GetLineStat>
+  <GetLineStatBK>
+    <![CDATA[SELECT affect_obj_id,0,0,count(1) as lightning_time 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning 
+    where affect_type=2 AND lightning_time>2 AND start_time<{1} AND end_time>{0}
+    group by affect_obj_id]]>
+  </GetLineStatBK>
+  <GetLineWarn>
+    <![CDATA[select date_time,date_time as se,alarm_level,'' 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022
+WHERE line_id={0} AND date_time>={1} AND date_time<{2} 
+UNION ALL
+select date_time,date_time,alarm_level,'' 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGWARN_2022
+WHERE line_id={0} AND date_time>={1} AND date_time<{2} AND date_time>=sysdate
+ORDER BY date_time DESC]]>
+  </GetLineWarn>
+  <GetLineWarnBK>
+    <![CDATA[select l.start_time,l.end_time,l.lightning_time,f.fault_id 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning l 
+    LEFT JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_h_fault f
+on f.REASON_CLASS=2002 AND l.affect_obj_id=f.equip_id --and l.start_time<=f.fault_time and l.end_time>=f.fault_time
+and  l.start_time<= f.fault_time+3 units minute  and l.start_time>=f.fault_time-3 units minute
+WHERE l.affect_obj_id={0} AND l.lightning_time>2 AND l.start_time>={1} AND l.start_time<{2} ORDER BY l.start_time DESC]]>
+  </GetLineWarnBK>
+  <GetLineTowerPosition>
+    <![CDATA[select t.longitude,t.latitude 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning_tower l
+    join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_tower_b t on l.tower_id_start=t.id
+where line_id={0} AND date_time>={1} and date_time<{2}
+UNION 
+select t.longitude,t.latitude 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning_tower l
+    join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_tower_b t on l.tower_id_end=t.id
+where line_id={0} AND date_time>={1} and date_time<{2}]]>
+  </GetLineTowerPosition>
+  <GetLightCount>
+    <![CDATA[SELECT COUNT(1) FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_h_lightninglive_{{0}} WHERE date_time>={1} and date_time<{2}]]>
+  </GetLightCount>
+  <GetTimesByLineTime>
+    <![CDATA[select start_time,end_time from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning
+where affect_type=2 and affect_obj_id={0} and start_time<={1} and end_time>={1}]]>
+  </GetTimesByLineTime>
+  <GetFaults>
+    <![CDATA[select distinct l.affect_obj_id,'','',f.fault_id
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_lightning l
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_h_fault f on l.affect_obj_id=f.equip_id 
+--and l.start_time<=f.fault_time and l.end_time>=f.fault_time
+and l.start_time<= f.fault_time+3 units minute  and l.start_time>=f.fault_time-3 units minute
+where f.REASON_CLASS=2002 AND l.affect_type=2 and f.fault_time<='{1}' and f.fault_time>='{0}'
+]]>
+  </GetFaults>
+</ROOT>

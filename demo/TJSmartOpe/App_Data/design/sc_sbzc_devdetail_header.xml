@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="1" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;/conn/jsfile/shengchan/data.js" desc="设备概况">
+  <inits>
+    <init id="devtype" desc="设备类型" type="request" arg="devtype"></init>
+    <init id="lst" desc="数据" type="request" arg="lst"></init>
+    <init id="havecapacity" desc="是显示容量" type="request" arg="havecapacity"></init>
+    <init id="modelsrc" desc="模型src" type="request" arg="modelsrc"></init>
+  </inits>
+  <consts>
+
+    <const id="lists"></const>
+  </consts>
+  <datasources></datasources>
+  <ctrls>
+    <div id="div0" desc="根容器" style="width:100%;height:100%;">
+
+        <div style="padding:20px">
+          <label style="color: rgb(44, 203, 202);font-size: 30px;font-weight: 800;margin-left: 10px;">
+            <sa value="devtype"></sa>
+            <sf value="{0}+'概况'"></sf>
+          </label>
+        </div>
+        <div >
+          <a class="f"></a>
+          <div style=" position: relative;">
+            <iframe style="width:400px;height:100%;border:none">
+              <sa src="modelsrc"></sa>
+            </iframe>
+            <i style="cursor:pointer;position: absolute;right:10px;top:10px;font-size:24px">
+              <a class="ivu-icon ivu-icon-md-expand"></a>
+              <e>
+                <onclick>
+                  <list type="script" value="this.magnify3D();"></list>
+                </onclick>
+              </e>
+            </i>
+          </div>
+          <div style="padding:10px;justify-content: space-around">
+            <a class="f1 f  "></a>
+            <loop id="loop2" from="lists">
+              <div style="padding:10px 10px;justify-content: space-between;">
+                <a class="f dc "></a>
+                <loop id="loop3" from="item_loop2">
+                  <div show="!item_loop3.isTitle" style="display:flex;align-items: center;justify-content: space-between;">
+                    <label>
+                      <a class="assets-label width100 ml10"></a>
+                      <sa value="item_loop3.label"></sa>
+                    </label>
+                    <label>
+                      <a class="ml10 assets-count"></a>
+                      <sa value="item_loop3.value + '' +  item_loop3.unit"></sa>
+                    </label>
+                  </div>
+                  <div show="item_loop3.isTitle" style="margin: 10px 0 10px 10px">
+                    <a class="fac  "></a>
+                    <i>
+                      <a class="assets-voltage-point"></a>
+                      <sa s_background="item_loop3.pointColor"></sa>
+                    </i>
+                    <label>
+                      <a class="assets-voltage-label"></a>
+                      <sa value="item_loop3.title" s_color="item_loop3.titleColor"></sa>
+                    </label>
+                  </div>
+                </loop>
+              </div>
+              <div>
+                <a class="right-border"></a>
+              </div>
+            </loop>
+          </div>
+        </div>
+    </div>
+  </ctrls>
+  <css>
+    <![CDATA[ 
+    .right-border{
+      border-right: 2px solid;
+      border-image: linear-gradient(
+          -180deg,
+          rgba(255, 255, 255, 0) 0%,
+          #00bbf2 50%,
+          rgba(255, 255, 255, 0) 100%
+      ) 2;
+    }
+    .right-border:last-child{
+      border:none
+    }
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+
+          //放大三维页面 
+          this.magnify3D = function(){
+            var ysh = ProjectSGC.Global.getMainObject("vMain").wnd.Ysh;
+              ysh.Vue.Dialog.showEx("archive_trans_3d", {src:this.modelsrc }, { name: this.devtype, width: "100%", height: "100%", isSingle: true });
+          }
+            var havecapacity = this.havecapacity
+            this.addCount = function(target,keys1,source,keys2){
+              for(var i =0 ; i <keys1.length ; i++){
+                var key1 = keys1[i]
+                var key2 = keys2[i]
+                target[key1] += Number(source[key2])
+              }
+              return target
+            }
+            var data =[];
+            var init = {count:0,capacity:0,initAsset:0,netAsset:0,salvageAsset:0,};
+            var keys1 = ['capacity','initAsset','netAsset','salvageAsset'];
+            var keys2 = ['capacity','initAsset','netAsset','salvageAsset'];
+            for(var i = 0; i < this.lst.length ; i++ ){
+              var item = this.lst[i];
+              data['0'] = data['0'] ? this.addCount( data['0'],keys1,item,keys2) : this.addCount( Ysh.Object.clone(init),keys1,item,keys2)
+              data['0'].count += 1;
+              if(!item.voltage.includes("交流")){
+                data['4'] = data['4'] ? this.addCount( data['4'],keys1,item,keys2) : this.addCount( Ysh.Object.clone(init),keys1,item,keys2)
+                data['4'].count += 1;
+                continue;
+              }
+              if(item.voltage.includes("交流1000kV")){
+                data['1'] = data['1'] ? this.addCount( data['1'],keys1,item,keys2) : this.addCount( Ysh.Object.clone(init),keys1,item,keys2)
+                data['1'].count += 1;
+                continue;
+              }
+              if(item.voltage.includes("交流500kV")){
+                data['2'] = data['2'] ? this.addCount( data['2'],keys1,item,keys2) : this.addCount( Ysh.Object.clone(init),keys1,item,keys2)
+                data['2'].count += 1;
+                continue;
+              }else{
+                data['3'] = data['3'] ? this.addCount( data['3'],keys1,item,keys2) : this.addCount( Ysh.Object.clone(init),keys1,item,keys2)
+                data['3'].count += 1;
+                continue;
+              }
+            }
+          var list = [];
+          var colors = ['','#2898D4','#A53F1B','#FEBD2B','#2BAF57']
+          var titles = ['','1000kV','500kV','220kV及以下','±500kV']
+          var listTitle = [];
+          var listOther1 = [];
+          var listOther2 = [];
+          var listOther3 = [];
+          var listOther4 = [];
+          var yi = 10000;//数据库出来已经除10000了
+          for(var i = 0 ; i < data.length ; i++ ){
+            var item = data[i]
+            if(!item)continue;
+            if(i != 0){
+              listTitle.push({isTitle: true, pointColor:colors[i], title: titles[i], titleColor: colors[i] })
+            }
+            listTitle.push({label:"数量",value:item.count,unit:"台",isTitle:false})
+            listOther1.push({label:"总额定容量",value:item.capacity.toFixed(2),unit:"MVA",isTitle:false})
+            listOther2.push({label:"总资产原值",value:(item.initAsset/yi).toFixed(2),unit:"亿",isTitle:false})
+            listOther3.push({label:"总资产净值",value:(item.netAsset/yi).toFixed(2),unit:"亿",isTitle:false})
+            listOther4.push({label:"总资产残值",value:(item.salvageAsset/yi).toFixed(2),unit:"亿",isTitle:false})
+          }
+          list.push(listTitle);
+          if(havecapacity){
+            list.push(listOther1);
+          }
+          list.push(listOther2);
+          list.push(listOther3);
+          list.push(listOther4);
+          this.lists =  list;
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="resize">
+      <![CDATA[
+
+          ]]>
+    </script>
+  </scripts>
+</root>

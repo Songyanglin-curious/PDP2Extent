@@ -1,0 +1,874 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+    <start>
+    <![CDATA[<!DOCTYPE html>
+<html style="width:100%;height:100%;font-size:14px">
+<head>
+    <title> {0} </title>
+    <meta name="viewport" content="initial-scale=1.0">{1}
+    <style type="text/css">
+        [v-cloak] {{  display: none; }}
+    </style>{2}
+	</head>
+	<body style="width:100%;height:100%;background: transparent;padding:0;">]]>
+  </start>
+    <refs>
+    <![CDATA[
+    /conn/jsfile/jquery.min.js
+    /conn/jsfile/vue.js
+    /conn/jsfile/iview.min.js
+    /conn/jsfile/md5.js
+    /conn/jsfile/JqPro.js
+    /conn/jsfile/guddlg.js
+    /conn/jsfile/pdp.core.js
+    /conn/jsfile/PDPAjax.js
+    /conn/pdpjs/pdpproject.js
+    /conn/cssfile/iview.css
+    /conn/cssfile/main.css
+    /conn/pdpjs/pdp2.0.css
+    /conn/cssfile/newcontrols.css
+    /conn/cssfile/mikestyle.css
+    /conn/pdpjs/pdpproject.css
+    /conn/jsfile/highcharts.js
+    /conn/jsfile/highcharts-3d.js
+    /conn/jsfile/highcharts-more.js
+    /conn/jsfile/cylinder.js
+    /conn/jsfile/variable-pie.js
+    /conn/jsfile/solid-gauge.js
+    /conn/jsfile/shengchan/data.js
+    ]]>
+  </refs>
+    <htmlstart>
+    <![CDATA[
+    <div id="pdp" v-cloak v-loading="'loadingPDP'" style="width:100%;height:100%">]]>
+  </htmlstart>
+    <htmlend>
+    <![CDATA[
+    </div>]]>
+  </htmlend>
+    <end>
+    <![CDATA[
+        {0}
+    </body>
+</html>]]>
+  </end>
+    <js>
+    <![CDATA[
+    <script type="text/javascript" src="{0}"></script>]]>
+  </js>
+    <css>
+    <![CDATA[
+    <link type="text/css" rel="stylesheet" href="{0}" />]]>
+  </css>
+    <template>
+    <![CDATA[
+    <script type="text/x-template" id="{0}">
+    {1}
+    </script>]]>
+  </template>
+    <templatejs>
+    <![CDATA[Ysh.Vue.addTemplate("{0}","{1}");
+]]>
+  </templatejs>
+    <Design>
+        <events>
+            <dragenter.stop>DesignDragEnter</dragenter.stop>
+            <dragleave.stop>DesignDragLeave</dragleave.stop>
+            <drop.stop>DesignDrop</drop.stop>
+            <dragover.stop>DesignDragOver</dragover.stop>
+            <mouseover.stop>DesignMouseOver</mouseover.stop>
+            <mouseout.stop>DesignMouseOut</mouseout.stop>
+            <click.stop>DesignClick</click.stop>
+        </events>
+    </Design>
+    <ctrls>
+        <buttongroup>
+            <reference>
+                /conn/pdpjs/ctrl/buttongroup.js
+            </reference>
+        </buttongroup>
+        <commontable>
+            <events>
+                <e name="on-select" args="selection,row"></e>
+                <e name="on-select-cancel" args="selection,row"></e>
+                <e name="on-select-all" args="selection"></e>
+                <e name="on-selection-change" args="selection,isLocate"></e>
+                <e name="on-row-click" args="row,index"></e>
+                <e name="on-row-dblclick" args="row,index"></e>
+                <e name="on-current-change" args="currentRow,oldCurrentRow"></e>
+                <e name="data-changed" args="data"></e>
+            </events>
+            <template>
+        <![CDATA[    
+          <i-table :columns="showColumns" :data="showData" :stripe="stripe" :border="border" :show-header="showHeader" :height="height" :loading="loading" :disabled-hover="disabledHover" :highlight-row="highlightRow"
+                        :row-class-name="finallyRowClassName" :size="size" :no-data-text="noDataText" :no-filtered-data-text="noFilteredDataText" @on-current-change="onCurrentChange" @on-select="onSelect" @on-select-cancel="onSelectCancel"
+                        @on-select-all="onSelectAll" @on-selection-change="onSelectionChange" @on-sort-change="onSortChange" @on-filter-change="onFilterChange" @on-row-click="onRowClick" @on-row-dblclick="onRowDblclick" @on-expand="onExpand">
+          </i-table>
+      ]]>
+      </template>
+            <reference>
+                /conn/pdpjs/ctrl/commontable.js
+            </reference>
+        </commontable>
+        <config-item>
+            <reference>
+                /conn/pdpjs/ctrl/buttongroup.js
+                /conn/pdpjs/ctrl/onoff.js
+            </reference>
+        </config-item>
+        <divmore>
+            <reference>
+                /conn/pdpjs/ctrl/div-more.js
+            </reference>
+        </divmore>
+        <dynfile>
+            <reference>
+                /conn/pdpjs/ctrl/dynfile.js
+            </reference>
+        </dynfile>
+        <ecalendarchart>
+            <events>
+                <e name="click" args="params"></e>
+            </events>
+            <template>
+        <![CDATA[<div style="width:100%;height:100%;"></div>]]>
+      </template>
+            <reference>
+                /conn/jsfile/echarts.min.js
+                /conn/pdpjs/ctrl/ecalendarchart.js
+            </reference>
+        </ecalendarchart>
+        <echart>
+            <events>
+                <e name="click" args="params"></e>
+            </events>
+            <reference>same:ctrls/esimplechart/reference</reference>
+            <template id="esimplechart"></template>
+        </echart>
+        <ecommonchart>
+            <events>
+                <e name="click" args="params"></e>
+            </events>
+            <reference>same:ctrls/esimplechart/reference</reference>
+            <template id="esimplechart"></template>
+        </ecommonchart>
+        <statisticcard>
+            <events>
+                <e name="showMore" args="params"></e>
+                <e name="celldbclick" args="row,column,tab"></e>
+            </events>
+
+            <reference>
+                <![CDATA[ same:ctrls/esimplechart/reference]]>
+                <![CDATA[ same:ctrls/highchart/reference]]>
+                /conn/pdpjs/ctrl/statisticcard.js
+                /conn/cssfile/ctrl/statisticcard.css
+                /conn/pdpjs/ctrl/yshtab.js
+                /conn/cssfile/yshtab.css
+            </reference>
+            <template id="esimplechart"></template>
+        </statisticcard>
+        <highchart>
+            <events>
+                <e name="click" args="params"></e>
+            </events>
+            <reference>same:ctrls/esimplechart/reference</reference>
+            <template id="esimplechart"></template>
+        </highchart>
+        <esimplechart>
+            <events>
+                <e name="click" args="params"></e>
+            </events>
+            <template>
+        <![CDATA[<div style="width:100%;height:100%;"></div>]]>
+      </template>
+            <reference>
+                /conn/jsfile/echarts.min.js
+                /conn/jsfile/echarts-gl.min.js
+                /conn/pdpjs/ctrl/esimplechart.js
+            </reference>
+        </esimplechart>
+        <flowsearchshow>
+            <events>
+                <e name="changed" args="arr"></e>
+            </events>
+            <reference>
+                /conn/jsfile/function.js;
+                /conn/jsfile/FillTemplate.js;
+                /conn/jsfile/grid_js/YshCellBind.js;
+                /conn/pdpjs/ctrl/flowsearch.js;
+            </reference>
+        </flowsearchshow>
+        <foldbar>
+            <events>
+                <e name="fold" args="isFold"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/foldbar.js
+            </reference>
+        </foldbar>
+        <itabs>
+            <events>
+                <e name="on-click" args="name"></e>
+                <e name="on-drag-drop" args="name1, name2, index1, index2, names"></e>
+                <e name="on-tab-remove" args="name"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/itabs.js
+            </reference>
+        </itabs>
+        <grids_tree>
+            <events>
+                <e name="on-check-change" args="nodes,node"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/tree.js
+            </reference>
+        </grids_tree>
+        <group_voltage_statistics>
+            <events>
+                <e name="volchanged" args="list,voltage,isClick"></e>
+            </events>
+        </group_voltage_statistics>
+        <gudupload>
+            <template>
+        <![CDATA[
+        <div>
+          <span v-for="file in fileList"><a :href="file.url" target="_blank">{{file.name}}</a><Icon v-show="canUpload" type="ios-close-circle" color="red" @click="handleDelete(file)" style="padding:0 5px"></Icon></span>
+          <Upload v-show="canUpload" :show-upload-list="false" :max-size="102400" :multiple="true" :on-success="handleSuccess" :on-preview="handlePreview" action="/Upload.aspx" style="display:inline-block">
+          <a href="#">点此上传</a>
+          </Upload>
+        </div>
+        ]]>
+      </template>
+            <reference>
+                /conn/pdpjs/ctrl/upload.js
+            </reference>
+        </gudupload>
+        <htimeline>
+            <reference>
+                /conn/pdpjs/ctrl/htimeline.js
+                /conn/cssfile/htimeline.css
+            </reference>
+        </htimeline>
+        <htimeline1>
+            <events>
+                <e name="onclick" args="item,index"></e>
+                <e name="onclicklink" args="item,index,link,linkIndex"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/htimeline1.js
+                /conn/cssfile/htimeline1.css
+            </reference>
+            <template1>
+        <![CDATA[
+        <div :style="{ width:widthPixel }" class="htl">
+          <div class="htlextendrow">
+          </div>
+          <div class="htllinerow">
+            <div class="htllink" :style="{height:defHeight,backgroundColor:defLineClr}"></div>
+            <template v-for="(item,index) in datalist">
+              <img :src="getDotImage(item,index)" :style="getDotClass(item,index)" class="htlitem" :text="item.text" @click="click(item,index)" />
+              <div class="htllink" :style="getLineClass(item,index)"></div>
+              <div bk="1" class="htllinkimg" v-if="showLink(item,index)" :style="getLinkClass(item,index)">
+                <img :src="getLinkImage(item,index)" />
+              </div>
+            </template>
+          </div>
+        </div>
+        ]]>
+      </template1>
+            <template>
+        <![CDATA[
+        <div :style="{ width:widthPixel }" class="htl">
+          <div class="htlextendrow">
+            <div v-for="(item,index) in datalist" class="htlextend" :style="{ left:getExtendLeft(item,index),bottom:'5px' }" v-html="item.html">
+            </div>
+          </div>
+          <div class="htllinerow">
+            <div class="htllink" :style="{height:defHeight,backgroundColor:defLineClr}"></div>
+            <template v-for="(item,index) in datalist">
+              <img :src="getDotImage(item,index)" :style="getDotClass(item,index)" class="htlitem" :text="item.text" @click="click(item,index)" />
+              <div class="htllink" :style="getLineClass(item,index)"></div>
+              <div bk="1" class="htllinkimg" v-for="(link,index0) in item.links" :style="getLinkClass(item,index,link,index0)">
+                <Tooltip :content="link.text">
+                  <img :src="getLinkImage(item,index,link,index0)" @click="clickLink(item,index,link,index0)" />
+                </Tooltip>
+              </div>
+            </template>
+          </div>
+          <div class="htltextrow">
+            <div v-for="(item,index) in datalist" class="htltext" :style="{ left:getItemLeft(item,index) }">
+              <div>
+                <span @click="click(item,index)">{{ item.text }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="htlgrouprow" :style="{ width:widthPixel }">
+            <div v-for="(g,index) in groups" class="htlgroup" :style="getGroupClass(g,index)">
+              <div class="htlgroupitem">
+               <img src="/i/sgc/location.png" />{{ g.text }}
+              </div>
+            </div>
+          </div>
+        </div>
+        ]]>
+      </template>
+        </htimeline1>
+        <htimeplayer>
+            <events>
+                <e name="startchanged" args="v"></e>
+                <e name="change" args="v"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/htimeplayer.js
+                /conn/cssfile/htimeplayer.css
+            </reference>
+            <template>
+        <![CDATA[
+        <div class="player-border">
+            <div class="player-left">
+                <Poptip v-model="showTime" trigger="click" placement="top-start">
+                    <img v-if="selectstart" style="width:26px;height:26px;" src="/i/ctrl/calendar.png" v-on:click="selectTime" />
+                    <div slot="content" style="white-space:normal;">
+                        开始时间：<date-time-ctrl v-model="start" img="none" :max="maxTime" :disstyle="disstyle" v-on:change="changeStartTime"></date-time-ctrl>
+                    </div>
+                </Poptip>
+                <img style="width:26px;height:26px;" :src="playImg" v-on:click="play" />
+            </div>
+            <div class="player-space"> {{typename}} </div>
+            <div class="player-right" v-on:mousedown.capture="onMouseDown" v-on:mouseout="onMouseOut" v-on:mouseup="onMouseUp" v-on:mousemove="onMouseMove">
+                <div style="position:absolute;z-index:100;left:0;top:0;width:100%;height:100%" v-on:click.capture="clickPlayer"></div>
+                <div class="player-right-top">
+                    <div v-for="item in scaleList" class="player-text" :style="{ left:item.pos }"> <span style="margin-left:-50%">{{ item.time }}</span></div>
+                </div>
+                <div class="player-right-bottom">
+                    <div v-for="item in scaleList" class="player-scale" :style="{ left:item.pos }">
+                    </div>
+                    <div v-for="item in scaleList" class="player-text" :style="{ left:item.pos }"> <span style="margin-left:-50%">{{ item.ext }}</span></div>
+                </div>
+                <div class="player-line" :style="{ left:curPosition }">
+                    <img src="/i/ctrl/staff.png" />
+                </div>
+            </div>
+            <div class="player-space-end"></div>
+        </div>]]>
+      </template>
+        </htimeplayer>
+        <htimeselect>
+            <reference>
+                /conn/pdpjs/ctrl/htimeline.js
+                /conn/cssfile/htimeline.css
+            </reference>
+        </htimeselect>
+        <i-switch>
+            <events>
+                <e name="on-change" args="value"></e>
+            </events>
+        </i-switch>
+        <idate>
+            <events>
+                <e name="on-change" args="date"></e>
+            </events>
+        </idate>
+        <iradiogroup>
+            <events>
+                <e name="on-change" args="value"></e>
+            </events>
+        </iradiogroup>
+        <itable>
+            <events>
+                <e name="on-select" args="selection,row"></e>
+                <e name="on-select-cancel" args="selection,row"></e>
+                <e name="on-select-all" args="selection"></e>
+                <e name="on-selection-change" args="selection,isLocate"></e>
+                <e name="on-row-click" args="row,index"></e>
+                <e name="on-row-dblclick" args="row,index"></e>
+                <e name="on-current-change" args="currentRow,oldCurrentRow"></e>
+                <e name="on-expand" args="row,status"></e>
+            </events>
+            <editbuttons>
+        <![CDATA[<input type="button" value="保存" class="ivu-btn ivu-btn-ghost ivu-btn-small" @click="{0}.save()" /><input type="button" value="取消" class="ivu-btn ivu-btn-ghost ivu-btn-small" @click="{0}.cancel()" />]]>
+      </editbuttons>
+
+        </itable>
+        <itemoperator>
+            <reference>
+                /conn/jsfile/flowclientcomm.js
+                /conn/pdpjs/ctrl/flowitemoperator.js
+            </reference>
+            <template>
+        <![CDATA[
+        <div><input v-if="needPrint" type="button" class="btnDefault" value="打印" @click="onPrint" 
+            /><input v-if="needExport" type="button" class="btnDefault" value="导出" @click="onExport" 
+            /><input v-if="needSeeHis" type="button" class="btnDefault" value="流程审计" @click="onSeeHis" 
+            /><input v-if="canSave" type="button" class="btnDefault" value="保存"  @click="onSave"
+            /><input v-if="canDelete" type="button" class="btnDefault" value="删除"  @click="onDelete"
+            /><input v-if="canGetBack" type="button" class="btnDefault" value="取回"  @click="onGetBack"
+            /><input v-if="canKickBack" type="button" class="btnDefault" value="打回"  @click="onKickBack"
+            /><input v-if="canInvalid" type="button" class="btnDefault" value="作废"  @click="onInvalid"
+            /><span v-html="content"></span><slot></slot>
+            <Modal v-if="canInvalid" v-model="showInvalid" title="作废原因" @on-ok="doInvalid" draggable :mask-closable="false">
+                <textarea v-model="invalidReason" style="width:100%;height:300px;"></textarea>
+                <div slot="footer">
+                    <Button type="text" size="large" @click="showInvalid=false">取消</Button>
+                    <Button type="primary" size="large" @click="doInvalid">确定</Button>
+                </div>
+            </Modal>
+            <Modal v-if="canKickBack" v-model="showKickBack" title="单子打回" @on-ok="doKickBack" draggable :mask-closable="false">
+                <table style="width:100%;border:0;">
+                  <tr>
+                    <td style="width:100px;color:black">打回到：</td>
+                    <td style="position:relative"><i-select v-model="kickbackNode" @on-change="changeKickBackNode"><i-option v-for="item in arrBackNodes" :value="item[1]" :key="item[1]">{{ item[0] }}</i-option></i-select></td>
+                  </tr>
+                  <tr ref="prevnodes" style="display:none">
+                      <td>&nbsp;</td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                    <td style="width:100px;color:black">原因类型：</td>
+                    <td style="position:relative"><i-select v-model="kickbackType"><i-option v-for="item in arrBackTypes" :value="item[1]" :key="item[1]">{{ item[0] }}</i-option></i-select></td>
+                  </tr>
+                  <tr>
+                    <td style="width:100px;color:black">详细原因：</td>
+                    <td><textarea v-model="kickbackReason" style="width:100%;height:200px;"></textarea></td>
+                  </tr>
+                </table>
+                <div slot="footer">
+                    <Button type="text" size="large" @click="showKickBack=false">取消</Button>
+                    <Button type="primary" size="large" @click="doKickBack">确定</Button>
+                </div>
+            </Modal>
+        </div>
+        ]]>
+      </template>
+        </itemoperator>
+        <itree>
+            <events>
+                <e name="on-select-change" args="nodes"></e>
+                <e name="on-check-change" args="nodes,node"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/tree.js
+            </reference>
+        </itree>
+        <lazytree>
+            <events>
+                <e name="on-select-change" args="nodes"></e>
+                <e name="on-check-change" args="nodes,node"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/tree.js
+            </reference>
+        </lazytree>
+        <iupload>
+            <events>
+                <e name="_bindon-success" args="res, file, filelist"></e>
+                <e name="_bindon-preview" args="file"></e>
+            </events>
+        </iupload>
+        <lazystage2table>
+            <events>
+                <e name="on-select" args="selection,row"></e>
+                <e name="on-select-cancel" args="selection,row"></e>
+                <e name="on-select-all" args="selection"></e>
+                <e name="on-selection-change" args="selection,isLocate"></e>
+                <e name="on-row-click" args="row,index"></e>
+                <e name="on-row-dblclick" args="row,index"></e>
+                <e name="on-current-change" args="currentRow,oldCurrentRow"></e>
+                <e name="data-changed" args="data,groups"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/commontable.js
+                /conn/pdpjs/ctrl/lazystage2table.js
+            </reference>
+        </lazystage2table>
+        <listshow>
+            <reference>
+                /conn/jsfile/function.js;
+                /conn/jsfile/FillTemplate.js;
+                /conn/jsfile/grid_js/YshCellBind.js;
+                /conn/pdpjs/ctrl/listshow.js;
+            </reference>
+        </listshow>
+        <onoff from="1">
+            <reference>
+                /conn/pdpjs/ctrl/onoff.js
+            </reference>
+        </onoff>
+        <pagetable>
+            <events>
+                <e name="on-select" args="selection,row"></e>
+                <e name="on-select-cancel" args="selection,row"></e>
+                <e name="on-select-all" args="selection"></e>
+                <e name="on-selection-change" args="selection,isLocate"></e>
+                <e name="on-row-click" args="row,index"></e>
+                <e name="on-row-dblclick" args="row,index"></e>
+                <e name="on-current-change" args="currentRow,oldCurrentRow"></e>
+                <e name="data-changed" args="data"></e>
+            </events>
+            <template>
+        <![CDATA[    
+          <i-table :columns="currColumns" :data="currData" :stripe="stripe" :border="border" :show-header="showHeader" :height="height" :loading="loading" :disabled-hover="disabledHover" :highlight-row="highlightRow"
+                        :row-class-name="finallyRowClassName" :size="size" :no-data-text="noDataText" :no-filtered-data-text="noFilteredDataText" @on-current-change="onCurrentChange" @on-select="onSelect" @on-select-cancel="onSelectCancel"
+                        @on-select-all="onSelectAll" @on-selection-change="onSelectionChange" @on-sort-change="onSortChange" @on-filter-change="onFilterChange" @on-row-click="onRowClick" @on-row-dblclick="onRowDblclick" @on-expand="onExpand">
+              <div slot="footer" style="display:flex;justify-content:center;align-items:center;">
+                <Page show-elevator show-total style="text-align:center" :total="total" :page-size="showItems" :current="pageIndex" v-on:on-change="changePage"></Page>
+                &nbsp;&nbsp;每页条数:&nbsp;<InputNumber v-model="showItems" :min="1" style="width:60px;"></InputNumber>
+              </div>
+          </i-table>
+      ]]>
+      </template>
+            <reference>
+                /conn/pdpjs/ctrl/pagetable.js
+            </reference>
+        </pagetable>
+        <reportshow>
+            <reference>
+                /conn/jsfile/sp/gc.spread.sheets.excel2013white.11.1.1.css;
+                /conn/jsfile/sp/gc.spread.sheets.all.11.1.1.min.js;
+                /conn/jsfile/sp/gc.spread.excelio.11.1.0.min.js;
+                /conn/jsfile/sp/gc.spread.sheets.charts.11.1.1.min.js;
+                /conn/jsfile/sp/gc.spread.sheets.print.11.1.1.min.js;
+                /conn/jsfile/sp/FileSaver.min.js;
+                /conn/jsfile/sp/gc.spread.sheets.resources.zh.11.1.0.min.js;
+                /conn/jsfile/sp/SpreadJsHelper.js;
+                /conn/jsfile/ArrayEx.js;
+                /conn/jsfile/sp/jsTools.js;
+                /conn/jsfile/sp/AnalysisReportField.js;
+                /conn/pdpjs/ctrl/report_spread.js;
+            </reference>
+        </reportshow>
+        <richbutton>
+            <reference>
+                /conn/pdpjs/ctrl/richbutton.js
+            </reference>
+        </richbutton>
+        <scrolledit>
+            <template>
+        <![CDATA[    
+        <div style="overflow-y:hidden" :style="{ height: tableHeight + 'px' }">
+            <div style="height:100%;overflow-y:hidden;float:left;" :style="{ width: tableWidth + 'px' }" @mousewheel.prevent="scrollTable">
+                <i-table :columns="columns" :data="currData" :stripe="stripe" :border="border" :show-header="showHeader" :width="width" :height="height" :loading="loading" :disabled-hover="disabledHover" :highlight-row="highlightRow"
+                         :row-class-name="rowClassName" :size="size" :no-data-text="noDataText" :no-filtered-data-text="noFilteredDataText" @on-current-change="onCurrentChange" @on-select="onSelect" @on-select-cancel="onSelectCancel"
+                         @on-select-all="onSelectAll" @on-selection-change="onSelectionChange" @on-sort-change="onSortChange" @on-filter-change="onFilterChange" @on-row-click="onRowClick" @on-row-dblclick="onRowDblclick" @on-expand="onExpand"></i-table>
+            </div>
+            <div class="divScroll" style="float:left;overflow-y:auto;" :style="{ height: tableHeight + 'px' }" @scroll="scroll" :scrollTop="scrollTop">
+                <div style="width:1px;" :style="{ height: dataHeight + 'px' }"></div>
+            </div>
+        </div>
+      ]]>
+      </template>
+            <reference>
+                /conn/pdpjs/ctrl/scrolledit.js
+            </reference>
+        </scrolledit>
+        <scrolltable>
+            <events>
+                <e name="on-select" args="selection,row"></e>
+                <e name="on-select-cancel" args="selection,row"></e>
+                <e name="on-select-all" args="selection"></e>
+                <e name="on-selection-change" args="selection,isLocate"></e>
+                <e name="on-row-click" args="row,index"></e>
+                <e name="on-row-dblclick" args="row,index"></e>
+                <e name="on-current-change" args="currentRow,oldCurrentRow"></e>
+                <e name="data-changed" args="data"></e>
+            </events>
+            <template>
+        <![CDATA[    
+        <div class="scrolltable" style="overflow-y:hidden" :style="{ height: tableHeight + 'px' }">
+            <div style="height:100%;overflow-y:hidden;float:left;" :style="{ width: tableWidth + 'px' }" @mousewheel="scrollTable">
+                <i-table :columns="showColumns" :data="currData1" :span-method="mergeColumn" :stripe="stripe" :border="border" :show-header="showHeader" :width="width" :height="height" :loading="loading" :disabled-hover="disabledHover" :highlight-row="highlightRow"
+                         :row-class-name="finallyRowClassName" :size="size" :no-data-text="noDataText" :no-filtered-data-text="noFilteredDataText" @on-current-change="onCurrentChange" @on-select="onSelect" @on-select-cancel="onSelectCancel"
+                         @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-selection-change="onSelectionChange" @on-sort-change="onSortChange" @on-filter-change="onFilterChange" @on-row-click="onRowClick" @on-row-dblclick="onRowDblclick" @on-expand="onExpand"></i-table>
+            </div>
+            <div class="divScroll" style="float:left;overflow-y:auto;" :style="{ height: tableHeight + 'px' }" @scroll="scroll" :scrollTop="scrollTop">
+                <div style="width:1px;" :style="{ height: dataHeight + 'px' }"></div>
+            </div>
+        </div>
+      ]]>
+      </template>
+            <reference>
+                /conn/pdpjs/ctrl/scrolltable.js
+            </reference>
+        </scrolltable>
+        <search-block>
+            <reference>
+                /conn/pdpjs/ctrl/searchblock.js
+                /conn/cssfile/ctrl/searchblock.css
+            </reference>
+        </search-block>
+        <search-useful>
+            <reference>same:ctrls/search-block/reference</reference>
+        </search-useful>
+
+        <alert-search-block>
+            <reference>
+                /conn/pdpjs/ctrl/alert_search.js
+                /conn/pdpjs/ctrl/searchblock.js
+                /conn/cssfile/ctrl/searchblock.css
+            </reference>
+        </alert-search-block>
+        <selectall from="1">
+            <reference>
+                /conn/pdpjs/ctrl/selectall.js
+            </reference>
+        </selectall>
+        <simplegantt>
+            <reference>
+                /conn/pdpjs/ctrl/simplegantt.js
+            </reference>
+        </simplegantt>
+        <Slider from="1">
+            <events>
+                <e name="on-change" args="value"></e>
+                <e name="on-input" args="value"></e>
+            </events>
+        </Slider>
+        <sliderbuttons>
+            <events>
+                <e name="click" args="item"></e>
+                <e name="onclick" args="item"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/sliderbuttons.js
+            </reference>
+        </sliderbuttons>
+        <spread>
+            <template>
+        <![CDATA[<div style="width:100%; height:100%;border: 1px solid gray;"></div>]]>
+      </template>
+            <reference>
+                /conn/jsfile/sp/gc.spread.sheets.excel2013white.11.1.1.css
+                /conn/jsfile/sp/gc.spread.excelio.11.1.1.min.js
+                /conn/jsfile/sp/gc.spread.sheets.all.11.1.1.min.js
+                /conn/jsfile/sp/FileSaver.min.js
+                /conn/jsfile/FillTemplate.js
+                /conn/pdpjs/ctrl/spread.js
+            </reference>
+        </spread>
+        <stage2table>
+            <events>
+                <e name="on-select" args="selection,row"></e>
+                <e name="on-select-cancel" args="selection,row"></e>
+                <e name="on-select-all" args="selection"></e>
+                <e name="on-selection-change" args="selection,isLocate"></e>
+                <e name="on-row-click" args="row,index"></e>
+                <e name="on-row-dblclick" args="row,index"></e>
+                <e name="on-current-change" args="currentRow,oldCurrentRow"></e>
+                <e name="data-changed" args="data,groups"></e>
+            </events>
+            <template>
+        <![CDATA[    
+          <i-table :columns="showColumns" :span-method="handleSpan" :data="showData" :stripe="stripe" :border="border" :show-header="showHeader" :height="height" :loading="loading" :disabled-hover="disabledHover" :highlight-row="highlightRow"
+                        :row-class-name="finallyRowClassName" :size="size" :no-data-text="noDataText" :no-filtered-data-text="noFilteredDataText" @on-current-change="onCurrentChange" @on-select="onSelect" @on-select-cancel="onSelectCancel"
+                        @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-selection-change="onSelectionChange" @on-sort-change="onSortChange" @on-filter-change="onFilterChange" @on-row-click="onRowClick" @on-row-dblclick="onRowDblclick" @on-expand="onExpand">
+          </i-table>
+      ]]>
+      </template>
+            <reference>
+                /conn/pdpjs/ctrl/commontable.js
+                /conn/pdpjs/ctrl/stage2table.js
+            </reference>
+        </stage2table>
+        <time>
+            <events>
+                <e name="change" args="value"></e>
+                <e name="onchange" args="value"></e>
+            </events>
+            <reference>
+                /conn/jsfile/jquery/jquery-ui.custom.js;
+                /conn/cssfile/custom-theme/jquery-ui.custom.css;
+                /conn/jsfile/datetimectrl.js;
+                /conn/pdpjs/ctrl/datetimectrl.js;
+            </reference>
+        </time>
+        <timesearch>
+            <events>
+                <e name="search" args="key,starttime,endtime,needOther"></e>
+            </events>
+            <reference>
+                /conn/jsfile/jquery/jquery-ui.custom.js;
+                /conn/cssfile/custom-theme/jquery-ui.custom.css;
+                /conn/jsfile/datetimectrl.js;
+                /conn/pdpjs/ctrl/datetimectrl.js;
+                /conn/pdpjs/ctrl/timesearch.js;
+            </reference>
+        </timesearch>
+        <typhoon-head>
+            <events>
+                <e name="orgchanged" args="o"></e>
+                <e name="statechanged" args="state"></e>
+            </events>
+        </typhoon-head>
+        <typhoon>
+            <events>
+                <e name="click" args="item,bText"></e>
+                <e name="clickgroup" args="group"></e>
+            </events>
+        </typhoon>
+        <lineenv>
+            <events>
+                <e name="click" args="item,bText"></e>
+                <e name="clickgroup" args="group"></e>
+                <e name="clickenv" args="env"></e>
+                <e name="clickother" args="o"></e>
+            </events>
+        </lineenv>
+        <tabmore>
+            <reference>
+                /conn/pdpjs/ctrl/tabmore.js
+                /conn/cssfile/ctrl/tabmore.css
+            </reference>
+        </tabmore>
+        <yshtab>
+            <events>
+                <e name="clickimg" args="v"></e>
+            </events>
+            <template>
+        <![CDATA[    
+        <div :class="tabStyle" :style="otherStyle">
+            <div class="TabTitle">
+                <div v-for="(tab, index) in currentTabs" :value="tab[0]" :title="tab[1]" :class="[itemStyle, tab[0] == value ? activeStyle : normalStyle ]" @click="selectTab(tab[0])"><span style="vertical-align:middle">{{tab[1]}}</span><img v-if="tab[2]" :src="tab[2]" style="width:14px;height:14px;vertical-align:middle;margin-left:2px;" @click.stop="clickTabImg(tab[0])" /></div>
+            </div>
+            <div class="pageMove" v-if="scrollable">
+                <div :class="['prev', { disabled: this.currentPageIndex <= 0 }]" @click="pagePrev"><</div>
+                <div :class="['next', { disabled: this.currentPageIndex >= this.pages.length - 1 }]" @click="pageNext">></div>
+            </div>
+        </div>
+      ]]>
+      </template>
+            <reference>
+                /conn/pdpjs/ctrl/yshtab.js
+                /conn/cssfile/yshtab.css
+            </reference>
+        </yshtab>
+        <dropdownswitch>
+            <events>
+                <e name="on-change" args="item,menu"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/dropdownswitch.js
+                /conn/cssfile/ctrl/dropdownswitch.css
+            </reference>
+        </dropdownswitch>
+        <cardVerticalSlide>
+            <events>
+                <e name="clickTitle" args="v"></e>
+                <e name="clickImg" args="v"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/card_vertical_slide.js
+                /conn/cssfile/ctrl/card_vertical_slide.css
+            </reference>
+        </cardVerticalSlide>
+        <timeaxis>
+            <events>
+                <e name="click" args="v"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/time_axis.js
+                /conn/cssfile/ctrl/time_axis.css
+            </reference>
+        </timeaxis>
+        <stat-box>
+            <events>
+                <e name="click" args="v"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/stat-box.js
+            </reference>
+        </stat-box>
+        <stat-box2>
+            <events>
+                <e name="click" args="v"></e>
+            </events>
+            <reference>
+                /conn/pdpjs/ctrl/stat-box.js
+            </reference>
+        </stat-box2>
+        <statistical_graph>
+            <events>
+                <e name="click" args="params"></e>
+
+            </events>
+            <reference>
+        <![CDATA[ same:ctrls/esimplechart/reference]]>
+                /conn/pdpjs/ctrl/statistical_graph.js
+                /conn/cssfile/ctrl/statistical_graph.css
+            </reference>
+            <template id="esimplechart"></template>
+        </statistical_graph>
+    </ctrls>
+    <temp>
+        发布文件的时候往数据库中记录文件信息
+        tbPDPFile fileid,filename,filedesc
+        文件参数信息
+        tbPDPFileInput fileid,argname,argdesc
+
+    </temp>
+    <masters>
+        <mscgrid>
+            <start>
+        <![CDATA[<div class="scstationgrid"><img src="/i/sgc/shengchan/catalog/left.png" style="margin-right:8px" />]]>
+      </start>
+            <end>
+        <![CDATA[<img src="/i/sgc/shengchan/catalog/right.png" style="margin-left:8px" /></div>]]>
+      </end>
+        </mscgrid>
+        <mscgrid0>
+            <start>
+        <![CDATA[<div class="scstationgrid">]]>
+      </start>
+            <end>
+        <![CDATA[</div>]]>
+      </end>
+        </mscgrid0>
+        <mscstation attrs="text">
+            <start>
+        <![CDATA[<div class="scstationlink" onclick1="clickSCStation(this);return false;"><img title="设备搜索界面" @click="showDevice('{text}')" src="/i/sgc/shengchan/catalog/l.png" class="btn-jxt" /><span style="cursor:pointer" @click="showJxt('{text}')">{text}]]>
+      </start>
+            <end>
+        <![CDATA[</span><img title="显示三维图" @click="show3D('{text}')" src="/i/sgc/shengchan/catalog/r.png" class="btn-3d" /></div>]]>
+      </end>
+        </mscstation>
+        <mpagecaption>
+            <start>
+        <![CDATA[<div style="height:60px;line-height:60px;text-align:center;">
+                    <img src="/i/sgc/shengchan/catalog/left.png" style="margin-right:30px" />
+                    <span style="background: linear-gradient(180deg, #ffffff, #a8e5ff);font-size: 18px;-webkit-background-clip: text;-webkit-text-fill-color: #0000;">]]>
+      </start>
+            <end>
+        <![CDATA[</span>
+                    <img src="/i/sgc/shengchan/catalog/right.png" style="margin-left:30px" />
+                </div>]]>
+      </end>
+        </mpagecaption>
+        <mstatistics>
+            <start>
+        <![CDATA[<div style="display:flex;justify-content:space-around;align-items:center;padding:10px;height:112px;background-image:url(/i/sgc/shengchan/stat-bk.png);background-size:100% 100%">]]>
+      </start>
+            <end>
+        <![CDATA[</div>]]>
+      </end>
+        </mstatistics>
+        <mword attrs="color">
+            <start>
+        <![CDATA[<span :style="{ 'background-image': 'linear-gradient(180deg, #ffffff, '+{color}+')' }" style="font-size: 24px;-webkit-background-clip: text;-webkit-text-fill-color: #0000;">]]>
+      </start>
+            <end><![CDATA[</span>]]></end>
+        </mword>
+        <assetstitle attrs="color">
+            <start>
+        <![CDATA[<div style="width:100%">
+          <div style="display: flex;align-items: center;justify-content: center;margin-bottom: 20px;">
+            <img src="/i/sgc/shengchan/catalog/left.png" style="margin-right:30px" />
+            <span :style="{ 'color':  '{color}' }" style="font-size: 20px;">]]>
+      </start>
+            <end><![CDATA[</span>
+        <img src="/i/sgc/shengchan/catalog/right.png" style="margin-left:30px" />
+      </div>
+    </div>]]></end>
+        </assetstitle>
+    </masters>
+</ROOT>

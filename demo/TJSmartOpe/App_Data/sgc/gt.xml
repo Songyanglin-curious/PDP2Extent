@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <if3k></if3k>
+  <GetLineAcrossCount>
+    <![CDATA[SELECT COUNT(1) FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_ACROSS_INFO WHERE LINE_ID={0}]]>
+<![CDATA[same:if3k]]>
+  </GetLineAcrossCount>
+  <GetLineAcross>
+    <![CDATA[
+SELECT min_tower_id,max_tower_id,across_type,ACROSS_OBJ_ID,O.NAME AS across_name
+,across_longitude as longitude,across_latitude as latitude,A.ID
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_ACROSS_INFO A LEFT JOIN (
+        SELECT 2 as TYPE,id||'' AS ID,name AS NAME FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_highway_info
+        UNION ALL
+        SELECT 3,ID||'',NAME FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_railway_info
+        UNION ALL
+        SELECT DISTINCT A.ACROSS_TYPE,A.ACROSS_OBJ_ID,NVL(B.NAME,D.NAME) 
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tower_across_info A
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B B ON A.ACROSS_OBJ_ID=B.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B D ON A.ACROSS_OBJ_ID=D.ID
+WHERE A.ACROSS_TYPE=1 AND A.LINE_ID={0}
+) O ON A.ACROSS_TYPE=O.TYPE AND A.ACROSS_OBJ_ID=O.ID 
+WHERE A.LINE_ID={0}]]>
+<![CDATA[same:if3k]]>
+  </GetLineAcross>
+  <GetLine>
+    <![CDATA[
+SELECT DISTINCT L.ID,L.NAME,V.NAME AS VOLTAGE,S1.NAME AS START_ST,S2.NAME AS END_ST,D.NAME_ABBREVIATION AS DISPATCH
+,M.NAME_ABBREVIATION AS MONITOR
+,Z.NAME_ABBREVIATION AS ZICHAN
+,OPERATE_DATE,RUNNING_STATE
+FROM (
+SELECT ID,NAME,VOLTAGE_TYPE,START_ST_ID,END_ST_ID,DISPATCH_ORG_ID,MONITOR_ORG_ID,ASSETS_COMPANY_ID,OPERATE_DATE,RUNNING_STATE FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B
+UNION ALL
+SELECT ID,NAME,VOLTAGE_TYPE,START_ST_ID,END_ST_ID,DISPATCH_ORG_ID,MONITOR_ORG_ID,ASSETS_COMPANY_ID,OPERATE_DATE,RUNNING_STATE FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B
+)
+L
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_COMMONSUBSTATION_B S1 ON L.START_ST_ID=S1.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_COMMONSUBSTATION_B S2 ON L.END_ST_ID=S2.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B M ON L.MONITOR_ORG_ID=M.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_COMPANY_B Z ON L.ASSETS_COMPANY_ID=Z.ID
+JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_ACROSS_INFO A ON L.ID=A.LINE_ID
+LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_highway_info B ON A.ACROSS_TYPE=2 AND A.ACROSS_OBJ_ID=B.ID
+LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_railway_info C ON A.ACROSS_TYPE=3 AND A.ACROSS_OBJ_ID=C.ID
+WHERE L.NAME LIKE '%{0}%' OR B.NAME LIKE '%{0}%' OR C.NAME LIKE '%{0}%'
+ORDER BY L.NAME]]>
+  </GetLine>
+  <GetLineStations>
+    <![CDATA[SELECT S AS SID,S1.NAME AS SNAME,E AS EID,S2.NAME AS ENAME,L.NAME AS LNAME,V.NAME AS VNAME,P.NAME_ABBREVIATION AS GRIDNAME,D.NAME_ABBREVIATION AS DISPATCHNAME,L.LENGTH,L.MODEL,A.IMAXLONG_20 AS IMAX,L.OPERATE_DATE,start_tower_id,end_tower_id
+FROM (
+SELECT ID,START_ST_ID AS S,END_ST_ID AS E,NAME,VOLTAGE_TYPE,GRID_ID,DISPATCH_ORG_ID,OPERATE_DATE,LENGTH,MODEL,start_tower_id,end_tower_id FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B WHERE ID='{0}'
+UNION ALL
+SELECT ID,START_ST_ID,END_ST_ID,NAME,VOLTAGE_TYPE,GRID_ID,DISPATCH_ORG_ID,OPERATE_DATE,LENGTH,MODEL,start_tower_id,end_tower_id FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B WHERE ID='{0}'
+) L LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON L.GRID_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_COMMONSUBSTATION_B S1 ON L.S=S1.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_COMMONSUBSTATION_B S2 ON L.E=S2.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_P A ON L.ID=A.ID]]>
+  </GetLineStations>
+  <GetLineTower>
+    <![CDATA[
+SELECT * FROM (
+SELECT T.ID,ISNULL(A.TOWERNAME,D.TOWERNAME) AS TOWERNAME,ISNULL(A.TOWERNO,D.TOWERNO) AS TOWERNO,T.LONGITUDE,T.LATITUDE,X.NAME AS TX,'' AS TC,R.NAME AS REGION,'' as img
+FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_TOWER_B T 
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_REGION R ON T.REGION=R.CODE
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_TOWERTYPE X ON T.TYPE=X.CODE
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower A ON T.ID=A.TOWER_ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_r_tower D ON T.ID=D.TOWER_ID
+WHERE (A.LINE_ID={0} OR D.LINE_ID={0}) ) T WHERE towerno>0
+order by towerno]]>
+  </GetLineTower>
+  <GetLineSeg>
+    <![CDATA[
+SELECT L.ID,MODEL,LENGTH,BEGIN_TOWER_ID,END_TOWER_ID,O.NAME AS MAINT_ORG_ID,ON_TIME 
+FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINESEG_B L LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_MAINTORG_B O ON L.MAINT_ORG_ID=O.ID
+WHERE GRID_ID='{0}'
+UNION ALL
+SELECT L.ID,MODEL,LENGTH,BEGIN_TOWER_ID,END_TOWER_ID,O.NAME AS MAINT_ORG_ID,ON_TIME 
+FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINESEG_B L LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_MAINTORG_B O ON L.MAINT_ORG_ID=O.ID
+WHERE DCLINE_ID='{0}']]>
+  </GetLineSeg>
+  <GetLineTowerCount>
+    <![CDATA[select max(c) from (
+SELECT COUNT(1) AS C FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower where LINE_ID={0}
+union  
+SELECT COUNT(1) AS C FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_r_tower where LINE_ID={0}
+) a ]]>
+  </GetLineTowerCount>
+  <GetSameLineInfo>
+    <![CDATA[SELECT L.ID,L.NAME,A.C FROM (
+SELECT LINE_ID,COUNT(1) AS C FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower 
+WHERE LINE_ID IN (
+SELECT SAMETWR_LINE_ID FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_LINE_R_SAMETOWER WHERE LINE_ID='{0}'
+)
+GROUP BY LINE_ID
+) A JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B L ON A.LINE_ID=L.ID
+UNION ALL 
+SELECT L.ID,L.NAME,A.C FROM (
+SELECT LINE_ID,COUNT(1) AS C FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_r_tower 
+WHERE LINE_ID IN (
+SELECT SAMETWR_LINE_ID FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_LINE_R_SAMETOWER WHERE LINE_ID='{0}'
+)
+GROUP BY LINE_ID
+) A JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B L ON A.LINE_ID=L.ID
+]]>
+  </GetSameLineInfo>
+  <GetSameTowerInfo>
+    <![CDATA[select TOWER_ID,TOWER_STRNO,SAMETWR_LINE_ID,SAMETWR_TOWER_ID,SAMETWR_TOWER_STRNO 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_LINE_R_SAMETOWER S WHERE LINE_ID={0}
+    ORDER BY SAMETWR_LINE_ID]]>
+  </GetSameTowerInfo>
+  <GetAcrossRecentWeather>
+    <![CDATA[
+select w.weather_condition_result as weathertype from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO w 
+JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_WEATHER_SOURCE r ON w.WEATHER_SOURCE_ID=r.WEATHER_SOURCE_ID
+JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_ACROSS_INFO a ON r.TOWER_ID=a.MIN_TOWER_ID
+WHERE A.ID={0} ORDER BY CREATETIME DESC]]>
+  </GetAcrossRecentWeather>
+  <GetAcrossLineOne>
+    <![CDATA[
+    SELECT L.ID,V.NAME AS VOLNAME,L.NAME,D.NAME_ABBREVIATION AS DISPATCHNAME  
+    ,A.TOWERMIN_STA_DISTANCE,A.TOWERMAX_STA_DISTANCE,A.ACROSS_LONGITUDE,A.ACROSS_LATITUDE
+    ,A.MIN_TOWER_ID,A.MAX_TOWER_ID,A.LINE_OPERATION_DEP,A.TOWER_SMALL_TYPE,A.TOWER_BIG_TYPE,A.ACROSS_TOPOGRAPHY,A.ACROSS_DISTANCE,A.ACROSS_REGION,A.REPORT_UNIT,A.REPORT_DATE,a.ACROSS_WAY,A.ISGUODIAO,A.ID AS AID
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tower_across_info A
+     JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[{0} L ON A.ACROSS_OBJ_ID=L.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID
+    WHERE A.ACROSS_TYPE=1 AND A.LINE_ID={1}]]>
+<![CDATA[same:if3k]]>
+  </GetAcrossLineOne>
+  <GetAcrossLine>
+    <![CDATA[same:sgc/gt:GetAcrossLineOne:SG_DEV_DCLINE_B:{0}]]>
+    <![CDATA[ UNION ALL ]]>
+    <![CDATA[same:sgc/gt:GetAcrossLineOne:SG_DEV_ACLINE_B:{0}]]>
+  </GetAcrossLine>
+  <GetAcrossHighwayOne>
+    <![CDATA[
+    SELECT L.ID,V.NAME AS VOLNAME,h.NAME,D.NAME_ABBREVIATION AS DISPATCHNAME  
+    ,A.TOWERMIN_STA_DISTANCE,A.TOWERMAX_STA_DISTANCE,A.ACROSS_LONGITUDE,A.ACROSS_LATITUDE
+    ,A.MIN_TOWER_ID,A.MAX_TOWER_ID,A.LINE_OPERATION_DEP,A.TOWER_SMALL_TYPE,A.TOWER_BIG_TYPE,A.ACROSS_TOPOGRAPHY,A.ACROSS_DISTANCE,A.ACROSS_REGION,A.REPORT_UNIT,A.REPORT_DATE,a.ACROSS_WAY,A.ISGUODIAO,h.YW_ORG_NAME,h.YW_TRAFFIC_DEP,A.ID AS AID
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tower_across_info A
+    JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_HIGHWAY_INFO h on A.ACROSS_OBJ_ID=h.ID
+     JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[{0} L ON A.LINE_ID=L.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID
+    WHERE A.ACROSS_TYPE=2 AND A.LINE_ID={1}]]>
+<![CDATA[same:if3k]]>
+  </GetAcrossHighwayOne>
+  <GetAcrossHighway>
+    <![CDATA[same:sgc/gt:GetAcrossHighwayOne:SG_DEV_DCLINE_B:{0}]]>
+    <![CDATA[ UNION ALL ]]>
+    <![CDATA[same:sgc/gt:GetAcrossHighwayOne:SG_DEV_ACLINE_B:{0}]]>
+  </GetAcrossHighway>
+  <GetAcrossRailwayOne>
+    <![CDATA[
+    SELECT L.ID,V.NAME AS VOLNAME,h.NAME,D.NAME_ABBREVIATION AS DISPATCHNAME  
+    ,A.TOWERMIN_STA_DISTANCE,A.TOWERMAX_STA_DISTANCE,A.ACROSS_LONGITUDE,A.ACROSS_LATITUDE
+    ,A.MIN_TOWER_ID,A.MAX_TOWER_ID,A.LINE_OPERATION_DEP,A.TOWER_SMALL_TYPE,A.TOWER_BIG_TYPE,A.ACROSS_TOPOGRAPHY,
+    A.ACROSS_DISTANCE,A.ACROSS_REGION,A.REPORT_UNIT,A.REPORT_DATE,a.ACROSS_WAY,A.ISGUODIAO,h.YW_ORG_NAME,A.ID AS AID
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tower_across_info A
+    JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_RAILWAY_INFO h on A.ACROSS_OBJ_ID=h.ID
+     JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[{0} L ON A.LINE_ID=L.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID
+    WHERE A.ACROSS_TYPE=3 AND A.LINE_ID={1}]]>
+<![CDATA[same:if3k]]>
+  </GetAcrossRailwayOne>
+  <GetAcrossRailway>
+    <![CDATA[same:sgc/gt:GetAcrossRailwayOne:SG_DEV_DCLINE_B:{0}]]>
+    <![CDATA[ UNION ALL ]]>
+    <![CDATA[same:sgc/gt:GetAcrossRailwayOne:SG_DEV_ACLINE_B:{0}]]>
+  </GetAcrossRailway>
+  <GetAcLineTower>
+    <![CDATA[
+SELECT T.ID,A.TOWERNAME,A.TOWERNO,T.LONGITUDE,T.LATITUDE
+FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_TOWER_B T 
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower A ON T.ID=A.TOWER_ID
+WHERE A.LINE_ID={0}
+order by A.towerno]]>
+  </GetAcLineTower>
+  <GetDcLineTower>
+    <![CDATA[
+SELECT T.ID,A.TOWERNAME,A.TOWERNO,T.LONGITUDE,T.LATITUDE
+FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_TOWER_B T 
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_r_tower A ON T.ID=A.TOWER_ID
+WHERE A.LINE_ID={0}
+order by A.towerno]]>
+  </GetDcLineTower>
+  <GetAcLineSETower>
+    <![CDATA[SELECT start_tower_id,end_tower_id,name,start_st_id,end_st_id FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B WHERE id={0}]]>
+  </GetAcLineSETower>
+  <GetDcLineSETower>
+    <![CDATA[SELECT start_tower_id,end_tower_id,name,start_st_id,end_st_id FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B WHERE id={0}]]>
+  </GetDcLineSETower>
+  <AC>
+    <GetLineStations>
+      <![CDATA[SELECT L.START_ST_ID AS SID,S1.NAME AS SNAME,L.END_ST_ID AS EID,S2.NAME AS ENAME,L.NAME AS LNAME,V.NAME AS VNAME,P.NAME_ABBREVIATION AS GRIDNAME,D.NAME_ABBREVIATION AS DISPATCHNAME,L.LENGTH,L.MODEL,A.IMAXLONG_20 AS IMAX,L.OPERATE_DATE
+FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_ACLINE_B L LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PWRGRID_B P ON L.GRID_ID=P.ID LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_COMMONSUBSTATION_B S1 ON L.START_ST_ID=S1.ID
+LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_COMMONSUBSTATION_B S2 ON L.END_ST_ID=S2.ID LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_ACLINE_P A ON L.ID=A.ID
+      WHERE L.ID={0}
+      ]]>
+    </GetLineStations>
+    <GetLineTower>
+      <![CDATA[
+SELECT * FROM (
+SELECT T.ID,A.TOWERNAME,A.TOWERNO,T.LONGITUDE,T.LATITUDE,X.NAME AS TX,'' AS TC,R.NAME AS REGION,'' as img
+FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_TOWER_B T 
+LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_REGION R ON T.REGION=R.CODE
+LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_TOWERTYPE X ON T.TYPE=X.CODE
+LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_acline_r_tower A ON T.ID=A.TOWER_ID
+WHERE A.LINE_ID={0} ) T WHERE towerno>0
+order by towerno]]>
+    </GetLineTower>
+    <GetLineSeg>
+      <![CDATA[
+SELECT L.ID,MODEL,LENGTH,BEGIN_TOWER_ID,END_TOWER_ID,O.NAME AS MAINT_ORG_ID,ON_TIME 
+FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_ACLINESEG_B L LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_MAINTORG_B O ON L.MAINT_ORG_ID=O.ID
+WHERE GRID_ID={0}]]>
+    </GetLineSeg>
+  </AC>
+  <DC>
+    <GetLineStations>
+      <![CDATA[SELECT L.START_ST_ID AS SID,S1.NAME AS SNAME,L.END_ST_ID AS EID,S2.NAME AS ENAME,L.NAME AS LNAME,V.NAME AS VNAME,P.NAME_ABBREVIATION AS GRIDNAME,D.NAME_ABBREVIATION AS DISPATCHNAME,L.LENGTH,L.MODEL,A.IH AS IMAX,L.OPERATE_DATE
+FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINE_B L LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PWRGRID_B P ON L.GRID_ID=P.ID LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_COMMONSUBSTATION_B S1 ON L.START_ST_ID=S1.ID
+LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_COMMONSUBSTATION_B S2 ON L.END_ST_ID=S2.ID LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINE_P A ON L.ID=A.ID
+      WHERE L.ID={0}
+      ]]>
+    </GetLineStations>
+    <GetLineTower>
+      <![CDATA[
+SELECT * FROM (
+SELECT T.ID,A.TOWERNAME,A.TOWERNO,T.LONGITUDE,T.LATITUDE,X.NAME AS TX,'' AS TC,R.NAME AS REGION,'' as img
+FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_TOWER_B T 
+LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_REGION R ON T.REGION=R.CODE
+LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_TOWERTYPE X ON T.TYPE=X.CODE
+LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_dcline_r_tower A ON T.ID=A.TOWER_ID
+WHERE A.LINE_ID={0} ) T WHERE towerno>0
+order by towerno]]>
+    </GetLineTower>
+    <GetLineSeg>
+      <![CDATA[
+SELECT L.ID,MODEL,LENGTH,BEGIN_TOWER_ID,END_TOWER_ID,O.NAME AS MAINT_ORG_ID,ON_TIME 
+FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINESEG_B L LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_MAINTORG_B O ON L.MAINT_ORG_ID=O.ID
+WHERE DCLINE_ID={0}]]>
+    </GetLineSeg>
+  </DC>
+  <GetAcLineTower1>
+    <![CDATA[
+SELECT T.ID,A.TOWERNAME,A.TOWERNO,T.LONGITUDE,T.LATITUDE,'江苏电网','220kv'，a.lineid,c.name
+FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_TOWER_B T 
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower A ON T.ID=A.TOWER_ID
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B  C ON C.ID=A.LINE_ID
+order by A.towerno]]>
+  </GetAcLineTower1>
+  <GetDcLineTower1>
+    <![CDATA[
+SELECT T.ID,A.TOWERNAME,A.TOWERNO,T.LONGITUDE,T.LATITUDE,'江苏电网','220kv'，a.lineid,c.name
+FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_TOWER_B T 
+LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_r_tower A ON T.ID=A.TOWER_ID
+ LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B  C ON C.ID=A.LINE_ID
+order by A.towerno]]>
+  </GetDcLineTower1>
+  <GetHighways>
+    <![CDATA[
+    SELECT distinct ID ,NAME FROM 
+]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_HIGHWAY_INFO
+]]>
+  </GetHighways>
+  <GetRailways>
+    <![CDATA[
+    SELECT distinct  ID ,NAME FROM 
+]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_RAILWAY_INFO
+]]>
+  </GetRailways>
+   <InsertHighways>
+    <![CDATA[
+   INSERT INTO 
+]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_HIGHWAY_INFO VALUES({0},{1},null,null )
+]]>
+  </InsertHighways> 
+  <GetMaxHighway>
+    <![CDATA[
+   SELECT MAX(ID) FROM 
+]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_HIGHWAY_INFO 
+]]>
+  </GetMaxHighway> 
+    <GetMaxRailway>
+    <![CDATA[
+    SELECT max(ID) FROM 
+]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_RAILWAY_INFO
+]]>
+  </GetMaxRailway>
+  <InsertnewAcross>
+    <![CDATA[
+    INSERT INTO 
+]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_NEWACROSS_INFO
+(LINE_ID,LINE_NAME,min_tower_id,max_tower_id,across_type,ACROSS_OBJ_ID,REGION_ID,
+TOWERMIN_STA_DISTANCE,TOWERMAX_STA_DISTANCE,across_longitude,across_latitude)
+VALUES({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10})
+]]>
+  </InsertnewAcross>
+<Getgzlocation>
+    <![CDATA[
+    select case 
+when ST_LineLocatePoint(st_setsrid(geom,4326),st_setsrid(s.geomp,4326))<0.001 
+then ST_AsText(ST_line_interpolate_point(st_setsrid(geom,4326),{2}/st_length(ST_GeographyFromText(st_astext(geom)))) )
+when ST_LineLocatePoint(st_setsrid(geom,4326),st_setsrid(s.geomp,4326))>0.999 
+THEN ST_AsText(ST_line_interpolate_point(st_setsrid(geom,4326),1-{2}/st_length(ST_GeographyFromText(st_astext(geom)))) )
+else ''
+end
+from acline_dcline_info 
+,(
+select distinct geom as geomp from stationpoint where gid ='{1}'
+) s 
+where gid='{0}'
+]]>
+</Getgzlocation>
+<AddAcLineSETower>
+  <![CDATA[
+     update SG_DATACENTER.SG_DEV_ACLINE_B 
+     SET start_tower_id={0}  , end_tower_id={1} , STAMP = replace(STAMP ,substr(STAMP,-19),'')||{2}
+     where id={3}
+  ]]>
+</AddAcLineSETower>
+</ROOT>

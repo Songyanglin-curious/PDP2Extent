@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds13><![CDATA[
+          select PBNAME,QYNAME,ZQYNAME,HNUMBER,MGDTIME from "YS_MGD"."T_MGD_BASEINFO" where (QYNAME={0} or {0} IS NULL) and (ZQYNAME={1} or {1} IS NULL);
+          ]]></ds13>
+<ds22><![CDATA[
+          select distinct QYNAME,QYNAME from "YS_MGD"."T_MGD_BASEINFO" ;]]></ds22>
+<ds25><![CDATA[
+          select distinct ZQYNAME,ZQYNAME from "YS_MGD"."T_MGD_BASEINFO" WHERE (QYNAME={0} or {0} IS NULL);]]></ds25></ROOT>

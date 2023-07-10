@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="36" desc="杆塔滑动选择">
+	<includes>
+        <![CDATA[/conn/cssfile/commonStyle.css;]]>
+    </includes>
+	<inits>
+		<init id="reqData" type="request" arg="data"></init>
+	</inits>
+	<consts>
+		<const id="selData" desc="选中的测试数据"></const>
+		<const id="bigImgData" desc="大图数据"></const>
+		<const id="historyAlert" desc="历史告警数据" type="2d" length="5"></const>
+		<const id="showBigImg" type="bool" arg="false"></const>
+		<const id="startTime" desc="开始时间"></const>
+		<const id="endTime" desc="结束时间"></const>
+		<const id="count" desc="记数" type="number" arg="1"></const>
+		<const id="width" arg="300px;"></const>
+	</consts>
+	<ctrls>
+		<div id="div0" desc="根容器" style="height:100%;position:absolute;z-index:1001">
+			<a id="devSlideTower"></a>
+			<sa s_width="width"></sa>
+			<div style="height:100%;display:flex;">
+
+				<div style=" width: 300px;">
+					<cardVerticalSlide ref="cardList">
+						<sa list_data='reqData' v-model="selData"></sa>
+						<e>
+							<clickTitle>
+								<list type="script" value="this.clickTitle(v)"></list>
+							</clickTitle>
+							<clickImg>
+								<list type="script" value="this.clickImg(v)"></list>
+							</clickImg>
+						</e>
+
+					</cardVerticalSlide>
+
+				</div>
+				<div style="    width: calc(100% - 300px);">
+					<div ref="bigImg" show="showBigImg">
+						<a class="big-img big-img-bg" id="towerBigImg"></a>
+
+						<div>
+							<a class="big-img-title fbac"></a>
+							<div>
+
+							</div>
+							<div>
+								<label>
+									<sa value="bigImgData.title"></sa>
+								</label>
+							</div>
+							<div>
+								<i style="cursor:pointer;padding: 5px 10px;font-size: 16px;" class=" ivu-icon ivu-icon-md-close">
+									<e>
+										<onclick>
+											<list type="script" value="this.closeBigImg();"></list>
+										</onclick>
+									</e>
+								</i>
+							</div>
+						</div>
+						<div >
+							<a class="p10 big-img-main"></a>
+							<div>
+								<img style="width:100%">
+									<sa src="bigImgData.img"></sa>
+								</img>
+							</div>
+							<div>
+								<a class="alert-msg"></a>
+								<label>
+									<sa value="bigImgData.msg" class="showAlertColor(bigImgData.alertLevel)"></sa>
+								</label>
+							</div>
+
+							<div>
+								<div>
+									<a class="fsac pt10 pb10"></a>
+									<label>
+										<a value="选择历史告警范围:" class="mr10"></a>
+									</label>
+									<idate desc="开始" from="startTime">
+										<a type="date" format="yyyy-MM-dd" s_width="120px"  class="tower-time"></a>
+									</idate>
+									<label>
+										<a value="-"></a>
+									</label>
+									<idate desc="结束" from="endTime" class="tower-time">
+										<a type="date" format="yyyy-MM-dd" s_width="120px"  ></a>
+									</idate>
+									<button>
+										<a type="button" value="查询" class="tower-button ml10 "></a>
+										<e>
+											<onclick>
+												<list type="script" value="this.getHisAlert()"></list>
+											</onclick>
+										</e>
+									</button>
+								</div>
+								<div style="width:100%;overflow:auto;font-weight:600;">
+									<a id="container"></a>
+									<scrolltable id="itable2" desc="iview表格" from="historyAlert">
+										<a ref="itable2"></a>
+										<sa stripe="true" border="true" height="200" item-height="45" row-class-name="getRowClass"></sa>
+										<c>
+											<icol desc="时间" from="historyAlert_0">
+												<a minWidth="100" align="center"></a>
+											</icol>
+											<icol desc="告警内容" from="historyAlert_3">
+												<a minWidth="200" align="center"></a>
+											</icol>
+											<icol desc="操作" from="">
+												<a width="100" align="center"></a>
+												<label style="cursor: pointer;">
+													<a value="回放"></a>
+													<e>
+														<onclick>
+															<list type="script">
+																<value>
+																	<![CDATA[ this.playbackAlert(this.params.row)]]>
+																</value>
+															</list>
+														</onclick>
+													</e>
+												</label>
+											</icol>
+										</c>
+									</scrolltable>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</ctrls>
+	<css>
+		<![CDATA[
+		.big-img{
+			width: 100%;
+			min-width:500px;
+			border:solid 1px #0E6882;
+		}
+		.big-img-bg{
+			background: rgba(9,91,112, 0.9);
+		}
+		.big-img-title{
+			background:#095B70;
+			padding:10px 0;
+		}
+		.big-img-main{
+			border:solid 1px #009C9C;
+		}
+		.alert-msg{
+			font-size: 18px;
+			font-weight: 600;
+			padding: 10px 2px;
+		}
+
+    ]]>
+	</css>
+	<scripts>
+		<script event="created">
+			<list type="script">
+				<value>
+					<![CDATA[ 
+					var vm = this;
+			this.startTime =Ysh.Time.add("d",-3,new Date())
+			this.endTime = new Date();
+            this.clickTitle = function(v){
+				vMain.sendBusinessMsg("", {eventSource: 'monitorCard', data: v });
+				vm.showBigImg = false;
+				vm.width = "100%";
+            }
+            this.clickImg = function(v){
+				vMain.sendBusinessMsg("", {eventSource: 'monitorCard', data: v });
+				vm.showBigImg = true;
+				vm.width = "100%";
+            }
+			this.getHisAlert = function(){
+				if(!this.startTime ||  !this.endTime){
+					alert("时间范围未确定")
+					return;
+				}
+				var start = Ysh.Time.formatString(Ysh.Time.toString(this.startTime), "111000") + " 00:00:00";
+				var end = Ysh.Time.formatString(Ysh.Time.toString(this.endTime), "111000") + " 23:59:59";
+				PDP.read("ConnMain","sc/towerMonitor:GetHisAlertByLineId",[this.selData.id,start,end],function(res){
+					if(res.check("获取历史告警数据失败",true)){
+						console.log(res)
+						vm.historyAlert = res.value
+					}
+			  	})
+			}
+            this.tabContorl = function(row){
+				var videoItem = [];
+				row.forEach(item =>{
+					if(item[2] == 3){
+						videoItem = item;
+					}
+				})
+				if(videoItem.length >0){
+					vm.$refs.cardList.heightCard(videoItem[6])
+				}else{
+					this.closeBigImg();
+				}
+			        
+            },
+			this.closeBigImg = function(){
+				vm.showBigImg = false;
+				vm.width = "300px";
+			}
+			this.playbackAlert = function(row){
+				var img = row.historyAlert_4
+				var msg = row.historyAlert_0 + " " +row.historyAlert_3;
+				vm.bigImgData = {};
+				vm.bigImgData.title = vm.selData.title;
+				vm.bigImgData.img = img;
+				vm.bigImgData.msg = msg;
+				vm.bigImgData.alertLevel = row.historyAlert_2;
+			}
+			this.showAlertColor = function(level) {
+				var alertLevel = Number(level);
+				switch (alertLevel) {
+					case 0:
+						return 'Alert2';
+						break;
+					case 1:
+						return 'Alert3';
+						break;
+					default:
+						return '';
+				}
+			}
+			this.getRowClass = function(row){
+				var alertLevel = Number(row.historyAlert_2);
+				return vm.showAlertColor(alertLevel);
+			}
+			this.$watch("selData",function(nv,ov){
+				vm.bigImgData = {};
+				vm.bigImgData.title = vm.selData.title;
+				vm.bigImgData.img = vm.selData.img;
+				vm.bigImgData.msg = vm.selData.msg;
+				vm.bigImgData.alertLevel = vm.selData.alertLevel;
+				vm.getHisAlert();
+			},{deep: true})
+        ]]>
+				</value>
+			</list>
+		</script>
+		<script event="mounted">
+			<list type="script">
+				<value>
+					<![CDATA[
+
+          ]]>
+				</value>
+			</list>
+		</script>
+	</scripts>
+</root>

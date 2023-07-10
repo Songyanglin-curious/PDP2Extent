@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetAcList>
+    <![CDATA[select i.line_id,l.name,t1.towerno,t2.towerno,'' as reporter,v.name,'' as icing_type,'' as sjbh,i.warn_value as icing_thickness,'' as sf,i.warn_time
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_h_icingwarn_{{0}} i
+join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_b l on i.line_id=l.id
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower t1 on l.id=t1.line_id and i.st_tower_id=t1.tower_id
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower t2 on l.id=t2.line_id and i.end_tower_id=t2.tower_id
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dic_voltagetype v on l.voltage_type=v.code
+    WHERE i.warn_time>={1} and i.warn_time<{2}
+]]>
+  </GetAcList>
+  <GetDcList>
+    <![CDATA[select i.line_id,l.name,t1.towerno,t2.towerno,'' as reporter,v.name,'' as icing_type,'' as sjbh,i.warn_value as icing_thickness,'' as sf,i.warn_time
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_h_icingwarn_{{0}} i
+join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_b l on i.line_id=l.id
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_r_tower t1 on l.id=t1.line_id and i.st_tower_id=t1.tower_id
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_r_tower t2 on l.id=t2.line_id and i.end_tower_id=t2.tower_id
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dic_voltagetype v on l.voltage_type=v.code
+    WHERE i.warn_time>={1} and i.warn_time<{2}
+]]>
+  </GetDcList>
+  <GetAllDays>
+    <![CDATA[select distinct substr(to_char(warn_time,'yyyy-MM-dd hh24:mi:ss'),0,10) 
+    from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_h_icingwarn_{{0}}
+    UNION 
+    select distinct substr(to_char(warn_time,'yyyy-MM-dd hh24:mi:ss'),0,10) 
+    from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_h_icingwarn_{{0}}
+    ]]>
+  </GetAllDays>
+</ROOT>

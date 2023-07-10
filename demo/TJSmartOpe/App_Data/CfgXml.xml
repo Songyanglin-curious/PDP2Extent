@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+	<!--导图时的消息交互服务器ws://192.168.5.155:4000(自动化验收系统专用)-->
+	<WebSocket></WebSocket>
+  
+	<!-- 图元类型属性定义
+	图元名称:GraphItemOne类型|自定义图元类型(已用到1081)|G文件中图元id的命名规则(特征符+后五位序号)|中文释义描述	ACLineSegment:7|1006|36000000|交流线端,
+	<LowVolFZX>存在于四川乐山"10kV佛佛二线单线详图.sln.pic.g"
+	<RcBreaker>容抗开关有两个keyid和key_name，如：NT.华东_三官殿变.fac.pic.g
+	<zhkg>组合开关，山东德州和泰安的配网图形中定义的此设备，对应模板文件PMS4_307000029.zhk.icn.g中的设备名称也是zhkg。有keyid,keyid1,keyid2,voltype,voltype1,voltype2。
+	-->
+	<GraphItemProp>
+    <![CDATA[
+  ConnectLine:1|1001|34000000|连接线,
+	Bus:2|1002|30000000|母线,
+	BusDis:2|1075|38000000|配网母线,
+	DText:6|1004|33000000|动态文本,
+	ACLine:7|1005|31000000|交流线段,
+	ACLineEnd:7|1006|36000000|交流线端,	
+	DCLine:7|1078|70000000|直流线段,
+	DCLineEnd:7|1079|71000000|直流线端,
+	FeedLine:7|1077|35000000|馈线段,
+	Transformer:7|1060|10600000|变压器,
+	Transformer2:7|1007|102000000|两卷变压器,
+	Transformer3:7|1008|103000000|三卷变压器,
+	CBreaker:7|1009|100000000|断路器,
+	Disconnector:7|1010|101000000|隔离刀闸,
+	GroundDisconnector:7|1011|111000000|接地刀闸,
+	Generator:7|1012|104000000|发电机,
+	Zxddd:7|1058|136000000|中性点地刀,
+	EnergyConsumer:7|1013|32000000|负荷,
+	Load:7|1013|32000000|负荷,
+	Capacitor:7|1014|113000000|电容器,
+	Reactor:7|1015|114000000|电抗器,
+	Capacitor_P:7|1016|113000000|并联电容,
+	Reactor_P:7|1017|114000000|并联电抗,
+	Capacitor_S:7|1018|113000000|串联电容,
+	Reactor_S:7|1019|114000000|串联电抗,
+	Fuse:7|1020|137000000|熔断器,
+	Protect:7|1021|127000000|保护图元,
+	State:7|1022|109000000|工况图元,
+	Status:7|1023|126000000|状态图元,
+	Token:7|1024|125000000|标志牌,
+	Terminal:7|1025|112000000|终端设备,
+	Ascoil:7|1026|132000000|消弧线圈,
+	Arrester:7|1027|133000000|避雷器,
+	PT:7|1028|107000000|电压互感器,
+	CT:7|1029|108000000|电流互感器,
+	PowerFlow:7|1030|138000000|潮流方向,
+	Sensitive:7|1031|134000000|敏感图元,
+	Thermometer:7|1032|103200000|温度计图元,
+	Dyradar:7|1033|103300000|动态雷达图,
+	Gunter:7|1034|103400000|甘特图,
+	Radar:7|1035|103500000|雷达图,
+	DollyBreaker:7|1053|110000000|小车开关,
+	RcBreaker:7|1059|124000000|电抗开关,
+	BdzDis:7|1061|106100000|配电房,
+	CBreakerDis:7|1062|117000000|配网断路器,
+	FzxDis:7|1063|106300000|配网分支箱,
+	HwgDis:7|1064|106400000|配网环网柜,
+	KbsDis:7|1065|106500000|配网开闭所,
+	EnergyConsumerDis:7|1066|32000000|配网负荷,
+	Pole:7|1067|116000000|杆塔,
+	ProtectDis:7|1068||配网保护,
+	ProtectByset:7|1069|106900000|?保护复位?,
+	GterminalDC:7|1070||天津定义设备,
+	TransformerDis:7|1071|115000000|配网变压器,
+	ZhaiWaiDaoZha:7|1072|184000000|站外刀闸,
+	ZhaiWaiJieDiDaoZha:7|1073|188000000|站外接地刀闸,
+	ZwrcDis:7|1074||站外容抗开关,
+	Other:7|1056|130000000|其它设备,
+	LowVolFZX:7|1080|188000000|配网低压分支箱(接地刀闸),
+	Indicator:7|1081|191000000|指示器,
+	Substation:7|1082|192000000|变电站,
+	Resistance:7|1083|108300000|电阻,
+	Grounded:7|1084|108400000|接地,
+	zhkg:7|1085|190000000|组合开关,
+	pwbh:7|1086|182000000|配网保护,	
+	RectifierInverter:7|1088|140000000|换流器,
+	unknown:7|1999|199900000|未知设备,
+	Text:12|1036|8000000|静态文本,
+	pin:13|1037|18000000|端子,
+	line:14|1038|1000000|直线,
+	rect:15|1039|2000000|矩形,
+	roundrect:16|1040|7000000|圆角矩形,
+	circle:17|1041|3000000|圆形,
+	ellipse:18|1042|4000000|椭圆形,
+	polyline:19|1043|6000000|多线段,
+	polygon:20|1044|5000000|多边形,
+	triangle:21|1045|23000000|三角形,
+	image:22|1046|14000000|图像,
+	circlearc:23|1048|9000000|圆弧,
+	ellipsearc:24|1049|10000000|椭圆弧,
+	parallelrect:25|1050|15000000|平行四边形,
+	diamond:26|1051|13000000|菱形,
+	poke:28|1047|17000000|热点,
+	Gzp:29|1052|135000000|光字牌,
+	cube:30|1054|11000000|立方体,
+	handline:31|1055|12000000|手绘线,
+	Grid:32|1057|57000000|表格,
+	handgon:33|1076|16000000|手绘形,
+	Clock:34|1087|118000000|时钟
+    ]]>
+	</GraphItemProp>
+	
+	<!-- G模板文件类型名称更名，替换*.icn.g中的模板名称 -->
+	<GraphIconRename>
+		<nd old="AutoTransformer" new="Transformer3"/>
+		<nd old="Gz" new="Gzp"/>
+		<nd old="Station" new="Substation"/>
+		<nd old="Junction" new="Other"/>
+		<nd old="FIU" new="Indicator"/>
+		<nd old="pwsc" new="DollyBreaker"/>
+	</GraphIconRename>
+	
+	<!-- G图形文件图形节点更名，替换*.g中的图形节点名称，包含zone属性时，只对指定的地区有效，多个地区名之间用|分割-->
+	<GraphNodeRename>
+		<nd old="Transformer4" new="PT"/>
+		<nd old="Transformer_Auto" new="Transformer3"/>
+		<nd old="Gz" new="Gzp"/>
+		<nd old="Station" new="Substation"/>
+		<nd old="Junction" new="Other"/>
+		<nd old="FIU" new="Indicator"/>
+		<nd old="pwsc" new="DollyBreaker"/>
+		<nd zone="市区|市北|永川" old="polyline" new="ConnectLine"/>
+	</GraphNodeRename>
+	
+	<!-- 选中设备颜色3399ff 2a8af7 00ff00-->
+	<SelectColor>00ff00</SelectColor>
+	
+	<!-- 高亮设备颜色 1A73E8-->
+	<HighLightColor>0030ff</HighLightColor>
+	
+	<!-- 接地设备颜色(为空时使用不带电设备颜色) -->
+	<GroundedColor>aa00cc</GroundedColor>
+	
+	<!-- 设备接地时，是否主动显示地线标志牌 -->
+	<ShowGroundedToken>1</ShowGroundedToken>
+	
+	<!-- 电压颜色列表，导图时使用 -->
+	<VoltageColor>
+	<![CDATA[
+	1000kV:0000ff,
+	800kV:0000ff,
+	750kV:fa800a,
+	660kV:fa800a,
+	500kV:ff0000,
+	330kV:1e90ff,
+	220kV:800080,
+	110kV:f04155,
+	66kV:ffcc00,
+	35kV:ffff00,
+	26kV:e2ac06,
+	24kV:e2ac06,
+	23kV:e2ac06,
+	22kV:e2ac06,
+	20kV:e2ac06,
+	15.75kV:008000,
+	15kV:008000,
+	13kV:00d200,
+	10.5kV:b94842,
+	10kV:b94842,	
+	6kV:00008b,
+	0.69kV:52007f,
+	0.4kV:a0522d,
+	0.38kV:a0522d,
+	0kV:808080
+	]]>
+	</VoltageColor>
+	
+	<!-- 允许选中设备列表(英文逗号分隔)，为空时所有设备均可选中，设备名称类型在本文件的<GraphItemProp>中的图元名称 -->
+	<EnableSelectDevice>
+	<![CDATA[
+	ConnectLine,Text,DText,Bus,BusDis,ACLine,ACLineEnd,DCLine,DCLineEnd,FeedLine,DollyBreaker,RcBreaker
+	Transformer,Transformer2,Transformer3,CBreaker,Disconnector,GroundDisconnector,Generator,
+	Zxddd,EnergyConsumer,Load,Capacitor,Reactor,Capacitor_P,Reactor_P,Capacitor_S,Reactor_S,
+	Fuse,Protect,State,Status,Token,Terminal,Ascoil,Arrester,PT,CT,Sensitive,BdzDis,CBreakerDis,
+	FzxDis,HwgDis,KbsDis,EnergyConsumerDis,Pole,ProtectDis,TransformerDis,ZhaiWaiDaoZha,
+	ZhaiWaiJieDiDaoZha,ZwrcDis,Other,poke,Gzp,LowVolFZX,Indicator,Substation,Resistance,Grounded,zhkg,pwbh
+	]]>
+	</EnableSelectDevice>
+	
+	<!-- 连接线的带电状态受哪些设备的影响 -->
+	<AffectConnectLinePowerOfDevice>
+	<![CDATA[
+	CBreaker,Disconnector,DollyBreaker,Fuse,ACLine,ACLineEnd,DCLine,DCLineEnd,Bus,Transformer2,Transformer3,Generator,RcBreaker,/*EnergyConsumer*/,
+	BusDis,/*EnergyConsumerDis*/,CBreakerDis,/*TransformerDis*/,ZhaiWaiDaoZha,FeedLine,Substation,zhkg,ZwrcDis
+	]]>
+	</AffectConnectLinePowerOfDevice>
+	
+	<!-- 加载图形时是否显示动态文本项 -->
+	<ShowDText>0</ShowDText>
+	
+	<!-- 图形右上角是否显示图形名称 -->
+	<ShowGraphicName>0</ShowGraphicName>
+	
+	<!-- 天津城南动态文本刷新时间间隔，单位为秒 -->
+	<RefreshDTextInterval>30</RefreshDTextInterval>
+	
+	<!-- 端子连接的范围（即两端子距离小于此值即认为连接） -->
+	<SnapSize>10</SnapSize>
+	
+	<!-- 鼠标命中检测半径范围（屏幕坐标） -->
+	<HitSize>5</HitSize>
+	
+	<!-- 撤销操作允许的最大步数 -->
+	<UndoMaxLen>20</UndoMaxLen>
+	
+	<!-- 缺少引用模板时，是否弹窗提醒 -->
+	<ShowTipWithoutIcon>0</ShowTipWithoutIcon>
+	
+	<!-- 图形提示信息显示
+	ShowType：显示方式，包含图元设备信息+设备状态信息+图元自定义信息，如:不显示任何信息为000，显示三种信息为111，显示设备信息和状态信息为110，显示设备信息和自定义信息为101。
+	delay：提示信息延时显示时间(毫秒)
+	-->
+	<TipMessage ShowType="000" delay="0"/>
+	
+	<!-- 浏览器缓存图形个数 -->
+	<GraphBufferCount>10</GraphBufferCount>
+	
+	<!-- 图形线宽显示比例，zone属性限制使用地区，为空时适配所有地区，多个地区之间用|分割 -->
+	<LineWidthScale zone="永川">3</LineWidthScale>
+	
+	<!-- 允许根据poke链接馈线图，显示其所有兄弟图形的目录索引图文件名(多个文件名之间用|分割) -->
+	<PokeFeederList GraphName="大馈线单线图.fac.pic.g" />
+	
+	<!-- 仿真设备状态，不允许时将读取模型库设备状态，enable是否允许仿真，switchState开断状态，hasPower是否带电 -->
+	<SimulateState enable="0" switchState="1" hasPower="1"/>
+	
+	<!-- Svg模板ID的状态分隔符,id="Breaker:开关@0" 或 id="Breaker:开关_0"-->
+	<SvgSymbolStateSplit>_@</SvgSymbolStateSplit>
+	
+	<!-- Svg模板类型名称映射 -->
+	<SvgSymbolClassMap>
+	<![CDATA[
+    ACLineSegment:ACLineEnd,
+	Breaker:CBreaker,
+	Load:EnergyConsumer,
+	Accessory:Terminal,
+	PowerTransformer2:Transformer2,
+	PowerTransformer3:Transformer3,
+	Compensator:Compensator
+    ]]>
+	</SvgSymbolClassMap>
+</ROOT>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>  
+  <GetData>    
+      <![CDATA[		
+		select uptime,yuntime,path from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_cloud_image where yuntime>={0} and yuntime<={1};
+				]]>    
+  </GetData>
+  <InsertYun>    
+      <![CDATA[		
+		insert into ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_cloud_image (uptime,yuntime,path) values({0},{1},{2});
+				]]>    
+  </InsertYun>
+  <DeleteYun>    
+      <![CDATA[		
+		delete from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_cloud_image where path={0};
+				]]>    
+  </DeleteYun>
+  <UpdateYun>
+    <![CDATA[delete from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_cloud_image where path={2};
+    insert into ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_cloud_image (uptime,yuntime,path) values ({0},{1},{2})]]>
+  </UpdateYun>
+</ROOT>
+

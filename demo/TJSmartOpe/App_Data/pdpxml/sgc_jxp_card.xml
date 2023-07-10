@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<dsjxp><![CDATA[select CLOUD_IDS,RECORDID,applyno,APPLYUNIT_NAME as APPLYUNIT,WORKCONTENT,PROTECTREQUEST,RECOVERRUNREQUEST as fcyq,WENKONGREQUEST as wkyq,
+        TO_CHAR(APPLYWORKBEGINTIME, 'yyyy-mm-dd hh24:mi') as APPLYWORKBEGINTIME,
+        TO_CHAR(APPLYWORKENDTIME, 'yyyy-mm-dd hh24:mi') as APPLYWORKENDTIME,
+        TO_CHAR(REPLYPOWEROFFWORKBEGINTIME, 'yyyy-mm-dd hh24:mi') as REPLYPOWEROFFWORKBEGINTIME,
+        TO_CHAR(REPLYPOWEROFFWORKENDTIME, 'yyyy-mm-dd hh24:mi') as REPLYPOWEROFFWORKENDTIME,
+        TO_CHAR(WORKBEGINTIME, 'yyyy-mm-dd hh24:mi') as WORKBEGINTIME,
+        TO_CHAR(WORKENDTIME, 'yyyy-mm-dd hh24:mi') as WORKENDTIME
+from OMS_DATA.OMS_RUNPLAN_T_DAYEQUIPREPAIRAPPLY where CLOUD_IDS like '%{{0}}%' and recordid='{1}'
+]]></dsjxp>
+<dsotherp><![CDATA[select WORKBEGINTIME||'-'||WORKENDTIME as st,'' as y,'' as m,'<img src="/i/yq.png" />' as d,
+        WORKKIND,WORKCONTENT,case when WORKENDTIME is null then '<img src="/i/jt.png" style="width:20px;height:19px" title ="已开工"/>' else '<img src="/i/dg.png"  style="width:20px;height:19px" title="已竣工"/>' end as zt,
+case JXLX when '1' then 'A级检修' when '2' then 'B级检修' when '3' then 'C级检修' when '4' then 'D级检修' when '5' then '临时' when '6' then '退备' when '7' then '无' else  '' end as jxlx
+from OMS_DATA.OMS_RUNPLAN_T_DAYEQUIPREPAIRAPPLY where CLOUD_IDS like '%{{0}}%' ]]></dsotherp>
+<dsbqkname><![CDATA[select  name from (
+SELECT ID,NAME,'' FROM SG_DATACENTER.SG_DEV_ACLINE_B UNION ALL
+SELECT ID,NAME,'' FROM SG_DATACENTER.SG_DEV_DCLINE_B UNION ALL
+SELECT ID,NAME,ST_ID FROM SG_DATACENTER.SG_DEV_DIS_B UNION ALL
+SELECT ID,NAME,ST_ID FROM SG_DATACENTER.SG_DEV_BREAKER_B UNION ALL
+SELECT ID,NAME,ST_ID FROM SG_DATACENTER.SG_DEV_BUSBAR_B UNION ALL
+SELECT ID,NAME,ST_ID FROM SG_DATACENTER.SG_DEV_TRANSFMWD_B
+)aq where id ='{0}']]></dsbqkname></ROOT>

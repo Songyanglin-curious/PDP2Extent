@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds0><![CDATA[
+        select OCCUR_TIME,CTRL_TYPE,'成功' AS OPRESULT,'手动调整' AS OPTYPE from "MONITORSIGNAL"."TBOPCTRLINFO" o
+        LEFT JOIN psgraph_data.tdevice{{5}} d1 ON o.dev_name=d1.devicestrid
+        LEFT JOIN "PSGRAPH_DATA".TCOMBINEDEVICE{{5}} r on d1.deviceidx=r.partdeviceidx
+        LEFT JOIN psgraph_data.tdevice{{5}} d2 ON r.deviceidx=d2.deviceidx
+        where ctrl_type IN ('调档执行升', '调档执行降') AND d2.devicestrid={0} AND OCCUR_TIME>={{1}} AND OCCUR_TIME<={{2}}
+        --UNION
+        --select RUN_TIME,SCHEID,RESULT,'AVC' from "MONITORSIGNAL"."TBAVCCONTROL" 
+        --WHERE STATION_NAME='{3}' AND SCHEID LIKE '%高_分头%' AND SCHEID LIKE '%{4}%' AND RUN_TIME>={{1}} AND RUN_TIME<={{2}}
+        ]]></ds0></ROOT>

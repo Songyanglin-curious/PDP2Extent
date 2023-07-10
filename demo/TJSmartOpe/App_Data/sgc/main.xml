@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetStationCoordinate>
+    <![CDATA[
+      SELECT s.ID,s.LATITUDE,s.LONGITUDE,s.NAME,s.TYPE as PLANTSTATIONTYPE,s.DCC_ID,s.TOP_AC_VOLTAGE_TYPE,s.PG_ID as GRID_ID FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_B s
+      UNION ALL
+      SELECT s.ID,s.LATITUDE,s.LONGITUDE,s.NAME,s.plant_type as PLANTSTATIONTYPE,s.DCC_ID,s.MAX_VOLTAGE_TYPE,s.connective_pg_id FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PLANT_B s
+      UNION ALL
+      SELECT s.ID,s.LATITUDE,s.LONGITUDE,s.NAME,s.TYPE as PLANTSTATIONTYPE,s.DCC_ID,s.DC_VOLTAGE_TYPE,s.pg_id FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B s]]>
+  </GetStationCoordinate>
+  <GetStationCoordinateById>
+    <![CDATA[
+      SELECT s.ID,s.LATITUDE,s.LONGITUDE,s.NAME,s.TYPE as PLANTSTATIONTYPE,s.DCC_ID,s.TOP_AC_VOLTAGE_TYPE FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_B s WHERE s.ID={0}
+      UNION ALL
+      SELECT s.ID,s.LATITUDE,s.LONGITUDE,s.NAME,s.plant_type as PLANTSTATIONTYPE,s.DCC_ID,s.MAX_VOLTAGE_TYPE FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PLANT_B s WHERE s.ID={0}
+      UNION ALL
+      SELECT s.ID,s.LATITUDE,s.LONGITUDE,s.NAME,s.TYPE as PLANTSTATIONTYPE,s.DCC_ID,s.DC_VOLTAGE_TYPE FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B s WHERE s.ID={0}
+      UNION ALL
+      SELECT s.ID,s.LATITUDE,s.LONGITUDE,s.NAME,3002 as PLANTSTATIONTYPE,s.DCC_ID,s.VOLTAGE_TYPE FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_HVDCGROUNDSTATION_B s WHERE s.ID={0}]]>
+  </GetStationCoordinateById>
+  <GetLineCoordinate>
+    <![CDATA[SELECT ID,LONGITUDE_STA,LONGITUDE_TOWER,LATITUDE_STA,LATITUDE_TOWER FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_LINE_INFO ORDER BY ID]]>
+  </GetLineCoordinate>
+  <GetLineTower>
+    <![CDATA[same:sgc/gt:GetLineTower]]>
+  </GetLineTower>
+  <GetEffectStation>
+    <![CDATA[SELECT S.ID,V.NAME AS VOLNAME,S.NAME,P.NAME AS GRIDNAME,M.NAME_ABBREVIATION AS MANAGENAME 
+    FROM {0} 
+     JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_B S ON {1} LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON S.TOP_AC_VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON S.PG_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_COMPANY_B M ON S.MANAGE_DEPT_ID=M.ID
+    WHERE {2}
+    ORDER BY  LENGTH(V.NAME) DESC, V.NAME DESC,S.NAME]]>
+  </GetEffectStation>
+  <GetEffectPlant>
+    <![CDATA[SELECT S.ID,T.NAME AS TYPENAME,V.NAME AS VOLNAME,S.NAME,P.NAME AS GRIDNAME 
+    FROM {0}
+     JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PLANT_B S ON {1} LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON S.MAX_VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON S.CONNECTIVE_PG_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_PLANTSTATIONTYPE T ON S.PLANT_TYPE=T.CODE
+    WHERE {2}
+    ORDER BY LENGTH(V.NAME) DESC, V.NAME DESC,S.NAME]]>
+  </GetEffectPlant>
+  <GetLineInfo>
+    <![CDATA[SELECT {0} FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B WHERE {1} UNION ALL SELECT {0} FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B WHERE {1}]]>
+  </GetLineInfo>
+  <GetLineName>
+    <![CDATA[same:sgc/main:GetLineInfo:NAME:ID={0}]]>
+  </GetLineName>
+  <GetPwrGrid>
+    <![CDATA[SELECT id,name_abbreviation,parent_id,level FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B]]>
+  </GetPwrGrid>
+  <GetDispatchOrg>
+    <![CDATA[SELECT id,name_abbreviation,parent_id,level FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B]]>
+  </GetDispatchOrg>
+</ROOT>

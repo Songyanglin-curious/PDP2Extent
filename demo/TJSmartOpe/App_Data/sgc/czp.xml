@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <StateField>
+    <![CDATA[CASE WHEN ZXJS IS NULL THEN CASE WHEN ZXKS IS NULL THEN '待执行' ELSE '执行中' END ELSE '已完结' END as state]]>
+  </StateField>
+  <GetCzpList>
+    <![CDATA[
+        SELECT T.CZPID AS TICKETID,T.CZPBH AS SERIAL,T.YFSJ AS PLANTIME,T.CZMD AS ABSTRACT,
+        '' as CREATERUSER,'' AS JXP,]]><![CDATA[same:StateField]]><![CDATA[
+        FROM PI6000.SG_UD_CZP_CZP_JSSD T         
+        ]]>
+  </GetCzpList>
+  <GetCzpListDzx>
+    <![CDATA[same:GetCzpList]]>
+    <![CDATA[ WHERE T.ZXKS IS NULL AND T.CZMD LIKE '%{0}%' ORDER BY T.CZMD]]>
+  </GetCzpListDzx>
+  <GetCzpListMl>
+    <![CDATA[same:GetCzpList]]>
+    <![CDATA[ WHERE T.CZMD LIKE '%{0}%' AND T.YFSJ>={1} AND T.YFSJ<{2} ORDER BY T.CZMD]]>    
+  </GetCzpListMl>
+  <GetCzpListZxz>
+    <![CDATA[same:GetCzpList]]>
+    <![CDATA[ WHERE T.CZMD LIKE '%{0}%' AND T.ZXKS IS NOT NULL AND T.ZXJS IS NULL ORDER BY T.CZMD]]>
+  </GetCzpListZxz>
+  <GetCzpListYzx>
+    <![CDATA[same:GetCzpList]]>
+    <![CDATA[ WHERE T.CZMD LIKE '%{0}%' AND T.ZXKS<{2} AND T.ZXJS>{1} ORDER BY T.CZMD]]>
+  </GetCzpListYzx>
+  <GetCzp>
+    <![CDATA[  SELECT T.CZPID AS TICKETID,T.CZPBH AS SERIAL,'' as CREATERUSER,T.CZMD AS ABSTRACT,
+        '' AS RATIFYUSER,'' AS CREATETIME,'' AS PLANTIME
+        FROM PI6000.SG_UD_CZP_CZP_JSSD T 
+        WHERE T.CZPID={0}]]>
+  </GetCzp>
+  <GetCzpCmd>
+    <![CDATA[
+        SELECT c.CZDW AS STANAME,c.XH ASCMDINDEX,c.CZNR AS SENTENCE,c.SLR AS SENDUSER ,c.JSR AS RECVUSER 
+        ,'' AS RETURNUSER,c.CZSJ AS REALTIME,'' AS RETURNTIME,SBID
+        FROM PI6000.SG_UD_CZP_CZL_JSSD c
+        WHERE c.CZPID={0}]]>
+  </GetCzpCmd>
+</ROOT>

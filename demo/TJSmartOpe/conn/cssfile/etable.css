@@ -1,0 +1,136 @@
+.tdHidden
+{
+    display:none;
+}
+.tablelist
+{
+    font-size: 10pt;
+    border-right: #007cd0 1px solid;
+    border-top: #007cd0 1px solid;
+    border-left: #007cd0 1px solid;
+    border-bottom: #007cd0 1px solid;
+}
+.TrHeight
+{
+    height: 22px;
+}
+.HeadRow_blue
+{
+    color: #FFFFFF;
+    background-color: #007CD0;
+}
+.HeadRow_gray
+{
+    color: #003399;
+    background-color: #E0E0E0;
+}
+.edittabletd
+{
+    height: 32px;
+    border-right: #B5B4B4 1px solid;
+    border-bottom: #B5B4B4 1px solid;
+}
+.edittable_A:link
+{
+    text-decoration: none;
+    color: blue;
+}
+.edittable_A:visited
+{
+    text-decoration: none;
+    color: blue;
+}
+.edittable_A:hover
+{
+    text-decoration: underline;
+    color: red;
+    position: relative;
+    left: 1px;
+    top: 1px;
+}
+.edittable_A:active
+{
+    text-decoration: none;
+}
+.checkboxcss
+{
+    border-right: transparent 0px;
+    border-top: transparent 0px;
+    border-left: transparent 0px;
+    border-bottom: transparent 0px;
+    background-color: transparent;
+}
+
+SELECT
+{
+    color: #205064;
+    background-color: #fffdfb;
+}
+.editinput
+{
+    border-right: transparent 0px;
+    border-top: transparent 0px;
+    border-left: transparent 0px;
+    border-bottom: transparent 0px;
+    background-color: transparent;
+}
+.rowColor
+{
+    background-color: #EFF3FB;
+}
+.urgencyColor
+{
+    color: #C25207;
+    border-right: #B5B4B4 1px solid;
+    border-bottom: #B5B4B4 1px solid;
+}
+.extremityColor
+{
+    color: red;
+    border-right: #B5B4B4 1px solid;
+    border-bottom: #B5B4B4 1px solid;
+}
+.imgETBJ
+{
+     background-image:url(../../i/etable/an_bj.jpg);
+     width:51px;
+     height:22px;
+}
+.imgETSC
+{
+     background-image:url(../../i/etable/an_sc.jpg);
+     width:51px;
+     height:22px;
+}
+.imgETGX
+{
+     background-image:url(../../i/etable/an_gx.jpg);
+     width:51px;
+     height:22px;
+}
+.imgETQX
+{
+     background-image:url(../../i/etable/an_qx.jpg);
+     width:51px;
+     height:22px;
+}
+.pageFootLeft
+{
+    background-image:url(../../i/etable/z.gif);
+    height:30px;
+    width:8px;
+}
+.pageFootCenter
+{
+    text-align:right;
+    border-bottom: 1px solid #c7c7c7;
+    background-image:url(../../i/etable/zh.gif);
+    width:100%;
+    height:30px;
+}
+.pageFootRight
+{
+    background-image:url(../../i/etable/y.gif);
+    width:8px;
+    height:30px;
+}

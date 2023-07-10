@@ -1,0 +1,981 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <Ticket>
+    <SetTicketSection>
+      <![CDATA[
+        UPDATE tGraphSlice SET IsUse=0 WHERE appName!='Peiwang'
+      ]]>
+    </SetTicketSection>
+  </Ticket>
+  <GraphicsPriv>
+    <InsertGraphicPriv>
+      <![CDATA[
+        IF NOT EXISTS(SELECT * FROM GraphicsPriv WHERE PrivGroupID={0} AND GraphicID={1} AND privtype={2})
+        INSERT INTO GraphicsPriv(PrivGroupID, GraphicID, privType) VALUES({0}, {1}, {2})
+      ]]>
+    </InsertGraphicPriv>
+    <DeleteGraphicPriv>
+      <![CDATA[
+        DELETE FROM GraphicsPriv WHERE PrivGroupID={0} AND GraphicID={1} AND privtype={2}
+      ]]>
+    </DeleteGraphicPriv>
+    <SelectDeptPrivGroup>
+      <![CDATA[
+        SELECT DISTINCT privgroupID FROM tbDeptPrivGroup WHERE deptIdx!={0}
+      ]]>
+    </SelectDeptPrivGroup>
+    <SelectDeptFolder>
+      <![CDATA[
+        SELECT f.GraphicFolderID FROM GraphicFolders f LEFT JOIN GraphicFoldersDept d ON f.GraphicFolderID=d.GraphicFolderID WHERE f.FolderOwnerID=1 AND f.FolderName!='所有人可见' AND (d.deptIdx!={0} OR d.deptIdx IS NULL)
+      ]]>
+    </SelectDeptFolder>
+    <SelectHasPrivGraphic>
+      <![CDATA[
+        SELECT DISTINCT GraphicID FROM GraphicsPriv
+      ]]>
+    </SelectHasPrivGraphic>
+    <SelectHasPrivPrivGroup>
+      <![CDATA[
+        SELECT DISTINCT PrivGroupID FROM GraphicsPriv
+      ]]>
+    </SelectHasPrivPrivGroup>
+  </GraphicsPriv>
+	<xianlufengduan_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</xianlufengduan_ddlLine>
+	<xianlufenduan_ysh_ddlbox>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</xianlufenduan_ysh_ddlbox>
+	<xianlufenduan_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</xianlufenduan_ddldispatchDept>
+	<xianlufenduan_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</xianlufenduan_ysh_ddlbox42>
+	<xianlufenduan_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</xianlufenduan_ddlMode>
+	<xianlufenduan_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</xianlufenduan_ddlFac>
+	<xianlufenduan_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc ]]>
+	</xianlufenduan_ddlStation>
+	<xianlufenduan_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</xianlufenduan_ddlVol>
+	<xianlufenduan_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</xianlufenduan_ddlType>
+	<xianlu_ysh_ddlbox6>
+		<![CDATA[select deviceIdx,deviceDesc from dbDevice where typeIdx=1]]>
+	</xianlu_ysh_ddlbox6>
+	<xianlu_ysh_ddlbox5>
+		<![CDATA[select deviceIdx,deviceDesc from dbDevice where typeIdx=1]]>
+	</xianlu_ysh_ddlbox5>
+	<xianlu_ysh_ddlbox3>
+		<![CDATA[select deptIdx,deptDesc from dbDept]]>
+	</xianlu_ysh_ddlbox3>
+	<xianlu_ysh_ddlbox2>
+		<![CDATA[select deptIdx,deptDesc from dbDept]]>
+	</xianlu_ysh_ddlbox2>
+	<xianlu_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 and dispatchdept='{hdnDept}' ORDER BY deviceName]]>
+	</xianlu_ddlLine>
+	<xianlu_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</xianlu_ysh_ddlbox4>
+	<xianlu_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --where depttype=7]]>
+	</xianlu_ddldispatchDept>
+	<xianlu_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --where depttype=7]]>
+	</xianlu_ysh_ddlbox42>
+	<xianlu_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</xianlu_ddlType>
+	<xianlanfenduan_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</xianlanfenduan_ddlLine>
+	<xianlanfenduan_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</xianlanfenduan_ysh_ddlbox4>
+	<xianlanfenduan_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</xianlanfenduan_ddldispatchDept>
+	<xianlanfenduan_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</xianlanfenduan_ysh_ddlbox42>
+	<xianlanfenduan_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</xianlanfenduan_ddlMode>
+	<xianlanfenduan_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</xianlanfenduan_ddlFac>
+	<xianlanfenduan_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc]]>
+	</xianlanfenduan_ddlStation>
+	<xianlanfenduan_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</xianlanfenduan_ddlVol>
+	<xianlanfenduan_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</xianlanfenduan_ddlType>
+	<xiangti_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</xiangti_ddlLine>
+	<xiangti_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</xiangti_ysh_ddlbox4>
+	<xiangti_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</xiangti_ddldispatchDept>
+	<xiangti_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</xiangti_ysh_ddlbox42>
+	<xiangti_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</xiangti_ddlMode>
+	<xiangti_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</xiangti_ddlFac>
+	<xiangti_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc]]>
+	</xiangti_ddlStation>
+	<xiangti_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</xiangti_ddlVol>
+	<xiangti_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</xiangti_ddlType>
+	<wuliganta_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</wuliganta_ddlLine>
+	<wuliganta_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</wuliganta_ysh_ddlbox4>
+	<wuliganta_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</wuliganta_ddldispatchDept>
+	<wuliganta_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</wuliganta_ysh_ddlbox42>
+	<wuliganta_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</wuliganta_ddlMode>
+	<wuliganta_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</wuliganta_ddlFac>
+	<wuliganta_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc ]]>
+	</wuliganta_ddlStation>
+	<wuliganta_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</wuliganta_ddlVol>
+	<wuliganta_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</wuliganta_ddlType>
+	<unfinishLog_yshctrl_18>
+		<![CDATA[select * from tbpwTkOvNote_DefectNew d left join tbpwTkOvNote_unattached u on d.defectid=u.tkovnote_id where d.iffinish=0 and 1=1 {0}]]>
+	</unfinishLog_yshctrl_18>
+	<TemporaryNotify_ddlCurrentVol>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage where voltageIdx<=12]]>
+	</TemporaryNotify_ddlCurrentVol>
+	<TemporaryNotify_ddlStation>
+		<![CDATA[SELECT DISTINCT a.deptIdx as deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx ]]>
+	</TemporaryNotify_ddlStation>
+	<TemporaryNotify_ddlVoltage>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</TemporaryNotify_ddlVoltage>
+	<switchpowerlist_yshctrl_18>
+		<![CDATA[SELECT *,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end  FROM tbpwTkOvNote_property where 1=1 {0}  order by tkovnote_startpart desc]]>
+	</switchpowerlist_yshctrl_18>
+	<switchpoweredit_ddlloadtype>
+		<![CDATA[SELECT id,name FROM tbpwSwitchPower_loadtype ORDER BY id]]>
+	</switchpoweredit_ddlloadtype>
+	<switchpoweredit_ddlvol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage ORDER BY voltageValue]]>
+	</switchpoweredit_ddlvol>
+	<switchpower_ddlexestation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</switchpower_ddlexestation>
+	<switchpower_ddlcmdstation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</switchpower_ddlcmdstation>
+	<switchpower_txtstationuser>
+		<![CDATA[select usernum,username from dbUser]]>
+	</switchpower_txtstationuser>
+	<switchpower_ddlstation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE b.voltageIdx IS NULL AND a.isValid=1]]>
+	</switchpower_ddlstation>
+	<switchpower_ddlloadtype>
+		<![CDATA[SELECT id,name FROM tbpwSwitchPower_loadtype ORDER BY id]]>
+	</switchpower_ddlloadtype>
+	<switchpower_ddlvol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</switchpower_ddlvol>
+	<StatisticRange_graphTree_ssql>
+		<![CDATA[(SELECT a.id, a.name, b.GraphicFolderID FROM Graphics a LEFT JOIN Graphics_GraphicFolders b ON a.id=b.GraphicID WHERE a.isuse=1 AND a.name NOT LIKE '%缩略图') c]]>
+	</StatisticRange_graphTree_ssql>
+	<StatisticRange_graphTree_fsql>
+		<![CDATA[GraphicFolders]]>
+	</StatisticRange_graphTree_fsql>
+	<stationuser_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</stationuser_ddlVol>
+	<StateList_select1>
+		<![CDATA[SELECT genid,genname FROM tbGenerator]]>
+	</StateList_select1>
+	<SetMulDevice_txtLineName>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</SetMulDevice_txtLineName>
+	<SetMulDevice_txtPLineName>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</SetMulDevice_txtPLineName>
+	<SelDevice_ddlStation>
+		<![CDATA[SELECT stationIdx, stationDesc FROM dbStation ORDER BY stationDesc]]>
+	</SelDevice_ddlStation>
+	<SelDevice_ddldevtype>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType ORDER BY typeName]]>
+	</SelDevice_ddldevtype>
+	<RunWayEdit_ddlCurrentVol>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage where voltageIdx<=12]]>
+	</RunWayEdit_ddlCurrentVol>
+	<runwayCom_ddlGraph2>
+		<![CDATA[SELECT 0 procid,'当前方式' UNION SELECT rw_procid, rw_name FROM tbRunwayList ORDER BY procid]]>
+	</runwayCom_ddlGraph2>
+	<runwayCom_ddlGraph1>
+		<![CDATA[SELECT 0 procid,'当前方式' UNION SELECT rw_procid, rw_name FROM tbRunwayList ORDER BY procid]]>
+	</runwayCom_ddlGraph1>
+	<RepairApplication_relaDevice_deletesql>
+		<![CDATA[DELETE FROM tbRelaDevice WHERE flowid=@@流程id@@ AND itemid=@@标识列@@]]>
+	</RepairApplication_relaDevice_deletesql>
+	<RepairApplication_relaDevice_insertsql>
+		<![CDATA[INSERT INTO tbRelaDevice (flowid,itemid,deviceidx,devicename) VALUES (@@流程id@@,@@标识列@@,{0},{1})]]>
+	</RepairApplication_relaDevice_insertsql>
+	<RepairApplication_relaDevice_selectsql>
+		<![CDATA[SELECT deviceidx,devicename FROM tbRelaDevice WHERE itemid=@@标识列@@ AND flowid=@@流程id@@]]>
+	</RepairApplication_relaDevice_selectsql>
+	<RepairApplication_RelFilelds_deletesql>
+		<![CDATA[DELETE FROM tbGraphItemInfo WHERE itemid=@@标识列@@]]>
+	</RepairApplication_RelFilelds_deletesql>
+	<RepairApplication_RelFilelds_insertsql>
+		<![CDATA[INSERT INTO tbGraphItemInfo (itemid,graphitemid) VALUES (@@标识列@@,{0})]]>
+	</RepairApplication_RelFilelds_insertsql>
+	<RepairApplication_RelFilelds_selectsql>
+		<![CDATA[SELECT graphitemid FROM tbGraphItemInfo WHERE itemid=@@标识列@@]]>
+	</RepairApplication_RelFilelds_selectsql>
+	<RepairApplication_ddlCurrentVol>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage where voltageIdx<=12]]>
+	</RepairApplication_ddlCurrentVol>
+	<RepairApplication_ddlDevType>
+		<![CDATA[SELECT typeIdx,typeName FROM dbType]]>
+	</RepairApplication_ddlDevType>
+	<RepairApplication_ddlWorkDept>
+		<![CDATA[SELECT DISTINCT a.deptIdx as deptIdx, a.deptName as deptName FROM dbDept a]]>
+	</RepairApplication_ddlWorkDept>
+	<RepairApplication_ddlStation>
+		<![CDATA[SELECT DISTINCT a.deptIdx as deptIdx, a.deptName as deptName FROM dbDept a ]]>
+	</RepairApplication_ddlStation>
+	<RelaDeviceList_ddlType>
+		<![CDATA[SELECT typeIdx,typeName FROM dbType]]>
+	</RelaDeviceList_ddlType>
+	<PT_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</PT_ddlLine>
+	<PT_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</PT_ysh_ddlbox4>
+	<PT_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</PT_ddldispatchDept>
+	<PT_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</PT_ysh_ddlbox42>
+	<PT_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</PT_ddlMode>
+	<PT_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</PT_ddlFac>
+	<PT_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc ]]>
+	</PT_ddlStation>
+	<PT_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</PT_ddlVol>
+	<PT_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</PT_ddlType>
+	<ProtectChangeList_yshctrl_11>
+		<![CDATA[SELECT * FROM tbProtectChange WHERE 1=1 {0}]]>
+	</ProtectChangeList_yshctrl_11>
+	<PlanApply_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation WHERE (voltageIdx=@@ddlVoltage@@ OR @@ddlVoltage@@='')]]>
+	</PlanApply_ddlStation>
+	<PlanApply_RelateFileld_deletesql>
+		<![CDATA[DELETE FROM tbWorkInfo WHERE itemid=@@标识列@@]]>
+	</PlanApply_RelateFileld_deletesql>
+	<PlanApply_RelateFileld_insertsql>
+		<![CDATA[INSERT INTO tbWorkInfo (itemid,indx, planstop, planstart, planend, planrestore, auditstop, auditstart, auditend, auditrestor, stopduty, stopworker, workstop, startduty, startworker, workstart, endduty, endworker, workend, restoreduty, restoreworker, workrestore) VALUES(@@标识列@@,'{0}','{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}', '{16}', '{17}', '{18}', '{19}', '{20}')]]>
+	</PlanApply_RelateFileld_insertsql>
+	<PlanApply_RelateFileld_selectsql>
+		<![CDATA[SELECT itemid, indx, planstop, planstart, planend, planrestore, auditstop, auditstart, auditend, auditrestor, stopduty, stopworker, workstop, startduty, startworker, workstart, endduty, endworker, workend, restoreduty, restoreworker, workrestore FROM tbWorkInfo  WHERE itemid=@@标识列@@ ORDER BY indx ASC]]>
+	</PlanApply_RelateFileld_selectsql>
+	<otherworklistex_gntother>
+		<![CDATA[SELECT *, CASE tkovnote_finished WHEN 1 THEN '#FF0000' ELSE '#000000' END  AS colcolor  FROM tbpwTkOvNote_property where 1=1 {0}  order by tkovnote_startpart desc]]>
+	</otherworklistex_gntother>
+	<otherworklist_gntother>
+		<![CDATA[SELECT *, CASE tkovnote_finished WHEN 1 THEN '#FF0000' ELSE '#000000' END  AS colcolor  FROM tbpwTkOvNote_property where 1=1 {0}  order by tkovnote_startpart desc]]>
+	</otherworklist_gntother>
+	<otherworkedit_ddlvol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</otherworkedit_ddlvol>
+	<othereventlist_yshctrl_18>
+		<![CDATA[SELECT *,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end  FROM tbpwTkOvNote_property where 1=1 {0}  order by tkovnote_startpart desc]]>
+	</othereventlist_yshctrl_18>
+	<othereventedit_txtstationuser>
+		<![CDATA[select usernum,username from dbUser]]>
+	</othereventedit_txtstationuser>
+	<othereventedit_ddlexestation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</othereventedit_ddlexestation>
+	<othereventedit_ddlcmdstation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</othereventedit_ddlcmdstation>
+	<othereventedit_ddlvol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</othereventedit_ddlvol>
+	<optkticketlist_yshctrl_12>
+		<![CDATA[SELECT Serial+' ' as bianhao ,* FROM tTicket A WHERE 1=1 {0} ORDER BY CreateTime desc]]>
+	</optkticketlist_yshctrl_12>
+	<abnormalevent10input_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc ]]>
+	</abnormalevent10input_ddlStation>
+	<abnormalevent10input_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</abnormalevent10input_ddlLine>
+	<abnormalevent10input_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</abnormalevent10input_ddlVol>
+	<AbnormalReport_relaDevice_deletesql>
+		<![CDATA[DELETE FROM tbRelaDevice WHERE flowid=@@流程ID@@ AND itemid=@@单子ID@@]]>
+	</AbnormalReport_relaDevice_deletesql>
+	<AbnormalReport_relaDevice_insertsql>
+		<![CDATA[INSERT INTO tbRelaDevice (flowid,itemid,deviceidx,devicename) VALUES (@@流程ID@@,@@单子ID@@,{0},{1})]]>
+	</AbnormalReport_relaDevice_insertsql>
+	<AbnormalReport_relaDevice_selectsql>
+		<![CDATA[SELECT deviceidx,devicename FROM tbRelaDevice WHERE itemid=@@单子ID@@ AND flowid=@@流程ID@@]]>
+	</AbnormalReport_relaDevice_selectsql>
+	<AbnormalReport_ddlDevType>
+		<![CDATA[SELECT typeIdx,typeName FROM dbType]]>
+	</AbnormalReport_ddlDevType>
+	<AbnormalReport_ddlCurrentVol>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage where voltageIdx<=12]]>
+	</AbnormalReport_ddlCurrentVol>
+	<AbnormalReport_ddlStation>
+		<![CDATA[SELECT DISTINCT a.deptIdx as deptIdx, a.deptName as deptName FROM dbDept a ]]>
+	</AbnormalReport_ddlStation>
+	<abnormalrunway35_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage WHERE voltageValue>35 ORDER BY voltageValue]]>
+	</abnormalrunway35_ddlVol>
+	<abnormalrunway35_ysh_ddlbox1>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc]]>
+	</abnormalrunway35_ysh_ddlbox1>
+	<AccidentRepair_ddlVoltage>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage]]>
+	</AccidentRepair_ddlVoltage>
+	<AccidentRepair_ddlStation>
+		<![CDATA[SELECT DISTINCT a.deptIdx as deptIdx, a.deptName as deptName FROM dbDept a WHERE a.isValid=1]]>
+	</AccidentRepair_ddlStation>
+	<AccidentRepair_ddlCurrentVol>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage where voltageIdx<=12]]>
+	</AccidentRepair_ddlCurrentVol>
+	<AccidentRepair_ddlWorkGroup>
+		<![CDATA[SELECT deptIdx,deptName FROM dbDept]]>
+	</AccidentRepair_ddlWorkGroup>
+	<AccidentRepair_gantte1>
+		<![CDATA[SELECT *,colcolor= CASE WHEN  exetime!='2100-12-30' THEN '#FF0000' else '#000000' end  FROM tbpwTkOvNote_Cmd  where 1=1 {0}]]>
+	</AccidentRepair_gantte1>
+	<AssignmentBook_InnerTabNow>
+		<![CDATA[SELECT *,stationid as deptname,auditstop as stoptime FROM tbPlanDay WHERE ifover=0 AND (state=1 OR state=2)]]>
+	</AssignmentBook_InnerTabNow>
+	<bianyaqi_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</bianyaqi_ddlType>
+	<bianyaqi_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</bianyaqi_ddlVol>
+	<bianyaqi_ddlStation>
+		<![CDATA[SELECT stationIdx, stationDesc FROM dbStation]]>
+	</bianyaqi_ddlStation>
+	<bianyaqi_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</bianyaqi_ddlFac>
+	<bianyaqi_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</bianyaqi_ddlMode>
+	<bianyaqi_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</bianyaqi_ysh_ddlbox42>
+	<bianyaqi_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</bianyaqi_ddldispatchDept>
+	<bianyaqi_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</bianyaqi_ysh_ddlbox4>
+	<bianyaqi_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</bianyaqi_ddlLine>
+	<bianyaqifuhe_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</bianyaqifuhe_ddlType>
+	<bianyaqifuhe_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</bianyaqifuhe_ddlVol>
+	<bianyaqifuhe_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc]]>
+	</bianyaqifuhe_ddlStation>
+	<bianyaqifuhe_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</bianyaqifuhe_ddlFac>
+	<bianyaqifuhe_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</bianyaqifuhe_ddlMode>
+	<bianyaqifuhe_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</bianyaqifuhe_ysh_ddlbox42>
+	<bianyaqifuhe_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</bianyaqifuhe_ddldispatchDept>
+	<bianyaqifuhe_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</bianyaqifuhe_ysh_ddlbox4>
+	<calendarNote_yshctrl_10>
+		<![CDATA[SELECT *,CASE tkovnote_type WHEN 1 THEN '#7094eb' WHEN 2 THEN '#5032aa' WHEN 3 THEN '#fbd627' WHEN 4 THEN '#8c3c5f' WHEN 5 THEN '#cccc88' WHEN 6 THEN '#339966' WHEN 7 THEN '#663366' WHEN 8 THEN '#bbdddb' ELSE '#4169E1' END AS colcolor FROM tbpwTkOvNote_property WHERE 1=1 AND tkovnote_type!=22 {0}]]>
+	</calendarNote_yshctrl_10>
+	<ChangedWork_relaDevice_deletesql>
+		<![CDATA[DELETE FROM tbRelaDevice WHERE flowid=@@flowid@@ AND itemid=@@itemid@@]]>
+	</ChangedWork_relaDevice_deletesql>
+	<ChangedWork_relaDevice_insertsql>
+		<![CDATA[INSERT INTO tbRelaDevice (flowid,itemid,deviceidx,devicename) VALUES (@@flowid@@,@@itemid@@,{0},{1})]]>
+	</ChangedWork_relaDevice_insertsql>
+	<ChangedWork_relaDevice_selectsql>
+		<![CDATA[SELECT deviceidx,devicename FROM tbRelaDevice WHERE itemid=@@itemid@@ AND flowid=@@flowid@@]]>
+	</ChangedWork_relaDevice_selectsql>
+	<ChangedWork_ddlStation>
+		<![CDATA[SELECT DISTINCT a.deptIdx as deptIdx, a.deptName FROM dbDept a WHERE a.isValid=1]]>
+	</ChangedWork_ddlStation>
+	<ChangedWork_ddlCurrentVol>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage where voltageIdx<=12]]>
+	</ChangedWork_ddlCurrentVol>
+	<daozha_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</daozha_ddlType>
+	<daozha_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</daozha_ddlVol>
+	<daozha_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc]]>
+	</daozha_ddlStation>
+	<daozha_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</daozha_ddlFac>
+	<daozha_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</daozha_ddlMode>
+	<daozha_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</daozha_ysh_ddlbox42>
+	<daozha_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</daozha_ddldispatchDept>
+	<daozha_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</daozha_ysh_ddlbox4>
+	<defectproperty_ddltype>
+		<![CDATA[SELECT id,name FROM tbpwDevDefect_property WHERE parentid = -1]]>
+	</defectproperty_ddltype>
+	<device_select24>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType  ORDER BY typeName]]>
+	</device_select24>
+	<device_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage ORDER BY voltageValue]]>
+	</device_ddlVol>
+	<device_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc ]]>
+	</device_ddlStation>
+	<device_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</device_ddlFac>
+	<device_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</device_ddlMode>
+	<device_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</device_ysh_ddlbox42>
+	<device_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</device_ddldispatchDept>
+	<device_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</device_ysh_ddlbox4>
+	<device_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</device_ddlLine>
+	<DeviceModeInfo_select7>
+		<![CDATA[SELECT facid,facName FROM tbFactory]]>
+	</DeviceModeInfo_select7>
+	<devices_stationidx>
+		<![CDATA[SELECT deptIdx,deptDesc FROM dbDept where isValid=1 order by deptDesc ]]>
+	</devices_stationidx>
+	<devices_ownerline>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</devices_ownerline>
+	<devices_rundept>
+		<![CDATA[select deptIdx,deptDesc from dbDept --WHERE deptType=8 order by deptDesc]]>
+	</devices_rundept>
+	<devices_dispatchdept>
+		<![CDATA[select deptIdx,deptDesc from dbDept order by deptDesc]]>
+	</devices_dispatchdept>
+	<devices_belongdept>
+		<![CDATA[select deptIdx,deptDesc from dbDept order by deptDesc]]>
+	</devices_belongdept>
+	<diankangqi_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</diankangqi_ddlType>
+	<diankangqi_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</diankangqi_ddlVol>
+	<diankangqi_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc]]>
+	</diankangqi_ddlStation>
+	<diankangqi_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</diankangqi_ddlFac>
+	<diankangqi_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</diankangqi_ddlMode>
+	<diankangqi_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</diankangqi_ysh_ddlbox42>
+	<diankangqi_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</diankangqi_ddldispatchDept>
+	<diankangqi_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</diankangqi_ysh_ddlbox4>
+	<diankangqi_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</diankangqi_ddlLine>
+	<dianrongqi_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</dianrongqi_ddlType>
+	<dianrongqi_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</dianrongqi_ddlVol>
+	<dianrongqi_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc ]]>
+	</dianrongqi_ddlStation>
+	<dianrongqi_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</dianrongqi_ddlFac>
+	<dianrongqi_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</dianrongqi_ddlMode>
+	<dianrongqi_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</dianrongqi_ysh_ddlbox42>
+	<dianrongqi_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</dianrongqi_ddldispatchDept>
+	<dianrongqi_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</dianrongqi_ysh_ddlbox4>
+	<dianrongqi_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</dianrongqi_ddlLine>
+	<Diaoduribao_txtstationuser>
+		<![CDATA[select usernum,username from dbUser]]>
+	</Diaoduribao_txtstationuser>
+	<Diaoduribao_ddlcmdstation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</Diaoduribao_ddlcmdstation>
+	<Diaoduribao_ddlexestation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</Diaoduribao_ddlexestation>
+	<DiaoduribaoList_yshctrl_18>
+		<![CDATA[SELECT *,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end FROM tbpwTkOvNote_property where 1=1 {0} order by tkovnote_startpart desc]]>
+	</DiaoduribaoList_yshctrl_18>
+	<dizhoulist_gantte1>
+		<![CDATA[SELECT *,colcolor= CASE WHEN isup= 1 THEN '#FF0000' ELSE '#000000' end FROM tbpwLowCircleLoad where 1=1 {0}]]>
+	</dizhoulist_gantte1>
+	<editdevdefect_ddlStationVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</editdevdefect_ddlStationVol>
+	<editdevdefect_ddlAddStation>
+		<![CDATA[SELECT stationIdx,stationname FROM dbStation where voltageIdx=@@ddlStationVol@@]]>
+	</editdevdefect_ddlAddStation>
+	<editdevdefect_ddlvol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</editdevdefect_ddlvol>
+	<editdevdefect_ddldefect_leval>
+		<![CDATA[SELECT id,name FROM tbpwDevDefect_leval ORDER BY id]]>
+	</editdevdefect_ddldefect_leval>
+	<editdevdefect_ddlrunstation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE b.voltageIdx IS NULL AND a.isValid=1]]>
+	</editdevdefect_ddlrunstation>
+	<editdevdefect_txtstationuser>
+		<![CDATA[select usernum,username from dbUser]]>
+	</editdevdefect_txtstationuser>
+	<editdevdefect_ddlcmdstation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</editdevdefect_ddlcmdstation>
+	<editdevdefect_ddlexestation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</editdevdefect_ddlexestation>
+	<editdevdefectchart_ddldefect_leval>
+		<![CDATA[SELECT id,name FROM tbpwDevDefect_leval ORDER BY id]]>
+	</editdevdefectchart_ddldefect_leval>
+	<editdevdefectchart_ddlvol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage ORDER BY voltageValue]]>
+	</editdevdefectchart_ddlvol>
+	<editdevdefectchart_yshctrl_21>
+		<![CDATA[SELECT *,colcolor= CASE WHEN  exetime!='2100-12-30' THEN '#FF0000' else '#000000' end  FROM tbpwTkOvNote_Cmd  where 1=1 {0}]]>
+	</editdevdefectchart_yshctrl_21>
+	<editevent_ddlStationVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</editevent_ddlStationVol>
+	<editevent_ddlAddStation>
+		<![CDATA[SELECT stationIdx,stationname FROM dbStation where voltageIdx=@@ddlStationVol@@]]>
+	</editevent_ddlAddStation>
+	<editevent_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</editevent_ddlVol>
+	<editevent_ddltype>
+		<![CDATA[SELECT id,name FROM tbpwAccidentTrip_type ORDER BY id]]>
+	</editevent_ddltype>
+	<editevent_ddlstation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE b.voltageIdx IS NULL AND a.isValid=1]]>
+	</editevent_ddlstation>
+	<editevent_txtstationuser>
+		<![CDATA[select usernum,username from dbUser]]>
+	</editevent_txtstationuser>
+	<editevent_ddlcmdstation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</editevent_ddlcmdstation>
+	<editevent_ddlexestation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</editevent_ddlexestation>
+	<editEvent_abnormal_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage ORDER BY voltageValue]]>
+	</editEvent_abnormal_ddlVol>
+	<editEvent_abnormal_ddlStation>
+		<![CDATA[SELECT stationIdx,stationName FROM dbStation where voltageidx= @@ddlVol@@]]>
+	</editEvent_abnormal_ddlStation>
+	<editeventdev_ddltype>
+		<![CDATA[SELECT id,name FROM tbpwAccidentTrip_type ORDER BY id]]>
+	</editeventdev_ddltype>
+	<editeventdev_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage ORDER BY voltageValue]]>
+	</editeventdev_ddlVol>
+	<editeventdev_ddllinename>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName ]]>
+	</editeventdev_ddllinename>
+	<editeventdev_yshctrl_21>
+		<![CDATA[SELECT *,colcolor= CASE WHEN  exetime!='2100-12-30' THEN '#FF0000' else '#000000' end FROM tbpwTkOvNote_Cmd  where 1=1 {0}]]>
+	</editeventdev_yshctrl_21>
+	<editpaulpower_ddlpaultype>
+		<![CDATA[SELECT id,name FROM tbpwPaulPower_leval ORDER BY id]]>
+	</editpaulpower_ddlpaultype>
+	<editpaulpower_ddlvol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage where voltageIdx<=12 ORDER BY voltageValue]]>
+	</editpaulpower_ddlvol>
+	<editpaulpowerdev_ddlpaultype>
+		<![CDATA[SELECT id,name FROM tbpwPaulPower_leval ORDER BY id]]>
+	</editpaulpowerdev_ddlpaultype>
+	<editpaulpowerdev_ddlvol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage ORDER BY voltageValue]]>
+	</editpaulpowerdev_ddlvol>
+	<eventlist_yshctrl_18>
+		<![CDATA[SELECT *,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end FROM tbpwTkOvNote_property where 1=1 {0} order by tkovnote_startpart desc]]>
+	</eventlist_yshctrl_18>
+	<eventList_abnormal_yshctrl_11>
+		<![CDATA[SELECT * FROM tbEventAbnormal WHERE 1=1 {0}]]>
+	</eventList_abnormal_yshctrl_11>
+	<fadianji_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</fadianji_ddlType>
+	<fadianji_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</fadianji_ddlVol>
+	<fadianji_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc ]]>
+	</fadianji_ddlStation>
+	<fadianji_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</fadianji_ddlFac>
+	<fadianji_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</fadianji_ddlMode>
+	<fadianji_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</fadianji_ysh_ddlbox42>
+	<fadianji_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</fadianji_ddldispatchDept>
+	<fadianji_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</fadianji_ysh_ddlbox4>
+	<fadianji_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</fadianji_ddlLine>
+	<fuhe_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</fuhe_ddlType>
+	<fuhe_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</fuhe_ddlVol>
+	<fuhe_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc ]]>
+	</fuhe_ddlStation>
+	<fuhe_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</fuhe_ddlFac>
+	<fuhe_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</fuhe_ddlMode>
+	<fuhe_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</fuhe_ysh_ddlbox42>
+	<fuhe_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</fuhe_ddldispatchDept>
+	<fuhe_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</fuhe_ysh_ddlbox4>
+	<fuhe_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</fuhe_ddlLine>
+	<ganta_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</ganta_ddlType>
+	<ganta_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</ganta_ddlVol>
+	<ganta_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc]]>
+	</ganta_ddlStation>
+	<ganta_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</ganta_ddlFac>
+	<ganta_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</ganta_ddlMode>
+	<ganta_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</ganta_ysh_ddlbox42>
+	<ganta_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</ganta_ddldispatchDept>
+	<ganta_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</ganta_ysh_ddlbox4>
+	<ganta_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</ganta_ddlLine>
+	<GeneratorEdit_select5>
+		<![CDATA[SELECT stateid,statename from tbStateInfo]]>
+	</GeneratorEdit_select5>
+	<GeneratorStateEdit_ddlStateName>
+		<![CDATA[SELECT stateid,statename from tbStateInfo]]>
+	</GeneratorStateEdit_ddlStateName>
+	<GraphicFoldersDept_edit__temp_id_select1>
+		<![CDATA[SELECT GraphicFolderID, FolderName FROM GraphicFolders WHERE FolderOwnerID=1 AND FolderName!='所有人可见']]>
+	</GraphicFoldersDept_edit__temp_id_select1>
+	<GraphicFoldersDept_edit__temp_id_select2>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept WHERE deptType=1]]>
+	</GraphicFoldersDept_edit__temp_id_select2>
+	<graphmanage_graph_graphTree_ftb>
+		<![CDATA[(SELECT * FROM(SELECT GraphicFolderID, FolderName, FolderOwnerID FROM GraphicFolders WHERE GraphicFolderID IN (SELECT GraphicFolderID FROM GraphicFoldersDept WHERE deptIdx LIKE CASE WHEN @@hdnPriv@@='1' AND @@hdnUserDept@@!='-1' THEN @@hdnUserDept@@ ELSE '%%' END) UNION ALL SELECT GraphicFolderID, FolderName, FolderOwnerID FROM GraphicFolders WHERE FolderOwnerID IN (SELECT GraphicFolderID FROM GraphicFoldersDept WHERE deptIdx LIKE CASE WHEN @@hdnPriv@@='1' AND @@hdnUserDept@@!='-1' THEN @@hdnUserDept@@ ELSE '%%' END) UNION ALL SELECT a.GraphicFolderID, a.FolderName, a.FolderOwnerID FROM GraphicFolders a LEFT JOIN GraphicFolders b ON a.FolderOwnerID=b.GraphicFolderID WHERE b.FolderOwnerID IN (SELECT GraphicFolderID FROM GraphicFoldersDept WHERE deptIdx LIKE CASE WHEN @@hdnPriv@@='1' AND @@hdnUserDept@@!='-1' THEN @@hdnUserDept@@ ELSE '%%' END) UNION ALL SELECT a.GraphicFolderID, a.FolderName, a.FolderOwnerID FROM GraphicFolders a LEFT JOIN GraphicFolders b ON a.FolderOwnerID=b.GraphicFolderID LEFT JOIN GraphicFolders c ON b.FolderOwnerID=c.GraphicFolderID WHERE c.FolderOwnerID IN (SELECT GraphicFolderID FROM GraphicFoldersDept WHERE deptIdx LIKE CASE WHEN @@hdnPriv@@='1' AND @@hdnUserDept@@!='-1' THEN @@hdnUserDept@@ ELSE '%%' END)) x UNION ALL SELECT 1, '全部', NULL) e]]>
+	</graphmanage_graph_graphTree_ftb>
+	<graphmanage_graph_graphTree_stb>
+		<![CDATA[(SELECT a.id, a.name, b.GraphicFolderID FROM Graphics a LEFT JOIN Graphics_GraphicFolders b ON a.id=b.GraphicID WHERE a.isuse=1 AND a.name NOT LIKE '%缩略图') c]]>
+	</graphmanage_graph_graphTree_stb>
+	<graphmanage_privgroup_graphTree_stb>
+		<![CDATA[(select *, 1 as folderid from tbPrivGroup where groupType=1) b]]>
+	</graphmanage_privgroup_graphTree_stb>
+	<graphmanage_privgroup_graphTree_ftb>
+		<![CDATA[(select 1 as folderid, '全部' as foldername) a]]>
+	</graphmanage_privgroup_graphTree_ftb>
+	<hexiang_ddlVol>
+		<![CDATA[SELECT voltageidx,voltagedesc FROM dbvoltage where voltageIdx<=12 ORDER BY voltagevalue]]>
+	</hexiang_ddlVol>
+	<hexiang_ddlRunDept>
+		<![CDATA[select deptIdx,deptDesc from dbDept order by deptDesc]]>
+	</hexiang_ddlRunDept>
+	<kaiguan_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</kaiguan_ddlType>
+	<kaiguan_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</kaiguan_ddlVol>
+	<kaiguan_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc ]]>
+	</kaiguan_ddlStation>
+	<kaiguan_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</kaiguan_ddlFac>
+	<kaiguan_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</kaiguan_ddlMode>
+	<kaiguan_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</kaiguan_ysh_ddlbox42>
+	<kaiguan_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</kaiguan_ddldispatchDept>
+	<kaiguan_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</kaiguan_ysh_ddlbox4>
+	<kaiguan_ddlLine>
+		<![CDATA[SELECT deviceIdx, deviceName deviceDesc FROM dbDevice WHERE typeIdx=19 ORDER BY deviceName]]>
+	</kaiguan_ddlLine>
+	<LinshiDaidian_txtstationuser>
+		<![CDATA[select usernum,username from dbUser]]>
+	</LinshiDaidian_txtstationuser>
+	<LinshiDaidian_ddlcmdstation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</LinshiDaidian_ddlcmdstation>
+	<LinshiDaidian_ddlexestation>
+		<![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+	</LinshiDaidian_ddlexestation>
+	<LinshiDaidianList_yshctrl_18>
+		<![CDATA[SELECT *,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end FROM tbpwTkOvNote_property where 1=1 {0} order by tkovnote_startpart desc]]>
+	</LinshiDaidianList_yshctrl_18>
+	<listDevMode_select22>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType ORDER BY typeName]]>
+	</listDevMode_select22>
+	<listgroupdev_yshctrl_10>
+		<![CDATA[SELECT *,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end FROM tbpwTkOvNote_property where 1=1 {0}  order by tkovnote_startpart desc]]>
+	</listgroupdev_yshctrl_10>
+	<listhexiang_yshctrl_18>
+		<![CDATA[SELECT *,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end FROM tbpwTkOvNote_property where 1=1 {0} order by tkovnote_startpart desc]]>
+	</listhexiang_yshctrl_18>
+	<listpaulpower_yshctrl_10>
+		<![CDATA[SELECT *,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end FROM tbpwTkOvNote_property where 1=1 {0}  order by tkovnote_startpart desc]]>
+	</listpaulpower_yshctrl_10>
+	<module_yshctrl_23>
+		<![CDATA[SELECT moduleid,modulename FROM tbModuleInfo WHERE moduletype=1 ORDER BY modulename]]>
+	</module_yshctrl_23>
+	<muxian_ddlType>
+		<![CDATA[SELECT typeIdx, typeName FROM dbType]]>
+	</muxian_ddlType>
+	<muxian_ddlVol>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage]]>
+	</muxian_ddlVol>
+	<muxian_ddlStation>
+		<![CDATA[SELECT stationIdx,stationDesc FROM dbStation a LEFT JOIN dbDept b ON a.stationIdx=b.deptIdx WHERE b.isValid=1 order by stationDesc]]>
+	</muxian_ddlStation>
+	<muxian_ddlFac>
+		<![CDATA[SELECT facid, facdesc FROM tbFactory]]>
+	</muxian_ddlFac>
+	<muxian_ddlMode>
+		<![CDATA[SELECT modeid, modedesc FROM tbDevMode]]>
+	</muxian_ddlMode>
+	<muxian_ysh_ddlbox42>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</muxian_ysh_ddlbox42>
+	<muxian_ddldispatchDept>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept]]>
+	</muxian_ddldispatchDept>
+	<muxian_ysh_ddlbox4>
+		<![CDATA[SELECT deptIdx, deptDesc FROM dbDept --WHERE deptType=8]]>
+	</muxian_ysh_ddlbox4>
+	<NewDev_deletesql_relaDevice>
+		<![CDATA[DELETE FROM tbRelaDevice WHERE flowid=@@流程ID@@ AND itemid=@@单子ID@@]]>
+	</NewDev_deletesql_relaDevice>
+	<NewDev_insertsql_relaDevice>
+		<![CDATA[INSERT INTO tbRelaDevice (flowid,itemid,deviceidx,devicename) VALUES (@@流程ID@@,@@单子ID@@,{0},{1})]]>
+	</NewDev_insertsql_relaDevice>
+	<NewDev_selectsql_relaDevice>
+		<![CDATA[SELECT deviceidx,devicename FROM tbRelaDevice WHERE itemid=@@单子ID@@ AND flowid=@@流程ID@@]]>
+	</NewDev_selectsql_relaDevice>
+	<NewDev_ddlVoltage>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage]]>
+	</NewDev_ddlVoltage>
+	<NewDev_ddlStation>
+		<![CDATA[SELECT DISTINCT a.deptIdx as deptIdx, a.deptName FROM dbDept a]]>
+	</NewDev_ddlStation>
+	<NewDev_ddlUserDept>
+		<![CDATA[SELECT DISTINCT a.deptIdx as deptIdx, a.deptName as deptName FROM dbDept a ]]>
+	</NewDev_ddlUserDept>
+	<NewDev_ddlDevType>
+		<![CDATA[SELECT typeIdx,typeName FROM dbType]]>
+	</NewDev_ddlDevType>
+	<NewDev_ddlCurrentVol>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage where voltageIdx<=12]]>
+	</NewDev_ddlCurrentVol>
+	<NotifyReport_ddlVoltage>
+		<![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage ORDER BY voltageValue]]>
+	</NotifyReport_ddlVoltage>
+	<NotifyReport_relaDevice_deletesql>
+		<![CDATA[DELETE FROM tbRelaDevice WHERE flowid=@@流程id@@ AND itemid=@@标识列@@]]>
+	</NotifyReport_relaDevice_deletesql>
+	<NotifyReport_relaDevice_insertsql>
+		<![CDATA[INSERT INTO tbRelaDevice (flowid,itemid,deviceidx,devicename) VALUES (@@流程id@@,@@标识列@@,{0},{1})]]>
+	</NotifyReport_relaDevice_insertsql>
+	<NotifyReport_relaDevice_selectsql>
+		<![CDATA[SELECT deviceidx,devicename FROM tbRelaDevice WHERE itemid=@@标识列@@ AND flowid=@@流程id@@]]>
+	</NotifyReport_relaDevice_selectsql>
+	<NotifyReport_ddlStation>
+		<![CDATA[SELECT DISTINCT a.deptIdx as deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx ]]>
+	</NotifyReport_ddlStation>
+	<NotifyReport_ddlCurrentVol>
+		<![CDATA[SELECT voltageIdx,voltageDesc FROM dbVoltage]]>
+	</NotifyReport_ddlCurrentVol>
+  <othereventedit_ddlcmdstation>
+    <![CDATA[SELECT DISTINCT a.deptIdx, a.deptName FROM dbDept a LEFT JOIN dbStation b ON a.deptIdx=b.stationIdx WHERE a.isValid=1]]>
+  </othereventedit_ddlcmdstation>
+  <ListRepairEventZH_gantt><![CDATA[SELECT *,CASE WHEN state = 1 THEN '未确认' WHEN state = 2 THEN '已确认' ELSE '未接收' END AS statezw,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end  FROM ( SELECT eventnum,a.*,(SELECT TOP 1 CASE stoprangesd WHEN '' THEN stoprangesd ELSE CASE (select rangezd1+rangezd2+rangezd3+rangezd4+rangezd5 rangezds FROM (select t3.modiid,max(case t3.ranking when 1 then t3.stoprangezd else '' end) rangezd1,max(case t3.ranking when 2 then +t3.stoprangezd else '' end) rangezd2,max(case t3.ranking when 3 then +t3.stoprangezd else '' end) rangezd3,max(case t3.ranking when 4 then +t3.stoprangezd else '' end) rangezd4,max(case t3.ranking when 5 then +t3.stoprangezd else '' end) rangezd5 FROM (select t1.modiid,ranking=(select count(*) from tbpwTkOvNote_modifyrangezd t2 where t2.modiid=t1.modiid AND t2.id &lt;=t1.id), stoprangezd from tbpwTkOvNote_modifyrangezd t1) t3 group by t3.modiid) t4 WHERE modiid = (SELECT TOP 1 modiid FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC)) WHEN '' THEN stoprangesd ELSE stoprangesd+';' END END + (select rangezd1+rangezd2+rangezd3+rangezd4+rangezd5 rangezds FROM (select t3.modiid,max(case t3.ranking when 1 then t3.stoprangezd else '' end) rangezd1,max(case t3.ranking when 2 then +t3.stoprangezd else '' end) rangezd2,max(case t3.ranking when 3 then +t3.stoprangezd else '' end) rangezd3,max(case t3.ranking when 4 then +t3.stoprangezd else '' end) rangezd4,max(case t3.ranking when 5 then +t3.stoprangezd else '' end) rangezd5 FROM (select t1.modiid,ranking=(select count(*) from tbpwTkOvNote_modifyrangezd t2 where t2.modiid=t1.modiid AND t2.id &lt;=t1.id), stoprangezd from tbpwTkOvNote_modifyrangezd t1) t3 group by t3.modiid) t4 WHERE modiid = (SELECT TOP 1 modiid FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC)) FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC) AS stoprange,(SELECT TOP 1 acceptuser FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC) AS acceptuser ,(SELECT TOP 1 senduser FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC) AS senduser,convert(varchar(16),isnull((SELECT TOP 1 sendtime FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC), '1900-01-01'),120) AS sendtime ,convert(varchar(16),(SELECT TOP 1 accepttime FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC),120) AS accepttime ,convert(varchar(16),isnull((SELECT TOP 1 stoptime FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC), '1900-01-01'),120) AS stoptime ,(SELECT TOP 1 state FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC) AS state ,(SELECT TOP 1 ifover FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC) AS ifover FROM tbpwTkOvNote_property a JOIN tbpwTkOvNote_tsdmsg b ON a.tkovnote_eventid=b.eventid {0})a where ifover = 0 order by state asc,stoptime desc]]></ListRepairEventZH_gantt>
+  <ListRepairEventDD_gantt><![CDATA[SELECT *,CASE WHEN state = 1 THEN '未确认' WHEN state = 2 THEN '已确认' ELSE '未接收' END AS statezw,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end  FROM ( SELECT eventnum, a.* ,(SELECT TOP 1 CASE stoprangesd WHEN '' THEN stoprangesd ELSE CASE (select rangezd1+rangezd2+rangezd3+rangezd4+rangezd5 rangezds FROM (select t3.modiid,max(case t3.ranking when 1 then t3.stoprangezd else '' end) rangezd1,max(case t3.ranking when 2 then +t3.stoprangezd else '' end) rangezd2,max(case t3.ranking when 3 then +t3.stoprangezd else '' end) rangezd3,max(case t3.ranking when 4 then +t3.stoprangezd else '' end) rangezd4,max(case t3.ranking when 5 then +t3.stoprangezd else '' end) rangezd5 FROM (select t1.modiid,ranking=(select count(*) from tbpwTkOvNote_modifyrangezd t2 where t2.modiid=t1.modiid AND t2.id &lt;=t1.id), stoprangezd from tbpwTkOvNote_modifyrangezd t1) t3 group by t3.modiid) t4 WHERE modiid =(SELECT TOP 1 modiid FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC)) WHEN '' THEN stoprangesd ELSE stoprangesd+';' END END + (select rangezd1+rangezd2+rangezd3+rangezd4+rangezd5 rangezds FROM (select t3.modiid,max(case t3.ranking when 1 then t3.stoprangezd else '' end) rangezd1,max(case t3.ranking when 2 then +t3.stoprangezd else '' end) rangezd2,max(case t3.ranking when 3 then +t3.stoprangezd else '' end) rangezd3,max(case t3.ranking when 4 then +t3.stoprangezd else '' end) rangezd4,max(case t3.ranking when 5 then +t3.stoprangezd else '' end) rangezd5 FROM (select t1.modiid,ranking=(select count(*) from tbpwTkOvNote_modifyrangezd t2 where t2.modiid=t1.modiid AND t2.id &lt;=t1.id), stoprangezd from tbpwTkOvNote_modifyrangezd t1) t3 group by t3.modiid) t4 WHERE modiid =(SELECT TOP 1 modiid FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC)) FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC) AS stoprange,isnull((SELECT TOP 1 stoptime FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC), '1900-01-01') AS stoptime ,(SELECT TOP 1 state FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC) AS state ,(SELECT TOP 1 ifover FROM tbpwTkOvNote_modify WHERE eventid=a.tkovnote_eventid ORDER BY modiid DESC) AS ifover FROM tbpwTkOvNote_property a JOIN tbpwTkOvNote_tsdmsg b ON a.tkovnote_eventid=b.eventid {0} ) a where ifover = 0 order by state asc,stoptime desc]]></ListRepairEventDD_gantt>
+  <AllUser><![CDATA[SELECT userID, userName from dbUser WHERE usertype=1]]></AllUser>
+  <AllStation><![CDATA[SELECT stationIdx,stationname FROM dbStation]]></AllStation>
+  <AllVoltage><![CDATA[SELECT voltageIdx, voltageDesc FROM dbVoltage ORDER BY voltageValue]]></AllVoltage>
+  <editmb2_pbname><![CDATA[SELECT mbid,xcname FROM tbmoban ORDER BY xcname]]></editmb2_pbname>
+  <editmb_mbname><![CDATA[SELECT mbid,mbname FROM tbmoban WHERE mbid NOT IN (SELECT mbid FROM tbxianchang) ORDER BY mbname]]></editmb_mbname>
+  <editevent0501_CmdGantt><![CDATA[SELECT *,colcolor= CASE WHEN  exetime!='2100-12-30' THEN '#FF0000' else '#000000' end FROM tbpwTkOvNote_Cmd  where 1=1 {0}]]></editevent0501_CmdGantt>
+  <editevent0501_ddltype><![CDATA[SELECT id,name FROM tbpwAccidentTrip_type ORDER BY id]]></editevent0501_ddltype>
+  <DownPowerStatistic_dllline><![CDATA[SELECT DISTINCT linedesc,linedesc FROM tbDownPowerHis ]]></DownPowerStatistic_dllline>
+  <AssignmentBook_New><![CDATA[SELECT devname,type,itemnum,stationid as deptname,auditstop as stoptime FROM tbPlanDay WHERE auditstop > '{0}' AND (state IS NULL or state=-1)]]></AssignmentBook_New>
+  <AssignmentBook_Change><![CDATA[SELECT stationid as deptname,itemnum,devname,remark,auditstart as worktime FROM tbChangedWork WHERE auditstart > '{0}']]></AssignmentBook_Change>
+  <AssignmentBook_Operate><![CDATA[SELECT program,way FROM tbOprate WHERE itemid={0}]]></AssignmentBook_Operate>
+  <DiaoduribaoList_type>    <![CDATA[ tkovnote_type={0}]]>  </DiaoduribaoList_type>
+  <DiaoduribaoList_time><![CDATA[tkovnote_finishpart>{0} and tkovnote_startpart<{1}]]></DiaoduribaoList_time>
+  <Rizhi_startpart><![CDATA[tkovnote_startpart>={0} AND tkovnote_startpart<={1}]]></Rizhi_startpart>
+  <Rizhi_id><![CDATA[eventid={0}]]></Rizhi_id>
+  <unfinishLog_time><![CDATA[startdate>{0} AND finishdate<{1}]]></unfinishLog_time>
+  <DiaoduribaoList_key><![CDATA[tkovnote_namepart LIKE '%{0}%']]></DiaoduribaoList_key>
+  <DiaoduribaoList_finish><![CDATA[tkovnote_ifpublic={0}]]></DiaoduribaoList_finish>
+  <dizhoulist_time><![CDATA[createdate>{0} and createdate<{1}]]></dizhoulist_time>
+  <createtimerange><![CDATA[createtime>{0} and createtime<{1}]]></createtimerange>
+  <starttimerange><![CDATA[starttime>={0} and starttime<{1}]]></starttimerange>
+  <searcheventdesc><![CDATA[eventdesc LIKE '%{0}%']]></searcheventdesc>
+  <searchcontent><![CDATA[eventdesc LIKE '%{0}%']]></searchcontent>
+  <isstatistics><![CDATA[statistic = 1]]></isstatistics>
+  <dizhoulist_key><![CDATA[note LIKE '%{0}%']]></dizhoulist_key>
+  <TktState_DZX><![CDATA[TktState in (5,11)]]></TktState_DZX>
+  <TktState_ZXZ><![CDATA[TktState=6]]></TktState_ZXZ>
+  <TktState_YZX><![CDATA[TktState=7 AND CreateTime BETWEEN {0} AND {1}]]></TktState_YZX>
+  <dizhoulist_finish><![CDATA[isup={0}]]></dizhoulist_finish>
+  <tkovnotereport1><![CDATA[ and (e.tkovnote_iscount=1 or e.tkovnote_type=22)]]></tkovnotereport1>
+  <tkovnotereport0><![CDATA[ and e.tkovnote_iscount=0]]></tkovnotereport0>
+  <tkovnotetype><![CDATA[ and tkovnote_type={0}]]></tkovnotetype>
+  <LinshiDaidian_yshctrl_18><![CDATA[SELECT *,colcolor= CASE WHEN tkovnote_finished= 1 THEN '#FF0000' ELSE '#000000' end FROM tbpwTkOvNote_property where 1=1 {0} order by tkovnote_startpart desc]]></LinshiDaidian_yshctrl_18>
+
+  <GetDS><![CDATA[select dsname,dsdesc from tbdatasource where dsdesc!='' order by dsdesc]]></GetDS>
+  <GetTable><![CDATA[select tblname,tbldesc from tbdatatable where dsname={0} and tbldesc!='' order by tbldesc]]></GetTable>
+  <GetColumn><![CDATA[select colname,coldesc from tbdatacolumn where dsname={0} and tblname={1} and coldesc!='' order by coldesc]]></GetColumn>
+  <GetTableData><![CDATA[select top 100 * from {{0}}]]></GetTableData>
+  <GetIdentityInsertCol><![CDATA[select colname from tbdatacolumn where dsname={0} and tblname={1} and coltype='id']]></GetIdentityInsertCol>
+</ROOT>

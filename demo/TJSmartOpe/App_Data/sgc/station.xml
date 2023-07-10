@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetPwrGrid>
+    <![CDATA[SELECT id,name,parent_id FROM SG_CON_PWRGRID_B]]>
+  </GetPwrGrid>
+  <WhereType>
+    <![CDATA[A.PLANT_TYPE IN ({0})]]>
+  </WhereType>
+  <GetStationList>
+    <![CDATA[    
+    SELECT * FROM (
+    SELECT A.ID,A.NAME AS STNAME,E.NAME,C.transformation_capacity AS CAPACITY,D.ID,D.NAME,B.ID,B.NAME_ABBREVIATION,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE
+    FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_B AS A 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B AS B ON A.DCC_ID=B.ID 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_S AS C ON A.ID=C.ID AND C.VOLTAGE_TYPE=9999 AND C.STATE_CODE=1003
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B AS D ON A.PG_ID=D.ID 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE AS E ON A.TOP_AC_VOLTAGE_TYPE=E.CODE
+    WHERE A.TYPE IN ({0}) AND A.TOP_AC_VOLTAGE_TYPE IN ({1})
+    UNION ALL
+    SELECT A.ID,A.NAME,E.NAME,C.transformation_capacity,D.ID,D.NAME,B.ID,B.NAME_ABBREVIATION,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE
+    FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B AS A 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B AS B ON A.DCC_ID=B.ID 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_S AS C ON A.ID=C.ID
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B AS D ON A.PG_ID=D.ID 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE AS E ON A.DC_VOLTAGE_TYPE=E.CODE
+    WHERE A.TYPE IN ({0}) AND A.DC_VOLTAGE_TYPE IN ({1})
+    ) ST ORDER BY CAPACITY DESC
+    ]]>
+  </GetStationList>
+  <GetAllStationList>
+    <![CDATA[    
+    SELECT * FROM (
+    SELECT A.ID,A.NAME AS STNAME,E.NAME,C.transformation_capacity AS CAPACITY,D.ID,D.NAME,B.ID,B.NAME_ABBREVIATION,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE
+    FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_B AS A 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B AS B ON A.DCC_ID=B.ID 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_S AS C ON A.ID=C.ID AND C.VOLTAGE_TYPE=9999 AND C.STATE_CODE=1003
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B AS D ON A.PG_ID=D.ID 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE AS E ON A.TOP_AC_VOLTAGE_TYPE=E.CODE
+    UNION ALL
+    SELECT A.ID,A.NAME,E.NAME,C.transformation_capacity,D.ID,D.NAME,B.ID,B.NAME_ABBREVIATION,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE
+    FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B AS A 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B AS B ON A.DCC_ID=B.ID 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_S AS C ON A.ID=C.ID
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B AS D ON A.PG_ID=D.ID 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE AS E ON A.DC_VOLTAGE_TYPE=E.CODE
+    ) ST ORDER BY CAPACITY DESC
+    ]]>
+  </GetAllStationList>
+</ROOT>

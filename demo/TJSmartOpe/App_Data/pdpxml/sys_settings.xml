@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<dsSysCfg><![CDATA[SELECT CFGNAME,CFGVALUE,CFGDESC,CFGTYPE,CFGGROUP 
+        FROM TBSYSCFG 
+        ORDER BY CFGORDER]]></dsSysCfg>
+<dsUserCfg><![CDATA[SELECT CFGNAME, CFGVALUE FROM TBUSERCFG WHERE USERID={0}]]></dsUserCfg></ROOT>

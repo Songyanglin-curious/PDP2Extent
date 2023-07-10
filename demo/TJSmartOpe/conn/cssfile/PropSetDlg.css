@@ -1,0 +1,101 @@
+﻿.bluetable
+{
+    background-color: #FFFFFF;
+    text-align: center;
+    border-left: 1px solid lightblue;
+    border-top: 1px solid lightblue;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+    .bluetable tr td
+    {
+        font-size: 10pt;
+        border-right: 1px solid lightblue;
+        border-bottom: 1px solid lightblue;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        empty-cells: show;
+    }
+
+    .bluetable .first
+    {
+        background-color: lightblue;
+    }
+
+.dvContent
+{
+    width: 745px;
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.tbContent
+{
+    top: 1px;
+    left: 2px;
+    width: 726px;
+    font-size: 14px;
+}
+
+    .tbContent tr
+    {
+        height: 25px;
+    }
+
+    .tbContent .trSelected
+    {
+        color: #f00;
+        font-weight: bold;
+    }
+
+#dvDialog
+{
+    width: 640px;
+    display: none;
+    height: 480px;
+    background-color: #FFF;
+    border: 1px solid #000;
+}
+
+    #dvDialog .dvTitle
+    {
+        height: 25px;
+        font-size: 14px;
+        background-color: #3366cc;
+        position: relative;
+        line-height: 25px;
+        color: #fff;
+    }
+
+        #dvDialog .dvTitle span
+        {
+            left: 20px;
+            position: relative;
+        }
+
+    #dvDialog .imgClose
+    {
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        right: 5px;
+        top: 0;
+        cursor: pointer;
+    }
+
+    #dvDialog .dvButtons
+    {
+        position: absolute;
+        left: 520px;
+        top: 440px;
+        cursor: pointer;
+    }
+
+#txtDialog
+{
+    width: 100%;
+    height: 400px;
+    font-size: 10pt;
+}

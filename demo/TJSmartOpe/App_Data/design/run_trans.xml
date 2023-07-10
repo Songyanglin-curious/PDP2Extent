@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="33" desc="变压器运行信息页面">
+  <inits>
+    <init id="deviceid" desc="设备id" type="request" arg="deviceid"></init>
+  </inits>
+  <consts>
+    <const>
+      <const id="HbCol" desc="要合并的表格列" type="string[]"></const>
+      <const id="HbData" desc="要合并的行" type="string[]"></const>
+    </const>
+  </consts>
+  <datasources>
+<datasource id="dsruninfo" desc="设备信息原始数据" db="ConnMain" type="simple">
+      <sql>
+        <![CDATA[
+        select '2018-6-30 14:55' as col1,'136' as col2,'85%' as col3,'' as col4,'' as col5,'' as col6,'92­°C' as col7,'正常' as col8,'3' as col9,'2' as col10
+        ]]>
+      </sql>
+      <cols>
+        <col id="col1" desc="col1" name="col1"></col>
+        <col id="col2" desc="col2" name="col2"></col>
+        <col id="col3" desc="col3" name="col3"></col>
+        <col id="col4" desc="col4" name="col4"></col>
+        <col id="col5" desc="col5" name="col5"></col>
+
+        <col id="col6" desc="col6" name="col6"></col>
+        <col id="col7" desc="col7" name="col7"></col>
+        <col id="col8" desc="col8" name="col8"></col>
+        <col id="col9" desc="col9" name="col9"></col>
+        <col id="col10" desc="col10" name="col10"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a id="arun" class='wh100'></a>
+      <div>
+          <div>
+            <a s_display="flex" s_align-items="center" s_justify-content="center" s_margin-bottom="20px"></a>
+            <label>
+              <a value="设备运行信息" class="linearGradient"></a>
+            </label>
+          </div>
+            <itable desc="iview表格" from="dsruninfo">
+              <sa stripe="true"  highlight-row="true" border="true" disabled-hover="true"></sa>
+              <icol desc="刷新时间" from="col1">
+              </icol>
+              <icol desc="当前有功" from="col2">
+              </icol>
+              <icol desc="负载率" from="col3">
+              </icol>
+              <!-- <icol desc="今日调整档位次数" from="col4">
+              </icol>
+              <icol desc="今日投切电容器次数" from="col5">
+              </icol>
+              <icol desc="今日投切电抗器次数" from="col6">
+              </icol>
+              <icol desc="当前油温" from="col7">
+              </icol> -->
+              <icol desc="重过载情况" from="col8">
+              </icol>
+              <icol desc="日重载小时数" from="col9">
+              </icol>
+              <icol desc="日过载小时数" from="col10">
+              </icol>
+            </itable>
+          </div>
+
+    </div>
+  </ctrls>
+  <css>
+    <![CDATA[
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+          
+          ]]>
+        </value>
+      </list>
+      <list type="select" ds="dsruninfo"></list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+            var _this = this;   
+            
+
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

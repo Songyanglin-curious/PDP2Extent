@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="1" desc="今日设备故障">
+  <consts>
+    <const id="st" type="time" arg="d"></const>
+    <const id="et" type="time" arg="d,d,1"></const>
+    <const id="height" type="number" arg="30"></const>
+    <const id="lstStat"></const>
+  </consts>
+  <datasources>
+    <datasource type="load" id="guzhang" desc="设备故障" node="sc/jrsc:GetDeviceMalfunction">
+      <cols>
+        <col id="col_st" name="st" from="st"></col>
+        <col id="col_et" name="et" from="et"></col>
+        <col id="col_id" name="id" desc="id"></col>
+        <col id="col_time" name="time" desc="time"></col>
+        <col id="col_voltage" name="voltage" desc="voltage"></col>
+        <col id="col_devname" name="devname" desc="devname"></col>
+        <col id="col_cause" name="cause" desc="cause"></col>
+        <col id="col_state" name="state" desc="state"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <div ref="divCap" style="margin-bottom:10px;">
+        <mpagecaption>今日设备故障</mpagecaption>
+        <stat-box css="stat-box">
+          <sa source="lstStat"></sa>
+        </stat-box>
+      </div>
+      <itable from="guzhang" class="ddtable">
+        <sa stripe="true"  highlight-row="true" border="true" disabled-hover="true" height="height"></sa>
+        <c>
+          <!-- <icol desc="操作" width="60px">
+            <img tooltip="定位">
+              <a s_margin-left="5px" s_width="14px" s_height="14px" src="/i/sgc/operate/locate.png"></a>
+              <s cursor="pointer"></s>
+              <e>
+                <onclick>
+                  <list type="script">
+                    <value>
+                      <![CDATA[this.locateRow(this.params.row);]]>
+                    </value>
+                  </list>
+                </onclick>
+              </e>
+            </img>
+            <img tooltip="显示详情">
+              <a s_width="14px" s_height="14px" src="/i/sgc/operate/detail.png" s_margin-left="5px"></a>
+              <s cursor="pointer"></s>
+              <e>
+                <onclick.stop>
+                  <list type="script">
+                    <value>
+                      <![CDATA[
+                            this.showDetail(this.params.row);
+                          ]]>
+                    </value>
+                  </list>
+                </onclick.stop>
+              </e>
+            </img>
+          </icol> -->
+          <icol desc="电压等级" from="col_voltage"  width="90px"> </icol>
+          <icol desc="设备名称" from="col_devname"></icol>
+          <icol desc="故障时间" from="col_time" format="111111" width="90px"></icol>
+          <icol desc="故障原因设备" from="col_cause"></icol>
+          <icol desc="状态" from="col_state"></icol>
+        </c>
+      </itable>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.locateRow = function(row) {
+          }
+          this.showDetail = function(row) {
+          }
+          this.doStat = function() {
+            var s = Ysh.Array.countBy(this.guzhang,function(row) {
+              switch (row.state) {
+                case "长时间未恢复": return 0;
+                case "未恢复":return 1;
+                return 2;
+              }
+            });
+            var lstStat = [
+              { imgStyle:{"margin-bottom":"-10px"},img:"/i/sgc/shengchan/jrsc/guzhang0.png",text:"长时间未恢复",count:s[0]||0,color:"#54d9d9" },
+              { imgStyle:{"margin-bottom":"-10px"},img:"/i/sgc/shengchan/jrsc/guzhang1.png",text:"未恢复",count:s[1]||0,color:"#db9d2e" },
+              { imgStyle:{"margin-bottom":"-10px"},img:"/i/sgc/shengchan/jrsc/guzhang2.png",text:"已恢复",count:s[2]||0,color:"#479bd5" },
+            ];
+            this.lstStat = lstStat;
+          }
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.load_guzhang(true,() => {
+            this.doStat();
+          });
+          this.resize();
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="resize">
+      <![CDATA[
+      var cap = this.$refs.divCap;
+      if (!cap) return;
+      this.height = Math.max($(this.$el).height() - $(cap).height() - 10,10);
+      ]]>
+    </script>
+  </scripts>
+</root>

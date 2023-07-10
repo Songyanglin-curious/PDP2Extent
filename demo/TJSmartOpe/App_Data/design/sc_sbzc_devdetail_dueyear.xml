@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;" desc="设备资产排行">
+  <inits>
+    <init id="lst" type="request" arg="lst"></init>
+    <init id="col" type="request" arg="col"></init>
+    <init id="colname" type="request" arg="colname"></init>
+  </inits>
+  <consts>
+    <const id="option" type="object" arg=""></const>
+    <const id="list" type="2d" length="11"></const>
+    <const id="hTbl" arg="250"></const>
+    <const id="hchart" arg="350"></const>
+  </consts>
+  <ctrls>
+  <div id="div0" desc="根容器">
+    <a  class="pdiv"></a>
+    <title-div id="t">
+      <a title='到期折旧设备数量年排行top5' title1="单位：个"></a>
+      <sa content-style='{ }' ></sa>
+      <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+      <ecommonchart desc="图表">
+          <a ref="hchart" s_width="100%" ></a>
+          <sa option="option" s_height="hchart+'px'"></sa>
+      </ecommonchart>
+      <div>
+        <a ref="divbottom"></a>
+        <a id="container"></a>
+       <itable from="list" >
+          <a class="smalltable"></a>
+          <sa  border="true"  stripe="true" ></sa>
+          <icol desc="完全提足月(年份)" from="list_0" >
+            <a minWidth="150"></a>
+          </icol>
+          <icol desc="设备数量" from="list_1" ></icol>
+          <icol desc="比例" from="list_2"></icol>
+        </itable>
+        </div>
+    </title-div>
+  </div>
+  </ctrls>
+  <css>
+    <![CDATA[
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsbzc" part="tobig"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          Ysh.Vue.addHandle(this, "resize", function () {
+              var hAll = $(this.$el).height();
+              var hIf = $(this.$refs.divbottom).height();
+              this.hchart = Math.max(hAll - hIf - 60, 200);
+          },true);
+          this.refresh = function(){
+              if(!this.lst)
+              this.lst = ProjectShanxi.getDevdataBytype();
+              var data = [];
+              var list = ProjectSGC.Statistics.count(this.lst,function(item) {
+                  return Ysh.Time.formatString(item.wctzy,'100000');
+              });
+              list = list.sort(function(x,y){ return (y[0]==''?0:y[1]) - (x[0]==''?0:x[1]);}).slice(0,5);
+              this.list = ProjectShanxi.Array.getRate(list);
+              var v = Ysh.Array.col(this.list,1).map(function(value){return parseFloat(value)||0});
+              this.option = ProjectShanxi.Curve.getColumn3DOption( [['设备数量', v ,'RGB(67,115,198)']] , Ysh.Array.col(this.list,0) );
+              return;
+          }
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+         <![CDATA[
+           this.refresh();
+           this.$nextTick(function () {
+                this.resize();
+            });
+        
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

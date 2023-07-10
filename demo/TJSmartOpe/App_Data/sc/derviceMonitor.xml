@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+    <!-- 根据设备id获得设备名称 -->
+  <GetDerviceName>
+    <![CDATA[ 
+    SELECT  col3,col0,col4 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE id = {0};
+    ]]>
+  </GetDerviceName>
+  <!-- 获取表格数据 -->
+  <!-- 获取当前告警信息 -->
+  <GetDerviceAlert>
+    <![CDATA[ 
+    SELECT a.alert_time ,a.msg_type,  b.col3 AS device ,b.col0 AS substation,a.msg_content , b.col4,a.alert_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_alert_msg  a LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device  b ON a.device_id = b.id WHERE a.device_id = {0} AND a.alert_time BETWEEN {1} AND {2};
+    ]]>
+  </GetDerviceAlert>
+  <!-- 获取历史告警信息 -->
+  <GetOldDerviceAlert>
+    <![CDATA[ 
+    SELECT a.alert_time ,a.msg_type,  b.col3 AS device ,b.col0 AS substation,a.msg_content , b.col4,a.alert_level FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_alert_msg  a LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device  b ON a.device_id = b.id WHERE a.device_id = {0} AND a.alert_time < {1};
+    ]]>
+  </GetOldDerviceAlert>
+
+  <GetStationDCloudId type="sql" db="SGAPP" args="station" fields="dcloudId">
+    <![CDATA[ 
+    SELECT DCLOUD_ID FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_STATION WHERE NAME = {station}
+    ]]>
+  </GetStationDCloudId>
+
+  <Get24EnviromwntTemperature type="sql" db="SGAPP" args="id,st,et" fields="temperature,time">
+    <![CDATA[ 
+    SELECT TEMPERATURE,CREATETIME FROM YS_DB.YSH_WEATHER_REAL_INFO 
+      WHERE WEATHER_SOURCE_ID = {id}
+        AND CREATETIME>={st} AND CREATETIME < {et}
+    ]]>
+  </Get24EnviromwntTemperature>
+</ROOT>

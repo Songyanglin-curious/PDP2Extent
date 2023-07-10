@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <ConfigEdit2>
+    <GetCtrlConfig>
+      <![CDATA[select keyname,keydesc,defvalue,keytype,iscommon,keytext from tbctrlconfig2 where tagname={0} and cfgname = {1} ORDER BY keyname]]>
+    </GetCtrlConfig>
+    <GetCtrlConfigAll>
+      <![CDATA[select keyname,keydesc,defvalue,keytype,iscommon,keytext from tbctrlconfig2 where tagname={0} and cfgname = {1} AND iscommon=1 ORDER BY keyname]]>
+    </GetCtrlConfigAll>
+  </ConfigEdit2>
+  <ConfigEdit Desc="配置编辑">
+    <getpdpctrlconfig><![CDATA[select keyname,keydesc,defvalue from tbctrlconfig where tagname={0} and cfgname = {1} ]]></getpdpctrlconfig>
+    <GetConfigGroup>
+      <![CDATA[
+     SELECT DISTINCT cfggroup FROM dbPDPConfig WHERE cfggroup<>'' and busing=1 ORDER BY cfggroup
+    ]]>
+    </GetConfigGroup>
+    <GetConfigsByGroup>
+      <![CDATA[
+    SELECT * FROM dbPDPConfig WHERE cfggroup='{0}' and busing=1 order by cfgname
+    ]]>
+    </GetConfigsByGroup>
+    <GetConfigById>
+      <![CDATA[
+    SELECT * FROM dbPDPConfig WHERE cfgid='{0}'
+    ]]>
+    </GetConfigById>
+    <UpdateConfigById>
+      <![CDATA[
+    UPDATE dbPDPConfig
+     SET cfgvalue = '{1}'
+    WHERE cfgid = {0}
+    ]]>
+    </UpdateConfigById>
+    <GetOptionDescByName>
+      <![CDATA[
+    SELECT cfgOptionValue,cfgOptionDesc FROM dbPDPConfigOptionList WHERE cfgname='{0}' ORDER BY cfgOptionDesc
+    ]]>
+    </GetOptionDescByName>
+    <CheckNameAvailable>
+      <![CDATA[
+         SELECT count(*) AS count  FROM dbPDPConfig WHERE cfgname='{0}' AND cfggroup='{1}'
+      ]]>
+    </CheckNameAvailable>
+    <InsertConfigOption>
+      <![CDATA[
+        INSERT INTO dbPDPConfigOptionList (cfgname, cfgOptionvalue, cfgOptiondesc)
+VALUES ('{0}', '{1}', '{2}')
+      ]]>
+    </InsertConfigOption>
+    <InsertConfig>
+      <![CDATA[
+        INSERT INTO dbPDPConfig (cfgname, cfgvalue, cfgdesc, cfggroup, cfgvaluetype, cfgcname, busing)
+VALUES ('{0}', '{1}', '{2}', '{3}', {4}, '{5}', 1)
+      ]]>
+    </InsertConfig>
+  </ConfigEdit>
+  <PropSetDlg Desc="控件编辑">
+    <GetTableByValues>
+      <![CDATA[
+    SELECT keyname,keydesc,keytype,defvalue,iscommon FROM tbCtrlConfig WHERE tagname='{0}' AND cfgname='{1}'
+    ]]>
+    </GetTableByValues>
+    <GetCtrlOptions>
+      <![CDATA[
+    SELECT optionvalue,optiondesc FROM tbListCtrlOption o JOIN tbCtrlConfig c ON o.cfgid=c.cfgid WHERE c.tagname='{0}' AND c.keyname='{1}' ORDER BY o.optiondesc
+    ]]>
+    </GetCtrlOptions>
+    <GetDataNode>
+      <![CDATA[
+        SELECT dsdesc as dsc,dsname as name FROM tbDataSource WHERE dstype=0
+      ]]>
+    </GetDataNode>
+    <GetDataTable>
+      <![CDATA[
+        SELECT tbldesc as dsc,tblname as name FROM tbDataTable WHERE dsname='{0}'
+      ]]>
+    </GetDataTable>
+    <GetDataCol>
+      <![CDATA[
+        SELECT coldesc as dsc,colname as name FROM tbDataColumn WHERE dsname='{0}' AND  tblname='{1}'
+      ]]>
+    </GetDataCol>
+    <SQLSERVER>
+      <GetDataTable><![CDATA[SELECT name as dsc,name FROM sysobjects WHERE xtype='U' ORDER BY name]]></GetDataTable>
+      <GetDataCol><![CDATA[SELECT name AS dsc,name FROM syscolumns WHERE id=object_id(N'{0}')]]></GetDataCol>
+    </SQLSERVER>
+    <DM6>
+      <GetDataTable><![CDATA[select object_id as name,object_name as dsc from user_objects WHERE object_type='TABLE']]></GetDataTable>
+      <GetDataCol><![CDATA[select name as dsc,name from syscolumns where id='{0}']]></GetDataCol>
+    </DM6>
+    <DM7>
+      <GetDataTable><![CDATA[same:PDPDesignSql:DM6/GetDataTable]]></GetDataTable>
+      <GetDataCol><![CDATA[same:PDPDesignSql:DM6/GetDataCol]]></GetDataCol>      
+    </DM7>
+  </PropSetDlg>
+  <FileTree Desc="文件列表树">
+    <AddFile Desc="添加文件">
+      <GetFoldsByPFoldId>
+        <![CDATA[
+          SELECT * FROM tbFoldInfo WHERE pfoldid {0} ORDER BY {1};
+         ]]>
+      </GetFoldsByPFoldId>
+      <GetFilesByPFoldId>
+        <![CDATA[
+          SELECT * FROM tbFileInfo WHERE foldid {0} AND filetype={1} ORDER BY {2};
+         ]]>
+      </GetFilesByPFoldId>
+    </AddFile>
+    <GetFolds>
+      <![CDATA[SELECT foldid,foldname,pfoldid FROM tbFoldInfo ORDER BY foldname]]>
+    </GetFolds>
+    <GetFiles>
+      <![CDATA[SELECT fileid,filedesc,filepath,foldid,filetype FROM tbFileInfo ORDER BY filedesc]]>
+    </GetFiles>
+    <InsertFold>
+      <![CDATA[INSERT INTO tbFoldInfo (foldname,pfoldid) VALUES ({0},{1})]]>
+    </InsertFold>
+    <InsertFile>
+      <![CDATA[INSERT INTO tbFileInfo (filedesc,filepath,foldid,filetype,createtime) VALUES ({0},{1},{2},{3},GETDATE())]]>
+    </InsertFile>
+    <UpdateFoldDesc>
+      <![CDATA[UPDATE tbFoldInfo SET foldname={1} WHERE foldid={0}]]>
+    </UpdateFoldDesc>
+    <UpdateFileDesc>
+      <![CDATA[UPDATE tbFileInfo SET filedesc={1} WHERE fileid={0}]]>
+    </UpdateFileDesc>
+  </FileTree>
+  <Flow Desc="流程">
+    <FlowDialog Desc="流程对话框">
+      <GetFoldsByPFoldId>
+        <![CDATA[
+          SELECT * FROM tbFoldInfo WHERE pfoldid {0} ORDER BY {1};
+         ]]>
+      </GetFoldsByPFoldId>
+      <GetFilesByPFoldId>
+        <![CDATA[
+          SELECT * FROM tbFileInfo WHERE foldid {0} AND {1} ORDER BY {2};
+         ]]>
+      </GetFilesByPFoldId>
+    </FlowDialog>
+  </Flow>
+
+  <RefreshDataLink>
+    <![CDATA[
+      DECLARE @space VARCHAR(50),@gridspace VARCHAR(50),@dsname VARCHAR(50),@dsdesc VARCHAR(50),
+      @dsarg VARCHAR(50),@filter VARCHAR(50),@sysobj VARCHAR(50),@syscol VARCHAR(50),@sysprop VARCHAR(50)
+
+      SET @space='{0}'          /*数据源对应的数据库名*/
+      SET @gridspace='{1}'          /*DIP600所在的数据库名*/
+      SET @dsname='{2}'         /*对应tbDataSource中的dsname*/
+      SET @dsdesc='{3}'       /*对应tbDataSource中的dsdesc*/
+      SET @dsarg='{4}'          /*对应tbDataSource中的dsarg*/
+      SET @filter='{5}'  /*过滤对应的表(如流程,用逗号分割)*/
+      
+      IF exists(select charindex('2000',t.a) from (select substring(@@VERSION,0,27) a) t)
+      BEGIN
+      SET @sysobj='dbo.sysobjects'
+      SET @syscol='dbo.syscolumns'
+      SET @sysprop='dbo.sysproperties'
+      END
+      ELSE
+      BEGIN
+      SET @sysobj='sys.objects'
+      SET @syscol='sys.columns'
+      SET @sysprop='sys.extended_properties'
+      END
+
+      DECLARE @sql VARCHAR(8000)
+      IF(len(@gridspace)>0)
+      SET @sql='USE '+@gridspace+''
+      SET @sql=@sql+' delete from tbDataSource where dsname ='''+@dsname+''' delete from tbDataTable where dsname ='''+@dsname+''' delete from tbDataColumn where dsname ='''+@dsname+''' '
+      SET @sql=@sql+' INSERT INTO tbDataSource(dsname,dstype,dsdesc,dsarg) VALUES('''+@dsname+''',0,'''+@dsdesc+''','''+@dsarg+''')'
+      SET @sql=@sql+' DECLARE @name VARCHAR(50)'
+      IF(len(@space)>0)
+      SET @sql=@sql+' USE '+@space+''
+      SET @sql=@sql+' DECLARE cur0 CURSOR FOR SELECT name FROM '+@sysobj+' WHERE xtype=''U'''
+      IF(len(@filter)>0)
+      SET @sql=@sql+' AND name not like ''%'+replace(@filter,',','%'' and name not like ''%')+'%'' '
+      SET @sql=@sql+'OPEN cur0
+      FETCH next FROM cur0 INTO @name
+      WHILE @@FETCH_STATUS=0
+      BEGIN'
+      IF(len(@gridspace)>0)
+      SET @sql=@sql+' USE '+@gridspace+''
+      SET @sql=@sql+' IF(NOT EXISTS(SELECT * FROM tbDataTable WHERE dsname='''+@dsname+''' AND tblname=@name AND tbldesc=@name ))'
+      SET @sql=@sql+' INSERT INTO tbDataTable (dsname,tblname,tbldesc) VALUES('''+@dsname+''',@name,@name)
+      FETCH next FROM cur0 INTO @name
+      END
+      CLOSE cur0
+      DEALLOCATE cur0'
+      SET @sql=@sql+' DECLARE @tablename VARCHAR(50)'
+      IF(len(@gridspace)>0)
+      SET @sql=@sql+' USE '+@gridspace+''
+      SET @sql=@sql+' DECLARE cur1 CURSOR FOR SELECT tblname FROM tbDataTable
+      OPEN cur1
+      FETCH next FROM cur1 INTO @tablename'
+      SET @sql=@sql+' WHILE @@FETCH_STATUS=0
+      BEGIN
+      DECLARE @colname VARCHAR(50)
+      DECLARE @coldesc VARCHAR(50)
+      '
+      IF(len(@space)>0)
+      SET @sql=@sql+' USE '+@space+''
+      SET @sql=@sql+' DECLARE cur2 CURSOR FOR 
+      SELECT a.name,CAST(CASE WHEN b.value IS NULL THEN a.name ELSE b.value END AS VARCHAR(100)) AS ''desc'' FROM '+@syscol+' a LEFT JOIN '+@sysprop+' b ON a.id=b.id AND a.colid=b.smallid
+       WHERE a.id in (SELECT id FROM '+@sysobj+' WHERE name=@tablename)
+      OPEN cur2
+      FETCH next FROM cur2 INTO @colname,@coldesc
+      WHILE @@FETCH_STATUS=0
+      BEGIN'
+      IF(len(@gridspace)>0)
+      SET @sql=@sql+' USE '+@gridspace+''
+      SET @sql=@sql+' IF(NOT EXISTS(SELECT * FROM tbDataColumn WHERE dsname='''+@dsname+''' AND tblname=@tablename AND colname=@colname))
+      INSERT INTO tbDataColumn (dsname,tblname,colname,coldesc) VALUES('''+@dsname+''',@tablename,@colname,@coldesc)'
+      SET @sql=@sql+' FETCH next FROM cur2 INTO @colname,@coldesc
+      END
+      CLOSE cur2
+      DEALLOCATE cur2
+      FETCH next FROM cur1 INTO @tablename
+      END
+      CLOSE cur1
+      DEALLOCATE cur1'
+
+      EXEC(@sql)
+    ]]>
+  </RefreshDataLink>
+</ROOT>

@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="29" desc="空白页">
+  <inits>
+    <init id="init1" desc="设备id" type="request" arg="deviceid"></init>
+    <init id="init2" desc="设备名称" type="request" arg="devicename"></init>
+    <init id="init3" desc="变电站" type="request" arg="staname"></init>
+    <init id="area0" desc="地区后缀" type="request" arg="areasuffix"></init>
+    <init id="init_starttime" desc="开始时间" type="request" arg="starttime"></init>
+    <init id="init_endtime" desc="结束时间" type="request" arg="endtime"></init>
+    <init id="color" desc="背景色" type="request" arg="color"></init>
+    <init id="class" desc="类" type="request" arg="class"></init>
+  </inits>
+  <consts>
+    <const id="starttime" desc="开始时间" type="time" arg="d"></const>
+    <const id="endtime" desc="结束时间" type="time" arg="d,d,1"></const>
+    <const id="t1" desc="开始时间" type="string"></const>
+    <const id="t2" desc="结束时间" type="string"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds0" desc="调档记录" db="MONITORSIGNAL" type="simple">
+      <sql>
+        <![CDATA[
+        select OCCUR_TIME,CTRL_TYPE,'成功' AS OPRESULT,'手动调整' AS OPTYPE from "MONITORSIGNAL"."TBOPCTRLINFO" o
+        LEFT JOIN psgraph_data.tdevice{{5}} d1 ON o.dev_name=d1.devicestrid
+        LEFT JOIN "PSGRAPH_DATA".TCOMBINEDEVICE{{5}} r on d1.deviceidx=r.partdeviceidx
+        LEFT JOIN psgraph_data.tdevice{{5}} d2 ON r.deviceidx=d2.deviceidx
+        where ctrl_type IN ('调档执行升', '调档执行降') AND d2.devicestrid={0} AND OCCUR_TIME>={{1}} AND OCCUR_TIME<={{2}}
+        --UNION
+        --select RUN_TIME,SCHEID,RESULT,'AVC' from "MONITORSIGNAL"."TBAVCCONTROL" 
+        --WHERE STATION_NAME='{3}' AND SCHEID LIKE '%高_分头%' AND SCHEID LIKE '%{4}%' AND RUN_TIME>={{1}} AND RUN_TIME<={{2}}
+        ]]>
+      </sql>
+      <cols>
+        <col id="col0" desc="设备id" name="deciid" from="init1"></col>
+        <col id="col1" desc="设备id" name="starttime" from="t1"></col>
+        <col id="col2" desc="设备id" name="endtime" from="t2"></col>
+        <col id="col3" desc="变电站名称" name="stationname" from="init3"></col>
+        <col id="col_devname" desc="设备名称" name="devicename" from="init2"></col>
+        <col id="colarea" desc="地区后缀" name="area0" from="area0"></col>
+        <col id="col4" desc="发生时间" name="OCCUR_TIME"></col>
+        <col id="col5" desc="操作内容" name="CTRL_TYPE"></col>
+        <col id="col6" desc="操作结果" name="OPRESULT"></col>
+        <col id="col7" desc="类型" name="OPTYPE"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a id="actrl" class="divBox"></a>
+      <sa s_background="color"></sa>
+      <c>
+        <div id="div4" desc="容器">
+          <a class="divBoxTitleWrapper"></a>
+          <c>
+            <label id="label8" desc="文字" from="init2">
+            	<a class="divBoxTitle"></a>
+            </label>
+            <label id="label9" desc="文字">
+              <a class="divBoxTitle" id="aTdjl" value="调档记录"></a>
+            </label>
+          </c>
+        </div>
+        <div id="div13" desc="容器">
+          <a class="feac mb10"></a>
+          <c>
+            <div id="div20" desc="容器">
+              <a s_display="none"></a>
+              <c>
+                <button id="button22" desc="默认按钮">
+                  <a type="button" value="今日" class="tPdpBtn mr10"></a>
+                  <e>
+                    <onclick>
+                      <list type="script">
+                        <value>
+                          <![CDATA[
+                          this.starttime=Ysh.Time.getTime('d');
+                          this.endtime=Ysh.Time.getTime('d');
+                          this.t1 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.starttime, true, false), 111000) + " 00:00:00" +"','yyyy-mm-dd hh24:mi:ss')";
+                          this.t2 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.endtime, true, false), 111000) + " 23:59:59" +"','yyyy-mm-dd hh24:mi:ss')";
+                          this.select();                          
+                          ]]>
+                        </value>
+                      </list>
+                      <list type="select" ds="ds0"  async="true"></list>
+                    </onclick>
+                  </e>
+                </button>
+                <button id="button23" desc="默认按钮">
+                  <a type="button" value="昨日" class="tPdpBtn"></a>
+                  <e>
+                    <onclick>
+                      <list type="script">
+                        <value>
+                          <![CDATA[
+                          this.starttime=Ysh.Time.getTime('d,d,-1');
+                          this.endtime=Ysh.Time.getTime('d,d,-1');
+                          this.t1 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.starttime, true, false), 111000) + " 00:00:00" +"','yyyy-mm-dd hh24:mi:ss')";
+                          this.t2 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.endtime, true, false), 111000) + " 23:59:59" +"','yyyy-mm-dd hh24:mi:ss')";
+                          this.select();
+                          ]]>
+                        </value>
+                      </list>
+                      <list type="select" ds="ds0" async="true"></list>
+                    </onclick>
+                  </e>
+                </button>
+              </c>
+            </div>
+			      <label id="label24" desc="文字">
+			        <a class="pdpLabel" value="日期：" s_color="#f5efef"></a>
+			      </label>
+			      <idate id="time25" desc="日期" from="starttime">
+			        <a type="date" format="yyyy-MM-dd" class="id time" s_width="110px"></a>
+			      </idate>
+			      <label id="label26" desc="文字">
+			        <a class="pdpLabel" value="--" s_color="#fff"></a>
+			      </label>
+			      <idate id="time27" desc="日期" from="endtime">
+			        <a type="date" format="yyyy-MM-dd" class="id time" s_width="110px"></a>
+			      </idate>
+			      <button id="button28" desc="默认按钮">
+			        <a type="button" value="搜索" class="pdpBtnDefault ml10 blueBtn"></a>
+			        <e>
+				      <onclick>
+				        <list type="script" value="this.selTime();"></list>
+				        <list type="select" ds="ds0"  async="true"></list>
+				      </onclick>
+			        </e>
+			      </button>
+          </c>
+        </div>
+        <scrolltable id="scrolltable777" desc="滚动表格" from="ds0">
+          <a ref="scrolltable777"></a>
+          <sa stripe="true" height="200" item-height="35"></sa>
+          <c>
+            <icol id="icol15" desc="序号">
+              <a key="index" width="50"></a>
+            </icol>
+            <icol id="icol16" desc="发生时间" from="col4">
+              <a width="150"></a>
+            </icol>
+            <icol id="icol17" desc="操作内容" from="col5"></icol>
+            <icol id="icol18" desc="操作结果" from="col6">
+              <a width="150"></a>
+            </icol>
+            <icol id="icol19" desc="类型" from="col7">
+              <a width="150"></a>
+            </icol>
+          </c>
+        </scrolltable>
+      </c>
+    </div>
+  </ctrls>
+  <css>
+    <![CDATA[
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+        this.endtime = this.init_endtime;
+        this.starttime = this.init_starttime;
+        this.t1 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.init_starttime, true, false), 111000) + " 00:00:00" +"','yyyy-mm-dd hh24:mi:ss')";
+        this.t2 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.init_endtime, true, false), 111000) + " 23:59:59" +"','yyyy-mm-dd hh24:mi:ss')";
+        //this.select_ds0();
+          
+          this.select = function(){
+          	var obj = event.target;
+          	$(obj).addClass("tPdpBtnSelect").siblings().removeClass("tPdpBtnSelect");
+          }
+          //时间限制
+        this.selTime = function()
+        {
+          this.starttime=Ysh.Time.formatString(Ysh.Time.toString(this.time25, true, false), 111000);
+          this.endtime=Ysh.Time.formatString(Ysh.Time.toString(this.time27, true, false), 111000);
+          this.t1 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.time25, true, false), 111000) + " 00:00:00" +"','yyyy-mm-dd hh24:mi:ss')";
+          this.t2 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.time27, true, false), 111000) + " 23:59:59" +"','yyyy-mm-dd hh24:mi:ss')";
+          var arr1 = this.starttime.split("-");
+          var arr2 = this.endtime.split("-");
+          var date1=new Date(parseInt(arr1[0]),parseInt(arr1[1])-1,parseInt(arr1[2]),0,0,0); 
+          var date2=new Date(parseInt(arr2[0]),parseInt(arr2[1])-1,parseInt(arr2[2]),0,0,0);
+          if(date1.getTime()>date2.getTime()) 
+          {                                
+            alert('结束日期不能小于开始日期',this);
+          }
+          window.pdp.timechanged(this.time25,this.time27,3);
+        }
+        
+        this.showFirst = function(){
+          this.$refs.scrolltable777.resize();
+        }
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[ 
+            /*this.$nextTick(function(){
+              this.$refs.scrolltable777.resize();
+            })*/     
+          var vm = this;
+          this.select_ds0(true,function() { vm.$nextTick(function() { this.showFirst(); })});
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

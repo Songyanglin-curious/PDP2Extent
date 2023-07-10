@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="141" desc="变压器负载">
+  <inits>
+    <init id="init2" desc="设备名称" type="request" arg="devicename"></init>
+    <init id="c3" desc="设备名称" type="request" arg="subname"></init>
+    <init id="decid" desc="设备Id" type="request" arg="deviceid"></init>
+    <init id="init_starttime" desc="开始时间" type="request" arg="starttime"></init>
+    <init id="init_endtime" desc="结束时间" type="request" arg="endtime"></init>
+    <init id="color" desc="背景色" type="request" arg="color"></init>
+    <init id="show0" desc="背景色" type="request" arg="show0"></init>
+    <init id="show1" desc="背景色" type="request" arg="show1"></init>
+  </inits>
+  <consts>
+    <const id="const10" desc="信息名称" type="string[]"></const>
+    <const id="const11" desc="信息值" type="string[]"></const>
+    <const id="rundata" desc="台帐参数" type="2d" length="2"></const>
+    <const id="t0" desc="默认日期" arg="d,d,0" type="time"></const>
+    <const id="t1" desc="开始时间" type="string"></const>
+    <const id="t2" desc="结束时间" type="string"></const>
+    <const id="starttime" desc="开始时间" arg="d" type="time"></const>
+    <const id="endtime" desc="结束时间" arg="d,d,1" type="time"></const>
+    <const id="time" desc="时间" type="string"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds2" desc="运行信息"  db="MONITORSIGNAL" type="simple">
+      <sql>
+        <![CDATA[
+        SELECT DATATIME,LOADVALUE,QVALUE,FACTOR,devicecurrent FROM
+        (SELECT DATATIME,LOADVALUE,QVALUE,FACTOR,devicecurrent FROM MONITORSIGNAL.TBYCLOAD_SWITCH_{{1}} WHERE DEVICEID={0}
+        AND DATATIME >= {{2}} AND DATATIME<={{3}}
+        ORDER BY LOADVALUE DESC)
+        WHERE ROWNUM<2
+        UNION ALL
+        SELECT TO_DATE('') AS DATATIME,TO_NUMBER('') AS LOADVALUE,TO_NUMBER('') AS QVALUE,TO_NUMBER('') AS FACTOR,TO_NUMBER('') AS devicecurrent FROM DUAL
+        ]]>
+      </sql>
+      <cols>
+        <col id="col20" desc="设备id" name="devicestrid" from="decid"></col>
+        <col id="col_1" desc="月份" name="month" from="time"></col>
+        <col id="col_starttime" desc="starttime" name="starttime" from="t1"></col>
+        <col id="col_endtime" desc="endtime" name="endtime" from="t2"></col>
+        <col id="col_value" desc="值" name="lastvalue"></col>
+        <col id="col_time" desc="取数时间" name="lasttime"></col>
+        <col id="col_name" desc="名称" name="name"></col>
+        <col id="col_rated" desc="额定值" name="ratedvalue"></col>
+        <col id="col_devicecurrent" desc="电流值" name="devicecurrent"></col>
+      </cols>
+    </datasource>
+    <datasource id="ds_valuechart" desc="有功曲线" db="MONITORSIGNAL" type="simple">
+      <sql>
+        <![CDATA[
+        SELECT A.RN,LOADVALUE,devicecurrent FROM
+        (SELECT TO_NUMBER(ROWNUM-1) AS RN FROM DUAL CONNECT BY ROWNUM<=24)A
+        LEFT JOIN
+        (SELECT DATATIME,LOADVALUE,devicecurrent FROM
+        (SELECT TO_NUMBER(to_char(DATATIME,'hh24')) AS DATATIME,LOADVALUE,devicecurrent,
+        ROW_NUMBER() OVER (PARTITION BY TO_NUMBER(to_char(DATATIME,'hh24')) ORDER BY DATATIME) AS XH
+        FROM MONITORSIGNAL.TBYCLOAD_SWITCH_{{3}} WHERE DATATIME >= {{0}} AND DATATIME<={{1}} AND DEVICEID={2}
+        ORDER BY DATATIME)
+        WHERE XH=1)B ON A.RN=B.DATATIME
+        ORDER BY A.RN
+        ]]>
+      </sql>
+      <cols>
+        <col id="col_starttime" desc="starttime" name="starttime" from="t1"></col>
+        <col id="col_endtime" desc="endtime" name="endtime" from="t2"></col>
+        <col id="col0" desc="设备id" name="devicestrid" from="decid"></col>
+        <col id="col1" desc="月份" name="month" from="time"></col>
+        <col id="col_valuechart_datatime" desc="时间" name="datatime"></col>
+        <col id="col_valuechart_datavalue1" desc="值1" name="val1"></col>
+        <col id="col_valuechart_datavalue2" desc="值2" name="val2"></col>
+      </cols>
+    </datasource>
+    <datasource id="ds_loadratechart" desc="负载率柱状图" db="MONITORSIGNAL" type="simple">
+      <sql>
+        <![CDATA[
+        select TO_NUMBER(to_char(DATATIME,'hh24')) as datatime, case when RATEDVALUE is null then 0 else round(to_number(DEVICECURRENT)/RATEDVALUE,2)*100 end as val
+        from "MONITORSIGNAL"."TBTRANSFORMERDAYPOINT" a
+        left join (select distinct DEVICENAME,YC_ID from "MONITORSIGNAL"."TBYCOVEREVENT" where MEASTYPE like '%电流值%') b on a.DEVICENAME=b.DEVICENAME
+        left join "MONITORSIGNAL"."B_YCLIMIT" c on b.YC_ID=c.YC_ID
+        where DATATIME between {{0}} and {{1}} and a.DEVICENAME={2}
+        order by DATATIME
+        ]]>
+      </sql>
+      <cols>
+        <col id="col_starttime" desc="starttime" name="starttime" from="t1"></col>
+        <col id="col_endtime" desc="endtime" name="endtime" from="t2"></col>
+        <col id="col_devicename" desc="devicename" name="devicename" from="c3"></col>
+        <col id="col_loadratechart_datatime" desc="时间" name="datatime"></col>
+        <col id="col_loadratechart_datavalue" desc="值" name="val"></col>
+      </cols>
+    </datasource>
+    <datasource id="ds_temperaturechart" desc="温度曲线" db="MONITORSIGNAL" type="simple">
+      <sql>
+        <![CDATA[
+        select a.datatime,round(a.temp,1) as val1,b.temp as val2 from (
+          select TO_NUMBER(to_char(DATATIME,'hh24')) as datatime, temp||'' AS TEMP from "MONITORSIGNAL"."TBTRANSFORMERDAYPOINT" 
+          where DATATIME between {{0}} and {{1}} and DEVICENAME={2}
+          and ISFORECAST=0
+          union all
+          select TO_NUMBER(to_char(DATATIME,'hh24')) as datatime, '-' from "MONITORSIGNAL"."TBTRANSFORMERDAYPOINT" 
+          where DATATIME between {{0}} and {{1}} and DEVICENAME={2}
+          and ISFORECAST=1
+        ) a join         
+        (     
+          select TO_NUMBER(to_char(DATATIME,'hh24')) as datatime, temp from "MONITORSIGNAL"."TBTRANSFORMERDAYPOINT" 
+          where DATATIME between {{0}} and {{1}} and DEVICENAME={2}
+        ) b on a.datatime=b.datatime order by a.datatime
+        ]]>
+      </sql>
+      <cols>
+        <col id="col_starttime" desc="starttime" name="starttime" from="t1"></col>
+        <col id="col_endtime" desc="endtime" name="endtime" from="t2"></col>
+        <col id="col_devicename" desc="devicename" name="devicename" from="c3"></col>
+        <col id="col_temperaturechart_datatime" desc="时间" name="datatime"></col>
+        <col id="col_temperaturechart_datavalue1" desc="值1" name="val1"></col>
+        <col id="col_temperaturechart_datavalue2" desc="值2" name="val2"></col>
+      </cols>
+    </datasource>
+    <datasource id="ds_elecval" desc="电流曲线" db="MONITORSIGNAL" type="simple">
+      <sql>
+        <![CDATA[
+        select DATATIME as datatime,round(ABS(POWERVALUE)*0.25,1) val1 from "MONITORSIGNAL"."TBTRANSFORMER15POINT" where DATATIME>={{0}} and DATATIME<={{1}} and DEVICENAME={2} order by DATATIME
+        ]]>
+      </sql>
+      <cols>
+        <col id="col_starttime" desc="starttime" name="starttime" from="t1"></col>
+        <col id="col_endtime" desc="endtime" name="endtime" from="t2"></col>
+        <col id="col_devicename" desc="devicename" name="devicename" from="c3"></col>
+        <col id="col_elecval_datatime" desc="时间" name="datatime"></col>
+        <col id="col_elecval_datavalue1" desc="值1" name="val1"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a class="divBox"></a>
+      <sa s_background="color"></sa>
+      <c>
+        <div id="div4" desc="容器">
+          <a class="divBoxTitleWrapper" s_margin-left="238px"></a>
+          <c>
+            <label id="label8" desc="文字" from="init2">
+              <a class="divBoxTitle"></a>
+            </label>
+            <label id="label9" desc="文字">
+              <a class='divBoxTitle' id="aRun" value="设备运行信息"></a>
+            </label>
+            <div id="div21" desc="容器">
+              <a class="feac mb10" s_height="40px" s_float="right"></a>
+              <c>
+                <label id="label24" desc="文字">
+                  <a class="pdpLabel" value="日期：" s_color="#f5efef"></a>
+                </label>
+                <idate id="time25" desc="日期" from="endtime">
+                  <a type="date" format="yyyy-MM-dd" class="id time" s_width="110px"></a>
+                </idate>
+                <button id="button28" desc="默认按钮">
+                  <a type="button" value="搜索" class="pdpBtnDefault ml10 blueBtn"></a>
+                  <e>
+                    <onclick>
+                      <list type="script">
+                        <value>
+                          <![CDATA[
+                            this.t1 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.time25, true, false), 111000) + " 00:00:00" +"','yyyy-mm-dd hh24:mi:ss')";
+                            this.t2 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.time25, true, false), 111000) + " 23:59:59" +"','yyyy-mm-dd hh24:mi:ss')"; 
+                            this.time=Ysh.Time.formatString(Ysh.Time.toString(this.time25, true, false), 111000);
+							this.time=this.time.split("-")[0]+"_"+this.time.split("-")[1];
+                            this.select_ds2();
+                            this.getRunData();
+                            this.getData();
+                            this.select_ds_valuechart();
+                            window.pdp.timechanged(this.time25,this.time25,1);
+                          ]]>
+                        </value>
+                      </list>
+                    </onclick>
+                  </e>
+                </button>
+              </c>
+            </div>
+          </c>
+        </div>
+        <table id="table5" desc="表格">
+          <a class="divBoxRowTable" s_height="100%" s_width="100%"></a>
+          <sa s_display="show0"></sa>
+          <c>
+            <tr id="tr6" desc="项目">
+              <c>
+                <td id="td7" desc="单元格" loop="const10">
+                  <c>
+                    <label id="label12" desc="文字" from="const10"></label>
+                  </c>
+                </td>
+              </c>
+            </tr>
+            <tr id="tr7" desc="值">
+              <c>
+                <td id="td8" desc="单元格" loop="const11">
+                  <c>
+                    <label id="label13" desc="文字" from="const11"></label>
+                  </c>
+                </td>
+              </c>
+            </tr>
+          </c>
+        </table>
+        <table id="table50" desc="表格">
+          <a class="divBoxRowTableNew" s_height="100%" s_width="100%"></a>
+          <sa s_display="show1"></sa>
+          <c>
+            <tr id="tr60" desc="项目">
+              <c>
+                <td id="td70" desc="单元格" loop="const10">
+                  <c>
+                    <label id="label12" desc="文字" from="const10"></label>
+                  </c>
+                </td>
+              </c>
+            </tr>
+            <tr id="tr70" desc="值">
+              <c>
+                <td id="td80" desc="单元格" loop="const11">
+                  <c>
+                    <label id="label13" desc="文字" from="const11"></label>
+                  </c>
+                </td>
+              </c>
+            </tr>
+          </c>
+        </table>
+        <div id="div51" desc="容器">
+          <c>
+            <div id="div40" desc="容器">
+              <a class="divBoxTitleWrapper" s_margin-top = "8px"></a>
+              <c>
+                <label id="label55" desc="文字">
+                  <a class="divBoxTitle" id="aCurve" value="24小时有功、电流" ></a>
+                </label>
+              </c>
+            </div>
+            <echart id="echart56" desc="图表" from="ds_valuechart">
+              <a>
+                <ref>echart56</ref>
+                <option>
+                  <![CDATA[{
+				  "legend":{"show":false,textStyle:{color:'#f5efef'}},
+				  "grid":{"left":"60","top":"35","right":"50","bottom":"20"},
+				  "tooltip":{
+                     "trigger":"axis",
+                     "axisPointer":{"type":"shadow"},
+                      backgroundColor:'rgba(52,72,119,0.8)',
+                      borderColor:'rgb(53,76,147)',
+                      borderWidth:1,
+                      textStyle:{
+                          align:'left'
+                      },
+                      formatter: '时间: {b}点<br /> {a0}: {c0}MW<br />{a1}: {c1}A'
+					  },
+                    "xAxis":[
+						{"name":"小时",
+						"nameGap":"15",
+						"type":"category",
+						"axisLine":{"lineStyle":{"color":"#828abf"}},
+						"axisLabel":{"color":"#828abf","interval":0}}],
+                    "yAxis":[
+						{"type":"value",
+						"name":"有功(MW)",
+						"axisLine":{"lineStyle":{"color":"#828abf"}},
+						"axisLabel":{"color":"#828abf","formatter":'{value}'}},
+						{"type":"value",
+						"name":"电流(A)",
+						"axisLine":{"lineStyle":{"color":"#828abf"}},
+						"splitLine":{"lineStyle":{"color":"#828abf"}},
+						"axisLabel":{"color":"#828abf",showMinLabel:false}}],
+                    "series":[
+						{"name":"有功",
+						"type":"bar",
+						barWidth:'12',
+						"yAxisIndex":0,
+						itemStyle: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 0, 1,
+                                        [
+                                            {offset: 1, color: '#5080e1'},
+                                            {offset: 0, color: '#3fb7ee'}
+                                        ]
+                                    )
+                                }
+						},
+						{"name":"电流",
+						"type":"line",
+						"yAxisIndex":1,
+						color:'#CBAD45'
+						},
+                              ],
+                     "color":["#c3d69b","#548ed5","#e46c0a"]}]]>
+                </option>
+              </a>
+              <s height="180px"></s>
+              <sa xaxis="col_valuechart_datatime"></sa>
+              <c>
+                <yaxis id="yaxis89" desc="有功" from="col_valuechart_datavalue1">
+                  <a type="bar"></a>
+                </yaxis>
+                <yaxis id="yaxis90" desc="电流" from="col_valuechart_datavalue2">
+                  <a type="line"></a>
+                </yaxis>
+              </c>
+            </echart>
+            <label id="label55" desc="文字">
+              <a class="divBoxSmallTitle" value="断路器负载率与环境温度关系图" s_display="none"></a>
+            </label>
+            <echart id="echart57" desc="图表">
+              <a s_display="none">
+                <ref>echart57</ref>
+                <option>
+                  <![CDATA[{"legend":{"show":true},"grid":{"left":"60","top":"35","right":"50","bottom":"20"},"tooltip":{},
+                    "xAxis":[{"name":"小时","nameGap":"15","type":"category","axisLine":{"lineStyle":{"color":"#cccccc"}},"axisLabel":{"color":"#000000","interval":0}}],
+                    "yAxis":[{"type":"value","axisLine":{"lineStyle":{"color":"#cccccc"}},"axisLabel":{"color":"#000000","formatter":'{value}%'}},
+                             {"type":"value","name":"℃","axisLine":{"lineStyle":{"color":"#cccccc"}},"axisLabel":{"color":"#000000"}}],
+                    "series":[{"name":"负荷","type":"bar","yAxisIndex":0,"tooltip":{"formatter":"{c}%"}},
+                              {"name":"环境温度","type":"line","yAxisIndex":1,"symbol":"triangle","symbolSize":6,"tooltip":{"formatter":"{c}℃"}}],
+                     "color":["#c3d69b","#548ed5","#e46c0a"]}]]>
+                </option>
+              </a>
+              <s height="180px"></s>
+              <sa xaxis="col_valuechart_datatime"></sa>
+              <c>
+                <yaxis id="yaxis89" desc="负荷" from="col_valuechart_datavalue1">
+                  <a type="bar"></a>
+                </yaxis>
+                <yaxis id="yaxis89" desc="环境温度">
+                  <a type="line"></a>
+                </yaxis>
+              </c>
+            </echart>
+            <label id="label59" desc="文字">
+              <a class="divBoxSmallTitle" value="电流值" s_display="none"></a>
+            </label>
+            <echart id="echart59" desc="图表" from="ds_elecval">
+              <a s_display="none">
+                <option>
+                  <![CDATA[{"title":{"text":"","left":"10","textStyle":{"fontSize":14}},"legend":{"show":false},"grid":{"left":"60","top":"10","right":"30","bottom":"20"},"tooltip":{"formatter":"{b}{a}:{c}kW.h"},"xAxis":[{"type":"category","show":false,"axisLine":{"lineStyle":{"color":"#cccccc"}},"axisLabel":{"color":"#000000"}}],"yAxis":[{"type":"value","axisLine":{"lineStyle":{"color":"#cccccc"}},"axisLabel":{"color":"#000000"}}],
+                    "series":[{"name":"电流值","type":"bar",itemStyle: {
+                "normal": {
+                    "color": new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#83bff6'},
+                            {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#188df0'}
+                        ]
+                    )
+                },
+                "emphasis": {
+                    "color": new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#2378f7'},
+                            {offset: 0.7, color: '#2378f7'},
+                            {offset: 1, color: '#83bff6'}
+                        ]
+                    )
+                }
+              }}]}]]>
+                </option>
+              </a>
+              <s height="180px"></s>
+              <sa xaxis="col_elecval_datatime"></sa>
+              <c>
+                <yaxis id="yaxis94" desc="电流值" from="col_elecval_datavalue1">
+                  <a type="bar" color="#1C86EE"></a>
+                </yaxis>
+              </c>
+            </echart>
+          </c>
+        </div>
+      </c>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+        this.starttime = this.init_endtime;
+        this.time=this.init_endtime;
+        this.time=this.time.split("-")[0]+"_"+this.time.split("-")[1];
+        this.t1 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.init_endtime, true, false), 111000) + " 00:00:00" +"','yyyy-mm-dd hh24:mi:ss')";
+        this.t2 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.init_endtime, true, false), 111000) + " 23:59:59" +"','yyyy-mm-dd hh24:mi:ss')"; 
+        this.select_ds2();
+        this.getRunData = function() {
+          var rundata = [];
+          rundata.push(["发生时间",this.ds2[0][0]]);
+          rundata.push(["最大有功(MW)",this.ds2[0][1]]);
+          rundata.push(["最大无功(MW)",this.ds2[0][2]]);
+          rundata.push(["功率因数",this.ds2[0][3]]);          
+          rundata.push(["当前电流",this.ds2[0][4]]);  
+          this.rundata = rundata;
+        }
+        this.getRunData();
+        this.getData = function() {
+          var names = [];
+          var values = [];
+          if (this.rundata) {
+            for (var i = 0;i < this.rundata.length;i++) {
+              var item = this.rundata[i];
+              names.push(item[0]);
+              values.push(item[1]);
+            }
+          }
+          this.const10 = names;
+          this.const11 = values;
+        }
+        this.getData();
+		
+        ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[                   
+                                    
+            this.ShowChart = function(row,index){
+                this.select_ds_valuechart();
+                this.$refs.echart56.refreshOption();
+            }
+            
+            this.ShowChart();
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

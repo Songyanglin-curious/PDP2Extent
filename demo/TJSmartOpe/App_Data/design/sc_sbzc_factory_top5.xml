@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;/conn/jsfile/shengchan/data.js" desc="生产厂家排行top5">
+  <inits></inits>
+  <consts>
+    <const id="option" type="object" arg=""></const>
+    <const id="counts" type="object" arg=""></const>
+    <const id="devtypes" type="2d" length="2" arg="ALL,全部"></const>
+    <const id="seldevtype" type="string" arg=""></const>
+    <const id="hEarch"></const>
+    <const id="newTop" type="object[]" fields="deviceName,station,useTime,useYear"></const>
+    <const id="longUseTop" type="object[]" fields="deviceName,station,useTime,useYear"></const>
+    <const id="sorts" type="2d" length="2" arg="ASC,正序,DESC,倒序"></const>
+    <const id="selSort" type="string" arg="DESC"></const>
+  </consts>
+  <datasources>
+
+    <datasource type="load" id="deviceType" desc="设备类型" node="sc/sbzc:top5/deviceType">
+      <cols>
+        <col id="col_value" name="value" desc="value"></col>
+        <col id="col_label" name="label" desc="label"></col>
+      </cols>
+    </datasource>
+    <datasource type="load" id="factorys" desc="生产厂家正序" node="sc/sbzc:top5/factory">
+      <cols>
+        <col id="col_type" name="type" desc="type" from="seldevtype"></col>
+        <col id="col_factory" name="factory" desc="factory"></col>
+        <col id="col_count" name="count" desc="count"></col>
+      </cols>
+    </datasource>
+    <datasource type="load" id="factoryds" desc="生产厂家倒序" node="sc/sbzc:top5/factoryd">
+      <cols>
+        <col id="col_type" name="type" desc="type" from="seldevtype"></col>
+        <col id="col_factory" name="factory" desc="factory"></col>
+        <col id="col_count" name="count" desc="count"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <title-div ref="divContent" id="ttt">
+      <a title='生产厂家排行top5' title1="单位：个"></a>
+      <sa content-style='{ }'></sa>
+      <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+      <div>
+        <a ref="divTabs" class="tabs-wrap"></a>
+        <yshtab id="yshtab1" desc="标签卡" from="seldevtype" source="devtypes"  >
+          <a tabstyle="nbTab aequilateTabs"></a>
+          <e>
+            <onclick>
+              <list type="script" value="this.getFactoryTopData();"></list>
+            </onclick>
+          </e>
+        </yshtab>
+      </div>
+
+
+      <div ref="divSearch" >
+        <a class="radio-and-more"></a>
+        <iradiogroup id="iradiogroup1" desc="正序,倒序" from="selSort" source="sorts">
+          <e>
+            <on-change>
+              <list type="script" value="this.getFactoryTopData();"></list>
+            </on-change>
+          </e>
+        </iradiogroup>
+        <href>
+          <label value="查看更多"></label>
+          <e>
+            <onclick>
+              <![CDATA[this.showMore();]]>
+            </onclick>
+          </e>
+        </href>
+      </div>
+      <div>
+        <ecommonchart id="echart01" desc="图表" >
+          <sa option="option"  s_height="hEarch"></sa>
+        </ecommonchart>
+      </div>
+
+
+    </title-div>
+  </ctrls>
+  <css>
+    <![CDATA[
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsbzc" part="tobig"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.showMore = function() {
+        var vmain = ProjectSGC.Global.getMainObject("vMain");
+        var f = {};
+        if (this.seldevtype != "ALL")
+            f.filter = { type: this.seldevtype };
+        vMain.gotoApp("factorysearch", f );
+          }
+            this.getFactoryTopData = function(){
+                var fatcorys = "";
+                if(this.selSort == 'ASC'){
+                  fatcorys = this.load_factorys();
+                }else{
+                  fatcorys = this.load_factoryds();
+                }
+                var names = [];
+                var counts = [];
+                fatcorys.forEach(item => {
+                  names.push(item.factory)
+                  counts.push(item.count)
+                })
+                var data = [['',counts,'#5ac8dc']];
+                this.option = ProjectShanxi.Curve.getBar2DOption(data,names,true); 
+            }     
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="resize">
+      <list type="script">
+        <value>
+          <![CDATA[ 
+                var hAll = this.$el.clientHeight;
+                var htabs =  this.$refs.divTabs.offsetHeight || 0;
+                var htsearch=  this.$refs.divSearch.offsetHeight;
+                this.hEarch = hAll  - htabs -htsearch -10-60 + 'px';
+              ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+         this.load_deviceType(true,() => {
+            console.log(this.deviceType)
+            var devtypes = [];
+            /*
+            this.deviceType.forEach(item => {
+              devtypes.push([item.type,item.type])
+            })*/
+            var types= ProjectShanxi.allDevtypes;
+            types.forEach(item => {
+              devtypes.push([item,item])
+            })
+            this.devtypes = devtypes;
+            this.seldevtype = devtypes[0][0];
+            
+            this.getFactoryTopData();
+            this.$nextTick(function(){
+              this.resize();
+            })
+        });
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

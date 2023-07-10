@@ -1,0 +1,1 @@
+_app.device_defect_deatil = _app._dlg({ name: "缺陷详情", file: "sc_device_defect_deatil", width: "100%", height: "100%" });

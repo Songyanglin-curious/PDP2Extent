@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="6" desc="空白页">
+  <ctrls>
+    <div id="div0" desc="根容器">
+    	<a class="fcac" s_flex-direction="row-reverse"></a>
+      <c>
+      	<image desc="图片" id="image3">
+          <a class="ml10" src="../i/yunjian/qrcode.png"></a>
+          <s width="100px" height="100px" vertical-align="top"></s>
+        </image>
+        <div desc="容器" id="div2">
+          <s text-align="center" color="#787878"></s>
+          <c>
+            <div desc="容器" id="div4">
+              <s font-size="16px" color="#282828"></s>
+              <c>
+		            <label desc="文字" id="label4">
+		              <a value="设备信息二维码"></a>
+		            </label>
+              </c>
+            </div>
+            <div desc="容器" id="div5">
+              <c>
+                <label desc="文字" id="label6">
+                  <a value="收藏该设备档案二维码" s_font-size="12px"></a>
+                </label>
+              </c>
+            </div>
+            <div desc="容器" id="div6">
+              <c>
+                <label desc="文字" id="label7">
+                  <a value="实时获取设备详细信息" s_font-size="12px"></a>
+                </label>
+              </c>
+            </div>
+          </c>
+        </div>
+      </c>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created"></script>
+    <script event="mounted"></script>
+  </scripts>
+</root>

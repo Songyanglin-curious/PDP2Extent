@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="11" desc="变电站设备缺陷详细页">
+    <includes>
+        <![CDATA[ 
+        /conn/pdpjs/pdpproject.css;
+        ]]>
+    </includes>
+    <inits>
+        <init id="id" desc="设备缺陷id" type="request" arg="id"></init>
+    </inits>
+    <consts>
+        <const id="dsInitDefect" desc="所有的缺陷的数据源" type="object[]"></const>
+        <const id="dsDefect" desc="表格的缺陷的数据源" type="2d" length="6"></const>
+        <const id="detailLayout" desc="详情表单布局"></const>
+    </consts>
+    <datasources></datasources>
+
+    <ctrls>
+        <div desc="根容器" style="width:100%;height:100%;background:#07404B">
+
+            <div>
+                <a s_height="calc(100% -50px)" s_width="100%"></a>
+                <table style="border-top:none">
+                    <a s_width="100%" class="detail-table-record "></a>
+
+
+                    <tr>
+                        <sa v-for="(row,index) in detailLayout" key="index"></sa>
+                        <!-- <loop id="loop2" from="item_loop1">
+                                <td>
+                                    <a class="detail-table-title"></a>
+                                    <label>
+                                        <sa value="item_loop2['title']"></sa>
+                                    </label>
+                                </td>
+                                <td>
+                                    <a class="detail-table-content"></a>
+                                    <sa rowspan="item_loop2['rowspan']" colspan="item_loop2['colspan']"></sa>
+                                    <label>
+                                        <sa value="dsInitDefect[item_loop2['key']]"></sa>
+                                    </label>
+                                </td>
+                            </loop> -->
+                        <td>
+                            <sa v-if="layoutTitle[index]"></sa>
+                            <a class="detail-table-content vertical-text"></a>
+                            <sa rowspan="layoutTitle[index]['rowspan']" class="layoutTitle[index]['class']"></sa>
+                            <label>
+                                <sa value="layoutTitle[index]['title']"></sa>
+                            </label>
+                        </td>
+                        <template>
+                            <sa v-for="(item,itemIndex) in row" key="index+itemIndex"></sa>
+                            <td>
+                                <a class="detail-table-title"></a>
+                                <sa rowspan="1" colspan="1" class="item['titleClass']"></sa>
+                                <label>
+                                    <sa value="item['title']"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-content"></a>
+                                <sa rowspan="item['rowspan']" colspan="item['colspan']" class="item['contentClass']"></sa>
+                                <label>
+                                    <sa value="item['format'] ? item['format'](dsInitDefect[item['key']]) : dsInitDefect[item['key']]"></sa>
+                                </label>
+                            </td>
+                        </template>
+
+
+                    </tr>
+
+
+                </table>
+                <!-- <table style="border-top:none">
+                    <a s_width="100%" class="detail-table-record "></a>
+                    <loop id="loop1" from="dsDefect">
+                        <tr>
+                            <td>
+                                <a class="detail-table-title" style="width:100px;"></a>
+                                <label>
+                                    <sa value="item_loop1[0]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-content"></a>
+                                <label>
+                                    <sa value="item_loop1[1]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-title" style="width:100px;"></a>
+                                <label>
+                                    <sa value="item_loop1[2]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-content"></a>
+                                <label>
+                                    <sa value="item_loop1[3]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-title" style="width:100px;"></a>
+                                <label>
+                                    <sa value="item_loop1[4]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-content"></a>
+                                <label>
+                                    <sa value="item_loop1[5]"></sa>
+                                </label>
+                            </td>
+                        </tr>
+                    </loop>
+                    <tr>
+                        <td>
+                            <a class="detail-table-title" style="width:100px;"></a>
+                            <label>
+                                <a value="缺陷内容"></a>
+                            </label>
+                        </td>
+                        <td>
+
+                            <a class="detail-table-content" colspan="5"></a>
+                            <label>
+                                <sa value="dsInitDefect['DEFECT_CONTENT']"></sa>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="detail-table-title" style="width:100px;"></a>
+                            <label>
+                                <a value="处理结果"></a>
+                            </label>
+                        </td>
+                        <td>
+
+                            <a class="detail-table-content" colspan="5"></a>
+                            <label>
+                                <sa value="dsInitDefect['HANDEL_RESULT']"></sa>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="detail-table-title" style="width:100px;"></a>
+                            <label>
+                                <a value="完成情况"></a>
+                            </label>
+                        </td>
+                        <td>
+
+                            <a class="detail-table-content" colspan="5"></a>
+                            <label>
+                                <sa value="dsInitDefect['COMPLETE_STATE']"></sa>
+                            </label>
+                        </td>
+                    </tr>
+                </table> -->
+            </div>
+        </div>
+    </ctrls>
+    <css>
+        <![CDATA[ 
+        
+        ]]>
+    </css>
+    <scripts>
+        <script event="created">
+            <list type="file" value="sc_defect" part="station_defect_detail"></list>
+            <list type="file" value="utils" part="format"></list>
+            <list type="script">
+                <value>
+                    <![CDATA[
+                
+                ]]>
+                </value>
+            </list>
+        </script>
+        <script event="resize">
+            <list type="script">
+                <value>
+                    <![CDATA[ 
+                    this.$nextTick(function() {
+                    })
+                    ]]>
+                </value>
+            </list>
+        </script>
+        <script event="mounted">
+            <list type="script">
+                <value>
+                    <![CDATA[
+                    var vm = this;
+                    window.setTimeout(() => {
+                        this.resize();
+                    },100);
+                    
+                    ]]>
+                </value>
+            </list>
+        </script>
+    </scripts>
+</root>

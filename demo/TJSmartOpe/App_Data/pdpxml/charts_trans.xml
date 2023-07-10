@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds2><![CDATA[
+			SELECT '' AS LOADRATE,'' DATATIME,''||'℃' AS TEMPERATURE,'' LOADVALUE,'' CNUM1,'' RATETIME1,'' CNUM2,'' RATETIME2 
+        ]]></ds2>
+<ds_valuechart><![CDATA[
+        --有功曲线
+        SELECT '' RN,'' LOADVALUE,'' TEMPERATURE 
+        ]]></ds_valuechart>
+<ds0><![CDATA[
+          select '' devicename,'' devicedesc,'' as staname,'' as subname
+        ]]></ds0>
+<ds3><![CDATA[
+        --调档统计
+          SELECT '' AS td
+        ]]></ds3></ROOT>

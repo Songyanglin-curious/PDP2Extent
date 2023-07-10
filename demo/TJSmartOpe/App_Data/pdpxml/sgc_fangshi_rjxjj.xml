@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds1><![CDATA[        
+         select '变压器' as checkDevice,'2020-10-01' as blackOutDate,'变压器' as blackOutdevice,'检修' as content,5 as grade,'关闭开关' as measures from dual
+        union
+        select '变压器','2020-10-02','变压器','检修',4,'拉开刀闸' from dual
+        union
+        select '变压器','2020-10-03','变压器','检修',3,'拉开刀闸' from dual
+        union
+        select '变压器','2020-10-04','变压器','检修',2,'拉开刀闸' from dual
+        ]]></ds1>
+<ds2><![CDATA[        
+          select '001' as startProject,'2020-10-01' as startDate,'变压器' as startDevice,'检修' as content from dual
+        union
+        select '002','2020-10-02','变压器','检修' from dual
+        union
+        select '003','2020-10-03','变压器','检修' from dual
+        union
+        select '004','2020-10-04','变压器','检修' from dual
+        ]]></ds2></ROOT>

@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root includes="/conn/cssfile/sgc/owgmatchaj.css" maxid="36" desc="表格">
+  <inits>
+    <init id="top" type="request" arg="top"></init>
+    <init id="height" type="request" arg="height"></init>
+    <init id="gametime" type="request" arg="gametime"></init>
+  </inits>
+  <consts>
+    <const id="arr" desc="表格数据" type="2d" length="26"></const>
+    <const id="HbData" desc="要合并的行" type="string[]"></const>
+    <const id="HbData1" desc="要合并的列" type="string[]"></const>
+    <const id="Num" desc="改变的列号" arg="0" type="number"></const>
+    <const id="h0" type="number" arg="300"></const>
+    <const id="handleSpan"></const>
+    <const id="hRow" arg=""></const>
+    <const id="columns" ></const>
+    <const id="day" ></const>
+    <const id="dtime" ></const>
+    <const id="css" ></const>
+    <const id="zoom"></const>
+    <const id="zbr"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds_data" desc="上传返回文件名" db="ConnMain" type="xml" node="sgc/hbowg:GetCaMatchTime">
+      <cols>
+        <col id="col1" desc="place" name="place" from="gametime"></col>
+        <col id="col1" desc="place" name="place" ></col>
+        <col id="col2" desc="starttime" name="starttime" ></col>
+        <col id="col3" desc="sport" name="sport" ></col>
+        <col id="col4" desc="day" name="day" ></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <s position="absolute" z-index="2000"></s>
+      <a s_width="100%" s_padding-right="0px" class="allCss allCss2" s_background-color="#013d53"/>
+      <sa s_bottom="0" s_zoom="zoom"></sa>
+      <c>
+        <div id="div1">
+          <a s_padding="0px 0" s_width="100%" s_position="relative"></a>
+          <c>
+            <div>
+              <a s_text-align="right"></a>
+              <label>
+                <a value="赛事均为北京时间" s_color="#50c2f2"></a>
+              </label>
+              <button>
+                <a type="button" value="返回" class="backbutton"  s_margin-left="60px" ></a>
+                <e>
+                  <onclick>
+                    <list type="script">
+                      <value>
+                        <![CDATA[
+                        var owg = ProjectSGC.Global.getMainObject("owg");
+                        var vMain = ProjectSGC.Global.getMainObject("vMain");
+                        vMain.destroyFloatPage(owg.matchPage);
+                              var top = owg.top;
+                              owg.matchPage = vMain.floatPage("sgc_caowg_match_aj", {
+                                  css:{ zoom:owg.sz,bottom:0 },top: top + "px", height: "calc(100% - " + top + "px)", main: {
+                                      closeFloat: function () {
+                                      }
+                                  }
+                              });
+                        ]]>
+                      </value>
+                    </list>
+                  </onclick>
+                </e>
+              </button>
+            </div>
+            <div >
+              <a  s_height="35px" s_width="250px" s_float="left" s_padding-left="20px"></a>
+              <c>
+                <label >
+                  <a s_color="#bbf7ff" value="带班领导：" s_font-size="18px"></a>
+                </label>
+                <label >
+                  <a s_color="#bbf7ff" s_font-size="18px"></a>
+                  <sa value="zbr[1]"></sa>
+                </label>
+              </c>
+            </div>
+            <div id="div157" desc="左上图例容器">
+              <a class="feac" s_height="35px" s_width="calc(100% - 250px)"></a>
+              <c>
+
+                <button>
+                  <a type="button" class="tuliButton" s_border="0px solid #20c194" s_background-color="#c12026"></a>
+                </button>
+                <label id="label165" desc="文字">
+                  <a class=" tuliSpan" value="特级保电"></a>
+                </label>
+                <button>
+                  <a type="button" class="tuliButton" s_border="0px solid #d5c850" s_background-color="#da823d"></a>
+                </button>
+                <label id="label166" desc="文字">
+                  <a class=" tuliSpan" value="一级保电"></a>
+                </label>
+                <button>
+                  <a type="button" class="tuliButton" s_border="0px solid #da823d" s_background-color="#07495a"></a>
+                </button>
+                <label id="label167" desc="文字">
+                  <a class=" tuliSpan" value="二级保电"></a>
+                </label>
+              </c>
+            </div>
+            <table id="table276">
+              <a class="mtTable" cellspacing="0" cellpadding="0" s_width="100%"></a>
+              <c>
+                <tr >
+                  <a class="" s_height="40px"></a>
+                  <c>
+                    <td id="td293">
+                      <a s_width="190px" s_line-height="40px"></a>
+                      <c>
+                        <label id="label294" desc="文字">
+                          <a s_color="#bbf7ff" value="场馆/日期(3月)"></a>
+                        </label>
+                      </c>
+                    </td>
+                    <td >
+                      <c>
+                        <loop id="loop1" from="dtime" >
+                          <a ref="loop1"></a>
+                          <c>
+                            <div>
+                              <a class="loopdiv" s_height="100%" s_width="calc((100% - 0px) / 10)"></a>
+                              <sa s_background-color="item_loop1[1]==gametime?'#55bae8':''"></sa>
+                              <e>
+                                <onclick args="item_loop1">
+                                  <list type="script">
+                                    <value>
+                                      <![CDATA[
+                                      this.gametime = item_loop1[1];
+                                      this.select_ds_data();
+                                      this.init();
+                                      this.getSpanArr(this.arr);
+                                      this.zbr = owg.matchzblist["2022-03-"+this.gametime];
+                                      this.zbr.push( owg.matchzblist["2022-03-"+( parseInt(this.gametime)-1 <10 ? '0'+ (parseInt(this.gametime)-1).toString() : (parseInt(this.gametime)-1).toString() )][3]);
+ ]]>
+                                    </value>
+                                  </list>
+                                </onclick>
+                              </e>
+                              <c>
+                                <div>
+                                  <a class="loopdiv" s_width="100%" s_border="none" ></a>
+                                  <label id="label301" desc="文字">
+                                    <a s_color="#bbf7ff" ></a>
+                                    <sa value="item_loop1[0]"></sa>
+                                  </label>
+                                </div>
+                                <div>
+                                  <a class="loopdiv" s_width="100%" s_border="none" ></a>
+                                  <label >
+                                    <a s_color="#bbf7ff" ></a>
+                                    <sa value="item_loop1[1]"></sa>
+                                  </label>
+                                </div>
+                              </c>
+                            </div>
+
+                          </c>
+                        </loop>
+
+                      </c>
+                    </td>
+                  </c>
+                </tr>
+                <tr>
+                  <a class="" s_height="40px"></a>
+                  <c>
+                    <td id="td298">
+                      <a s_width="190px"  s_line-height="40px"></a>
+                      <c>
+                        <label id="label299" desc="文字">
+                          <a value="值班负责人"></a>
+                        </label>
+                      </c>
+                    </td>
+                    <td id="td300">
+                      <c>
+                        <div>
+                          <a class="loopdiv" s_width="calc((100%)*8.5/24)" s_height="40px" s_line-height="40px"></a>
+                          <c>
+                            <label >
+                              <a s_color="#bbf7ff" ></a>
+                              <sa value="zbr[4]"></sa>
+                            </label>
+                          </c>
+                        </div>
+                        <div>
+                          <a class="loopdiv" s_width="calc((100%)*8/24)" s_height="40px" s_line-height="40px"></a>
+                          <c>
+                            <label >
+                              <a s_color="#bbf7ff" ></a>
+                              <sa value="zbr[2]"></sa>
+                            </label>
+                          </c>
+                        </div>
+                        <div>
+                          <a class="loopdiv" s_width="calc((100%)*7.5/24)" s_height="40px" s_line-height="40px"></a>
+                          <c>
+                            <label>
+                              <a s_color="#bbf7ff" ></a>
+                              <sa value="zbr[3]"></sa>
+                            </label>
+                          </c>
+                        </div>
+                      </c>
+                    </td>
+                  </c>
+                </tr>
+              </c>
+            </table>
+            <itable id="itable1" from="arr">
+              <a ref="itable1" class="matchtimetab"></a>
+              <sa   highlight-row="true"  border="true" disabled-hover="true" span-method="handleSpan"></sa>
+              <e>
+                <on-row-click>
+                  <list type="script">
+                    <value>
+                      <![CDATA[
+                      
+                   
+                      ]]>
+                    </value>
+                  </list>
+                </on-row-click>
+              </e>
+              <c>
+                <icol id="icol0" desc="时间__1" from="arr_0">
+                  <a align="center" width="80" className="ivu-first"></a>
+
+                  <label from="arr_0"></label>
+
+                </icol>
+                <icol id="icol1" desc="时间__2" from="arr_1">
+                  <a align="center" width="110" className="ivu-first2"></a>
+                  <div>
+                    <a class="gymname"></a>
+                    <sa s_height="hRow"></sa>
+                    <label from="arr_1"></label>
+                  </div>
+                </icol>
+                <icol id="icol2" desc="0" from="arr_2">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol3" desc="1" from="arr_3">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol4" desc="2" from="arr_4">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol5" desc="3" from="arr_5">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol6" desc="4" from="arr_6">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol7" desc="5" from="arr_7">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol8" desc="6" from="arr_8">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol9" desc="7" from="arr_9">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol10" desc="8" from="arr_10">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol11" desc="9" from="arr_11">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol12" desc="10" from="arr_12">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol13" desc="11" from="arr_13">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol14" desc="12" from="arr_14">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol15" desc="13" from="arr_15">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol16" desc="14" from="arr_16">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol17" desc="15" from="arr_17">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol18" desc="16" from="arr_18">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol19" desc="17" from="arr_19">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol20" desc="18" from="arr_20">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol21" desc="19" from="arr_21">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol22" desc="20" from="arr_22">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol23" desc="21" from="arr_23">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol24" desc="22" from="arr_24">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+                <icol id="icol25" desc="23" from="arr_25">
+                  <a align="center" className="ivu-first3"></a>
+                </icol>
+              </c>
+            </itable>
+          </c>
+        </div>
+      </c>
+    </div>
+  </ctrls>
+  <css>
+    <![CDATA[    
+    .ivu-table th{
+        background-color: rgba(1, 61, 83, 86) !important;
+        border-top: 1px solid #558a9b;
+    }
+    .ivu-table{
+        color: #bbf7ff;
+    }
+    .ivu-table td{
+        background-color: rgba(10, 44, 57,82);
+    }
+    .ivu-first{
+        background-color: rgba(1, 61, 83, 86) !important;
+        color: #bbf7ff !important;
+        writing-mode: vertical-rl;
+    }
+    .ivu-first2{
+        background-color: rgba(1, 61, 83, 86) !important;
+        color: #bbf7ff !important;        
+    }
+    .ivu-first3{
+        border-right: 1px dashed #1b99c0;        
+    }
+   th.ivu-first3 span{
+        word-break: break-word;
+        display: block;
+        width: 40px;
+        padding: 2px 0;        
+    }
+    .ivu-table-wrapper{
+        border: 1px solid #1b99c0;
+    }
+    .ivu-table-border td, .ivu-table-border th{
+        border-right: 1px solid #1b99c0;
+    }
+    .ivu-table td, .ivu-table th{
+        border-bottom: 1px solid #1b99c0;
+    }
+span{
+  font-size:18px;
+}
+    
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+          if(!this.gametime) this.gametime = "04";
+         this.dtime = [["周五","04"],["周六","05"],["周日","06"],["周一","07"],["周二","08"],
+                       ["周三","09"],["周四","10"],["周五","11"],["周六","12"],["周日","13"]];
+         this.day = ["04","05","06","07","08","09","10","11","12","13"];
+        ]]>
+        </value>
+      </list>
+      <list type="select" ds="ds_data"></list>
+      <list type="file" value="dcamatchtimeaj"></list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[this.resize();
+          $("thead .ivu-table-cell")[0].children[0].style="font-size:14px;";
+          $("thead .ivu-table-column-center")[0].rowSpan=2;
+          $(this.$el).find("thead")[0].children[1].style.display = "none"
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

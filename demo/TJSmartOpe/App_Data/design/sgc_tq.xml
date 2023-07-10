@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="23" desc="空白页">
+  <includes>
+    <![CDATA[/conn/jsfile/sgc/tq.js]]>
+  </includes>
+  <inits>
+    <init id="tm" desc="默认时间" type="request" arg="tm"></init>
+    <init id="type" desc="类型" arg="type" type="request"></init>
+    <init id="staid" desc="变电站id" arg="staid" type="request"></init>
+    <init id="towerid" desc="杆塔id" arg="towerid" type="request"></init>
+    <init id="srcid" desc="气象站id" arg="srcid" type="request"></init>
+    <init id="fsrcid" desc="预测气象站id" arg="fsrcid" type="request"></init>
+    <init id="defaultsrc" arg="DefaultWeatherSource" type="config"></init>
+  </inits>
+  <consts>
+    <const id="name" desc="显示的名称"></const>
+  </consts>
+  <datasources>
+    <datasource db="SGC" type="xml" desc="变电站" id="dsStation" node="SearchCommonSql:GetStationLocation">
+      <cols>
+        <col id="col_inputid" name="STAID" desc="输入ID" from="staid"></col>
+        <col id="col_id" name="ID" desc="ID"></col>
+        <col id="col_lat" name="LATITUDE" desc="LATITUDE"></col>
+        <col id="col_lon" name="LONGITUDE" desc="LONGITUDE"></col>
+        <col id="col_name" name="NAME" desc="变电站名"></col>
+        <col id="col_vol" name="VOLNAME" desc="电压等级"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsSource" desc="气象站" db="SGAPP" type="xml" node="sgc/tq:GetSourceByPosition">
+      <cols>
+        <col id="col_source_sta_lon" name="lon" from="col_lon"></col>
+        <col id="col_source_sta_lat" name="lat" from="col_lat"></col>
+        <col id="colSourceId" name="WEATHER_SOURCE_ID" desc="WEATHER_SOURCE_ID"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsFSource" desc="气象站" db="SGAPP" type="xml" node="sgc/tq:GetFSourceByPosition">
+      <cols>
+        <col id="col_source_sta_lon" name="lon" from="col_lon"></col>
+        <col id="col_source_sta_lat" name="lat" from="col_lat"></col>
+        <col id="colFSourceId" name="WEATHER_SOURCE_ID" desc="WEATHER_SOURCE_ID"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsTowerSource" desc="气象站" db="SGAPP" type="xml" node="sgc/tq:GetSourceByPosition">
+      <cols>
+        <col id="col_source_sta_lon" name="lon" from="colTowerLon"></col>
+        <col id="col_source_sta_lat" name="lat" from="colTowerLat"></col>
+        <col id="colSourceId1" name="WEATHER_SOURCE_ID" desc="WEATHER_SOURCE_ID"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsFTowerSource" desc="气象站" db="SGAPP" type="xml" node="sgc/tq:GetFSourceByPosition">
+      <cols>
+        <col id="col_source_sta_lon" name="lon" from="colTowerLon"></col>
+        <col id="col_source_sta_lat" name="lat" from="colTowerLat"></col>
+        <col id="colFSourceId1" name="WEATHER_SOURCE_ID" desc="WEATHER_SOURCE_ID"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsTower" desc="杆塔" db="SGC" type="xml" node="sgc/tq:GetTowerName">
+      <cols>
+        <col id="col_towerid" name="towerid" from="towerid"></col>
+        <col id="colTowerName" name="NAME" desc="NAME"></col>
+        <col id="colTowerLon" name="Lon"></col>
+        <col id="colTowerLat" name="Lat"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsSourceName" desc="气象站名称" db="SGAPP" type="xml" node="sgc/tq:GetSourceName">
+      <cols>
+        <col id="col_source_id" name="srcid" from="srcid"></col>
+        <col id="colSourceName" name="NAME" desc="NAME"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a s_height="100%" s_width="100%"></a>
+      <c>
+        <subfile>
+          <a file="/App_Data/design/sgc_tq_common"></a>
+          <sa tm="tm" showname="name" srcid="srcid" fsrcid="fsrcid"></sa>
+        </subfile>
+      </c>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.getGridName = function(m,id) { var grid = m.grids.dict[id];if (!grid) return "";return grid[1]; }
+          this.getDccName = function(m,id) { var dcc = m.dccs.dict[id];if (!dcc) return "";return dcc[1]; }
+          this.getVoltage = function(v,code) { var vol = v[code];return (vol ? vol.name : ""); }
+          this.fullLine = function(m) {
+            var lst = this.dsEffectLine;
+            var v = ProjectSGC.Voltage;
+            for (var i = 0;i < lst.length;i++) {
+              var row = lst[i];
+              var id = row[0];
+              var l = m.getLine(id);
+              if (!l) continue;
+              var gridid= l[ProjectSGC.LINE.GRID];
+              var dccid = l[ProjectSGC.LINE.DCC];
+              row[1] = gridid;
+              row[2] = dccid;
+              row[3] = this.getVoltage(v,l[ProjectSGC.LINE.VOLTAGE]);
+              row[4] = l[ProjectSGC.LINE.NAME];
+              row[5] = this.getGridName(m,gridid);
+              row[6] = this.getDccName(m,dccid);
+            }
+            lst.sort(function(x,y) { 
+              var v = Ysh.Compare.compareVoltage(x[3],y[3]);
+              if (v) return -v;
+              return Ysh.Compare.compare(x[4],y[4]);
+            });
+            this.dsEffectLine = lst;
+          }
+          this.searchEffect = function(m) {
+            ProjectSGC.require("voltage");
+          ]]>
+        </value>
+      </list>
+      <list type="select" ds="dsSourceName"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.fullLine(m);
+          this.name = this.colSourceName;
+          }
+          this.search = function() {
+          if (this.type=="station") {
+          ]]>
+        </value>
+      </list>
+      <list type="select" ds="dsStation"></list>
+      <list type="select" ds="dsSource"></list>
+      <list type="select" ds="dsFSource"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.srcid = this.colSourceId;
+          this.fsrcid = this.colFSourceId;
+          this.name = this.col_name;
+          }
+          if (this.type == "tower") {
+          ]]>
+        </value>
+      </list>
+      <list type="select" ds="dsTower"></list>
+      <list type="select" ds="dsTowerSource"></list>
+      <list type="select" ds="dsFTowerSource"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.srcid = this.colSourceId1;
+          this.fsrcid = this.colFSourceId1;
+          this.name = this.colTowerName;
+          }
+          if (this.type == "") {
+            this.type = "src";
+            this.srcid = this.defaultsrc;
+          }
+            if (this.type == "src") {
+              var m = ProjectSGC.Global.getMainObject("ModelList");
+              var _this = this;
+              m.require(["line","grid","dcc"],function() {_this.searchEffect(m);});
+            }
+          }
+          this.search();
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

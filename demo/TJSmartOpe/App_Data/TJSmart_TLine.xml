@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetTNodeInfo>
+    <![CDATA[select n.id,n.name,n.line_id,n.owner,n.running_state,n.tower_id,t.longitude,t.latitude,l.voltage_type
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_tnode_b n
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_b l on n.line_id=l.id
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_tower_b t on n.tower_id= t.id where t.longitude is not null
+]]>
+  </GetTNodeInfo>
+  <GetTLineInfo>
+    <![CDATA[
+    select * from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_tline_b {0} ]]>
+  </GetTLineInfo>
+  <GetTLineTower>
+    <![CDATA[    
+ select b.ID,a.TOWERNO AS TOWERNUM ,B.LONGITUDE,B.LATITUDE,a.Tower_Name as TowerName,0 AS VOLTAGE,a.TLINE_ID AS LINEID,a.OWNER,b.type  
+ from  ]]> 
+ <![CDATA[same:SearchCommonSql:SchemaName]]>
+ <![CDATA[sg_dev_tline_r_tower a
+left join ]]>
+ <![CDATA[same:SearchCommonSql:SchemaName]]>
+ <![CDATA[sg_dev_tower_b b on a.TOWER_ID = b.ID
+    ]]>
+  </GetTLineTower>
+  <GetTLineTowerInfoById>
+    <![CDATA[
+    select a.tower_id as ID,a.TOWERNO AS TOWERNUM ,B.LONGITUDE,B.LATITUDE,a.owner,a.tower_name as towername,b.type  
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_tline_r_tower a
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_tower_b b on a.TOWER_ID = b.ID
+WHERE tline_id = '{0}'
+    ]]>
+  </GetTLineTowerInfoById>
+  <DelStationTline>
+    <![CDATA[    
+    delete from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaPG]]>
+    <![CDATA[acline_dcline_info where gid like '1204%' and voltagetype={0};
+delete from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaPG]]>
+    <![CDATA[acline_dcline_direct_info where gid like '1204%' and voltagetype={0};
+    ]]>
+  </DelStationTline>
+</ROOT>
+

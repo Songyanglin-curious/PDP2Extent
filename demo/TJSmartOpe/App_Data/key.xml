@@ -1,0 +1,780 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <KeyFormat>
+    <b></b>
+    <l>
+      <![CDATA[
+      三江III线
+      三江III路
+      碴邵Ⅰ回线
+      安朝线
+      袁淮5329线
+      涿党线233      
+      伊冯甲线
+      31420河上Ⅱ线
+      嘉合2号线
+      店浦2X70线
+      110kV景祝8C7线
+      500kV白巴1号线
+      北京.昌怀二
+      安庆#2线7F8
+      惠沙8407
+      军凤一
+      ]]>
+    </l>
+    <zhub name="主变">
+      #(\d)主变(?:压器)([ABCO])相
+      #1联络变A相
+      #1主变A相
+      #1主变压器A相
+      #2联络变A相
+      #2主变压器A相
+      #3主变A相
+      #3主变压器A相
+      #4主变压器A相
+      1#主变A相
+      1000kV#1主变A相
+      1000kV#2主变A相
+      1号联络变压器A相
+      1号主变A相
+      1号主变（新）A相
+      1号主变压器A相
+      2#主变A相
+      2号A相主变压器
+      2号联络变压器A相
+      2号主变A相
+      2号主变（新）A相
+      2号主变压器A相
+      3#主变A相
+      3号A相主变压器
+      3号主变A相
+      3号主变压器A相
+      4号主变A相
+      4号主变压器A相
+      5号主变压器B相
+    </zhub>
+    <zyb name="所用变，站用变">
+      01号所用变压器
+      1号所用变压器
+      0号所用变压器
+      2号所用变压器
+      2#所用变压器
+      0#所用变压器
+      610站用变压器
+      620站用变压器
+      2号高压站用变压器
+      1号低压站用变压器
+      2号低压站用变压器
+      35kV#0站用变压器
+      35kV#1站用变压器
+      1号站用变压器
+      0号高压站用变350B
+      0号所用变
+      0号站用变
+      1#站用变
+      110kV 111B站用变
+      110kV 112B站用变
+      110kV 111B站用变
+      110kV 112B站用变
+      110kV 1号高压站用变111B
+      110kV 2号高压站用变112B
+      110kV#1站变用变压器111B
+      110kV111B站用变
+      110kV112B站用变
+      111B站变
+      111B站用变
+      112B站变
+      112B站用变
+      1号低压站用变
+      1号高压站用变111B
+      1号耗能变压器
+      1号所用变
+      1号站用变
+      2#站用变
+      2号低压站用变
+      2号高压站用变112B
+      2号耗能变压器
+      2号所用变
+      2号站用变
+      35kV 0号低压站用变30B
+      35kV 1号低压站用变31B
+      35kV 2号低压站用变32B
+      35kV#0站用变
+      35kV#1站用变
+      35kV#2站用变
+      35kV0号所用变
+      35kV1号所用变
+      35kV1号站用变3011 1号所用变
+      35kV2号所用变
+      35kV2号站用变3021 2号所用变
+      3号低压站用变
+      3号所用变
+      4号低压站用变
+      丙1站用变（极2阀冷站用变）
+      丙2站用变（极2阀冷站用变）
+      电热变压器
+      丁1站用变（极1阀冷站用变）
+      丁2站用变（极1阀冷站用变）
+      甲1站用变（公用站用变）
+      甲2站用变（公用站用变）
+      戊1站用变（极1站用变）
+      戊2站用变（极1站用变）
+      乙1站用变（极2站用变）
+      乙2站用变（极2站用变）
+    </zyb>
+    <hlb name="换流变">
+      #1换流变C相
+      #1换流变B相
+      #1换流变A相
+      #2换流变C相
+      #2换流变A相
+      #2换流变B相
+    </hlb>
+  </KeyFormat>
+  <Match>
+    <sc>
+      <save>UPDATE YS_DB.YSH_GUD_MATCH SET V1={1},V2={2} WHERE ID={0}</save>
+      <byq type="text" datatype="2d" sep=" ">
+        #(\d)主变(?:压器){0,}([ABCO])相
+        (\d)[号#]主变(?:压器){0,}([ABCO])相
+        #(\d)联络变(?:压器){0,}([ABCO])相
+        (\d)[号#]联络变(?:压器){0,}([ABCO])相
+        (\d)[号#]([ABCO])相主变(?:压器){0,}
+      </byq>
+      <dlq type="text" datatype="2d" sep=" ">
+        ^(\d{2,}[甲乙]*)\s*(?:开关|断路器|分段断路器|母联断路器|联络断路器|旁路断路器)
+        (\d{2,})(DR|DK)(?:开关|断路器|旁路断路器)
+        (?:线|变|侧|变压器|串|抗|联络|组|器|母线分段|串补|旁路|母联|低容|分段|间隔)\s*(\d{2,}[甲乙]*)\s*(?:开关|断路器|分段断路器|母联断路器|联络断路器)
+        (T\d{2,})[开关|断路器]
+      </dlq>
+      <dz type="text" datatype="2d" sep=" ">
+        ^(\d{1,}[甲乙A]*-\d{1,}[甲乙A]*\d*)$
+        ^(\d{1,}[甲乙A]*-\d{1,}[甲乙A]*\d*)(?:母联|分段|旁路)*(?:隔离开关|高压隔离开关|刀闸|接地刀闸|接地开关)
+        (?:线|变|侧|变压器|串|抗|联络|组|器|母线分段|串补|旁路|母联|低容|分段|间隔)(\d{1,}[甲乙A]*-\d{1,}[甲乙A]*\d*)(?:母联|分段|旁路)*(?:隔离开关|刀闸|接地刀闸|接地开关)
+        ^(T{0,1}\d{1,})(?:母联|分段|旁路)*(?:隔离开关|高压隔离开关|刀闸|接地刀闸|接地开关)
+      </dz>
+      <mx type="text" datatype="2d" sep=" ">
+        ^\d{1,}kV-{0,1}#{0,1}(\d{1}[甲乙AB])M*母线$
+        ^\d{1,}kV\s*#{0,1}(\d{1}[甲乙AB])M*母线$
+        ^\d{1,}kV[-#](\d{1})M*母线$
+        ^(\d{1})[号#]母线$
+        ^\d{1,}kV(\d{1})[号#]([甲乙])母线$
+        ^\d{1,}kV#{0,1}(\d{1})号{0,1}(?:汇流)*母线$
+      </mx>
+    </sc>
+    <dd>
+      <save>UPDATE YS_DB.YSH_GUD_JXT SET V1={1},V2={2} WHERE ID={0}</save>
+      <byq type="text" datatype="2d" sep=" ">
+        (\d)#(?:主变|变压器|耗能变压器|换流变压器|联络变压器)-([高中低])
+        #(\d)(?:主变|变压器|耗能变压器|换流变压器|联络变压器)-([高中低])
+      </byq>
+      <dlq type="text" datatype="2d" sep=" ">
+        ^(\d{1,})开关
+        ^(\d{1,}[甲乙])开关
+        ^(\d{1,})(DR|DK)开关
+        线(\d{1,})开关
+        ^(T\d{1,})开关
+        (\d{1,})开关
+      </dlq>
+      <dz type="text" datatype="2d" sep=" ">
+        ^(\d{1,}[甲乙A]*-\d{1,}[甲乙A]*\d*)$
+        ^(\d{1,}[甲乙A]*-\d{1,}[甲乙A]*\d*)(?:母联|分段|旁路)*(?:隔离开关|高压隔离开关|刀闸|接地刀闸|接地开关)
+        (?:线|变|侧|变压器|串|抗|联络|组|器|母线分段|串补|旁路|母联|低容|分段|间隔)(\d{1,}[甲乙A]*-\d{1,}[甲乙A]*\d*)(?:母联|分段|旁路)*(?:隔离开关|刀闸|接地刀闸|接地开关)
+        ^(T{0,1}\d{1,})(?:母联|分段|旁路)*(?:隔离开关|高压隔离开关|刀闸|接地刀闸|接地开关)
+      </dz>
+      <mx type="text" datatype="2d" sep=" ">
+        ^[#|＃]{0,1}(\d{1}[甲乙AB]*)母线
+        ^(\d{1})[#|＃]母线
+        ^(\d{1}[甲乙AB])[#|＃]{0,1}母线
+      </mx>
+    </dd>
+    <fac>
+      <s>UPDATE YS_DB.YSH_GUD_FACTORY SET ABBR=NVL({1},'')||NVL({2},'') WHERE NAME={0}</s>
+      <m type="text" datatype="2d" sep=" ">
+        ^(\S{3,6})(?:电器|电力器材|电气设备|电气|电气工程|电工电气|成套电器)（\S*）(?:有限){0,1}公司$
+        ^(\S{3,6})（\S*）(?:电器|电力器材|电气设备|电气|电气工程|电工电气|成套电器)(?:有限){0,1}公司$
+        ^(\S{3,6})(?:集团有限公司|电力新材料股份有限公司|电力制造有限公司|输变电设备工程有限公司|集团股份有限公司|电器股份有限公司|高压电气开关有限公司|电力设备股份有限公司|电力设备有限公司|特种电器有限公司|科技有限公司)$
+        ^(\S{2,6})(互感器|真空开关|铁塔|电气|变压器|避雷器|电容器)(?:制造|股份|科技)?(?:有限)?(?:责任)?(?:公司)$
+        ^(\S{2,6})(开关)(?:制造|股份|科技)?(?:有限)?(?:责任)?(?:公司)$
+        ^(\S{2,6})成套(?:电器|设备)(?:有限){0,1}公司$
+        ^(\S{0,6})(?:电器|电力器材|电气设备|电气工程|电工电气)(?:有限){0,1}公司$
+        ^(\S{0,6})(高压)(?:电器)?设备厂$
+        ^(\S{0,6})(电器)设备厂$
+        ^(\S{0,6})(电力)设备总?厂$
+        ^(\S{0,6})设备(电力)总厂$
+        ^(\S{0,6})高压(开关)厂$
+        ^(\S{0,6})特种(变压器)厂$
+        ^(?:国营)?(\S{0,6})(开关|变压器|电缆|互感器|铁塔|避雷器|电容器|电瓷|机电)总?厂$
+        ^(\S{0,6})(电瓷)电器厂$
+        ^(\S{2,4})（\S*）(?:股份|制造)?有限公司$
+        ^(\S{2,4})(?:股份|制造)?有限公司$
+      </m>
+    </fac>
+    <temp>
+      <![CDATA[
+      INSERT INTO YS_DB.TMANAGEDEVICE (DEVICESTRID, DEVICENAME, STATE, HASPOWER)
+      SELECT dd.ID,dd.NAME,1,1 FROM
+      WHERE dd.ID NOT IN (SELECT DEVICESTRID FROM YS_DB.TMANAGEDEVICE)
+      
+      INSERT INTO YS_DB.YSH_GUD_DEVICE (JXT_ID,SANWEI_ID,ZC_ID)
+      SELECT dd.ID,sc.NUM,sc.ID
+      WHERE dd.ID NOT IN (SELECT JXT_ID FROM YS_DB.YSH_GUD_DEVICE)
+      
+      UPDATE YS_DB.YSH_GUD_DEVICE A SET A.ZC_ID=D.ID
+FROM YS_DB.YSH_SC_DEVICE d WHERE A.SANWEI_ID=d.col12
+AND A.ZC_ID IS NULL
+
+      SELECT sc.ID,sc.NUM,sc.NAME,dd.ID,dd.NAME 
+      FROM YS_DB.YSH_GUD_MATCH sc JOIN YS_DB.YSH_GUD_JXT dd 
+      ON sc.V1=dd.V1 AND sc.type='隔离开关' AND dd.TYPENAME LIKE '%刀闸' AND REPLACE(sc.ST,'站','')=REPLACE(dd.STATION,'站','')
+      
+      ALERT_TIME,DEVICE_ID,MSG_TYPE,MSG_CONTENT,ALERT_LEVEL FROM YS_DB.YSH_ALERT_MSG
+      SELECT TOP 10 TIMESTAMP,d.device_id,'乙炔告警','乙炔浓度达到'||C2H2,1 FROM HISDB.OIL_CHROMATOGRAM_INFO i JOIN YS_DB.SENSOR_INFO_R d ON i.SENSOR_ID=d.SENSOR_ID WHERE C2H2>=1
+      
+      SELECT z.ASSETS_NAME,z.STATION_LINE,d.col0,d.id FROM YS_DB.YSH_SC_GDZC z
+      JOIN YS_DB.YSH_SC_DEVICE d ON z.ASSETS_NAME=d.col3 AND d.col0 LIKE '%.'||z.STATION_LINE
+      WHERE z.ASSETS_CATEGORY LIKE '变电%' and z.ID IS NULL
+      ]]>
+    </temp>
+  </Match>
+  <GenerateKeys>
+    <fac>
+      <groups></groups>
+    </fac>
+    <m desc="量测类型">
+      <groups>
+        <group value="">
+          <![CDATA[^$]]>
+        </group>
+      </groups>
+    </m>
+    <grid desc="电网" value="{0},{0}{1}">
+      <groups>
+        <group name="名字(两个+汉字)+电网">
+          <![CDATA[^(\S{2,})(电网)$]]>
+        </group>
+        <group name="">
+          <![CDATA[^(\S{2,})$]]>
+        </group>
+        <group value="{0}县,{0}县电网">
+          <![CDATA[^(\S{1})$]]>
+        </group>
+      </groups>
+    </grid>
+    <dd desc="调度" value="{0},{0}{1}">
+      <alias>
+        <a name="民族"><![CDATA[(?:藏族|蒙古族|蒙古|土家族|土族|回族|苗族|哈萨克|瑶族|侗族|撒拉族|羌族|彝族|满族|朝鲜族|达斡尔族)]]></a>
+      </alias>
+      <groups>
+        <group value="{0}" name="国调">
+          <![CDATA[^(国调)$]]>
+        </group>
+        <group name="名字+类型+'调'">
+          <![CDATA[^(\S{2,})([市区省中州旗]调)$]]>
+        </group>
+        <group name="名字+'分中心'">
+          <![CDATA[^(\S{2})(分中心)$]]>
+        </group>
+        <group name="名字+'民族'+[自治州]">
+          <![CDATA[^(\S{2,}?)民族{1,}自治州?([地县配]调)$]]>
+        </group>
+        <group>
+          <![CDATA[^(\S{2,})(?:自治){0}([地县配]调)$]]>
+        </group>
+        <group value="{0}">
+          <![CDATA[^(\S{2,}?)市?电力调$]]>
+        </group>
+        <group value="{0}县">
+          <![CDATA[^(\S{1,})县调?$]]>
+        </group>
+        <group value="{0}">
+          <![CDATA[^(\S{2,}?)民族{1,}自治州$]]>
+        </group>
+        <group value="{0}">
+          <![CDATA[^(\S{2,})地区$]]>
+        </group>
+        <group value="{0}">
+          <![CDATA[^(\S{2,}?)新?区$]]>
+        </group>
+      </groups>
+    </dd>
+    <v desc="电压等级">
+      <groups>
+        <group value="{0}kV,{0}千伏">
+          <![CDATA[(\d{1,}\.\d{1,}|\d{1,})[kK][vV]]]>
+        </group>
+        <group value="{0}V,{0}伏">
+          <![CDATA[(\d{1,}\.\d{1,}|\d{1,})[vV伏]]]>
+        </group>
+        <group value="{0}kV,{0}千伏">
+          <![CDATA[(\d{1,}\.\d{1,}|\d{1,})千伏]]>
+        </group>
+      </groups>
+    </v>
+    <b desc="开关" value="{0}开关,{0}断路器">
+      <alias>
+        <a name="汉字">[^A-Za-z0-9]</a>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+      </alias>
+      <groups>
+        <group eg="1278古新2开关">
+          <![CDATA[^(\d{3,})汉字{1,}\d(?:开关|断路器)$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\d{2,})(?:开关|断路器)$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(T\d{2,})(?:开关|断路器)$]]>
+        </group>
+        <group>
+          <![CDATA[汉字(\d{3,})(?:开关|断路器)$]]>
+        </group>
+        <group>
+          <![CDATA[汉字(\d{3,})$]]>
+        </group>
+      </groups>
+    </b>
+    <l desc="线路" value="{0},{0}{1},{0}{1}线" index="1" format="n" defined="(?:\d{1,3}(?:[kK][vV]|千伏))">
+      <nouse>
+        <n><![CDATA[[\(（].*[\)）]]]></n>
+      </nouse>
+      <alias1>
+        <a name="罗马数字">ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ</a>
+        <a name="线路数字">\s{0,}(三|I{3}|Ⅲ|二|I{2}|Ⅱ|四|IV|Ⅳ|五|V|Ⅴ|一|I{1}|Ⅰ)\s{0,}</a>
+      </alias1>
+      <alias>
+        <a name="线路名称">([^线A-Za-z0-9ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ甲乙丙#＃\s]{2,3}?)</a>
+        <a name="线路序号">\s{0,}#?(三|I{3}|Ⅲ|二|I{2}|Ⅱ|四|IV|Ⅳ|五|V|Ⅴ|一|I{1}|Ⅰ|1|2|3|4|5|6|六|东|西|南|北|甲|乙|丙)#?\s{0,}</a>
+        <a name="线路编码">(?:[0-9a-zA-Z]{3,})?</a>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+      </alias>
+      <groups>
+        <group value="不要" idxcount="0">
+          <![CDATA[备用|分支|待用|T接]]>
+        </group>
+        <group remark="特高压直流" value="{0},{0}直流,{0}{1},{0}直流{1},{0}极{1},{0}直流极{1}" index="1" format="n">
+          <![CDATA[^线路名称直流极线路序号$]]>
+        </group>
+        <group remark="特高压直流" value="{0},{0}直流,{0}{1},{0}直流{1},{0}极{1},{0}直流极{1}" index="1" format="n">
+          <![CDATA[^线路名称直流极线路序号线路$]]>
+        </group>
+        <group remark="名字+序号+回线" value="{0},{0}{1},{0}{1}线,{0}{1}回">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线路序号回线$]]>
+        </group>
+        <group remark="名字+序号+号线">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线路序号号线$]]>
+        </group>
+        <group remark="名字+序号+[路回]" value="{0},{0}{1},{0}{1}{2}">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线路序号([路回])$]]>
+        </group>
+        <group remark="名字+序号+线">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线路序号线$]]>
+        </group>
+        <group remark="名字线" value="{0},{0}线">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线$]]>
+        </group>
+        <group remark="序号+名字线" value="{1},{1}{0},{1}{0}线" index="0" format="n">
+          <![CDATA[^(?:.*\.)?电压等级?线路序号线路名称线$]]>
+        </group>
+        <group remark="名字+序号+[号]线+编码">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线路序号号?线线路编码$]]>
+        </group>
+        <group remark="名字+线+编码" value="{0},{0}线">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线线路编码$]]>
+        </group>
+        <group remark="名字+编码+[线]" value="{0},{0}线">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线路编码线?$]]>
+        </group>
+        <group remark="名字+序号+编码+[线]">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线路序号线路编码线?$]]>
+        </group>
+        <group remark="+编码+名字+序号+回" value="{0},{0}{1},{0}{1}线,{0}{1}回">
+          <![CDATA[^(?:.*\.)?电压等级?线路编码线路名称线路序号回$]]>
+        </group>
+        <group remark="+编码+名字+序号+线">
+          <![CDATA[^(?:.*\.)?电压等级?线路编码线路名称线路序号线$]]>
+        </group>
+        <group remark="+编码+名字+线" value="{0},{0}线">
+          <![CDATA[^(?:.*\.)?电压等级?线路编码线路名称线$]]>
+        </group>
+        <group remark="名字+序号+号+编码+线">
+          <![CDATA[^(?:.*\.)?电压等级?线路名称线路序号号线路编码线$]]>
+        </group>
+        <group remark="变电站+编码+名字+序号+线">
+          <![CDATA[变线路编码线路名称线路序号线$]]>
+        </group>
+        <group remark="变电站+编码+名字+线" value="{0},{0}线">
+          <![CDATA[变线路编码线路名称线$]]>
+        </group>
+      </groups>
+    </l>
+    <dl desc="直流线路">
+      <alias>
+        <a name="线路名称">([^线A-Za-z0-9ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫ甲乙丙#＃\s]{2,3}?)</a>
+        <a name="线路序号">\s{0,}#?(三|I{3}|Ⅲ|二|I{2}|Ⅱ|四|IV|Ⅳ|五|V|Ⅴ|一|I{1}|Ⅰ|1|2|3|4|5|6|六|东|西|南|北|甲|乙|丙)#?\s{0,}</a>
+        <a name="线路编码">(?:[0-9a-zA-Z]{3,})?</a>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+      </alias>
+      <groups>
+        <group remark="特高压直流" value="{0},{0}直流,{0}{1},{0}直流{1},{0}极{1},{0}直流极{1}" index="1" format="n">
+          <![CDATA[^线路名称直流极线路序号$]]>
+        </group>
+        <group remark="特高压直流" value="{0},{0}直流,{0}{1},{0}直流{1},{0}极{1},{0}直流极{1}" index="1" format="n">
+          <![CDATA[^线路名称直流极线路序号线路?$]]>
+        </group>
+        <group remark="特高压直流" value="{0},{0}直流,{0}{1},{0}直流{1},{0}极{1},{0}直流极{1}" index="1" format="n">
+          <![CDATA[^线路名称极线路序号$]]>
+        </group>
+        <group remark="特高压直流" value="{0},{0}直流,{0}{1},{0}直流{1},{0}极{1},{0}直流极{1}" index="1" format="n">
+          <![CDATA[^线路名称极线路序号线路?$]]>
+        </group>
+      </groups>
+    </dl>
+    <bus desc="母线" value="{0}母" index="0" format="n">
+      <alias>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[^([东西南北正副付旁])母{1,2}线{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[^([东西南北])母([东西南北])段(?:母线){0,}$]]>
+        </group>
+        <group>
+          <![CDATA[^([ⅠⅡⅢⅣ])([AB])(?:段){0,1}母{0,1}(?:母线){0,}$]]>
+        </group>
+        <group>
+          <![CDATA[^([ⅠⅡⅢⅣ12一二]|I{1,3}|IV)(?:段){0,1}母{1,2}线{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[^#{0,1}(\d{1,})M{0,1}母{0,1}线{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[电压等级([东西南北正副付旁])母{1,2}线{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[电压等级([ⅠⅡⅢⅣ12一二]|I{1,3}|IV)(?:段){0,1}母{1,2}线{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[电压等级([东西南北])母([东西南北])段母{0,1}(?:母线){0,}$]]>
+        </group>
+        <group>
+          <![CDATA[电压等级([ⅠⅡⅢⅣ])([AB])(?:段){0,1}母线{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[电压等级#{0,1}(\d{1,})M{0,1}母{0,1}线{0,1}$]]>
+        </group>
+      </groups>
+    </bus>
+    <g desc="机组" value="{0}G">
+      <alias>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[^#{0,1}(\d{1,})#{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[^(\d{1,})号(?:发电){0,1}机组{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[^#(\d{1,})(?:发电){0,1}机[组群]{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[^(\d{1,})#(?:发电){0,1}机组{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[^(\d{1,})号[风燃]机组{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[^#(\d{1,})[风燃]电{0,1}机组{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[^(\d{1,})#[风燃]机组{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[^风机(\d{1,})$]]>
+        </group>
+        <group>
+          <![CDATA[厂电压等级?(\d{1,})号(?:发电){0,1}机组{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[厂电压等级?#(\d{1,})(?:发电){0,1}机组{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[厂电压等级?(\d{1,})#(?:发电){0,1}机组{0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[[厂场]/{0,1}(\d{1,})#{0,1}风机$]]>
+        </group>
+        <group>
+          <![CDATA[[厂场]/{0,1}风机(\d{1,})$]]>
+        </group>
+      </groups>
+    </g>
+    <t desc="变压器" value="{0}号主变,{0}号变,{0}T,{0}#主变,{0}#变,{0}#T,#{0}主变,#{0}变,#{0}T">
+      <alias>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+        <a name="变压器标志">主|联|站用|所用|所内|机端|升压|高厂|高备|启备|箱|接地|整流|调压|调|所|站|厂用|发电|负荷|辅助|励磁|调压整流|汽机主|燃机主|高公|启动|动力|高辅</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[[#＃](\d{1,})((?:变压器标志)变)(?:压器){0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[(\d{1,})[#＃号B]((?:变压器标志)变)(?:压器){0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[[#＃](\d{1,})B{0,1}变(?:压器){0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[(\d{1,})[#＃号]变(?:压器){0,1}$]]>
+        </group>
+        <group>
+          <![CDATA[(\d{1,})B(?:变压器)?$]]>
+        </group>
+        <group>
+          <![CDATA[(\d{1,})((?:变压器标志)变)(?:压器){0,1}$]]>
+        </group>
+      </groups>
+    </t>
+    <s desc="变电站" value="{0},{0}变,{0}站">
+      <nouse>
+        <n><![CDATA[[\(（].*[\)）]]]></n>
+      </nouse>
+      <alias>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+        <a name="汉字">[^A-Za-z0-9]</a>
+        <a name="前缀">(?:.*\.){0,1}</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[^前缀电压等级?([^A-Za-z0-9]{2})$]]>
+        </group>
+        <group value="{0},{0}电铁站,{0}牵引站,{0}电铁牵引站">
+          <![CDATA[^前缀电压等级?([^A-Za-z0-9]{2,})电铁牵引(?:站|变|变电站)?$]]>
+        </group>
+        <group value="{0},{0}{1},{0}{1}站">
+          <![CDATA[^前缀电压等级?([^A-Za-z0-9]{2,})(换流|牵引|电铁|开闭|升压)(?:站|变|变电站)?$]]>
+        </group>
+        <group>
+          <![CDATA[^前缀电压等级?([^A-Za-z0-9]{2,})电压等级?变电站$]]>
+        </group>
+        <group value="{0},{0}{1}">
+          <![CDATA[^前缀电压等级?([^A-Za-z0-9]{2,})电压等级?(用户站|开闭所|配电站|配电室)$]]>
+        </group>
+        <group value="{0},{0}站,{0}开关站">
+          <![CDATA[^前缀电压等级?([^A-Za-z0-9]{2,})开关[站变]$]]>
+        </group>
+        <group>
+          <![CDATA[^前缀电压等级?([^A-Za-z0-9]{2,})电压等级?[站变]$]]>
+        </group>
+        <group>
+          <![CDATA[^前缀电压等级?(汉字{3,})$]]>
+        </group>
+        <group>
+          <![CDATA[^前缀.*电压等级([^A-Za-z0-9]{2,})电压等级?变电站$]]>
+        </group>
+      </groups>
+    </s>
+    <ht desc="火电" value="{0}">
+      <alias>
+        <a name="汉字">[^A-Za-z0-9]</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[^(\S{2})[火热发]电厂$]]>
+        </group>        
+      </groups>
+    </ht>
+    <nu desc="核电" value="{0}">
+      <groups>
+        <group>
+          <![CDATA[^(\S{2,})核电厂?$]]>
+        </group>
+        <group>
+          <![CDATA[^(\S{2,})厂$]]>
+        </group>
+      </groups>
+    </nu>
+    <wf desc="风电" value="{0}">
+      <alias>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+        <a name="前缀">(?:.*公司)</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[^前缀(\S{2,})(?:风力发电厂|风电场|风电|风场|风电厂|风厂|风电变电站)\*?$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})(?:风力发电厂|风电场|风电|风场|风电厂|风厂|风电变电站)\*?$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})厂$]]>
+        </group>
+      </groups>
+    </wf>
+    <hy desc="水电" value="{0}">
+      <nouse>
+        <n><![CDATA[[\(（].*[\)）]]]></n>
+      </nouse>
+      <alias>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+        <a name="前缀">(?:.*公司)</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[前缀(\S{2,})(?:发电厂|水电站|发电|水电厂|水力发电厂)$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})水电[厂站]?$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,}?)电压等级?电站厂?$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})水力发电厂?$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})发电厂?$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})水[厂站]$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})电厂$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})厂$]]>
+        </group>
+      </groups>
+    </hy>
+    <pv desc="光伏">
+      <nouse>
+        <n><![CDATA[[\(（].*[\)）]]]></n>
+      </nouse>
+      <alias>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})光伏(?:厂|站|电|电站|变电站|电厂)?$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})电站$]]>
+        </group>
+      </groups>      
+    </pv>
+    <ps desc="抽水蓄能电站" value="{0},{0}电厂,{0}抽蓄电厂,{0}抽水蓄能电厂">
+      <groups>
+        <group>
+          <![CDATA[^(\S{2,})抽水?蓄能?电?厂$]]>
+        </group>
+        <group>
+          <![CDATA[^(\S{2,})电厂$]]>
+        </group>
+        <group>
+          <![CDATA[^(\S{2,})厂$]]>
+        </group>
+        <group>
+          <![CDATA[^(\S{2,})(?:抽水|电|泵)站$]]>
+        </group>
+        <group>
+          <![CDATA[^(\S{2,3})$]]>
+        </group>
+      </groups>
+    </ps>
+    <ss desc="开关站" value="{0},{0}开关站,{0}开闭站">
+      <nouse>
+        <n><![CDATA[[\(（].*[\)）]]]></n>
+      </nouse>
+      <alias>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+        <a name="前缀">(?:.*\.){0,1}</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})(?:开关|变电|开闭)站$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})(?:开闭|变|站)$]]>
+        </group>
+      </groups>
+    </ss>
+    <ts desc="牵引站" value="{0}变,{0}站,{0}牵,{0}牵引站,{0}牵引变">
+      <nouse>
+        <n><![CDATA[[\(（].*[\)）]]]></n>
+      </nouse>
+      <alias>
+        <a name="电压等级">(?:\d{1,3}(?:[kK][vV]|千伏))</a>
+        <a name="汉字">[^A-Za-z0-9]</a>
+        <a name="前缀">(?:.*\.){0,1}</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[.*铁路(\S{2,})牵引[站变]?$]]>
+        </group>
+        <group>
+          <![CDATA[^电压等级?(\S{2,})牵引[站变]?$]]>
+        </group>
+        <group>
+          <![CDATA[^(\S{2,})牵变?$]]>
+        </group>
+        <group>
+          <![CDATA[^(\S{2,})[变站]$]]>
+        </group>
+      </groups>      
+    </ts>
+    <sc desc="串补站"></sc>
+    <cs desc="换流站" value="{0}">
+      <alias>
+        <a name="汉字">[^A-Za-z0-9]</a>
+        <a name="前缀">(?:.*\.){0,1}</a>
+      </alias>
+      <groups>
+        <group>
+          <![CDATA[^前缀(\S{3,})换流站$]]>
+        </group>
+        <group>
+          <![CDATA[^前缀(\S{2,})换流站$]]>
+        </group>
+      </groups>
+    </cs>
+    <gs desc="直流接地站"></gs>
+    <signal>
+      <nouse>
+        <n><![CDATA[[\(（].*[\)）]]]></n>
+      </nouse>
+      <groups>
+        <group value="{0}">
+          <![CDATA[]]>
+        </group>
+      </groups>
+    </signal>
+    <section desc="断面" value="{0}">
+      <groups>
+        <group name="名字(两个+汉字)+断面">
+          <![CDATA[^(\S{2,})(断面)$]]>
+        </group>
+        <group name="">
+          <![CDATA[^(\S{2,})$]]>
+        </group>
+      </groups>
+    </section>
+    <temp>
+      <group>
+        <![CDATA[^\d#[主联]{0,1}变(?:压器){0,1}$]]>
+      </group>
+      <group>
+        <![CDATA[^\d号[主联]{0,1}变(?:压器){0,1}$]]>
+      </group>
+      <group>
+        <![CDATA[/#\d[主联]{0,1}变(?:压器){0,1}$]]>
+      </group>
+      <group>
+        <![CDATA[/\d#[主联]{0,1}变(?:压器){0,1}$]]>
+      </group>
+    </temp>
+  </GenerateKeys>
+</ROOT>

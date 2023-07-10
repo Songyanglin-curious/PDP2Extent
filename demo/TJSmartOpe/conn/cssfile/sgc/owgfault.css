@@ -1,0 +1,41 @@
+.oftop {
+    padding-top: 6px;
+    padding-left: 20px;
+}
+
+.ofhr {
+    width: 405px;
+    margin-top: 6px;
+    border-top: 2px solid #908e8e;
+    text-align: center;
+    margin-left: 15px;
+    opacity: 0.7;
+    border-bottom: none;
+}
+
+.oflabel {
+    font-size: 14px;
+    color: #fff;
+}
+
+div.offbac > span, div.offbac > a > span {
+    padding: 5px 7px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.ofitem {
+    margin-bottom: 2px;
+}
+
+    .ofitem:hover {
+        background-color: rgba(79,129,133,0.6) !important; /*#4f8185*/
+    }
+
+    .ofitem:nth-child(odd) {
+        background-color: rgba(54,73,71,0.6); /*#364947*/
+    }
+
+    .ofitem:nth-child(even) {
+        background-color: rgba(73,91,89,0.6); /*#495b59*/
+    }

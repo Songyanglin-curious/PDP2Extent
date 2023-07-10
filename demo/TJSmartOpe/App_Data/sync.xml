@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <line db="SGC" all="sync:line/All" time="sync:line/Time">
+    <Main>
+      <![CDATA[
+      SELECT L.ID,L.NAME,I.LONGITUDE_TOWER,LATITUDE_TOWER,LONGITUDE_STA,LATITUDE_STA,L.DISPATCH_ORG_ID,L.GRID_ID,L.VOLTAGE_TYPE,L.START_ST_ID,L.END_ST_ID,L.OPERATE_DATE,L.RUNNING_STATE,L.LENGTH,SUBSTR(L.STAMP,LENGTH(L.STAMP)-18,19)
+      FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_ACLINE_B L LEFT JOIN ]]>
+      <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+      <![CDATA[YSH_LINE_INFO I ON L.ID=I.ID {0}
+      UNION ALL 
+      SELECT L.ID,L.NAME,I.LONGITUDE_TOWER,LATITUDE_TOWER,LONGITUDE_STA,LATITUDE_STA,L.DISPATCH_ORG_ID,L.GRID_ID,L.VOLTAGE_TYPE,L.START_ST_ID,L.END_ST_ID,L.OPERATE_DATE,L.RUNNING_STATE,L.LENGTH,SUBSTR(L.STAMP,LENGTH(L.STAMP)-18,19)
+      FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINE_B L LEFT JOIN ]]>
+      <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+      <![CDATA[YSH_LINE_INFO I ON L.ID=I.ID {0}]]>
+    </Main>
+    <All>
+      <![CDATA[same:sync:line/Main:]]>
+    </All>
+    <Time>
+      <![CDATA[same:sync:line/Main:WHERE SUBSTR(L.STAMP,LENGTH(L.STAMP)-18,19)>{0}]]>
+    </Time>
+  </line>
+  <PLANTSTATIONVOLTAGE db="SGC" all="sync:PLANTSTATIONVOLTAGE/All">
+    <All>
+      <![CDATA[same:SearchCommonSql:GetPlantStationVoltage]]>
+    </All>
+  </PLANTSTATIONVOLTAGE>
+  <STATE db="SGC" all="sync:STATE/All">
+    <All>
+      <![CDATA[same:SearchCommonSql:GetStateList]]>
+    </All>
+  </STATE>
+  <DEPT type="dll" all="SGCLib:SGCLib.DeptHelper.GetDeptInfo">
+  </DEPT>
+  <GRID type="dll" all="SGCLib:SGCLib.DeptHelper.GetDeptInfo">
+  </GRID>
+  <ZONEPLANT db="SGC" all="sync:ZONEPLANT/All">
+    <All>
+      <![CDATA[    
+    SELECT A.ID,A.NAME,E.NAME AS VOLNAME,C.CAPACITY,D.ID AS GRIDID,D.NAME AS GRIDNAME,F.ID AS COMPANYID,F.NAME_ABBREVIATION AS COMPANYNAME,B.ID AS DCCID,B.NAME_ABBREVIATION AS DCCNAME,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE
+    FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PLANT_B AS A 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_DCC_B AS B ON A.DCC_ID=B.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PLANT_S AS C ON A.ID=C.ID AND C.VOLTAGE_TYPE=9999 AND C.STATE_CODE=1003
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PWRGRID_B AS D ON A.CONNECTIVE_PG_ID=D.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_COMPANY_B AS F ON A.COMPANY_ID=F.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_VOLTAGETYPE AS E ON A.MAX_VOLTAGE_TYPE=E.CODE
+    ORDER BY A.ID
+    ]]>
+    </All>
+  </ZONEPLANT>
+  <ZONESTATION db="SGC" all="sync:ZONESTATION/All">
+    <All>
+      <![CDATA[
+    SELECT * FROM (
+    SELECT A.ID,A.NAME AS STNAME,E.NAME AS VOLTAGE,C.transformation_capacity AS CAPACITY,D.ID AS GRIDID,D.NAME AS GRIDNAME,B.ID AS DCCID,B.NAME_ABBREVIATION AS DCCNAME,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE
+    FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_SUBSTATION_B AS A 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_DCC_B AS B ON A.DCC_ID=B.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_SUBSTATION_S AS C ON A.ID=C.ID AND C.VOLTAGE_TYPE=9999 AND C.STATE_CODE=1003
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PWRGRID_B AS D ON A.PG_ID=D.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_VOLTAGETYPE AS E ON A.TOP_AC_VOLTAGE_TYPE=E.CODE
+    UNION ALL
+    SELECT A.ID,A.NAME,E.NAME,C.transformation_capacity,D.ID,D.NAME,B.ID,B.NAME_ABBREVIATION,A.OPERATE_DATE,A.LONGITUDE,A.LATITUDE,A.EXPIRY_DATE,A.OPERATE_STATE
+    FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_CONVERSUBSTATION_B AS A 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_DCC_B AS B ON A.DCC_ID=B.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_CONVERSUBSTATION_S AS C ON A.ID=C.ID
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PWRGRID_B AS D ON A.PG_ID=D.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_VOLTAGETYPE AS E ON A.DC_VOLTAGE_TYPE=E.CODE
+    ) T ORDER BY ID
+    ]]>
+    </All>
+  </ZONESTATION>
+  <ZONELINE db="SGC" all="sync:ZONELINE/All">
+    <All>
+      <![CDATA[
+    SELECT * FROM (
+    SELECT A.ID,A.NAME,E.NAME AS VOLNAME,A.LENGTH,C.IMAXLONG_20,D.ID AS GRIDID,D.NAME AS GRIDNAME,B.ID AS DCCID,B.NAME_ABBREVIATION AS DCCNAME,A.OPERATE_DATE,A.EXPIRY_DATE,A.RUNNING_STATE
+    FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_ACLINE_B AS A 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_DCC_B AS B ON A.DISPATCH_ORG_ID=B.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_ACLINE_P AS C ON A.ID=C.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PWRGRID_B AS D ON A.GRID_ID=D.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_VOLTAGETYPE AS E ON A.VOLTAGE_TYPE=E.CODE
+    UNION ALL
+    SELECT A.ID,A.NAME,E.NAME AS VOLNAME,A.LENGTH,C.IH,D.ID AS GRIDID,D.NAME AS GRIDNAME,B.ID AS DCCID,B.NAME_ABBREVIATION AS DCCNAME,A.OPERATE_DATE,A.EXPIRY_DATE,A.RUNNING_STATE
+    FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINE_B AS A 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_ORG_DCC_B AS B ON A.DISPATCH_ORG_ID=B.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINE_P AS C ON A.ID=C.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PWRGRID_B AS D ON A.GRID_ID=D.ID 
+    LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DIC_VOLTAGETYPE AS E ON A.VOLTAGE_TYPE=E.CODE
+    ) T ORDER BY ID
+    ]]>
+    </All>
+  </ZONELINE>
+  <HVDCSYS_MEMBERS db="SGC" all="sync:HVDCSYS_MEMBERS/All">
+    <All>
+      <![CDATA[SELECT ID,HVDCSYS_ID FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_CONVERSUBSTATION_B WHERE HVDCSYS_ID IS NOT NULL AND OPERATE_STATE=1003
+    UNION ALL
+    SELECT ID,DCSYSTEM_ID FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_HVDCGROUNDSTATION_B WHERE DCSYSTEM_ID IS NOT NULL AND OPERATE_STATE=1003
+      UNION ALL 
+      SELECT ID,DCSYSTEM_ID FROM ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINE_B WHERE DCSYSTEM_ID IS NOT NULL AND RUNNING_STATE=1003]]>
+    </All>
+  </HVDCSYS_MEMBERS>
+  <HVDCSYS db="SGC" all="sync:HVDCSYS/All">
+    <All>
+      <![CDATA[SELECT ID,NAME,PG_ID,VOLTAGE_TYPE FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_CON_HVDCSYS_B]]>
+    </All>
+  </HVDCSYS>
+  <LINEENDS db="SGC" all="sync:LINEENDS/All">
+    <All>
+      <![CDATA[same:sgc/chaoliu:GetAllEnds]]>
+    </All>
+  </LINEENDS>
+</ROOT>

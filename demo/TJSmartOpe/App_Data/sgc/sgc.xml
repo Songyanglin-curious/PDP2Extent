@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetVoltage>
+    <![CDATA[SELECT CODE,NAME FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE WHERE EFFECT_FLAG='Y']]>
+  </GetVoltage>
+  <GetLine>
+    <![CDATA[
+SELECT ID,NAME,VOLTAGE_TYPE,START_ST_ID,END_ST_ID FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B
+UNION
+SELECT ID,NAME,VOLTAGE_TYPE,START_ST_ID,END_ST_ID FROM ]]>
+<![CDATA[same:SearchCommonSql:SchemaName]]>
+<![CDATA[SG_DEV_DCLINE_B]]>
+  </GetLine>
+  <GetStation>
+    <![CDATA[SELECT ID,NAME,TOP_VOLTAGE_TYPE,PLANT_STATION_TYPE FROM ]]>
+  <![CDATA[same:SearchCommonSql:SchemaName]]>
+  <![CDATA[SG_CON_COMMONSUBSTATION_B]]>
+  </GetStation>
+  <GetRailway>
+    <![CDATA[SELECT ID,NAME FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_RAILWAY_INFO]]>
+  </GetRailway>
+  <GetRoad>
+    <![CDATA[SELECT ID,NAME FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_highway_info]]>
+  </GetRoad>
+  <GetAcross>
+    <![CDATA[SELECT line_id,across_type,ACROSS_OBJ_ID,across_longitude as longitude,across_latitude as latitude FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_ACROSS_INFO ]]>
+  </GetAcross>
+  <GetGrid>
+    <![CDATA[]]>
+  </GetGrid>
+  <GetGridLevel>
+    <![CDATA[SELECT CODE,NAME FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_GRIDLEVEL WHERE EFFECT_FLAG='Y']]>
+  </GetGridLevel>
+  <GetDccLevel>
+    <![CDATA[SELECT CODE,NAME FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_DCCLEVEL WHERE EFFECT_FLAG='Y']]>
+  </GetDccLevel>
+  <IsAdmin>
+    <![CDATA[select u.user_id,g.user_id from ]]>
+  <![CDATA[same:SearchCommonSql:SchemaName]]>
+  <![CDATA[sg_sys_ua_user_b u
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_SYS_UA_USERGROUPUSER_B g on g.user_id=u.user_id and g.usergroup_id='79391aceedce11e6a6ef54ee7536cc52'
+where u.user_name={0}]]>
+  </IsAdmin>
+  <GetHvdcSysMember>
+    <![CDATA[SG_CON_HVDCGROUNDSTATION_B
+    SG_CON_CONVERSUBSTATION_B
+    SG_CON_HVDCSYS_R_GENETATOR
+    SG_CON_HVDCPOLESYS_B
+    SG_CON_HVDCGROUNDSYS_B]]>
+  </GetHvdcSysMember>
+  <GetHvdcSysStations>
+    <![CDATA[SELECT ID FROM ]]>
+  <![CDATA[same:SearchCommonSql:SchemaName]]>
+  <![CDATA[SG_CON_CONVERSUBSTATION_B WHERE HVDCSYS_ID IN ({0})
+    UNION ALL
+    SELECT ID FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_HVDCGROUNDSTATION_B WHERE DCSYSTEM_ID IN ({0})]]>
+  </GetHvdcSysStations>
+  <GetHvdcSysLines>
+    <![CDATA[SELECT ID FROM ]]>
+  <![CDATA[same:SearchCommonSql:SchemaName]]>
+  <![CDATA[SG_DEV_DCLINE_B WHERE DCSYSTEM_ID IN ({0})]]>
+  </GetHvdcSysLines>
+  <GetAcLineEnd>
+    <![CDATA[select id from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_aclineend_b where line_id={0}]]>
+  </GetAcLineEnd>
+  <GetDcLineEnd>
+    <![CDATA[select id from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_dclineend_b where line_id={0}]]>
+  </GetDcLineEnd>
+  <GetAcLineEnds>
+    <![CDATA[select line_id,id from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_aclineend_b where line_id IN ({0})]]>
+  </GetAcLineEnds>
+  <GetDcLineEnds>
+    <![CDATA[select line_id,id from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_dclineend_b where line_id IN ({0})]]>
+  </GetDcLineEnds>
+</ROOT>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;" desc="设备资产排行">
+  <inits>
+  </inits>
+  <consts>
+    <const id="option" type="object" arg=""></const>
+    <const id="list" type="2d" length="10"></const>
+    <const id="types" type="[]"></const>
+    <const id="hTbl" arg="250"></const>
+    <const id="hchart" arg="350"></const>
+    <const id="length" arg="5"></const>
+  </consts>
+  <ctrls>
+  <div id="div0" desc="根容器">
+    <a class="pdiv"></a>
+    <title-div id="t">
+      <a title='设备总体数量统计' ></a>
+      <sa content-style='{ }'></sa>
+       <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+      <ecommonchart desc="图表">
+          <a ref="hchart" s_width="100%"  ></a>
+          <sa option="option" s_height="hchart+'px'"></sa>
+      </ecommonchart>
+      <table>
+            <a  ref="tab" class="common-table" width="100%" ></a>
+            <sa ></sa>
+            <tr>
+              <td>
+                 <a class="tab-twotitle"></a>
+              <label >
+              <a value="设备类型"></a>
+              </label>
+              <label >电压等级 </label>
+            </td>
+              <loop id="loop3" from="types">
+                <c>
+                  <td style="text-align:center">
+                    <label from="item_loop3"></label>
+                  </td>
+                </c>
+              </loop>
+              <td style="text-align:center">
+                <label > 总计</label>
+              </td>
+            </tr>
+            <loop id="loop1" from="list">
+              <tr>
+                <loop id="loop2" from="item_loop1">
+                  <c>
+                    <td style="text-align:center">
+                      <label from="item_loop2"></label>
+                    </td>
+                  </c>
+                </loop>
+              </tr>
+          </loop>
+        </table>
+    </title-div>
+  </div>
+  </ctrls>
+  <css>
+    <![CDATA[
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsbzc" part="devcount"></list>
+      <list type="file" value="dsbzc" part="tobig"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+         
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+         <![CDATA[
+         
+            this.refresh();
+            
+         
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

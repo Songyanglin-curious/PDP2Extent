@@ -1,0 +1,371 @@
+/*v=1.22.722.1*/
+
+/*应用flex布局，默认主轴X向（水平向、横向）*/
+.f{
+	display: flex;
+}
+
+/*忽略自身空间，分配容器空间*/
+.f1{
+	flex: 1;
+}
+
+/*主轴Y向（竖直向、纵向）*/
+.dc{
+	flex-direction: column;
+}
+/* 主轴x右向左 */
+.rr{
+    flex-direction: row-reverse;
+}
+/*模块间距*/
+.model-padding{
+    padding: 5px;
+    background-color: #03313C;
+}
+
+.assets-page{
+    background: #00303C;
+    padding: 10px;
+    min-width:1900px;
+}
+
+/*组件相关*/
+/** title-div */
+.title-div{
+    display: flex;
+    flex-direction: column;
+    height:100%;
+    overflow: hidden;
+}
+.wrapper-title {
+    /* display: block; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background: url(/i/sgc/xinjiang/wrappertitle.png) no-repeat 0 30px / 100% 60%; */
+    /* background-color: #0b535b; */
+    background-color: #103C47;
+    /* margin: 25px 0 20px 0px; */
+    /* padding-bottom: 20px; */
+    /* align-items: center; */
+    /* text-align: center; */
+    border: #2f96c3 1px solid;
+    padding: 10px;
+    /* border-bottom: none; */
+   
+}
+
+.wrapper-title> span {
+    font-size: 16px;
+    /* background-image: -webkit-linear-gradient(#94e7ff,#f8fdff); */
+    /* -webkit-background-clip: text; */
+    /* -webkit-text-fill-color: transparent; */
+    /* font-family: kaiti; */
+    letter-spacing: 5px;
+    font-weight: 800;
+}
+
+.wrapper-content{
+    border: #2f96c3 1px solid;
+    background-color: #103C47;
+    padding:5px;
+    flex:1 0 0;
+    border-top: 'none';
+    border-top: none;
+}
+:root {
+    --tbl-background: #013f4c;
+    /*表格背景颜色*/
+    --tbl-color: #fff;
+    /*表格颜色*/
+    --tbl-font-size: 14px;
+    /*表格字号*/
+    --tbl-border: 1px solid #008092;
+    /*表格边框*/
+    --tbl-border-color: #008092;
+    /*表格边框颜色*/
+    --tbl-th-background: #046175;
+    /*表格表头背景颜色*/
+    --tbl-th-color: #ccf5ff;
+    /*表格表头颜色*/
+    --tbl-th-font-size: 15px;
+    /*表格表头字号*/
+    --tbl-th-border: 1px solid #008092;
+    /*表格表头边框*/
+    --tbl-td-height: 48px;
+    /*表格td高度*/
+    --tbl-td-background: #014654;
+    /*表格td背景颜色*/
+    --tbl-tr2n-background: #013f4c;
+    /*表格.ivu-table-body内偶数行背景颜色*/
+    --tbl-tr-hover-background: #014654;
+    /*表格.ivu-table-body内行悬浮背景颜色*/
+    --tbl-tr-2n-hover-background: #013f4c;
+    /*表格.ivu-table-body内偶数行悬浮背景颜色*/
+    --tbl-tr-highlight-background: #04535a;
+    /*表格.ivu-table-body内行选择背景颜色*/
+}
+/**smalltable**/
+.smalltable .ivu-table-header thead tr th{
+    padding: 0;
+    height: var(--tbl-td-height);
+}
+/*.smalltable .ivu-table th{
+    padding: 0;
+    height: var(--tbl-td-height);
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: var(--tbl-th-background);
+    font-size: var(--tbl-th-font-size);
+    color: var(--tbl-th-color);
+}
+.smalltable .ivu-table td{
+    height: var(--tbl-td-height);
+	background-color: transparent;
+	border-bottom-style: none;
+	font-size: 13px;
+	color: #fff;
+}
+.smalltable .ivu-table{
+	background-color: transparent;
+}
+.smalltable .ivu-table-cell{
+	padding: 0 0;
+}
+.smalltable .ivu-table-stripe .ivu-table-body tr:nth-child(2n+1) td,
+.smalltable .ivu-table-stripe .ivu-table-fixed-body tr:nth-child(2n+1) td{
+    background-color: #11283d;
+}
+.smalltable .ivu-table-stripe .ivu-table-body tr:nth-child(2n) td,
+.smalltable .ivu-table-stripe .ivu-table-fixed-body tr:nth-child(2n) td{
+    background-color: #122d44;
+}
+div.ivu-table-wrapper{
+	border-style: none;
+}
+.smalltable .ivu-table:after,
+.smalltable .ivu-table:before{
+	background-color: transparent;
+}
+.smalltable .ivu-table td,
+.smalltable .ivu-table th{
+	border-bottom-style: none;
+}*/
+
+/*common-table*/
+.common-table {
+    width: 100%;
+    border-spacing: 0px;
+	border-left: var(--tbl-th-border);
+	border-top: var(--tbl-th-border);
+}
+.common-table tr{
+   
+}
+.common-table tr td:first-child{
+    
+}
+.common-table td{
+        border-right: var(--tbl-th-border);
+        border-bottom: var(--tbl-th-border);
+        text-align:center;
+        vertical-align:middle;
+        height: var(--tbl-td-height);
+        /*max-width: 140px;
+         white-space: normal; */
+        min-width: 55px;
+}
+.common-table td.namecol {
+	text-align: center;
+	vertical-align:middle;
+	background-color: #6B6B6B;
+	/*width: 162px;*/
+	font-size: 14px;
+	letter-spacing: 1px;
+}.common-table td.valuecol {
+		vertical-align: middle;
+		text-align: center;
+        background-color: #6B6B6B;
+		font-size: 14px;
+		letter-spacing: 1px;
+}
+.common-table tr:first-child td{
+    white-space: normal;
+    overflow: hidden;
+    background-color: var(--tbl-th-background) !important;
+    position: relative;
+    padding: 0px 0;
+    color: var(--tbl-th-color);
+    font-size: var(--tbl-th-font-size);
+    font-weight: bold;
+}
+.common-table tr:nth-child(2n) td{
+    background-color: var(--tbl-tr2n-background);;
+}
+.common-table tr:nth-child(2n+1) td{
+    background-color: var(--tbl-td-background);
+}
+
+/* 标题，内容 ,标题，内容,标题，内容   横排表格*/
+.row-table{
+    width: 100%;
+    border-spacing: 0px;
+	border-left: var(--tbl-th-border);
+	border-top: var(--tbl-th-border);
+}
+.row-table td{
+    border-right: var(--tbl-th-border);
+    border-bottom: var(--tbl-th-border);
+    text-align:center;
+    vertical-align:middle;
+    height: var(--tbl-td-height);
+    /*max-width: 140px;
+     white-space: normal; */
+    min-width: 55px;
+}
+
+.row-table tr td:nth-child(2n) {
+    background-color: var(--tbl-tr2n-background);;
+}
+.row-table tr td:nth-child(2n+1) {
+    background-color: var(--tbl-td-background);
+}
+/*Tab*/
+.nbTab .TabTitle .normal {
+    background-color: rgb(7,135,140) !important;
+}
+.nbTab .TabTitle .item{
+    width: 110px;
+    text-align: center;
+}
+.nbTab .pageMove {
+    right: 3px;
+     top: -3px; 
+}
+.tabred{
+    margin-top: 5px !important;
+}
+.tabred .TabTitle{
+
+}
+.tabred .TabTitle .normal{
+    background-color: rgb(153,102,102) !important;
+}
+.pdiv{
+  /* background-color: #02474f; */
+}
+.tab-title{
+    text-align: center;
+    color: #f07f0f;
+}
+.nametext{
+    /* color: #459de6; */
+    color: #fff;
+}
+.numtext{
+    color: #ffd273;
+}
+/*common-table双标题*/
+.tab-twotitle{
+    background: url(/i/sgc/shengchan/diagonal.png) 100% 100% / 100% 100%;
+    /*display: flex;*/
+    flex-direction: column;
+    text-align: center;
+}
+.tab-twotitle span:first-child{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -15px;
+    font-size: 13px;
+}
+.tab-twotitle span:nth-child(2) {
+    display: flex;
+    margin-bottom: -15px;
+    font-size: 13px;
+}
+
+/* tabs yshtab */
+
+.tabs-wrap{
+    padding:3px 0;
+    overflow:hidden;
+}
+
+
+
+.radio-and-more{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+/* 设备资产标题部分 */
+.assets-content{
+    display: flex;
+    flex-direction: column;
+}
+.assets-content-column{
+    flex:1;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.assets-item-margin{
+    margin-bottom:10px;
+}
+.assets-item-wrap{
+    display:flex;
+    align-items: center;
+}
+.assets-label{
+    width:60px;
+    text-align-last: justify;
+    margin-right:10px;
+    font-size: 16px;
+}
+.width100{
+    width:100px;
+}
+.assets-label1{
+    width:80px;
+    text-align-last: justify;
+    margin-right:10px;
+    font-size: 16px;
+}
+.assets-count{
+    display: flex;
+    width: 130px;
+    height: 25px;
+    background: #145F65;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px #1E9897;
+    font-size: 16px;
+}
+.assets-voltage-point{
+    width:12px;
+    height:12px;
+    border-radius: 50%;
+    border: solid 1px #fff;
+    margin-right: 10px;
+}
+.assets-voltage-label{
+    font-weight:800;
+    font-size: 16px;
+}
+
+.assets-second-title{
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+}
+.assets-second-title img{
+    width: 20px;
+    margin-left: 10px;
+}
+.assets-second-title span{
+    font-size: 18px;
+    margin-left: 10px;
+}
+

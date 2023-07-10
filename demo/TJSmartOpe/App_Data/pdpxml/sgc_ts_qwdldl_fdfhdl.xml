@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<dsDay><![CDATA[select to_char(DATATIME,'hh24:mi'),
+      cast(cast(to_number(LIANLUOXIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(FENGDIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(GUANGFU) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(SHUIDIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(HEDIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(HUODIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(RANQI) as numeric(22,2)) as varchar(50)) 
+      from YS_DB.YSH_ZHB_ZR_RFH{{2}} where DATATIME >= {0} and DATATIME <= {1}  order by datatime]]></dsDay>
+<dsYear><![CDATA[
+        select * from(
+            select top 700 to_char(DATATIME,'YYYY-MM-DD'),
+          cast(cast(to_number(FENGDIANZGCL) as numeric(22,1)) as varchar(50)),cast(cast(to_number(FENGDIANZDCL) as numeric(22,1)) as varchar(50)),
+          cast(cast(to_number(GUANGFUZGCL) as numeric(22,1)) as varchar(50)),cast(cast(to_number(GUANGFUZDCL) as numeric(22,1)) as varchar(50)),
+          cast(cast(to_number(SHUIDIANZGCL) as numeric(22,1)) as varchar(50)),cast(cast(to_number(SHUIDIANZDCL) as numeric(22,1)) as varchar(50)),
+          cast(cast(to_number(HEDIANZGCL) as numeric(22,1)) as varchar(50)),cast(cast(to_number(HEDIANZDCL) as numeric(22,1)) as varchar(50)),
+          cast(cast(to_number(HUODIANZGCL) as numeric(22,1)) as varchar(50)),cast(cast(to_number(HUODIANZDCL) as numeric(22,1)) as varchar(50)),
+          cast(cast(to_number(RANQIZGCL) as numeric(22,1)) as varchar(50)),cast(cast(to_number(RANQIZDCL) as numeric(22,1)) as varchar(50)),
+          cast(cast(to_number(WDRLZGDL) as numeric(22,1)) as varchar(50)),cast(cast(to_number(WDRLZDDL) as numeric(22,1)) as varchar(50)), datatime
+          from YS_DB.YSH_ZHB_ZR_FDCL{{2}} 
+          where DATATIME between {0} and {1} order by datatime desc) 
+        order by datatime
+      ]]></dsYear>
+<dsLastYearDR><![CDATA[
+      select to_char(DATATIME,'MM-DD'),
+      cast(cast(FENGDIANDL as numeric(22,2)) as varchar(50)),cast(cast(FENGDIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(GUANGFUDL as numeric(22,2)) as varchar(50)),cast(cast(GUANGFUZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(SHUIDIANDL as numeric(22,2)) as varchar(50)),cast(cast(SHUIDIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(HEDIANDL as numeric(22,2)) as varchar(50)),cast(cast(HEDIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(HUODIANDL as numeric(22,2)) as varchar(50)),cast(cast(HUODIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(RANQIDL as numeric(22,2)) as varchar(50)),cast(cast(RANQIZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(WDRLDL as numeric(22,2)) as varchar(50)) 
+      from YS_DB.YSH_ZHB_ZR_FDCL{{2}} 
+      where DATATIME between {0} and {1}
+      order by DATATIME]]></dsLastYearDR>
+<dsYearDR><![CDATA[
+      select to_char(DATATIME,'MM-DD'),
+      cast(cast(FENGDIANDL as numeric(22,2)) as varchar(50)),cast(cast(FENGDIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(GUANGFUDL as numeric(22,2)) as varchar(50)),cast(cast(GUANGFUZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(SHUIDIANDL as numeric(22,2)) as varchar(50)),cast(cast(SHUIDIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(HEDIANDL as numeric(22,2)) as varchar(50)),cast(cast(HEDIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(HUODIANDL as numeric(22,2)) as varchar(50)),cast(cast(HUODIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(RANQIDL as numeric(22,2)) as varchar(50)),cast(cast(RANQIZJRL as numeric(22,2)) as varchar(50)), 
+      cast(cast(WDRLDL as numeric(22,2)) as varchar(50)) 
+      from YS_DB.YSH_ZHB_ZR_FDCL{{2}} 
+      where DATATIME between {0} and {1}
+      order by DATATIME]]></dsYearDR>
+<dsDay_zr><![CDATA[
+      select to_char(DATATIME,'hh24:mi'),
+      cast(cast(to_number(LIANLUOXIAN) as numeric(22,2)) as varchar(50)),cast(cast(to_number(FENGDIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(GUANGFU) as numeric(22,2)) as varchar(50)),cast(cast(to_number(SHUIDIAN) as numeric(22,2)) as varchar(50)) ,
+      cast(cast(to_number(HEDIAN) as numeric(22,2)) as varchar(50)),cast(cast(to_number(HUODIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(RANQI) as numeric(22,2)) as varchar(50))
+      from YS_DB.YSH_ZHB_ZR_RFH{{2}} 
+      where DATATIME between to_date({0},'yyyy-MM-dd HH24:mi:ss')-1 and to_date({1},'yyyy-MM-dd HH24:mi:ss')-1  
+      order by datatime
+      ]]></dsDay_zr>
+<dsDay_yc><![CDATA[
+      select to_char(DATATIME,'hh24:mi'),
+      cast(cast(to_number(LIANLUOXIAN) as numeric(22,2)) as varchar(50)),cast(cast(to_number(FENGDIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(GUANGFU) as numeric(22,2)) as varchar(50)),cast(cast(to_number(SHUIDIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(HEDIAN) as numeric(22,2)) as varchar(50)),cast(cast(to_number(HUODIAN) as numeric(22,2)) as varchar(50)),
+      cast(cast(to_number(RANQI) as numeric(22,2)) as varchar(50)) 
+      from YS_DB.YSH_ZHB_ZR_RFH{{2}}  
+      where DATATIME >= {0} and DATATIME <= {1}  
+      order by datatime
+      ]]></dsDay_yc>
+<dsDayDR><![CDATA[select cast(cast(FENGDIANDL as numeric(22,2)) as varchar(50)),cast(cast(FENGDIANZJRL as numeric(22,2)) as varchar(50)),
+        cast(cast(GUANGFUDL as numeric(22,2)) as varchar(50)),cast(cast(GUANGFUZJRL as numeric(22,2)) as varchar(50)),
+        cast(cast(SHUIDIANDL as numeric(22,2)) as varchar(50)),cast(cast(SHUIDIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(HEDIANDL as numeric(22,2)) as varchar(50)),cast(cast(HEDIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(HUODIANDL as numeric(22,2)) as varchar(50)),cast(cast(HUODIANZJRL as numeric(22,2)) as varchar(50)),
+      cast(cast(RANQIDL as numeric(22,2)) as varchar(50)),cast(cast(RANQIZJRL as numeric(22,2)) as varchar(50)) 
+      from YS_DB.YSH_ZHB_ZR_FDCL{{1}} 
+      where DATATIME ={0};]]></dsDayDR>
+<dsYear_JN><![CDATA[
+      select m,cast(cast(sum(FENGDIANDL) as numeric(22,2)) as varchar(50)),
+      cast(cast(sum(GUANGFUDL) as numeric(22,2)) as varchar(50)),
+      cast(cast(sum(WDRLDL) as numeric(22,2)) as varchar(50)) from
+      (select to_char(DATATIME,'MM') m,fengdiandl,guangfudl,wdrldl from YS_DB.YSH_ZHB_ZR_FDCL{{2}} 
+      where DATATIME between {0} and {1}) 
+      group by m
+      order by m]]></dsYear_JN>
+<dsYear_QN><![CDATA[
+      select m,cast(cast(sum(FENGDIANDL) as numeric(22,2)) as varchar(50)),
+      cast(cast(sum(GUANGFUDL) as numeric(22,2)) as varchar(50)),
+      cast(cast(sum(WDRLDL) as numeric(22,2)) as varchar(50)) from
+      (select to_char(DATATIME,'MM') m,fengdiandl,guangfudl,wdrldl from YS_DB.YSH_ZHB_ZR_FDCL{{2}} 
+      where DATATIME Between {0} and {1}) 
+      group by m
+      order by m
+      ]]></dsYear_QN></ROOT>

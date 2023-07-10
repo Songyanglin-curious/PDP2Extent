@@ -1,0 +1,748 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <!--<GetSubStationInfo>
+    <![CDATA[select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B {0}]]>
+  </GetSubStationInfo>-->
+  <GetSubStationInfo>
+    <![CDATA[select * from (select  A.id,A.name,A.type,A.dcc_id,A.top_ac_voltage_type,A.pg_id,A.operate_date,a.region,a.longitude,a.latitude,a.altitude,a.owner ,B.LEVEL AS PGLevel,to_date(SUBSTR(A.STAMP,23,19)) as lasttime,a.operate_state from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B A 
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.PG_ID = B.ID) tempa {0}]]>
+  </GetSubStationInfo>
+  <!--<GetConverSubStationInfo>
+    <![CDATA[select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B {0}]]>
+  </GetConverSubStationInfo>-->
+  <GetConverSubStationInfo>
+    <![CDATA[select * from (select  A.id,A.name,A.type,A.dcc_id,A.dc_voltage_type,A.pg_id,A.operate_date,a.region,a.longitude,a.latitude,a.altitude,a.owner,B.LEVEL AS PGLevel,to_date(SUBSTR(A.STAMP,23,19)) as lasttime,a.operate_state from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B A 
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.PG_ID = B.ID) tempa {0}]]>
+  </GetConverSubStationInfo>
+  <!--<GetPlantInfo>
+    <![CDATA[select *  from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_PLANT_B {0}]]>
+  </GetPlantInfo>-->
+  <GetPlantInfo>
+    <![CDATA[select * from (select A.id,A.name,A.plant_type,A.dcc_id,A.max_voltage_type,A.connective_pg_id,A.operate_date,a.region,a.longitude,a.latitude,a.altitude,a.owner,B.LEVEL AS PGLevel,to_date(SUBSTR(A.STAMP,23,19)) as lasttime,a.operate_state,a.name_abbreviation from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_PLANT_B A 
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.CONNECTIVE_PG_ID = B.ID) tempa {0}]]>
+  </GetPlantInfo>
+  <GetHVDCGroundStationInfo>
+    <![CDATA[select * from (
+select  A.id,A.name,3002 AS TYPE,A.dcc_id,2099 as voltage_type,A.dcc_id,A.operate_date,a.region,a.longitude,a.latitude,a.altitude,a.owner,B.LEVEL AS PGLevel,to_date(SUBSTR(A.STAMP,23,19)) as lasttime,a.operate_state 
+from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_HVDCGROUNDSTATION_B A 
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.DCC_ID = B.ID) tempa {0}]]>
+  </GetHVDCGroundStationInfo>
+  <GetCommonSubStationInfo>
+    <![CDATA[select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_COMMONSUBSTATION_B {0}]]>
+  </GetCommonSubStationInfo>
+  <!--<GetACLineInfo>
+    <![CDATA[select *  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B {0}]]>
+  </GetACLineInfo>-->
+  <GetACLineInfo>
+    <![CDATA[select distinct * from (select  A.id,A.name,A.grid_id,a.voltage_type,a.length,a.start_st_id,a.end_st_id,a.dispatch_org_id,a.operate_date,a.running_state,a.owner,a.start_tower_id,a.end_tower_id,a.license_org_id,B.LEVEL AS PGLevel,to_date(SUBSTR(A.STAMP,23,19)) as lasttime,0 as erectingmethod from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B A
+  LEFT JOIN ]]>    
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.GRID_ID = B.ID) tempa {0} ]]>
+  </GetACLineInfo>
+  <GetACLineInfoByRange>
+    <![CDATA[
+    select L.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B L
+left join  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B S ON L.START_ST_ID= S.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_PLANT_B P ON L.START_ST_ID = P.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B C ON L.START_ST_ID=C.ID
+left join  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B SE ON L.END_ST_ID= SE.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_PLANT_B PE ON L.END_ST_ID = PE.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B CE ON L.END_ST_ID=CE.ID
+ {0} ]]>
+  </GetACLineInfoByRange>
+  <LineRangeWhere>
+    <![CDATA[
+    (( S.longitude > {0} and  S.longitude < {1} and S.latitude >= {2} and S.latitude <=  {3})
+ or(p.longitude > {0} and  P.longitude < {1} and P.latitude >= {2} and p.latitude <=  {3})
+ or (C.longitude > {0} and  C.longitude < {1} and C.latitude >= {2} and C.latitude <=  {3})
+ or(SE.longitude > {0} and  SE.longitude < {1} and SE.latitude >= {2} and SE.latitude <=  {3})
+ or(PE.longitude > {0} and  PE.longitude < {1} and PE.latitude >= {2} and PE.latitude <=  {3})
+ or(CE.longitude > {0} and  CE.longitude < {1} and CE.latitude >= {2} and CE.latitude <=  {3}))
+    ]]>
+  </LineRangeWhere>
+  <!--<GetDCLineInfo>
+    <![CDATA[select *  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B {0}]]>
+  </GetDCLineInfo>-->
+  <GetDCLineInfo>
+    <![CDATA[select distinct * from (select A.id,A.name,A.grid_id,a.voltage_type,a.length,a.start_st_id,a.end_st_id,a.dispatch_org_id,a.operate_date,a.running_state,a.owner,a.start_tower_id,a.end_tower_id,a.license_org_id,B.LEVEL AS PGLevel,to_date(SUBSTR(A.STAMP,23,19)) as lasttime,0 as erectingmethod  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B A
+  LEFT JOIN ]]>    
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.GRID_ID = B.ID) tempa {0}]]>
+  </GetDCLineInfo>
+  <GetDCLineInfoByRange>
+    <![CDATA[
+     select L.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B L
+left join  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B S ON L.START_ST_ID= S.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_PLANT_B P ON L.START_ST_ID = P.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B C ON L.START_ST_ID=C.ID
+left join  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B SE ON L.END_ST_ID= SE.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_PLANT_B PE ON L.END_ST_ID = PE.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B CE ON L.END_ST_ID=CE.ID
+ {0}
+    ]]>
+  </GetDCLineInfoByRange>
+  <GetACLineH1MEA>
+    <![CDATA[select ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H1_MEA_2018.*  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H1_MEA_2018 
+ join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B ON ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H1_MEA_2018.ID= ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B.ID AND ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B.VOLTAGE_TYPE={0} {1}]]>
+  </GetACLineH1MEA>
+  <GetDCLineH1MEA>
+    <![CDATA[select ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H1_MEA_2018.*  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H1_MEA_2018 
+ join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B ON ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H1_MEA_2018.ID= ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B.ID AND ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B.VOLTAGE_TYPE={0} {1}]]>
+  </GetDCLineH1MEA>
+  <GetACLineH1MEA_TJ>
+    <![CDATA[select ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H15_MEA_2018_TJ.*  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H15_MEA_2018_TJ 
+ join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B ON ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H15_MEA_2018_TJ.ID= ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B.ID AND ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B.VOLTAGE_TYPE={0} {1}]]>
+  </GetACLineH1MEA_TJ>
+  <GetDCLineH1MEA_TJ>
+    <![CDATA[select ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H15_MEA_2018_TJ.*  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H15_MEA_2018_TJ 
+ join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B ON ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_H15_MEA_2018_TJ.ID= ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B.ID AND ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B.VOLTAGE_TYPE={0} {1}]]>
+  </GetDCLineH1MEA_TJ>
+  <GetALLPlantStationTypeInfo>
+    <![CDATA[select * from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_PLANTSTATIONTYPE ]]>
+  </GetALLPlantStationTypeInfo>
+  <GetPlantStationTypeByID>
+    <![CDATA[select code,name from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE {0}]]>
+  </GetPlantStationTypeByID>
+  <GetALLVoltageTypeInfo>
+    <![CDATA[select * from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE ]]>
+  </GetALLVoltageTypeInfo>
+  <GetVoltageTypeByID>
+    <![CDATA[select * from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE {0}]]>
+  </GetVoltageTypeByID>
+  <GetTowerInfo>
+    <![CDATA[select * from TowerInfo {0}]]>
+  </GetTowerInfo>
+  <GetGraphTypeInfo>
+    <![CDATA[select distinct g.* from tOutput t left join GraphTypeInfo g on t.GraphTypeID= g.GraphTypeID where graphicid ={0} 
+             union select* from GraphTypeInfo where IsSpecial = 1]]>
+  </GetGraphTypeInfo>
+  <GetGraphItemInfoByID>
+    <![CDATA[select graphItemId,type,textContext,textFontSize,textColor,textFont,rectPos,angle,graphicid,GraphTypeID,voltageid,voltagename
+             from tOutput where graphicid={0}]]>
+  </GetGraphItemInfoByID>
+  <GetLineInfoByID>
+    <![CDATA[select tn.* from tOutputNodeInfo tn left join 
+            (select graphitemid from tOutput where graphicid={0}) item on tn.graphItemId= item.graphItemId
+            where item.graphItemId is not null]]>
+  </GetLineInfoByID>
+  <GetGraphItemStateByID>
+    <![CDATA[select B.groundPos ifgrd, B.haspower, B.state, A.deviceIdx, A.deviceName, C.graphItemId 
+from tDevice A join tState B on A.deviceIdx = B.deviceIdx
+join 
+(
+select graphItemId, G.graphDevId, L.graphicid from 
+(
+select * from pdpsgraph..tgraphitem where graphisuse = 1 and graphDevId <> '' 
+) G
+join pdpsgraph..layers L on G.graphLayerId = L.id
+where graphicid = @GraphicID
+) C
+on A.devicename = C.graphdevid]]>
+  </GetGraphItemStateByID>
+  <GetChaoLiuTest>
+    <![CDATA[select chaoliu.DeptName,chaoliu.DeptDesc,chaoliu.GCPOSITION,chaoliu.Trans,chaoliu.TransCount,chaoliu.TransName,chaoliu.HighConnect,chaoliu.LowConnect,
+chaoliu.TransState,chaoliu.LineState,chaoliu.BusState,a.rectPos,a.graphicid,td.departType 
+from tChaoLiuGC chaoliu 
+   join (
+  select tout.graphItemId ,tout.rectpos, station.departName,station.deptDesc,station.graphicid
+  from tOutput tout join tOutputStation station on station.graphitemid=tout.graphItemId
+  ) A on a.departName = chaoliu.DeptName
+  join tDepartment td on td.deptDesc=chaoliu.DeptDesc]]>
+  </GetChaoLiuTest>
+  <GetTDevice>
+    <![CDATA[select distinct a.deviceidx,a.devicename,v.voltageDesc from(
+select *  from tDevice where typeIdx =13
+union all select *  from tDevice where typeIdx =15
+union all select *  from tDevice where typeIdx =16
+union all select *  from tDevice where typeIdx =21
+union all select *  from tDevice where typeIdx =38
+) a
+left join  tVoltage v on a.voltageIdx = v.voltageIdx ]]>
+  </GetTDevice>
+  <GetTalineFL>
+    <![CDATA[select ta.DeviceName,ta.deviceIdx,ta.i_node,ta.j_node,ta.P,ta.Q from taclinefl ta]]>
+  </GetTalineFL>
+  <GetTransformACLineInfo>
+    <![CDATA[
+     select distinct A.*  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B a
+    left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B B ON A.START_ST_ID = B.ID
+    left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B C ON A.END_ST_ID = C.ID
+    where b.TOP_AC_VOLTAGE_TYPE <> C.TOP_AC_VOLTAGE_TYPE and (B.TOP_AC_VOLTAGE_TYPE={0} or C.TOP_AC_VOLTAGE_TYPE={0})
+    UNION
+    select A.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B A
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B B ON A.START_ST_ID= B.ID
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B C ON A.END_ST_ID=C.ID
+    where A.VOLTAGE_TYPE={0} AND (b.ID IS NOT NULL OR C.ID IS NOT NULL)
+     ]]>
+  </GetTransformACLineInfo>
+  <GetTransformDCLineInfo>
+    <![CDATA[
+select distinct A.*  from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B B ON A.START_ST_ID = B.ID
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B C ON A.END_ST_ID = C.ID
+where A.VOLTAGE_TYPE={0} and (b.ID IS NOT NULL OR C.ID IS NOT NULL)
+UNION
+select distinct A.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B A
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B B ON A.START_ST_ID= B.ID
+LEFT JOIN ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B C ON A.END_ST_ID=C.ID
+where b.DC_VOLTAGE_TYPE <> C.DC_VOLTAGE_TYPE  AND  (B.DC_VOLTAGE_TYPE={0} or C.DC_VOLTAGE_TYPE={0})
+]]>
+  </GetTransformDCLineInfo>
+  <GetExtSubStation>
+    <![CDATA[
+     select distinct b.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B B ON A.END_ST_ID = B.ID and B.TOP_AC_VOLTAGE_TYPE != {0}
+where a.VOLTAGE_TYPE = {0} and B.ID IS NOT NULL
+UNION
+select distinct b.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B B ON A.START_ST_ID = B.ID and B.TOP_AC_VOLTAGE_TYPE != {0}
+where a.VOLTAGE_TYPE = {0} and B.ID IS NOT NULL
+    ]]>
+  </GetExtSubStation>
+  <GetExtConvertStation>
+    <![CDATA[
+     select distinct b.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B B ON A.END_ST_ID = B.ID and B.DC_VOLTAGE_TYPE !={0}
+where a.VOLTAGE_TYPE = {0} and B.ID IS NOT NULL
+UNION
+select distinct b.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B B ON A.START_ST_ID = B.ID and B.DC_VOLTAGE_TYPE !={0}
+where a.VOLTAGE_TYPE = {0} and B.ID IS NOT NULL 
+    ]]>
+  </GetExtConvertStation>
+  <GetExtPlant>
+    <![CDATA[
+    select distinct b.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_PLANT_B B ON A.END_ST_ID = B.ID and B.MAX_VOLTAGE_TYPE != {0}
+where a.VOLTAGE_TYPE = {0} and B.ID IS NOT NULL
+UNION
+select distinct b.* from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_PLANT_B B ON A.START_ST_ID = B.ID and B.MAX_VOLTAGE_TYPE != {0}
+where a.VOLTAGE_TYPE = {0} and B.ID IS NOT NULL
+    ]]>
+  </GetExtPlant>
+  <GetFontInfo>
+    <![CDATA[
+  select * from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA["FontInfo2" {0}
+  ]]>
+  </GetFontInfo>
+  <GetLineStation>
+    <![CDATA[
+      select * from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_COMMONSUBSTATION_B
+WHERE ID IN (
+select START_ST_ID as ID from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B
+WHERE ID='{0}'
+union 
+select END_ST_ID as ID from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B
+WHERE ID='{0}'
+UNION 
+SELECT START_ST_ID AS ID from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B
+WHERE ID='{0}'
+UNION
+SELECT END_ST_ID AS ID from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B
+WHERE ID='{0}')
+    ]]>
+  </GetLineStation>
+  <GetACLineTowerInfo>
+    <![CDATA[  
+select a.tower_id as ID,a.TOWERNO AS TOWERNUM ,B.LONGITUDE,B.LATITUDE,a.owner,a.towername,b.type   from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_acline_r_tower a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_tower_b b on a.TOWER_ID = b.ID
+WHERE LINE_ID = '{0}'
+    ]]>
+  </GetACLineTowerInfo>
+    <GetDCLineTowerInfo>
+    <![CDATA[
+   select a.tower_id as ID,a.TOWERNO AS TOWERNUM ,B.LONGITUDE,B.LATITUDE,a.owner,a.towername,b.type  from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_dcline_r_tower a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_tower_b b on a.TOWER_ID = b.ID
+WHERE LINE_ID = '{0}'
+    ]]>
+  </GetDCLineTowerInfo>
+  <GetTowerInfoNew>
+    <![CDATA[
+   select b.ID,a.TOWERNO AS TOWERNUM ,B.LONGITUDE,B.LATITUDE,c.NAME AS LineName,a.TowerName,c.VOLTAGE_TYPE AS VOLTAGE,a.owner,b.type  from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_dcline_r_tower a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_tower_b b on a.TOWER_ID = b.ID
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B C ON A.LINE_ID = C.ID
+WHERE LINE_ID = '{0}'
+union
+select b.ID,a.TOWERNO AS TOWERNUM ,B.LONGITUDE,B.LATITUDE,c.NAME AS LineName,a.TowerName,c.VOLTAGE_TYPE AS VOLTAGE,a.owner,b.type  from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_acline_r_tower a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_tower_b b on a.TOWER_ID = b.ID
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B C ON A.LINE_ID = C.ID
+WHERE LINE_ID = '{0}'
+    ]]>
+  </GetTowerInfoNew>
+  <GetTowerInfoByParam>
+    <![CDATA[
+     select b.ID,a.TOWERNO AS TOWERNUM ,B.LONGITUDE,B.LATITUDE,a.TowerName,0 AS VOLTAGE,a.LINE_ID AS LINEID,a.OWNER,b.type  from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_dcline_r_tower a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_tower_b b on a.TOWER_ID = b.ID]]>
+<!--left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B C ON A.LINE_ID = C.ID-->
+    <![CDATA[{0}
+union all
+select b.ID,a.TOWERNO AS TOWERNUM ,B.LONGITUDE,B.LATITUDE,a.TowerName,0 AS VOLTAGE,a.LINE_ID AS LINEID,a.OWNER,b.type   from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_acline_r_tower a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_tower_b b on a.TOWER_ID = b.ID]]>
+<!--left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B C ON A.LINE_ID = C.ID-->
+    <![CDATA[{0}
+    ]]>
+  </GetTowerInfoByParam>
+  <GetShowVoltage>
+    <![CDATA[
+    SELECT code,name FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE where CODE IN (
+SELECT TOP_AC_VOLTAGE_TYPE from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_SUBSTATION_B
+UNION
+      select MAX_VOLTAGE_TYPE from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_PLANT_B
+      union
+      select DC_VOLTAGE_TYPE from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_CONVERSUBSTATION_B  
+      union
+      select VOLTAGE_TYPE from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[SG_CON_HVDCGROUNDSTATION_B    
+      )
+    ]]>
+  </GetShowVoltage>
+  <GetWeatherInfo>
+    <![CDATA[
+select distinct(b.ID) ,b.NAME,b.LEVEL,d.REGION AS OWNER  ,a.MEAS_TYPE ,c.CODE ,d.CENTERCOORDINATE 
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_H60_WEA_2018 as a
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B as b on (b.id = a.id)
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_WEATHER c on ( convert(int,SUBSTRING (a.MEAS_TYPE , 5 , 4))=c.CODE)
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_DISTRICT d on (convert(int,SUBSTRING (b.ID , 5 , 6))=d.REGION)  
+where b.LEVEL = {0} and a.CREATE_DATE = '2018-11-30' and c.CODE  IS NOT NULL and d.CENTERCOORDINATE  IS NOT NULL
+    ]]>
+  </GetWeatherInfo>
+  <GetLastUpdateTime_old>
+    <![CDATA[select max(lasttime) as lasttime
+from(
+select max(to_date(SUBSTR(STAMP,23,19))) as lasttime from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_b
+union
+select max(to_date(SUBSTR(STAMP,23,19))) as lasttime from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_b
+union 
+select max(to_date(SUBSTR(STAMP,23,19))) as lasttime from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[sg_con_substation_b
+union
+select max(to_date(SUBSTR(STAMP,23,19))) as lasttime from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[sg_con_conversubstation_b
+union
+select max(to_date(SUBSTR(STAMP,23,19))) as lasttime from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[sg_con_plant_b
+) tempa]]>
+  </GetLastUpdateTime_old>
+  <GetLastTowerUpdateTime_old>
+    <![CDATA[
+    select max(lasttime) as lasttime from
+(
+select  max(to_date(SUBSTR(STAMP,23,19))) as lasttime
+from  ]]>
+<![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+<![CDATA[sg_dev_tower_b
+ union all 
+ select   max(to_date(SUBSTR(STAMP,23,19))) as lasttime
+from  ]]>
+ <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+ <![CDATA[sg_dev_acline_r_tower
+union all
+select   max(to_date(SUBSTR(STAMP,23,19))) as lasttime
+from  ]]>
+<![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+<![CDATA[sg_dev_dcline_r_tower
+) a
+    ]]>
+  </GetLastTowerUpdateTime_old>
+  <GetLastUpdateTime>
+    <![CDATA[select max(lasttime) as lasttime
+from(
+select to_date(max(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__:__%' then SUBSTR(STAMP,23,19) else '1980-01-01 00:00:00' end)) as lasttime from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_b
+union
+select to_date(max(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__:__%' then SUBSTR(STAMP,23,19) else '1980-01-01 00:00:00' end)) as lasttime from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_b
+union 
+select to_date(max(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__:__%' then SUBSTR(STAMP,23,19) else '1980-01-01 00:00:00' end)) as lasttime from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[sg_con_substation_b
+union
+select to_date(max(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__:__%' then SUBSTR(STAMP,23,19) else '1980-01-01 00:00:00' end)) as lasttime from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[sg_con_conversubstation_b
+union
+select to_date(max(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__:__%' then SUBSTR(STAMP,23,19) else '1980-01-01 00:00:00' end)) as lasttime from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameStation]]>
+    <![CDATA[sg_con_plant_b
+) tempa]]>
+  </GetLastUpdateTime>
+  <GetLastTowerUpdateTime>
+    <![CDATA[
+    select max(lasttime) as lasttime from
+(
+select  to_date(max(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__:__%' then SUBSTR(STAMP,23,19) else '1980-01-01 00:00:00' end)) as lasttime
+from  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_tower_b
+ union all 
+ select   to_date(max(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__:__%' then SUBSTR(STAMP,23,19) else '1980-01-01 00:00:00' end)) as lasttime
+from  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_acline_r_tower
+union all
+select   to_date(max(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__:__%' then SUBSTR(STAMP,23,19) else '1980-01-01 00:00:00' end)) as lasttime
+from  ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameTower]]>
+    <![CDATA[sg_dev_dcline_r_tower
+) a
+    ]]>
+  </GetLastTowerUpdateTime>
+  <GetLastTowerUpdateLineIDs>
+    <![CDATA[
+    select  distinct line_id
+from  ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower where   to_date(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__%' then SUBSTR(STAMP,23,16) else '1980-01-01 00:00:00' end) > to_date('{0}')
+union all
+ select  distinct line_id
+from  ]]>
+ <![CDATA[same:SearchCommonSql:SchemaName]]>
+ <![CDATA[sg_dev_acline_r_tower where   to_date(case  when length(STAMP)==41 and  STAMP like '%____-__-__ __:__%' then SUBSTR(STAMP,23,16) else '1980-01-01 00:00:00' end) > to_date('{0}')
+    ]]>
+  </GetLastTowerUpdateLineIDs>
+  <GetLineTowerDirection>
+    <![CDATA[
+    SELECT ID,NEGATION FROM ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaName]]>
+    <![CDATA[YSH_DEV_LINE_CONNP where NEGATION > 0
+    ]]>
+  </GetLineTowerDirection>
+  <GetConnnectionLine>
+    <![CDATA[
+    SELECT B.ID,B.NAME,B.PG1,B.PG2,R.MEMBER_ID,R.VOLTAGE_TYPE FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONNECTIONLINE_B B JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONNECTIONLINE_R R ON B.ID=R.CONNECTIONLINE_ID]]>
+  </GetConnnectionLine>
+  <GetACDCConnnectionLine>
+    <![CDATA[select distinct * from
+(
+select A.id,A.name,a.voltage_type,c.pg1,c.pg2 from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B A
+  LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONNECTIONLINE_R R ON a.dcsystem_id=R.member_id 
+   LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONNECTIONLINE_B C on r.CONNECTIONLINE_ID = c.id 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.GRID_ID = B.ID  where pg1 is not null and pg2 is not null
+    union all
+  select  A.id,A.name,a.voltage_type,c.pg1,c.pg2 from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B A
+  LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONNECTIONLINE_R R ON a.id=R.member_id 
+   LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_CONNECTIONLINE_B C on r.CONNECTIONLINE_ID = c.id 
+    LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.GRID_ID = B.ID  where pg1 is not null and pg2 is not null
+    ) m {0}
+ ]]>
+  </GetACDCConnnectionLine>
+  <GetSubStationInfo_ems>
+    <![CDATA[select * from (select  A.id,A.name,A.type,A.dcc_id,A.top_ac_voltage_type,A.pg_id,A.operate_date,a.region,a.longitude,a.latitude,a.altitude,a.owner ,B.LEVEL AS PGLevel,to_date(SUBSTR(A.STAMP,23,19)) as lasttime,a.operate_state from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameEms]]>
+    <![CDATA[YSH_EMS_STATION_B A 
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.PG_ID = B.ID) tempa {0}]]>
+  </GetSubStationInfo_ems>
+  <GetLineInfo_ems>
+    <![CDATA[select distinct * from (select  A.id,A.name,A.grid_id,a.voltage_type,a.length,a.start_st_id,a.end_st_id,a.dispatch_org_id,a.operate_date,a.running_state,a.owner,a.start_tower_id,a.end_tower_id,a.license_org_id,B.LEVEL AS PGLevel,to_date(SUBSTR(A.STAMP,23,19)) as lasttime from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameEms]]>
+    <![CDATA[YSH_EMS_LINE_B A
+  LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B B ON A.GRID_ID = B.ID) tempa {0}]]>
+  </GetLineInfo_ems>
+  <GetTowerInfoByParam_ems>
+    <![CDATA[
+     select b.ID,a.TOWERNO AS TOWERNUM ,B.LONGITUDE,B.LATITUDE,a.TowerName,0 AS VOLTAGE,a.LINE_ID AS LINEID,a.OWNER,b.type  from ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameEms]]>
+    <![CDATA[ysh_ems_line_r_tower a
+left join ]]>
+    <![CDATA[same:SearchDistrictCommonSql:SchemaNameEms]]>
+    <![CDATA[ysh_ems_tower_b b on a.TOWER_ID = b.ID ]]>
+    <![CDATA[{0}]]>
+  </GetTowerInfoByParam_ems>
+  <GetGridParentInfo>
+    <![CDATA[
+    select p.id,p.parent_id as p_1,f.parent_id as p_2 from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_pwrgrid_b p
+left join ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_pwrgrid_b f on p.parent_id = f.id
+    ]]>
+  </GetGridParentInfo>
+  <GetFibersegLineInfo>
+    <![CDATA[select distinct * from
+(
+select f.line_id,A.name,a.voltage_type,f.SEG_ID,f.OWNER,f.GROUND_WIRE from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_R_FIBERSEG_ACLINE F
+  LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B A ON F.line_id=a.id
+    union all
+  select f.line_id,A.name,a.voltage_type,f.SEG_ID,f.OWNER,f.GROUND_WIRE from  ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_R_FIBERSEG_DCLINE F
+  LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B A ON F.line_id=a.id
+    ) m {0}
+ ]]>
+  </GetFibersegLineInfo>
+  <GetRelatedStationByLineID>
+    <![CDATA[select start_st_id,end_st_id from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_B where id in ('{0}')
+ ]]>
+  
+  </GetRelatedStationByLineID>
+  
+</ROOT>
+

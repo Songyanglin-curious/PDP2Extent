@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+	<!-- id为1201开头的线路的杆塔 -->
+	<GetTowerByAcline>
+		<![CDATA[ 
+    SELECT B.tower_id,A.danger_type,A.alert_type,A.alert_state,alert_msg,B.towername,B.towerno,A.data_time,A.img_url
+    FROM sg_db.sg_dev_acline_r_tower B 
+    LEFT JOIN ]]>
+	<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+	<![CDATA[ysh_dev_tower_monitor A 
+    ON a.tower_id = B.tower_id 
+    WHERE B.line_id = {0} 
+    ORDER BY b.towerno
+    ]]>
+	</GetTowerByAcline>
+	<!-- id为其他开头的线路的杆塔 -->
+	<GetTowerByDcline>
+		<![CDATA[ 
+    SELECT B.tower_id,A.danger_type,A.alert_type,A.alert_state,alert_msg,B.towername,B.towerno,A.data_time,A.img_url
+    FROM sg_db.sg_dev_dcline_r_tower B 
+    LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_dev_tower_monitor A 
+    ON a.tower_id = B.tower_id 
+    WHERE B.line_id = {0}
+    ORDER BY b.towerno
+    ]]>
+	</GetTowerByDcline>
+	<!-- 根据id获取历史告警数据 -->
+	<GetHisAlertByLineId>
+		<![CDATA[ 
+		SELECT data_time,alert_type,alert_state,alert_msg,img_url
+		FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_dev_tower_monitor_his 
+		WHERE 
+		tower_id = {0}
+		AND
+		data_time BETWEEN {1} AND {2};
+		]]>
+	</GetHisAlertByLineId>
+	<GetTowerByID>
+		<![CDATA[ 
+		SELECT danger_type,alert_type,alert_state,alert_msg,data_time,img_url
+		FROM ]]>
+		<![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+		<![CDATA[ysh_dev_tower_monitor 
+		WHERE tower_id = {0} 
+		]]>
+	</GetTowerByID>
+</ROOT>

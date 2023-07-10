@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import { generateEmptyString } from '../utils/format';
-import { XmlDocument } from '../utils/xml';
 const prettier = require("prettier");
-export default function cssFormat(xmlDomObj) {
+export default function cssFormat(edit, xmlDomObj) {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return; // 检查编辑器是否激活
     const document = editor.document;
@@ -15,7 +14,7 @@ export default function cssFormat(xmlDomObj) {
         cdatas = cdatas.concat(subCdatas)
     })
     // 创建一个WorkspaceEdit对象
-    const edit = new vscode.WorkspaceEdit();
+    // const edit = new vscode.WorkspaceEdit();
     const tabSize = editor.options.tabSize ? Number(editor.options.tabSize) : 4;
     for (let i = 0; i < cdatas.length; i++) {
         const cdata = cdatas[i];
@@ -30,14 +29,14 @@ export default function cssFormat(xmlDomObj) {
         let endPosition = document.positionAt(cdataParent.endTag.startPosition);
         let range = new vscode.Range(startPosition, endPosition); // 创建一个范围对象
         let formatStr = formatCsssString(value, startTagPosition, endPosition, tabSize)
-        console.log(formatStr)
         edit.replace(document.uri, range, formatStr);
     }
+    return edit;
     // 使用工作区应用编辑器对象来执行TextEdit数组中的所有操作
     // vscode.workspace.applyEdit(new vscode.WorkspaceEdit().set(document.uri, textEdits));
-    vscode.workspace.applyEdit(edit).then(() => {
-        return edit;
-    });
+    // vscode.workspace.applyEdit(edit).then(() => {
+    //     return edit;
+    // });
 
 }
 
@@ -49,7 +48,7 @@ function formatCsssString(text: any, startPosition: vscode.Position, endPosition
             parser: "css",
             // 设置使用空格而不是制表符来缩进
             // useTabs: false
-        });
+        }).trim();
         if (isOneLine) {
             return ` <![CDATA[ ${formatted} ]]> `
         }

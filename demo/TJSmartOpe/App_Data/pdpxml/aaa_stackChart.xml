@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds93><![CDATA[
+select to_char(datatime,'hh24')||':'||to_char(datatime,'mi') datatime,
+case heji when 0 then null else cast(cast(heji as numeric(22,1)) as varchar) end heji,
+case heji when 0 then null else cast(cast(heji-2000 as numeric(22,1)) as varchar) end hdzxjscl,
+cast(cast(hedian as numeric(22,1)) as varchar) as hedian,
+cast(cast(huodian as numeric(22,1)) as varchar) as huodian,
+cast(cast(shuidian as numeric(22,1)) as varchar) as shuidian,
+cast(cast(fengdian as numeric(22,1)) as varchar) as fengdian,
+cast(cast(guangfu as numeric(22,1)) as varchar) as guangfu,
+cast(cast(ranqi as numeric(22,1)) as varchar) as chouxux,
+cast(cast(lianluoxian as numeric(22,1)) as varchar) as lianluoxian 
+from "YS_DB"."YSH_ZHB_ZR_RFH" where trunc(datatime)='2019-08-16 00:00:00' order by datatime
+      ]]></ds93></ROOT>

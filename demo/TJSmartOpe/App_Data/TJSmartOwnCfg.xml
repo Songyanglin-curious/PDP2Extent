@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetDBstationInfo>
+    <![CDATA[
+      select * from  ys_db.ysh_drawstation_info
+    ]]>
+    </GetDBstationInfo>
+  <GetDBlineInfo1>
+    <![CDATA[
+                    select a. id,a.start_st_id as st_id,0 as st_type,a.type,a.url,b.longitude,b.latitude ,a.points,a.width from  ys_db.ysh_drawline_info a
+     join  ys_db.ysh_drawstation_info b on a.start_st_id=b.id where a.type=2
+    union
+        select  a. id,a.end_st_id as st_id,1 as st_type,a.type,a.url,b.longitude,b.latitude  ,a.points,a.width from  ys_db.ysh_drawline_info a
+     join  ys_db.ysh_drawstation_info b on a.end_st_id=b.id where a.type=2
+     union 
+           select  a. id,a.end_st_id as st_id,1 as st_type,a.type,a.url,0 as longitude,0 as latitude  ,a.points,a.width  from  ys_db.ysh_drawline_info a
+    where a.type!=2
+    ]]>
+    </GetDBlineInfo1>
+<GetDBlineInfo>
+    <![CDATA[
+                    select a. id,a.start_st_id as st_id,0 as st_type,a.type,a.url,b.longitude,b.latitude ,a.points,a.width from  ys_db.ysh_drawline_info a
+     join  ys_db.ysh_drawstation_info b on a.start_st_id=b.id 
+    union
+        select  a. id,a.end_st_id as st_id,1 as st_type,a.type,a.url,b.longitude,b.latitude  ,a.points,a.width from  ys_db.ysh_drawline_info a
+     join  ys_db.ysh_drawstation_info b on a.end_st_id=b.id 
+  union         
+      select  a. id,a.end_st_id as st_id,1 as st_type,a.type,a.url,0 as longitude,0 as latitude  ,a.points,a.width  from  ys_db.ysh_drawline_info a
+    where a.end_st_id is null  and a.start_st_id is null
+    ]]>
+    </GetDBlineInfo>
+<GetDBlineId>
+    <![CDATA[
+         select id from  ys_db.ysh_drawline_info 
+    ]]>
+    </GetDBlineId>
+<GetDBstationId>
+    <![CDATA[
+         select id from  ys_db.ysh_drawstation_info
+    ]]>
+    </GetDBstationId>
+  <GetDBiconInfo>
+    <![CDATA[
+      select * from  ys_db.ysh_drawicon_info
+    ]]>
+    </GetDBiconInfo>
+<GetDBiconId>
+    <![CDATA[
+         select id from  ys_db.ysh_drawicon_info
+    ]]>
+    </GetDBiconId>
+<GetDBtest>
+    <![CDATA[
+      select * from  ys_db.ysh_station_correctionInfo
+    ]]>
+    </GetDBtest>
+<InsertStationInfo>
+    <![CDATA[
+      insert into ys_db.ysh_drawstation_info(id,name,longitude,latitude,type,url,size,scale,fontpadding) values ({0},{1},{2},{3},{4},{5},{6},{7},{8});
+    ]]>
+</InsertStationInfo>
+<UpdateStationInfo>
+    <![CDATA[
+    update ys_db.ysh_drawstation_info set {0};
+    ]]>
+    </UpdateStationInfo>
+<InsertLineInfo>
+    <![CDATA[
+      insert into ys_db.ysh_drawline_info(id,name,start_st_id,end_st_id,type,url,width,points)  values ({0},{1},{2},{3},{4},{5},{6},{7});
+    ]]>
+    </InsertLineInfo>
+<UpdateLineInfo>
+    <![CDATA[
+    update ys_db.ysh_drawstation_info set {0};
+    ]]>
+    </UpdateLineInfo>
+<InsertIconInfo>
+    <![CDATA[
+      insert into ys_db.ysh_drawicon_info(url,id,type,width,height,longitude,latitude,name,numtiles,padding) values ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9});
+    ]]>
+ </InsertIconInfo>
+<UpdateIconInfo>
+    <![CDATA[
+    update ys_db.ysh_drawicon_info set {0};
+    ]]>
+    </UpdateIconInfo>
+</ROOT>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+    <!-- 获得变电站 -->
+    <GetSubstation>
+        <![CDATA[ 
+        select name,name from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_station order by idx
+        ]]>
+    </GetSubstation>
+    <!-- 获取间隔的数据源 -->
+    <GetInterval>
+        <![CDATA[ 
+        SELECT distinct b.col2 ,b.col2 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_alert_msg  a LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device  b ON a.device_id = b.id WHERE  b.col0 = {0};
+        ]]>
+    </GetInterval>
+    <!-- 获取设备数据源 -->
+    <GetDevice>
+        <![CDATA[ 
+        SELECT distinct b.col3 ,b.col3 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_alert_msg  a LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device  b ON a.device_id = b.id WHERE  b.col2 = {0};
+        ]]>
+    </GetDevice>
+    <!-- 获取告警数据条件不带时间 -->
+    <GetAlertData>
+        <![CDATA[ 
+        SELECT a.alert_time,b.col0 AS substation ,b.col3 AS device,a.msg_type ,a.msg_content  FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_alert_msg  a LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device  b ON a.device_id = b.id 
+        WHERE  (b.col0 = {0} OR ''={0})  AND  (b.col2 = {1} OR ''={1})  AND  (b.col3 = {2} OR ''={2})  AND (a.msg_type = {3} OR '' = {3}) AND a.alert_time <={4} ORDER BY a.alert_time DESC
+        ]]>
+    </GetAlertData>
+    <!-- 获取告警数据条件带时间 -->
+    <GetTimeAlertData>
+        <![CDATA[ 
+        SELECT a.alert_time,b.col0 AS substation ,b.col3 AS device,a.msg_type ,a.msg_content  FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_alert_msg  a LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device  b ON a.device_id = b.id 
+        WHERE  (b.col0 = {0} OR ''={0})  AND  (b.col2 = {1} OR ''={1})  AND  (b.col3 = {2} OR ''={2})  AND (a.msg_type = {3} OR '' = {3}) AND a.alert_time BETWEEN {4} AND {5}
+         ORDER BY a.alert_time DESC;
+                ]]>
+    </GetTimeAlertData>
+    <!-- 关键词搜索 -->
+    <GetAlertKeyWord>
+        <![CDATA[ 
+        SELECT a.alert_time,b.col0 AS substation ,b.col3 AS device,a.msg_type ,a.msg_content  FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_alert_msg  a LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device  b ON a.device_id = b.id 
+    WHERE  a.msg_type LIKE '%{0}%' OR b.col0 LIKe '%{0}%' OR b.col3 LIKE '%{0}%'  OR a.msg_content LIKE '%{0}%'
+    ]]>
+    </GetAlertKeyWord>
+</ROOT>

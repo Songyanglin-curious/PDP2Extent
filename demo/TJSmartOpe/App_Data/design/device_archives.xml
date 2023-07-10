@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="16" desc="设备档案">
+  <css>
+    <![CDATA[
+      #pdp {
+          overflow-y:auto;
+          background-color: #01313C;
+      }
+      .treeWrapper{
+          float: left;
+          height: 100%;
+          width: 320px;
+          background-color: #01313D;
+          overflow-y: auto;
+          margin-right: 10px;
+      }
+      
+    .txtSearch {
+	    vertical-align: top;
+	    height: 43px;
+	    width: 600px;
+	    padding: 0;
+	    padding-left: 15px;
+	    border: 1px solid #5b8793;
+	    border-radius: 20px;
+	    background: #02424C;
+	    color: #bde9fb;
+    }
+    
+    .searchBtn {
+        position: absolute;
+        left: 260px;
+        top: 7px;
+        cursor: pointer;
+    }
+    ]]>
+  </css>
+  <inits>
+    <init id="area0" desc="地区后缀" type="config" arg="AreaSuffix"></init>
+    <init id="reqdevid" desc="传入进来的设备id" type="request" arg="id"></init>
+    <init id="argtype" desc="参数类型" type="request" arg="argtype"></init>
+  </inits>
+  <consts>
+    <const id="const7" desc="快速定位标签组" arg="基本信息,#aBase,运行信息,#aRun,负荷曲线,#aCurve,告警历史,#aAlert,跳闸记录,#aBreak,检修记录,#aJianxiu,设备缺陷,#aDefect,在线监测,#aJiance,不良工况,#aGongkuang,巡视记录,#aXunshi" type="2d" length="2"></const>
+    <const id="const8" desc="快速定位标签组" arg="基本信息,#aBase,运行信息,#aRun,告警历史,#aAlert,跳闸记录,#aBreak,检修记录,#aJianxiu,设备缺陷,#aDefect,巡视记录,#aXunshi" type="2d" length="2"></const>
+    <const id="seldev" desc="选中设备" type="string"></const>
+    <const id="mainHeight" desc="内容高度"></const>
+    <const id="deviceurl" desc="档案地址"></const>
+    <const id="strKey" desc="搜索的关键字"></const>
+    <const id="arrfileurl"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds0" desc="设备列表" db="ConnMain" type="xml" node="sc/device_archives:GetDevArchive">
+
+      <cols>
+        <col id="colarea" desc="地区后缀" name="area0" from="area0"></col>
+        <col id="colxz" desc="传入进来的设备" name="传入进来的设备" from="reqdevid"></col>
+        <col id="col0" desc="设备id" name="deviceid"></col>
+        <col id="col1" desc="设备名称" name="devicename"></col>
+        <col id="col2" desc="设备类型" name="typename"></col>
+        <col id="col3" desc="变电站名称" name="stationname"></col>
+        <col id="col4" desc="变电站电压等级" name="voltagename"></col>
+        <col id="selected" name="selected"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a s_height="100%" s_width="100%" s_background="#032D33"></a>
+      <c>
+        <div id="divBody" desc="容器">
+          <a s_height="100%" s_display="flex" s_width="100%"></a>
+          <c>
+            <div id="divTree">
+              <a ref="divTree" s_height="100%" s_width="320px" s_position="relative" s_border-right="1px solid #cfd4df"></a>
+              <sa s_height="mainHeight"></sa>
+              <c>
+                <div id="div14" desc="容器">
+                  <a s_padding="5px" s_width="100%" s_display="flex"></a>
+                  <c>
+                    <text from="strKey">
+                      <a type="text" s_background="#113D48" suffix="ios-search" class="txtSearch" s_width="300px" s_height="35px" placeholder="输入要查找的变电站"></a>
+                    </text>
+                    <image>
+                      <a src="/i/search/search.png" class="searchBtn"></a>
+                      <e>
+                        <onclick>
+                          <list type="script" value="this.filterStation();"></list>
+                        </onclick>
+                      </e>
+                    </image>
+
+                  </c>
+                </div>
+                <div>
+                  <a class="treeWrapper" s_height="calc(100% - 45px)"></a>
+                  <c>
+                    <lazytree id="itree9" desc="树控件" source="ds0">
+                      <a  ref="itree9"></a>
+                      <sa groupcols="col4,col3,col2" idcol="col0" titlecol="col1" selected="seldev" deep="2"></sa>
+                      <e>
+                        <on-select-change>
+                          <list type="script">
+                            <value>
+                              <![CDATA[ var node = nodes[0];
+                              
+		                          if (node.deviceid) {
+                                    this.seldev = node.deviceid;
+                                    var havetype=false;
+                                   for(var i = 0; i < this.arrfileurl.length; i++){
+                                      var item = this.arrfileurl[i];
+                                      if(node.typename.indexOf(item["dtname"])>-1){
+                                           havetype=true;
+                                           this.deviceurl="../html/"+item["filename"]+".html?id=" + node.deviceid+"&devname="+escape(node.devicename)+"&point="+escape(node.point)+"&devtype="+escape(node.typename)+"&a=" + new Date(); 
+                                           break;
+                                      }
+                                      if(!havetype)
+                                        this.deviceurl="../html/archive_other.html?id=" + node.deviceid+"&devname="+escape(node.devicename)+"&point="+escape(node.point)+"&devtype="+escape(node.typename)+"&a=" + new Date(); 
+                                  }
+		                          }
+
+		                          ]]>
+                            </value>
+                          </list>
+                        </on-select-change>
+                      </e>
+                    </lazytree>
+                  </c>
+                </div>
+              </c>
+            </div>
+            <div id="divMain">
+              <a ref="divMain" s_background-color="white" s_font-size="0" s_height="100%" s_width="calc(100% - 320px)"></a>
+              <c>
+            
+                <iframe id="iframe13" desc="内嵌窗口">
+                  <a id="frm0" name="frm0" s_height="100%" s_width="100%" s_border="0" frameborder="0"></a>
+                  <sa src="deviceurl"></sa>
+                </iframe>
+              </c>
+            </div>
+          </c>
+        </div>
+      </c>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="select" ds="ds0"></list>
+      <list type="script">
+        <![CDATA[
+        this.seldev = this.reqdevid;
+        var vm=this;
+        vm.arrfileurl = [
+              { "dtname": "变压器", "filename": "archive_trans"},
+              { "dtname": "断路器", "filename": "archive_breaker"},
+              { "dtname": "开关", "filename": "archive_switch"},
+              { "dtname": "电抗器", "filename": "archive_reactor"},
+              { "dtname": "电容器", "filename": "archive_capacitor"},
+              { "dtname": "电流互感器", "filename": "archive_ct"},
+              { "dtname": "电压互感器", "filename": "archive_pt"},
+              { "dtname": "避雷器", "filename": "archive_arrester"},
+              { "dtname": "母线", "filename": "archive_line"},
+              { "dtname": "组合", "filename": "archive_gis"},
+              { "dtname": "其他类型", "filename": "archive_other"},
+            ];
+                        
+          if(this.reqdevid!="")
+          {
+                var o = PDP.read('ConnMain', "sgc/c:GetDeviceTypeById", [this.reqdevid],function(data){
+                 if(data.check('获取设备类型', true))
+                 {
+                    var dttype=data.value[0][0];
+                    var dtname=data.value[0][1];
+                    var havetype=false;
+                    for(var i = 0; i < vm.arrfileurl.length; i++){
+                          var item = vm.arrfileurl[i];
+                          if(dttype.indexOf(item["dtname"])>-1){
+                              havetype=true;
+                              vm.deviceurl="../html/"+item["filename"]+".html?argtype="+escape(vm.argtype)+"&id=" +vm.reqdevid+"&devname="+escape(dtname)+"&devtype="+escape(dttype)+"&a=" + new Date(); 
+                              break;
+                          }
+                      }
+                   if(!havetype)
+                      vm.deviceurl="../html/archive_other.html?argtype="+escape(vm.argtype)+"&id=" +vm.reqdevid+"&devname="+escape(dtname)+"&devtype="+escape(dttype)+"&a=" + new Date(); 
+                 }
+            });
+          }
+        this.devices = Ysh.Object.clone(this.ds0);
+        this.filterStation = function() {
+           var s = this.strKey;
+           if (s == "") {
+             this.ds0 = Ysh.Object.clone(this.devices);
+             return;
+           }
+           var arr = [];
+           for (var i = 0;i < this.devices.length;i++) {
+              var d = this.devices[i];
+              if (d[3].indexOf(s) >= 0) {
+                arr.push(d);
+              }
+           }
+           this.ds0 = arr;
+        }
+           this.flyTo = function(s) {
+            if (typeof frm0.flyTo == "function")
+              frm0.flyTo(s[1]);
+           }
+           this.select = function(){
+          	var obj = event.target;
+          	if(obj.nodeName == "SPAN"){
+          		$(obj).parent().siblings().removeClass("topBarItemSelect");
+          		$(obj).parent().addClass("topBarItemSelect");
+          	}else{
+          		$(obj).siblings().removeClass("topBarItemSelect");
+          		$(obj).addClass("topBarItemSelect")
+          	}
+          }
+          
+        ]]>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          var h = this.$refs.divMain.clientHeight;
+          this.mainHeight = h + "px";
+          var vm = this;
+          window.onresize = function() {
+          var h = vm.$refs.divMain.clientHeight;
+          vm.mainHeight = h + "px";
+          }
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

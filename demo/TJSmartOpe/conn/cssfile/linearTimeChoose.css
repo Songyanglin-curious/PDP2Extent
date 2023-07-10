@@ -1,0 +1,107 @@
+/*-----------------------------------------------------------------------------------------------*/
+/*                                         DragLinear                                        */
+/*-----------------------------------------------------------------------------------------------*/
+div.whole
+{
+    font-size: 10pt;
+    font-family: @ËÎÌו;
+    font-weight: normal;
+    width: 285px;
+    height: 30px;
+}
+
+div.background
+{
+    background-image: url("/i/linear_background.png");
+    width: 270px;
+    height: 6px;
+    z-index: 1;
+    position: absolute;
+    margin: 37px 0 0 0;
+}
+div.linear
+{
+    width: 275px;
+    height: 15px;
+    z-index: 4;
+    position: absolute;
+    margin: 35px 0 0 0;
+}
+
+div.resize
+{
+    width: 275px;
+    height: 5px;
+    z-index: 3;
+    margin: 40px 0 0 0;
+    position: absolute;
+}
+
+div.separate
+{
+    font-size: 8pt;
+    width: 275px;
+    height: 15px;
+    position: absolute;
+    z-index: 2;
+    margin: 37px 0 0 7px;
+}
+
+div.text
+{
+    width: 275px;
+    height: 15px;
+    position: absolute;
+    z-index: 5;
+    margin: 50px 0 0 7px;
+}
+
+div.time
+{
+    height: 30px;
+    position: absolute;
+    z-index: 1;
+    margin: 35px 0 0 0px;
+}
+div.upArrow
+{
+    background-image: url("/i/linear_to_up.png");
+    background-repeat: no-repeat;
+    font-size: 1pt;
+    width: 10px;
+    height: 15px;
+    z-index: 3;
+    position: absolute;
+    margin: 37px 0 0 282px;
+}
+div.downArrow
+{
+    background-image: url("/i/linear_to_down.png");
+    background-repeat: no-repeat;
+    font-size: 1pt;
+    width: 10px;
+    height: 15px;
+    z-index: 3;
+    position: absolute;
+    margin: 37px 0 0 282px;
+}
+
+
+
+span.pointLeft, span.pointRight
+{
+    background-image: url("/i/linear_point_up.png");
+    width: 12px;
+    height: 12px;
+    position: absolute;
+}
+span.rectangle
+{
+    background-image: url("/i/linear_rectangle.png");
+    font-size: 1pt;
+    width: 275px;
+    height: 100%;
+    z-index: 3;
+    position: absolute;
+}
+

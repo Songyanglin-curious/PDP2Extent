@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;/conn/jsfile/shengchan/data.js" desc="变电站总体数量统计">
+  <inits>
+  </inits>
+  <consts>
+    <const id="option" type="object" arg=""></const>
+    <const id="counts" type="object"  arg=""></const>
+    <const id="hEarch" ></const>
+  </consts>
+  <datasources>
+    <datasource type="load" id="stationCount" desc="变电站数量" node="sc/sbzc:GetStationCount">
+      <cols>
+        <col id="col_voltage" name="voltage" desc="voltage"></col>
+        <col id="col_count" name="count" desc="count"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+   <title-div id="cap" ref="divContent" >
+      <a title='变电站总体数量统计' title1="单位：座"></a>
+      <sa content-style='{ }'></sa>
+      <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+      <!-- <i style="cursor:pointer;font-size:24px;position:absolute;left:10px;top:10px">
+        <a class="ivu-icon" ></a>
+        <sa class="m"></sa>
+        <sf class="{0} ?'ivu-icon-md-contract' : 'ivu-icon-md-expand' "></sf>
+        <e>
+          <onclick>
+            <list type="script" value="this.maxBlock();"></list>
+          </onclick>
+        </e>
+      </i> -->
+      <div ref="divDiscribe" style="padding:5px">
+        <label value="变电站总数量">
+          <a class="nametext"></a>
+        </label>
+        <label style="">
+          <a class="numtext"></a>
+          <sa value="counts['全部'] + '座'"></sa>
+        </label>
+        <label value=",其中1000kV有">
+          <a class="nametext"></a>
+        </label>
+        <label style="">
+          <a class="numtext"></a>
+          <sa value="counts['1000kV'] +'座'"></sa>
+        </label>
+        <label value=",500kV有">
+          <a class="nametext"></a>
+        </label>
+        <label style="">
+          <a class="numtext"></a>
+          <sa value="counts['500kV'] + '座'"></sa>
+        </label>
+        <!-- <label value=",直流">
+          <a class="nametext"></a>
+        </label>
+        <label style="">
+          <a class="numtext"></a>
+          <sa value="counts['直流'] + '座'"></sa>
+        </label> -->
+        <label value="。">
+          <a class="nametext"></a>
+        </label>
+      </div>
+      <div>
+        <sa s_height="hEarch"></sa>
+        <ecommonchart id="echart01" desc="图表">
+          <sa option="option"></sa>
+        </ecommonchart>
+      </div>
+    </title-div>
+  </ctrls>
+  <css>
+    <![CDATA[
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsbzc" part="tobig"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.counts = {'全部':0,'1000kV':0,'500kV':0,'直流':0,}
+            this.getOption = function(){
+              this.counts = ProjectShanxi.Curve.getCountByVoltage(this.stationCount);
+              this.counts['全部'] = this.counts['1000kV'] + this.counts['500kV']
+              var title = this.counts['全部'] + '座';
+              var data = [{name:'1000kV',value:this.counts['1000kV']},{name:'500kV',value:this.counts['500kV']},]
+              var color = ['#e1727a','#4b93dd','#ffb66f']
+
+              this.option = ProjectShanxi.Curve.getPie2DOption(title,data,color);
+            }
+
+          
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="resize">
+      <list type="script">
+        <value>
+          <![CDATA[ 
+                var hAll = this.$el.clientHeight;
+                var hDiscribe =  this.$refs.divDiscribe.offsetHeight;
+                this.hEarch = hAll  - hDiscribe -60-20 + 'px';
+              ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+         <![CDATA[
+         this.load_stationCount(true,() => {
+          this.getOption();
+          this.$nextTick(function(){
+            this.resize();
+          })
+        });
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

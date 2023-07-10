@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="11" desc="设备缺陷">
+    <inits>
+        <init id="id" desc="场站id" type="request" arg="id"></init>
+    </inits>
+    <consts>
+        <const id="dsSeverity" desc="严重程度数据源" type="2d" length="2" arg="_ALL_,全部,严重缺陷,严重缺陷,一般缺陷,一般缺陷"></const>
+        <const id="selSeverity" desc="选中的严重程度" arg="_ALL_"></const>
+        <const id="dsDeviceType" desc="设备类型数据源" type="2d" length="2" arg="_ALL_,全部"></const>
+        <const id="selDeviceType" desc="选中的设备类型" arg="_ALL_"></const>
+        <const id="searchKeyWord" desc="关键词"></const>
+        <const id="stationName" desc="储存场站名称用于获取设备缺陷数据"></const>
+        <const id="dsDefect" desc="所有的缺陷的数据源" type="object[]"></const>
+        <const id="dsShowDefect" desc="表格展示的缺陷数据源" type="object[]" fields="FIND_DAY,LINE_NAME,START_TOWER_NAME,DEFECT_LEVEL,BJ,DEFECT_DESCRIBE,BJZL,DCloudId,ID"></const>
+        <const id="startTime" desc="开始时间" type="time" arg="y"></const>
+        <const id="endTime" desc="结束时间" type="time" arg="y,y,1"></const>
+        <const id="hTable" desc="表格高度"></const>
+        <const id="type" arg="thisyear"></const>
+        <const id="timebuttons" type="2d" length="2"></const>
+        <const id="showArrow"></const>
+        <const id="isShowAllDevice" type="bool" arg="false"></const>
+        <const id="hiddenTabs"></const>
+        <const id="isShowModal" type="bool" arg="false"></const>
+        <const id="dynArgs"></const>
+        <const id="modalTitle"></const>
+        <const id="timePosition" type="string" arg="bottom"></const>
+    </consts>
+    <datasources></datasources>
+    <ctrls>
+        <div desc="根容器" style="width:100%;height:100%;">
+            <div desc="筛选条件" ref="divSearch" style="padding: 10px 20px">
+                <div desc="时间搜索" style="position:relative;justify-content: space-between;">
+                    <a class="fac "></a>
+                    <div>
+                        <a class="fac"></a>
+                        <label>
+                            <a value="时间" class="label-title"></a>
+                        </label>
+                        <div>
+                            <a class="title-bar" s_background-color="#555555"></a>
+                            <span id="div12" desc="容器">
+                                <a s_text-align="left" s_padding="5px" s_display="flex-block" s_width="100%"></a>
+                                <c>
+                                    <timesearch>
+                                        <a v-model="type"></a>
+                                        <sa placement="timePosition"></sa>
+                                        <sa morestyle="true" timebuttons="[]" buttons="timebuttons"></sa>
+                                        <e>
+                                            <search>
+                                                <list type="script" value="this.doSearch(key,starttime,endtime,needOther);"></list>
+                                            </search>
+                                        </e>
+                                    </timesearch>
+                                </c>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div desc="告警搜索">
+                    <a class="fbac mb10"></a>
+                    <div>
+                        <a class="fac"></a>
+                        <label>
+                            <a value="严重程度" class="label-title"></a>
+                        </label>
+                        <div style="min-width:165px">
+                            <yshtab id="yshtab15" desc="标签卡" from="selSeverity" source="dsSeverity">
+                                <a tabstyle="nbTab" class="defect-tab"></a>
+                                <e>
+                                    <onclick>
+                                        <list type="script" value="this.getDefectBySeverity();"></list>
+                                    </onclick>
+                                </e>
+                            </yshtab>
+                        </div>
+                    </div>
+                </div>
+
+                <div desc="设备类型搜索">
+                    <div>
+                        <a class="fac mb10"></a>
+                        <label>
+                            <a value="部件种类" class="label-title red-text"></a>
+                        </label>
+                        <div ref="divDeviceTypeWrap" style="flex:1;display:flex;">
+                            <div show="showArrow" style="display:flex;align-items:center">
+
+                                <i style="font-size: 24px;cursor:pointer;">
+                                    <sa class="isShowAllDevice"></sa>
+                                    <sf class="{0} ? 'ivu-icon ivu-icon-md-arrow-dropup' : 'ivu-icon ivu-icon-md-arrow-dropdown'"></sf>
+                                </i>
+                                <e>
+                                    <onclick>
+                                        <list type="script">
+                                            <value>
+                                                <![CDATA[
+                                                    this.isShowAllDevice = !this.isShowAllDevice;
+                                                    this.showAllDeviceType();
+                                                ]]>
+                                            </value>
+                                        </list>
+                                    </onclick>
+                                </e>
+
+                            </div>
+                            <div ref="divDeviceType" style="flex:1">
+                                <a class="tabs-blue"></a>
+                                <sa class="hiddenTabs"></sa>
+                                <loop id="loop1" from="dsDeviceType">
+                                    <div>
+                                        <label>
+                                            <a class="item"></a>
+                                            <sa class="item_loop1[0] == selDeviceType ? 'active' : 'normel'"></sa>
+                                            <sa value="item_loop1[1]"></sa>
+                                            <e>
+                                                <onclick args="item_loop1">
+                                                    <list type="script">
+                                                        <value>
+                                                            <![CDATA[
+                                                                this.selDeviceType = item_loop1[0];
+                                                                this.getDefectByDeviceType();
+                                                            ]]>
+                                                        </value>
+                                                    </list>
+                                                </onclick>
+                                            </e>
+                                        </label>
+
+                                    </div>
+                                </loop>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div desc="关键字">
+                    <div>
+                        <a class="fac mb10"></a>
+                        <label>
+                            <a value="关键字" class="label-title"></a>
+                        </label>
+                        <div style="flex:1">
+                            <iinput desc="关键词输入框" from="searchKeyWord" style="width:100%;margin-left: 5px;">
+                                <a size="small" placeholder="请输入关键字"></a>
+                                <e>
+                                    <on-change>
+                                        <list type="script">
+                                            <value><![CDATA[ this.searchByKeyWord(); ]]></value>
+                                        </list>
+                                    </on-change>
+                                </e>
+                            </iinput>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a id="container"></a>
+                <scrolltable id="itable1" desc="iview表格" from="dsShowDefect">
+                    <a ref="tbl" highlight-field="ID"></a>
+                    <sa stripe="true" border="true" click-highlight="true" height="hTable" item-height="50"></sa>
+                    <c>
+                        <!-- <icol desc="序号">
+                            <a key="index" align="center" width="80"></a>
+                        </icol> -->
+                        <icol desc="操作" from="">
+                            <a width="60" align="center"></a>
+                            <!-- <sa id="page.row.ID"></sa> -->
+                            <label>
+                                <sa id="this.params.row.ID"></sa>
+                            </label>
+                            <img tooltip="显示详情">
+                                <a s_margin-left="5px" s_width="18px" s_height="20px" src="/i/sgc/operate/detail.png"></a>
+                                <s cursor="pointer"></s>
+                                <e>
+                                    <onclick>
+                                        <list type="script">
+                                            <value>
+                                                <![CDATA[
+                                                    this.showDefectDetail(this.params.row);
+                                                ]]>
+                                            </value>
+                                        </list>
+                                    </onclick>
+                                </e>
+                            </img>
+                            <img tooltip="定位">
+                                <a s_margin-left="5px" s_width="18px" s_height="20px" src="/i/sgc/operate/locate.png"></a>
+                                <s cursor="pointer"></s>
+                                <e>
+                                    <onclick>
+                                        <list type="script">
+                                            <value>
+                                                <![CDATA[
+                                                    this.locateDefect(this.params.row);
+                                                ]]>
+                                            </value>
+                                        </list>
+                                    </onclick>
+                                </e>
+                            </img>
+                        </icol>
+                        <icol desc="缺陷发现时间" from="FIND_DAY">
+                            <a align="center" minWidth="100" format="111000"></a>
+                        </icol>
+                        <icol desc="线路名称" from="LINE_NAME">
+                            <a align="center"></a>
+                        </icol>
+                        <icol desc="杆塔起始名" from="START_TOWER_NAME">
+                            <a align="center"></a>
+                        </icol>
+                        <icol desc="缺陷等级" from="DEFECT_LEVEL">
+                            <a align="center"></a>
+                        </icol>
+                        <icol desc="部件" from="BJ">
+                            <a align="center"></a>
+                        </icol>
+                        <icol desc="缺陷描述" from="DEFECT_DESCRIBE">
+                            <a align="center"></a>
+                        </icol>
+                        <!-- <icol desc="距离超期" from="SpanDeadline">
+                            <a align="center" minWidth="80"></a>
+                        </icol> -->
+                    </c>
+
+
+                </scrolltable>
+            </div>
+            <div>
+                <!-- <imodal desc="对话框" from="isShowModal">
+                    <a width="90%" s_height="90%" ref="detailModal" _bindscrollable="true" cancel-text=" " class="modal-position modal-boay-custom"></a>
+                    <sa closable="true" title="modalTitle" footer-hide="true" draggable="true"></sa>
+                    <e>
+                        <on-ok>
+                            <list type="script"></list>
+                        </on-ok>
+                    </e>
+                    <c>
+                        <dynfile desc="动态文件">
+                            <a ref="detailFile" file="sc_device_defect_line_deatil"></a>
+                            <sa args="dynArgs"></sa>
+                        </dynfile>
+                    </c>
+                </imodal> -->
+            </div>
+            <div ref="divFooter">
+                <group_statistics>
+                    <a ref="divStat" scolumn="DEFECT_LEVEL" dcolumn="ID"></a>
+                    <sa list="dsShowDefect" showtext="rangeText" link="false" />
+                    <e>
+                        <changed>
+                            <list type="script" value=""></list>
+                        </changed>
+                    </e>
+                </group_statistics>
+            </div>
+        </div>
+    </ctrls>
+    <css>
+        <![CDATA[
+            .label-title {
+              /*font-size:16px;*/
+              width: 60px;
+              text-align-last: justify;
+              margin-right: 10px;
+            }
+            .tabs-blue {
+              display: flex;
+              flex-wrap: wrap;
+            }
+            .tabs-blue .item {
+              display: inline-block;
+              cursor: pointer;
+              list-style-type: none;
+              font-family: 黑体;
+              color: White;
+              border-width: 0px;
+              height: 25px;
+              line-height: 25px;
+              padding: 0px 10px;
+              margin: 0 0 10px 5px;
+            }
+            .tabs-blue .item.normel {
+              background-color1: #eeeeee;
+              background-color: #414141;
+            }
+            .tabs-blue .item.active {
+              background-color1: #ffffff;
+              border-bottom-width: 0px;
+              border-bottom-color: #ffffff;
+              background-color: #369bc1;
+              border-width: 1px;
+              border-style: solid;
+              border-color: #0ba4dc;
+              border-top-width: 0px;
+              border-bottom-width: 0px;
+            }
+            .hidden-part-tabs {
+              height: 30px;
+              overflow: hidden;
+            }
+            
+            .defect-tab span {
+              vertical-align: baseline !important;
+            }
+            .modal-position .ivu-modal {
+              top: 10px;
+            }
+        ]]>
+    </css>
+    <scripts>
+        <script event="created">
+            <list type="file" value="utils" part="table"></list>
+            <list type="file" value="sc_defect" part="line_defect"></list>
+            <list type="script">
+                <value>
+                    <![CDATA[
+                        
+                    ]]>
+                </value>
+            </list>
+        </script>
+        <script event="resize">
+            <list type="script">
+                <value>
+                    <![CDATA[
+                        this.$nextTick(function () {
+                          var hAll = this.$el.clientHeight;
+                          var hSearch = this.$refs.divSearch.offsetHeight;
+                          var hFooter = this.$refs.divFooter.offsetHeight;
+                          this.hTable = hAll - hSearch - hFooter - 10;
+                        
+                          this.$nextTick(function () {
+                            var tabWidth = this.$refs.divDeviceTypeWrap.clientWidth;
+                            var allWidth = 0;
+                            var childrens = this.$refs.divDeviceType.children;
+                            for (var i = 0; i < childrens.length; i++) {
+                              allWidth += childrens[i].offsetWidth;
+                            }
+                            if (allWidth > tabWidth) {
+                              this.showArrow = true;
+                            } else {
+                              this.showArrow = false;
+                            }
+                          });
+                        });
+                    ]]>
+                </value>
+            </list>
+        </script>
+        <script event="beforeDestroy">
+      <![CDATA[ProjectSGC.Map.hideIcon("defect");]]>
+    </script>
+        <script event="mounted">
+            <list type="script">
+                <value>
+                    <![CDATA[
+                        var vm = this;
+                        window.setTimeout(() => {
+                          this.resize();
+                        }, 100);
+                    ]]>
+                </value>
+            </list>
+        </script>
+    </scripts>
+</root>

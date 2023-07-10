@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds354><![CDATA[
+          SELECT A.RN,DECODE(B.RIS,NULL,0,B.RIS) AS RIS FROM
+          (SELECT to_char(DATES,'dd') AS RN FROM
+          (SELECT TO_DATE('2019-02-01 00:00:00','yyyy-mm-dd hh24:mi:ss')+level-1 AS DATES FROM DUAL
+          CONNECT BY level <= TO_DATE('2019-02-28 23:59:59','yyyy-mm-dd hh24:mi:ss')-TO_DATE('2019-02-01 00:00:00','yyyy-mm-dd hh24:mi:ss')+1))A
+          LEFT JOIN
+          (SELECT to_char(RISKTIME,'dd') AS RN,SUM(FAULTRATE) AS RIS FROM MONITORSIGNAL.TRISKDEVICE
+          WHERE RISKTIME BETWEEN TO_DATE('2019-02-01 00:00:00','yyyy-mm-dd hh24:mi:ss') AND TO_DATE('2019-02-28 23:59:59','yyyy-mm-dd hh24:mi:ss')
+          AND DEVICEIDX={0}
+          GROUP BY to_char(RISKTIME,'dd'))B ON A.RN=B.RN
+          ORDER BY A.RN
+				]]></ds354></ROOT>

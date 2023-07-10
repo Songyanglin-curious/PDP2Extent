@@ -36,13 +36,20 @@
             .title {
               background-color: #1d3b55;
             }
-            
         ]]>
     </css>
     <scripts>
         <script event="created">
             <list type="script">
                 <![CDATA[
+                    //console.log("created");
+                    //console.log("created");
+                    //console.log("created");
+                    //console.log("created");
+                    //debugger;
+                    //debugger;
+                    //debugger;
+                    //debugger;
                     if (this.col_DEV_TYPE.length > 0) {
                       this.isLine = this.col_DEV_TYPE[0] == "414";
                     }

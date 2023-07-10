@@ -1,0 +1,250 @@
+﻿/*iview样式重置*/
+.ivu-table-wrapper-with-border {
+    border: 1px solid var(--ivu-table-border-color);
+    border-bottom: 0;
+    border-right: 0;
+}
+
+.ivu-table {
+    width: inherit;
+    height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--ivu-table-color);
+    font-size: var(--ivu-table-font-size);
+    background-color: var(--ivu-table-bg);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ivu-table:before,
+.ivu-table:after{
+    background-color: var(--ivu-table-border-color);
+}
+
+.ivu-table-border td, .ivu-table-border th {
+    border-right: 1px solid var(--ivu-table-border-color);
+}
+
+.ivu-table td, .ivu-table th{
+    height: var(--ivu-table-row-height);
+    border-bottom: 1px solid var(--ivu-table-border-color);
+}
+
+.ivu-table th {
+    height: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: var(--ivu-table-th-bg);
+}
+
+.ivu-table td{
+    background-color: var(--ivu-table-td-bg);
+}
+
+.ivu-table-stripe .ivu-table-body tr:nth-child(2n) td, .ivu-table-stripe .ivu-table-fixed-body tr:nth-child(2n) td {
+    background-color: var(--ivu-table-tr2n-td-bg);
+}
+
+.ivu-table-stripe .ivu-table-body tr.ivu-table-row-hover td, .ivu-table-stripe .ivu-table-fixed-body tr.ivu-table-row-hover td {
+    background-color: var(--ivu-table-hover-bg);
+}
+
+.ivu-input{
+    height: var(--ivu-formcomp-height);
+    line-height: var(--ivu-formcomp-height);
+    padding: 4px 7px;
+    font-size: var(--ivu-formcomp-font-size);
+    border: 1px solid var(--ivu-formcomp-border-color);
+    border-radius: 4px;
+    color: var(--ivu-formcomp-color);
+    background-color: var(--ivu-formcomp-bg);
+}
+
+.ivu-input:focus {
+    border-color: var(--ivu-formcomp-focus-border-color);
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px var(--ivu-formcomp-focus-box-shadow-color);
+    box-shadow: 0 0 0 2px var(--ivu-formcomp-focus-box-shadow-color);
+}
+
+.ivu-select{
+    width: var(--ivu-formcomp-width-medium);
+    color: var(--ivu-formcomp-color);
+    font-size: var(--ivu-formcomp-font-size);
+}
+
+.ivu-select-single .ivu-select-selection {
+    height: var(--ivu-formcomp-height);
+    position: relative;
+}
+
+.ivu-select-selection {
+    background-color: var(--ivu-formcomp-bg);
+    border: 1px solid var(--ivu-formcomp-border-color);
+}
+
+.ivu-select-single .ivu-select-selection .ivu-select-placeholder, 
+.ivu-select-single .ivu-select-selection .ivu-select-selected-value {
+    height: calc(var(--ivu-formcomp-height) - 2px);
+    line-height: calc(var(--ivu-formcomp-height) - 2px);
+    font-size: var(--ivu-formcomp-font-size);
+    padding-left: 8px;
+    padding-right: 24px;
+}
+
+.ivu-select-visible .ivu-select-selection {
+    border-color: var(--ivu-formcomp-focus-border-color);
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px var(--ivu-formcomp-focus-box-shadow-color);
+    box-shadow: 0 0 0 2px var(--ivu-formcomp-focus-box-shadow-color);
+}
+
+.ivu-select-dropdown{
+    background-color: var(--ivu-select-dropdown-bg);
+    box-shadow: var(--ivu-select-box-shadow);
+}
+
+.ivu-select-item {
+    margin: 0;
+    line-height: normal;
+    padding: 7px 16px;
+    clear: both;
+    color: var(--ivu-select-item-color);
+    font-size: var(--ivu-select-item-font-size) !important;
+    white-space: nowrap;
+    list-style: none;
+    cursor: pointer;
+}
+
+.ivu-select-item-selected, .ivu-select-item-selected:hover {
+    color: var(--ivu-select-item-selected-color);
+}
+
+.ivu-select-item:hover {
+    background: var(--ivu-select-item-hover-bg);
+}
+
+.ivu-select-multiple .ivu-select-item-selected {
+    color: var(--ivu-select-item-selected-color);
+    background: var(--ivu-select-dropdown-bg);
+}
+
+.ivu-select-multiple .ivu-select-item-focus, .ivu-select-multiple .ivu-select-item-selected:hover{
+    background: var(--ivu-select-item-hover-bg);
+}
+
+.ivu-select-arrow{
+    color: var(--ivu-select-arrow-color);
+}
+
+/*date-picker*/
+.ivu-date-picker-focused input{
+    border-color: var(--ivu-formcomp-focus-border-color);
+    box-shadow: var(--ivu-formcomp-focus-box-shadow-color);
+}
+
+.ivu-date-picker-header {
+    height: var(--ivu-date-picker-header-height);
+    line-height: var(--ivu-date-picker-header-height);
+    border-bottom: var(--ivu-date-picker-header-border);
+}
+
+.ivu-date-picker-header-label:hover{
+    color: var(--ivu-date-picker-hover-color);
+}
+
+.ivu-picker-panel-icon-btn{
+    color: var(--ivu-date-picker-dark-color);
+}
+
+.ivu-picker-panel-icon-btn:hover{
+    color: var(--ivu-date-picker-hover-color);
+}
+
+.ivu-date-picker-cells-header span {
+    color: var(--ivu-date-picker-dark-color);
+}
+
+.ivu-date-picker-cells-cell-next-month em, .ivu-date-picker-cells-cell-prev-month em {
+    color: var(--ivu-date-picker-dark-color);
+}
+
+.ivu-date-picker-cells-cell:hover em {
+    background: var(--ivu-date-picker-cells-cell-bg);
+}
+
+.ivu-date-picker-cells-cell-today em:after{
+    background: var(--ivu-date-picker-cells-cell-today);
+}
+
+.ivu-date-picker-cells-cell-selected em, .ivu-date-picker-cells-cell-selected:hover em {
+    background: var(--ivu-date-picker-cells-cell-selected-bg);
+    color: var(--ivu-date-picker-cells-cell-selected-color);
+}
+
+/*modal*/
+.ivu-modal-content {
+    position: relative;
+    background-color: var(--ivu-modal-bg);
+    border: 0;
+    border-radius: 6px;
+    background-clip: padding-box;
+    -webkit-box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+}
+
+.ivu-modal-header {
+    border-bottom: 1px solid #e8eaec;
+    padding: 14px 16px;
+    line-height: 1;
+    background: var(--ivu-modal-header-bg);
+}
+
+.ivu-modal-header p, .ivu-modal-header-inner{
+    color: var(--ivu-modal-header-color);
+}
+
+/*Tabs 标签页*/
+.ivu-tabs{
+    color: var(--ivu-tabs-color);
+}
+
+.ivu-tabs-bar {
+    border-bottom-style: none;
+    margin-bottom: var(--ivu-tabs-bar-margin-bottom);
+}
+
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-nav-container {
+    height: var(--ivu-tabs-nav-container-height);
+}
+
+.ivu-tabs-nav-container{
+    font-size: var(--ivu-tabs-nav-container-font-size);
+}
+
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab {
+    margin-right: var(--ivu-tabs-tab-margin-right);
+    height: var(--ivu-tabs-nav-container-height);
+    padding: 5px 16px 5px;
+    border: var(--ivu-tabs-tab-border);
+    border-bottom: var(--ivu-tabs-tab-border);
+    background: var(--ivu-tabs-tab-background);
+}
+
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab-active {
+    height: var(--ivu-tabs-nav-container-height);
+    background: var(--ivu-tabs-tab-active-background);
+    border-color: var(--ivu-tabs-tab-active-border-color);
+    color: var(--ivu-tabs-tab-active-color);
+}
+
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab .ivu-tabs-close{
+    color: var(--ivu-tabs-close-color);
+    font-size: var(--ivu-tabs-close-font-size);
+}
+
+.ivu-tabs.ivu-tabs-card>.ivu-tabs-bar .ivu-tabs-tab:hover {
+    color: var(--ivu-tabs-tab-hover-color);
+    background: var(--ivu-tabs-tab-hover-background);
+}

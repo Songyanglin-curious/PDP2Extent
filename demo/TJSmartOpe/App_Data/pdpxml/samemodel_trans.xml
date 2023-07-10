@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds0><![CDATA[
+          select id deciid,col0||col3 as devicename,col0 as station   from YS_DB_HB.ysh_sc_device tnew
+          join 
+          (select col4,col7,col8 from YS_DB_HB.ysh_sc_device where id='{0}') told on tnew.col4=told.col4 and tnew.col7=told.col7 and  tnew.col8=told.col8
+          where tnew.id<>'{0}'
+        ]]></ds0></ROOT>

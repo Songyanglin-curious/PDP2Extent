@@ -1,0 +1,1048 @@
+﻿/*v=1.19.819.1*/
+.none {
+    display: none;
+}
+
+.schSP {
+    padding: 0;
+    vertical-align: middle;
+    height: 24px;
+    display: inline;
+    margin-top: 0px;
+    float: left;
+}
+
+.arrUp {
+    height: 25px;
+    width: 25px;
+    cursor: hand;
+    vertical-align: middle;
+    float: left;
+    background: url(/i/arrUp.png);
+}
+
+.arrUp_grey {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    vertical-align: middle;
+    float: left;
+    background: url(/i/arrUp_grey.png);
+}
+
+.arrDown {
+    height: 25px;
+    width: 25px;
+    float: left;
+    cursor: pointer;
+    vertical-align: middle;
+    background: url(/i/arrDown.png);
+}
+
+.arrDown_grey {
+    height: 25px;
+    width: 25px;
+    float: left;
+    cursor: hand;
+    vertical-align: middle;
+    background: url(/i/arrDown_grey.png);
+}
+
+.nTab {
+    float: left;
+    margin: 0 auto;
+    background-position: left;
+    background-repeat: repeat-y;
+    /*margin-bottom: 2px;*/
+    font-family: 黑体;
+    font-size: 14px;
+    position: relative;
+    width: 100%;
+}
+
+    .nTab .TabTitle {
+        float: left;
+        height: 35px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .nTab .TabTitle_s {
+        float: left;
+        height: 28px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        margin-right: 50px;
+        text-align: center;
+    }
+
+    .nTab .TabTitle_b {
+        float: left;
+        height: 28px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        margin-right: 50px;
+        text-align: center;
+    }
+
+    .nTab .TabTitle ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .nTab .TabTitle li {
+        float: left;
+        cursor: pointer;
+        width: 94px;
+        height: 100%;
+        padding-top: 10px;
+        padding-right: 20px;
+        padding-left: 20px;
+        list-style-type: none;
+        font-family: 黑体;
+    }
+
+    .nTab .TabTitle li_s {
+        float: left;
+        cursor: pointer;
+        width: 94px;
+        height: 100%;
+        padding-top: 6px;
+        padding-right: 7px;
+        padding-left: 7px;
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+    }
+
+    .nTab .TabTitle li_b {
+        float: left;
+        cursor: pointer;
+        width: 94px;
+        height: 100%;
+        padding-top: 6px;
+        padding-right: 7px;
+        padding-left: 7px;
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+    }
+
+    .nTab .TabContent {
+        width: auto;
+        background: #fff;
+        margin: 0px auto;
+        padding: 10px 10px 0 10px;
+    }
+
+    .nTab .TabTitle .item {
+        /*float: left;*/
+        display: inline-block;
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        /*border-width:1px;
+            border-style:solid;
+            border-color:#1a827c;*/ /*#cccccc;*/
+        padding-right: 20px;
+        padding-left: 20px;
+        padding-top: 10px;
+        color: White;
+        border-width: 0px;
+        height: 35px;
+    }
+
+    .nTab .TabTitle .item_s {
+        /*float: left;*/
+        display: inline-block;
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        border: 1px solid #1a827c;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #000;
+        height: 30px;
+    }
+
+    .nTab .TabTitle .item_b {
+        /*float: left;*/
+        display: inline-block;
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        /*border: 1px solid #1a827c;*/
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #000;
+        height: 30px;
+    }
+
+    .nTab .TabTitle .active {
+        /* width: 104px;*/
+        /*background: url(/i/actNew.gif);*/
+        background-color1: #ffffff;
+        border-bottom-width: 0px;
+        border-bottom-color: #ffffff;
+        background-color: #27a792;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #1a827c;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+    }
+
+    .nTab .TabTitle .active_s {
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        border: 1px solid #1a827c;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #1a827c;
+        height: 30px;
+    }
+
+    .nTab .TabTitle .active_b {
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        /*border: 1px solid #1a827c;*/
+        background-color: #1a827c;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #FFF;
+        height: 30px;
+    }
+
+    .nTab .TabTitle .normal {
+        /* width: 104px;*/
+        /*background: url(/i/actNew1.gif) no-repeat;*/
+        background-color1: #eeeeee;
+        /**/
+        background-color: #1a827c;
+        /**/
+    }
+
+    .nTab .TabTitle .normal_s {
+        /* width: 104px;*/
+        /*background: url(/i/actNew1.gif) no-repeat;*/
+        background-color1: #eeeeee;
+        /**/
+        background-color: #ffffff;
+        /**/
+    }
+
+    .nTab .TabTitle .normal_b {
+        /* width: 104px;*/
+        /*background: url(/i/actNew1.gif) no-repeat;*/
+        background-color1: #eeeeee;
+        /**/
+        background-color: #EEF1F3;
+        /**/
+    }
+
+    .nTab .TabTitle .active_ver {
+        /*background: url(/i/tabactive1.gif);*/
+        background-color: #ffffff;
+        border-top-color: #ffffff;
+    }
+
+    .nTab .TabTitle .normal_ver {
+        /*background: url(/i/tabnormal1.png) no-repeat;*/
+        background-color: #eeeeee;
+    }
+
+    .nTab .pageMove {
+        position: absolute;
+        right: 5px;
+        top: 0px;
+        width:32px;
+    }
+
+        .nTab .pageMove .prev {
+            float: left;
+            width: 15px;
+            background-color: #EEF1F3;
+            text-align: center;
+            margin-left: 1px;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nTab .pageMove .next {
+            float: left;
+            width: 15px;
+            background-color: #EEF1F3;
+            text-align: center;
+            margin-left: 1px;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nTab .pageMove .disabled {
+            background-color: #FFF;
+        }
+
+
+.naTab {
+    float: left;
+    margin: 0 auto;
+    background-position: left;
+    background-repeat: repeat-y;
+    /*margin-bottom: 2px;*/
+    font-family: 黑体;
+    font-size: 14px;
+    position: relative;
+    width: 100%;
+}
+
+    .naTab .TabTitle {
+        float: left;
+        height: 35px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .naTab .TabTitle_s {
+        float: left;
+        height: 28px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        margin-right: 50px;
+        text-align: center;
+    }
+
+    .naTab .TabTitle_b {
+        float: left;
+        height: 28px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        margin-right: 50px;
+        text-align: center;
+    }
+
+    .naTab .TabTitle ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .naTab .TabTitle li {
+        float: left;
+        cursor: pointer;
+        width: 94px;
+        height: 100%;
+        padding-top: 10px;
+        padding-right: 20px;
+        padding-left: 20px;
+        list-style-type: none;
+        font-family: 黑体;
+    }
+
+    .naTab .TabTitle li_s {
+        float: left;
+        cursor: pointer;
+        width: 94px;
+        height: 100%;
+        padding-top: 6px;
+        padding-right: 7px;
+        padding-left: 7px;
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+    }
+
+    .naTab .TabTitle li_b {
+        float: left;
+        cursor: pointer;
+        width: 94px;
+        height: 100%;
+        padding-top: 6px;
+        padding-right: 7px;
+        padding-left: 7px;
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+    }
+
+    .naTab .TabContent {
+        width: auto;
+        background: #fff;
+        margin: 0px auto;
+        padding: 10px 10px 0 10px;
+    }
+
+    .naTab .TabTitle .item {
+        /*float: left;*/
+        display: inline-block;
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        /*border-width:1px;
+            border-style:solid;
+            border-color:#1a827c;*/ /*#cccccc;*/
+        padding-right: 20px;
+        padding-left: 20px;
+        padding-top: 8px;
+        color: White;
+        border-width: 0px;
+        height: 35px;
+    }
+
+    .naTab .TabTitle .item_s {
+        /*float: left;*/
+        display: inline-block;
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        border: 1px solid #1a827c;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #000;
+        height: 30px;
+    }
+
+    .naTab .TabTitle .item_b {
+        /*float: left;*/
+        display: inline-block;
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        /*border: 1px solid #1a827c;*/
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #000;
+        height: 30px;
+    }
+
+    .naTab .TabTitle .active {
+        /* width: 104px;*/
+        /*background: url(/i/actNew.gif);*/
+        background-color1: #ffffff;
+        border-bottom-width: 0px;
+        border-bottom-color: #ffffff;
+        /*background-color: #6a6a6a;*/
+        border-style: none;
+        color: #54cdfb; /*rgb(23,179,236);*/
+        border-bottom: 2px solid #369bc1;
+    }
+
+    .naTab .TabTitle .active_s {
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        border: 1px solid #1a827c;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #1a827c;
+        height: 30px;
+    }
+
+    .naTab .TabTitle .active_b {
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        /*border: 1px solid #1a827c;*/
+        /*background-color: #1a827c;*/
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #FFF;
+        height: 30px;
+    }
+
+    .naTab .TabTitle .normal {
+        /* width: 104px;*/
+        /*background: url(/i/actNew1.gif) no-repeat;*/
+        background-color1: #eeeeee;
+        /**/
+        /*background-color: #6a6a6a;*/
+        /**/
+    }
+
+    .naTab .TabTitle .normal_s {
+        /* width: 104px;*/
+        /*background: url(/i/actNew1.gif) no-repeat;*/
+        background-color1: #eeeeee;
+        /**/
+        /*background-color: #ffffff;*/
+        /**/
+    }
+
+    .naTab .TabTitle .normal_b {
+        /* width: 104px;*/
+        /*background: url(/i/actNew1.gif) no-repeat;*/
+        background-color1: #eeeeee;
+        /**/
+        background-color: #EEF1F3;
+        /**/
+    }
+
+    .naTab .TabTitle .active_ver {
+        /*background: url(/i/tabactive1.gif);*/
+        /*background-color: #ffffff;*/
+        border-top-color: #ffffff;
+    }
+
+    .naTab .TabTitle .normal_ver {
+        /*background: url(/i/tabnormal1.png) no-repeat;*/
+        /*background-color: #eeeeee;*/
+    }
+
+    .naTab .pageMove {
+        position: absolute;
+        right: 5px;
+        top: 0px;
+    }
+
+        .naTab .pageMove .prev {
+            float: left;
+            width: 15px;
+            /*background-color: #EEF1F3;*/
+            text-align: center;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .naTab .pageMove .next {
+            float: left;
+            width: 15px;
+            /*background-color: #EEF1F3;*/
+            text-align: center;
+            margin-left: 5px;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .naTab .pageMove .disabled {
+            /*background-color: #FFF;*/
+        }
+
+.nbTab {
+    float: left;
+    margin: 0 auto;
+    background-position: left;
+    background-repeat: repeat-y;
+    /*margin-bottom: 2px;*/
+    font-family: 黑体;
+    font-size: 14px;
+    position: relative;
+    width: 100%;
+    /*padding: 10px 0;*/
+    /*background: #525252;*/
+}
+
+    .nbTab .TabTitle {
+        float: left;
+        height: 25px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .nbTab .TabTitle_s {
+        float: left;
+        height: 28px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        margin-right: 50px;
+        text-align: center;
+    }
+
+    .nbTab .TabTitle_b {
+        float: left;
+        height: 28px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        margin-right: 50px;
+        text-align: center;
+    }
+
+    .nbTab .TabTitle ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .nbTab .TabTitle li {
+        float: left;
+        cursor: pointer;
+        width: 94px;
+        height: 100%;
+        padding-top: 10px;
+        padding-right: 20px;
+        padding-left: 20px;
+        list-style-type: none;
+        font-family: 黑体;
+    }
+
+    .nbTab .TabTitle li_s {
+        float: left;
+        cursor: pointer;
+        width: 94px;
+        height: 100%;
+        padding-top: 6px;
+        padding-right: 7px;
+        padding-left: 7px;
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+    }
+
+    .nbTab .TabTitle li_b {
+        float: left;
+        cursor: pointer;
+        width: 94px;
+        height: 100%;
+        padding-top: 6px;
+        padding-right: 7px;
+        padding-left: 7px;
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+    }
+
+    .nbTab .TabContent {
+        width: auto;
+        background: #fff;
+        margin: 0px auto;
+        padding: 10px 10px 0 10px;
+    }
+
+    .nbTab .TabTitle .item {
+        /*float: left;*/
+        display: inline-block;
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        /*border-width:1px;
+            border-style:solid;
+            border-color:#1a827c;*/ /*#cccccc;*/
+        color: White;
+        border-width: 0px;
+        height: 25px;
+        line-height: 25px;
+        padding: 0px 10px;
+        margin: 0 0 0 5px;
+    }
+
+    .nbTab .TabTitle .item_s {
+        /*float: left;*/
+        display: inline-block;
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        border: 1px solid #1a827c;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #000;
+        height: 30px;
+    }
+
+    .nbTab .TabTitle .item_b {
+        /*float: left;*/
+        display: inline-block;
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        /*border: 1px solid #1a827c;*/
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #000;
+        height: 30px;
+    }
+
+    .nbTab .TabTitle .active {
+        /* width: 104px;*/
+        /*background: url(/i/actNew.gif);*/
+        background-color1: #ffffff;
+        border-bottom-width: 0px;
+        border-bottom-color: #ffffff;
+        background-color: #369bc1;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #0ba4dc;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+    }
+
+    .nbTab .TabTitle .active_s {
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        border: 1px solid #1a827c;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #1a827c;
+        height: 30px;
+    }
+
+    .nbTab .TabTitle .active_b {
+        cursor: pointer;
+        /*height: 100%;*/
+        list-style-type: none;
+        font-family: 黑体;
+        font-size: 14px;
+        /*border: 1px solid #1a827c;*/
+        background-color: #1a827c;
+        padding-right: 7px;
+        padding-left: 7px;
+        margin-right: 4px;
+        padding-top: 6px;
+        color: #FFF;
+        height: 30px;
+    }
+
+    .nbTab .TabTitle .normal {
+        /* width: 104px;*/
+        /*background: url(/i/actNew1.gif) no-repeat;*/
+        background-color1: #eeeeee;
+        /**/
+        background-color: #414141;
+        /**/
+    }
+
+    .nbTab .TabTitle .normal_s {
+        /* width: 104px;*/
+        /*background: url(/i/actNew1.gif) no-repeat;*/
+        background-color1: #eeeeee;
+        /**/
+        background-color: #ffffff;
+        /**/
+    }
+
+    .nbTab .TabTitle .normal_b {
+        /* width: 104px;*/
+        /*background: url(/i/actNew1.gif) no-repeat;*/
+        background-color1: #eeeeee;
+        /**/
+        background-color: #EEF1F3;
+        /**/
+    }
+
+    .nbTab .TabTitle .active_ver {
+        /*background: url(/i/tabactive1.gif);*/
+        background-color: #ffffff;
+        border-top-color: #ffffff;
+    }
+
+    .nbTab .TabTitle .normal_ver {
+        /*background: url(/i/tabnormal1.png) no-repeat;*/
+        background-color: #eeeeee;
+    }
+
+    .nbTab .pageMove {
+        position: absolute;
+        right: 5px;
+        top: 0px;
+    }
+
+        .nbTab .pageMove .prev {
+            float: left;
+            width: 15px;
+            text-align: center;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nbTab .pageMove .next {
+            float: left;
+            width: 15px;
+            text-align: center;
+            margin-left: 5px;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nbTab .pageMove .disabled {
+        }
+
+.nTabOnlyBg {
+    float: left;
+    /*margin: 0 auto;
+    background-position: left;
+    background-repeat: repeat-y;*/
+    position: relative;
+    width: 100%;
+}
+
+    .nTabOnlyBg .TabTitle {
+        float: left;
+        overflow: hidden;
+        margin-bottom: 0px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .nTabOnlyBg .TabContent {
+        width: auto;
+        background: #fff;
+        margin: 0px auto;
+        padding: 10px 10px 0 10px;
+    }
+
+    .nTabOnlyBg .TabTitle .item {
+        display: inline-block;
+        cursor: pointer;
+        list-style-type: none;
+        font-family: 黑体;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-top: 10px;
+        color: White;
+        border-width: 0px;
+        padding: 0px 10px;
+        margin: 0;
+    }
+
+    .nTabOnlyBg .TabTitle .active {
+        border-bottom-width: 0px;
+        border-bottom-color: #ffffff;
+        background-color: #369bc1;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #0ba4dc;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+    }
+
+    .nTabOnlyBg .pageMove {
+        position: absolute;
+        right: 5px;
+        top: 0px;
+    }
+
+        .nTabOnlyBg .pageMove .prev {
+            float: left;
+            width: 15px;
+            text-align: center;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nTabOnlyBg .pageMove .next {
+            float: left;
+            width: 15px;
+            text-align: center;
+            margin-left: 5px;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nTabOnlyBg .pageMove .disabled {
+        }
+
+
+.nTabButton {
+    float: left;
+    /*margin: 0 auto;
+    background-position: left;
+    background-repeat: repeat-y;*/
+    position: relative;
+    width: 100%;
+}
+
+    .nTabButton .TabTitle {
+        float: left;
+        overflow: hidden;
+        margin-bottom: 0px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .nTabButton .TabContent {
+        width: auto;
+        background: #fff;
+        margin: 0px auto;
+        padding: 10px 10px 0 10px;
+    }
+
+    .nTabButton .TabTitle .item {
+        display: inline-block;
+        cursor: pointer;
+        list-style-type: none;
+        font-family: 黑体;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-top: 10px;
+        color: White;
+        border-width: 0px;
+        padding: 0px 10px;
+        margin: 0;
+        margin-right: 5px;
+    }
+
+    .nTabButton .TabTitle .active {
+        border-bottom-width: 0px;
+        border-bottom-color: #ffffff;
+        background-color: #369bc1;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #0ba4dc;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+    }
+
+    .nTabButton .TabTitle .normal {
+        background-color: #585858;
+    }
+
+    .nTabButton .pageMove {
+        position: absolute;
+        right: 5px;
+        top: 0px;
+    }
+
+        .nTabButton .pageMove .prev {
+            float: left;
+            width: 15px;
+            text-align: center;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nTabButton .pageMove .next {
+            float: left;
+            width: 15px;
+            text-align: center;
+            margin-left: 5px;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nTabButton .pageMove .disabled {
+        }
+
+
+.nTabButtonBorder {
+    float: left;
+    /*margin: 0 auto;
+    background-position: left;
+    background-repeat: repeat-y;*/
+    position: relative;
+    width: 100%;
+}
+
+    .nTabButtonBorder .TabTitle {
+        float: left;
+        overflow: hidden;
+        margin-bottom: 0px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .nTabButtonBorder .TabContent {
+        width: auto;
+        background: #fff;
+        margin: 0px auto;
+        padding: 10px 10px 0 10px;
+    }
+
+    .nTabButtonBorder .TabTitle .item {
+        display: inline-block;
+        cursor: pointer;
+        list-style-type: none;
+        font-family: 黑体;
+        padding: 1px 10px;
+        background-color:#424242;
+        margin: 0;
+        margin-right: 5px;
+    }
+
+    .nTabButtonBorder .TabTitle .active {
+        color: #99e0fb;
+        border: 1px solid #57a7c5;
+    }
+
+    .nTabButtonBorder .TabTitle .normal {
+        color: White;
+        border: 1px solid #666666;
+    }
+
+    .nTabButtonBorder .pageMove {
+        position: absolute;
+        right: 5px;
+        top: 0px;
+    }
+
+        .nTabButtonBorder .pageMove .prev {
+            float: left;
+            width: 15px;
+            text-align: center;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nTabButtonBorder .pageMove .next {
+            float: left;
+            width: 15px;
+            text-align: center;
+            margin-left: 5px;
+            height: 30px;
+            padding-top: 6px;
+            cursor: pointer;
+        }
+
+        .nTabButtonBorder .pageMove .disabled {
+        }

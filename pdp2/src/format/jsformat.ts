@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import { generateEmptyString } from '../utils/format';
-import { XmlDocument } from '../utils/xml';
+import { XmlDocument } from '../utils/xmldoc';
 // const xmldoc = require("../utils/xmlParser/xmlParse.js");
 // 引入prettier库
 const prettier = require("prettier/standalone");
 // 引入js解析器插件
 const parserBabel = require("prettier/parser-babel");
-export default function jsFormat(xmlDomObj: XmlDocument) {
+export default function jsFormat(edit, xmlDomObj: XmlDocument) {
     const editor = vscode.window.activeTextEditor;
     if (!editor) return; // 检查编辑器是否激活
     const document = editor.document;
@@ -25,7 +25,7 @@ export default function jsFormat(xmlDomObj: XmlDocument) {
 
 
     // 创建一个WorkspaceEdit对象
-    const edit = new vscode.WorkspaceEdit();
+    // const edit = new vscode.WorkspaceEdit();
     const tabSize = editor.options.tabSize ? Number(editor.options.tabSize) : 4;
     for (let i = 0; i < cdatas.length; i++) {
         const cdata = cdatas[i];
@@ -40,14 +40,14 @@ export default function jsFormat(xmlDomObj: XmlDocument) {
         let endPosition = document.positionAt(cdataParent.endTag.startPosition);
         let range = new vscode.Range(startPosition, endPosition); // 创建一个范围对象
         let formatStr = formatJsString(value, startTagPosition, endPosition, tabSize)
-        console.log(formatStr)
         edit.replace(document.uri, range, formatStr);
     }
+
     // 使用工作区应用编辑器对象来执行TextEdit数组中的所有操作
     // vscode.workspace.applyEdit(new vscode.WorkspaceEdit().set(document.uri, textEdits));
-    vscode.workspace.applyEdit(edit).then(() => {
-        return edit;
-    });
+    // vscode.workspace.applyEdit(edit).then(() => {
+    //     return edit;
+    // });
 
 }
 

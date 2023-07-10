@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="18" includes="/conn/jsfile/sgc/transchannel.js;" desc="空白页">
+  <consts>
+    <const id="isshowDetail" desc="是否显示详情对话框" arg="false" type="bool"></const>
+    <const id="isshowvideo" desc="是否显示详情对话框" arg="false" type="bool"></const>
+    <const id="showgk" desc="是否显示详情对话框" arg="true" type="bool"></const>
+    <const id="dynArgs" desc="动态文件参数"></const>
+    <const id="filename" arg="sgc_transchannel_detailvideo"></const>
+    <const id="dynArgs2" desc="动态文件参数"></const>
+    <const id="filename2" arg="sgc_transchannel_detailvideo"></const>
+    <const id="deliverID" desc="传递给对话框动态文件的ID"></const>
+    <const id="height" arg="300"></const>
+    <const id="owner"></const>
+    <const id="linerate"></const>
+    <const id="lineload"></const>
+    <const id="showAc"></const>
+    <const id="key" desc="关键字"></const>
+    <const id="wheredesc" desc="查询" type="string"></const>
+    <const id="buttonAll" desc="标签卡" arg="0,概况" type="2d" length="2"></const>
+    <const id="value1_sel" arg="0"></const>
+    <const id="modalfullscreen" desc="弹出框是否全屏显示" type="bool" arg="false"></const>
+    <const id="titlename" ></const>
+    <const id="hbItable" ></const>
+    <const id="year" type="number" arg="2020"></const>
+    <const id="starttime" type="time" arg="d,d"></const>
+    <const id="endtime" type="time" arg=""></const>
+    <const id="gjcount" ></const>
+    <const id="hID"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds10" desc="密集通道通道信息" db="SGC" type="xml" node="sgc/transchannel_mjtd:GetTransChannel">
+      <cols>
+        <col id="col0" desc="OWNER" name="OWNER" from="owner"></col>
+        <col id="col34" desc="DESC" name="DESC" from="wheredesc"></col>
+        <col id="col11" desc="NAME" name="NAME"></col>
+        <col id="col17" desc="NAME1" name="NAME1"></col>
+        <col id="col12" desc="DISTANCE" name="DISTANCE"></col>
+        <col id="col13" desc="TC_CAPACITY" name="TC_CAPACITY"></col>
+        <col id="col14" desc="GEOGRAPHIC" name="GEOGRAPHIC"></col>
+        <col id="col15" desc="THROUGH_AREA" name="THROUGH_AREA"></col>
+        <col id="col16" desc="ID" name="ID"></col>
+        <col id="col18" desc="MIN_DISTANCE" name="MIN_DISTANCE"></col>
+        <col id="col_longitude1" name="longitude1" desc="longitude1"></col>
+        <col id="col_latitude1" name="latitude1" desc="latitude1"></col>
+        <col id="col_longitude2" name="longitude2" desc="longitude2"></col>
+        <col id="col_latitude2" name="latitude2" desc="latitude2"></col>
+        <col id="col_longitude3" name="longitude3" desc="longitude3"></col>
+        <col id="col_latitude3" name="latitude3" desc="latitude3"></col>
+        <col id="col_longitude4" name="longitude4" desc="longitude4"></col>
+        <col id="col_latitude4" name="latitude4" desc="latitude4"></col>
+        <col id="col_tclength" name="tclength" desc="tclength"></col>
+        <col id="col_tccross" name="tccross" desc="tccross"></col> 
+        <col id="col_longitude5" name="longitude5" desc="longitude5"></col>
+        <col id="col_latitude5" name="latitude5" desc="latitude5"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsjsline" desc="密集通道线路" db="SGC_HB" type="xml" node="sgc/transchannel_mjtd:GetTransChannelLine">
+      <cols>
+        <col id="coltrid" desc="trid" name="trid"></col>
+        <col id="collineid" desc="lineid" name="lineid"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a s_height="100%" s_width="100%"></a>
+      <c>
+        <href v-show="false">
+          <a ref="jump"></a>
+          <sa href="hID"></sa>
+        </href>
+        <div>
+        <a s_height="50px" ></a>
+          <yshtab id="yshtab18" desc="标签卡" from="value1_sel" source="buttonAll">
+            <a tabstyle="nbTab" s_width="200px" s_margin-top="10px"></a>
+            <e>
+              <onclick>
+                <list type="script">
+                <value>
+                  <![CDATA[
+                  ProjectSGC.Map.postMessage({eventType:'menuope',menuname:'LocationArea',selstate:true, data:{Level: "1001",arrownerid: ["990100"],padding:[52, 0, 0, 0]}});
+                  ProjectSGC.Map.postMessage({eventType:'menuope',menuname:'showPartialTowerLine',selstate:false,data:[] });
+                  this.showStationLineByOpacity([]);
+                  
+                  this.refresh();
+                 
+                  ]]>
+                </value>
+              </list>
+              </onclick>
+            </e>
+          </yshtab>
+          
+          <div>
+            <a  s_line-height="45px" s_text-align="right" s_float="right" ></a>
+            <ysh-count>
+              <sa list="ds10"></sa>
+            </ysh-count>
+          </div>
+          <div id="div17" desc="容器">
+                <a s_height="48px" s_padding="10px" s_position="relative" s_float="right"></a>
+                <c>
+                  <iinput id="text26" desc="文本框" from="key">
+                    <a class="searchInput pdpText" type="text"  placeholder="请输入文字" ></a>
+                    <sa  clearable="true"></sa>
+                    <e>
+                      <on-clear>
+                        <list type="script">
+                          <![CDATA[
+                   ProjectSGC.Map.postMessage({eventType:'menuope',menuname:'LocationArea',selstate:true, data:{Level: "1002",arrownerid: ["990101"],padding:[52, 0, 0, 0]}});
+                        this.doSearch();
+                    ]]>
+                        </list>
+                      </on-clear>
+                      <keyup.stop.prevent>
+                        <list type="script">
+                          <![CDATA[
+                      if(event.keyCode == 13)
+                        this.doSearch();
+                    ]]>
+                        </list>
+                      </keyup.stop.prevent>
+                    </e>
+                  </iinput>
+                  <image id="icon1" >
+                    <a src="/i/sgc/channel/search.png" class="searchBtn" ></a>
+                    <e>
+                      <onclick>
+                        <list type="script" value="this.doSearch();"></list>
+                      </onclick>
+                    </e>
+                  </image>
+                </c>
+              </div>
+        </div>
+        
+        <div show="showgk">
+        <itable id="itable3" desc="iview表格" from="ds10">
+        <a v-loading="'loading'" ref="tbl"  s_width="100%"></a>
+          <sa stripe="true" height="height" click-highlight="true"></sa>
+          <e>
+            <on-row-click>
+              <list type="script">
+                <value>
+                  <![CDATA[this.locateLines(row);]]>
+                </value>
+              </list>
+            </on-row-click>
+            <on-selection-change>
+              <list type="script">
+                <value>
+                  <![CDATA[this.setChannelsHighlight(selection);]]>
+                </value>
+              </list>
+            </on-selection-change>
+            <on-select>
+              <list type="script">
+                <value>
+                  <![CDATA[this.setChannelHighlight(row);]]>
+                </value>
+              </list>
+            </on-select>
+          </e>
+          <c>
+            <icol desc="" show="false">
+              <a width="20px" type="expand"></a>
+              <c>
+                <itable from="ds10">
+                  <icol type="index"></icol>
+                </itable>
+              </c>
+            </icol>
+            <icol desc="选择">
+              <a width="45px" type="selection"></a>
+            </icol>
+            <icol id="icol4" desc="序号" show="false">
+              <a width="45px" type="index"></a>
+            </icol>
+            <icol id="icol5" desc="操作">
+              <a width="40px"></a>
+              <c>
+                <img tooltip="定位">
+                  <a s_width="14px" s_height="14px" src="/i/sgc/operate/locate.png"></a>
+                  <s cursor="pointer"></s>
+                  <e>
+                    <onclick.stop>
+                      <list type="script">
+                        <value>
+                          <![CDATA[
+                              this.locateLines(this.params.row);
+                          ]]>
+                        </value>
+                      </list>
+                    </onclick.stop>
+                  </e>
+                </img>
+              </c>
+            </icol>
+            <icol desc="所在省份" from="col14">
+              <a width="70px" ></a>
+            </icol>
+            <icol  desc="iview表列-通道名称" from="col11">
+              <a title="华北调度线路(塔号)"  minWidth="200"></a>   
+              <label>
+              <a v-html="this.params.row.NAME" />
+              </label> 
+            </icol>
+            <icol  desc="iview表列-通道名称" from="col17">
+              <a title="其他线路(塔号)" minWidth="200"></a>  
+              <label>
+              <a v-html="this.params.row.NAME1" />
+              </label>  
+            </icol>
+            <icol id="icol8" desc="输送容量(MVA)" from="col13">
+              <a minWidth="70"   sortable="1"></a>
+            </icol>
+            <icol id="icol7" desc="通道长度(km)" from="col_tclength">
+              <a minWidth="70"  sortable="1"></a>
+            </icol>
+            <icol desc="最小间距(m)" from="col18">
+              <a minWidth="70"  ></a>
+            </icol>
+            <icol id="icol9" desc="途径区域" from="col15" show="false">
+              <a minWidth="90"  ></a>
+            </icol>
+          </c>
+        </itable>
+        </div>
+      </c>
+    </div>
+  </ctrls>
+  <css>
+    <![CDATA[ 
+    .itiptool .ivu-tooltip-content{
+    background: url(../../i/sgc/channel/tipback.png) 0% 0% / 100% 100%;
+    }
+    .itiptool .ivu-tooltip-inner {
+    background-color: rgba(70,76,91,0);
+    }
+    .ivu-modal-body {
+      background-color: #69696e;
+    }
+    .itiptool .ivu-tooltip-popper[x-placement^=right] .ivu-tooltip-arrow {
+     border-right-color: rgba(70,76,91,0); 
+    }
+    .itiptool  .ivu-tooltip-popper[x-placement^=left] .ivu-tooltip-arrow {
+     border-left-color: rgba(70,76,91,0); 
+    }
+    .searchInput{
+    margin-right: 25px;
+    width: 200px;
+    height: 35px;
+    border-radius: 30px;
+    background-color: #413f3f;
+    border: 0px solid #413f3f;
+    padding-right: 30px;
+    }
+    .searchBtn {
+      height: 25px;
+    width: 25px;
+    position: absolute;
+    left: 210px;
+    top: 15px;
+    z-index: 1;
+    cursor: pointer;
+     }
+    #pdp input[type=text] {
+     background-color: #413f3f;
+     }
+     .ivu-input {
+    border: 1px solid #413f3f;
+    }
+    .ivu-input:hover {
+        border-color: #e1e7ec00
+    }
+
+    .ivu-input:focus {
+        border-color: #717d8a00;
+        box-shadow: 0 0 0 0px rgba(45,140,240,.2);
+        }
+    .ivu-input-icon {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+      }
+      .ivu-modal-header-inner {
+        color:#fff;
+      }
+          .modalsobig, .modalreduction {
+          width: 30px;
+          height: 30px;
+          display: block;
+          position: absolute;
+          right: 40px;
+          top: 10px;
+          cursor: pointer;
+          z-index: 999;
+      } 
+          .nobig .modalsobig, .modalreduction {
+          display:none;
+      } 
+
+      .ivu-modal-header {
+          background-color: #545454;
+      }
+      ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="select" ds="dsjsline"></list>
+      <list type="file" value="dtranschannel"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+this.refresh = function() {
+    var owner = "";
+    var city = ProjectSGC.Global.getMainObject("SelectCityInst");
+    if (city) owner = city.getLocateOwner();            
+    this.owner = owner;
+]]>
+        </value>
+      </list>
+      <list type="select" ds="ds10"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.showPoints();
+          }
+         
+          this.getPolygonAreaCenter = function (points) {
+              var sum_x = 0;
+              var sum_y = 0;
+              var sum_area = 0;
+              var p1 = points[1];
+              for (var i = 2; i < points.length; i++) {
+                  p2 = points[i];
+                  area = this.Area(points[0], p1, p2);
+                  sum_area += area;
+                  sum_x += (points[0][0] + p1[0] + p2[0]) * area;
+                  sum_y += (points[0][1] + p1[1] + p2[1]) * area;
+                  p1 = p2;
+              }
+              var xx = sum_x / sum_area / 3;
+              var yy = sum_y / sum_area / 3;
+              return [xx,yy];
+          }
+
+
+          this.Area = function(p0,p1,p2)
+          {
+              var area = 0.0 ;
+              area = p0[0] * p1[1] + p1[0] * p2[1] + p2[0] * p0[1] - p1[0] * p0[1] - p2[0] * p1[1] - p0[0] * p2[1];
+              return area;
+          }
+
+          this.doSearch = function(){
+              this.wheredesc= (this.key != ""?("xml:sgc/transchannel_mjtd:WhereSelectKey1:"+this.key):"");
+              this.refresh();
+                   
+                
+          }
+       
+        
+         this.cutZero =function(old){
+            　　//拷贝一份 返回去掉零的新串
+            　　old = old + "";
+            　　var newstr = old;
+            　　//循环变量 小数部分长度
+            　　var leng = old.length - old.indexOf(".") - 1;
+            　　//判断是否有效数
+            　　if (old.indexOf(".") > -1) {
+            　　　　//循环小数部分
+            　　　　for (i = leng; i > 0; i--) {
+            　　　　　　//如果newstr末尾有0
+            　　　　　　if (newstr.lastIndexOf("0") > -1 && newstr.substr(newstr.length - 1, 1) == 0) {
+            　　　　　　　　var k = newstr.lastIndexOf("0");
+            　　　　　　　　//如果小数点后只有一个0 去掉小数点
+            　　　　　　　　if (newstr.charAt(k - 1) == ".") {
+            　　　　　　　　return newstr.substring(0, k - 1);
+            　　　　　　} else {
+            　　　　　　　　//否则 去掉一个0
+            　　　　　　　　newstr = newstr.substring(0, k);
+            　　　　　　}
+            　　　　} else {
+            　　　　//如果末尾没有0
+            　　　　return newstr;
+            　　　　}
+            　　}
+            }
+            return old;
+        }
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.refresh();
+          this.resize();
+        var vm = this;
+        window.addEventListener('message', function (event) {
+            if (!event.data)
+                return;
+            var data = event.data;
+            if ((data.type=="linePartByTowerNo")&&(data.eventType==5)&&(data.operateType=="click")) {
+                var  item = data.data.data;
+                var id = item.id
+                if(vm.value1_sel=='0') {
+                vm.$refs.tbl.locate(id);
+                vm.hID = "#a" + id;
+                } else if (vm.value1_sel=='1') {
+                vm.$refs.tbl2.locate(id);
+                vm.hID = "#b" + id;
+                } else
+                return;
+                vm.$nextTick(function () {
+                    this.$refs.jump.click();
+                });
+            }
+            if (data.type != "mapchanged")
+                return;
+           //ProjectSGC.Map.hideIcon("miji");
+          //ProjectSGC.Map.postMessage({eventType:"menuope",menuname:"showPartitions",selstate:false,data:[{type:"miji"}]});
+            //vm.refresh();
+        });
+          
+            ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

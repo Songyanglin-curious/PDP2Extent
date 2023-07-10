@@ -1,0 +1,1 @@
+﻿_app.icing = _app._page({ name: "覆冰", page: "sgc_tq_icing_list",width: 0.6, });

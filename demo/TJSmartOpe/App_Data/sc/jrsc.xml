@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+    <GetDeviceDefect db="SGAPP" args="st,et" fields="id,time,station,device,level,state,defectnum">
+    <![CDATA[SELECT DEFECT_NUM,DEFECT_FIND_TIME,STATION_LINE,DEFECT_DEV,DEFECT_LEVEL,DEFECT_TYPE,DEFECT_NUM
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE DEFECT_FIND_TIME>={st} AND DEFECT_FIND_TIME<{et}]]>
+  </GetDeviceDefect>
+    <GetDeviceRepair args="st,et" fields="jxpid,devid,devname,staid,staname,voltage,state" type="text" datatype="2d">
+        1,dev1,#2主变,s1,安定站,500kV,1
+        2,dev2,#1主变,s2,顺义站,500kV,1
+        3,dev3,定台二线,,,1000kV,2
+    </GetDeviceRepair>
+    <GetDeviceMalfunction args="st,et" fields="jgzid,devid,devname,time,cause,voltage,state" type="text" datatype="2d">
+        1,dev1,大房二线,2021-10-30 00:00:00,外力破坏-动物因素,500kV,未恢复
+        2,dev2,忻石一线,2021-10-30 00:00:00,外力破坏-动物因素,500kV,未恢复
+        3,dev3,忻石二线,2021-10-29 00:00:00,外力破坏-动物因素,500kV,未恢复
+        4,dev4,华北兰林一线,2021-10-20 00:00:00,其它-其它,500kV,长时间未恢复
+    </GetDeviceMalfunction>
+    <test type="calc" args="devid" datatype="2d" fields="name" a="115123265642443316">
+        <a fields="id,">
+      <![CDATA[SELECT ZC_ID FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_GUD_DEVICE WHERE jxt_id={devid}]]>
+    </a>
+        <b args="a.id">
+      <![CDATA[SELECT col3 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE WHERE ID={a.id}]]>
+    </b>
+    </test>
+    <GetDevices args="s" fields="id,type,voltage,name,sanwei">
+    <![CDATA[SELECT id,col4,replace(replace(col5,'交流',''),'直流',''),col3,col12 
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_DEVICE WHERE col0 LIKE '%{s}%'
+    AND id NOT IN (SELECT zc_id FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_GUD_DEVICE)
+    ]]>
+  </GetDevices>
+    <UpdateRelate>
+    <![CDATA[INSERT INTO ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_GUD_DEVICE (JXT_ID,SANWEI_ID,ZC_ID) VALUES ({0},{1},{2});
+    INSERT INTO ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[TMANAGEDEVICE (DEVICESTRID,DEVICENAME,STATE,HASPOWER) VALUES ({0},{3},1,1);]]>
+  </UpdateRelate>
+    <DelJxt>
+    <![CDATA[DELETE FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_GUD_JXT WHERE STATION={0}]]>
+  </DelJxt>
+    <AddJxt>
+    <![CDATA[INSERT INTO ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_GUD_JXT (ID,NAME,TYPENAME,VOLTAGE,STATION) VALUES ({0},{1},{2},{3},{4})]]>
+  </AddJxt>
+    <xml type="text" datatype="json">
+    <![CDATA[{"a":1}]]>
+  </xml>
+    <GetEnvWarn type="union" args="st,et,now" fields="lineid,datatype,warntype,warnlevel">
+        <weather db="SGAPP">
+      <![CDATA[select TOP 10 lineid,0,warntype,warnlevel
+      FROM (SELECT DISTINCT LINEID,WARNTYPE,WARNLEVEL
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_weather_tower a
+where a.warntime>={st} and a.warntime<{now} and warnlevel is not null)]]>
+    </weather>
+        <light db="SGAPP">
+      <![CDATA[select DISTINCT line_id,0,'light',alarm_level from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 a
+where a.date_time>={st} and a.date_time<{now} AND LINE_ID IS NOT NULL and LINE_ID<>'' --AND alarm_level IN ('一级','二级')]]>
+    </light>
+        <fire db="SGAPP">
+      <![CDATA[
+SELECT DISTINCT a.alarm_line,0,'fire', a.ALARM_LEVEL FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREALARM_2022  a
+where ALARM_TIME>={st} and ALARM_TIME<{now} AND alarm_line IS NOT NULL and alarm_line<>'' --AND alarm_level IN ('一级','二级')]]>
+    </fire>
+    </GetEnvWarn>
+    <GetEffectLine>
+    <![CDATA[
+SELECT 'fire' as envtype,'' as alarm_time,a.alarm_line,a.alarm_tower as st_tower,'','' as et_tower,'', a.ALARM_LEVEL as value,0
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_MOUNTAIN_H_FIREALARM_2022  a
+where ALARM_TIME>={0} and ALARM_TIME<{1} AND 
+alarm_line IS NOT NULL and alarm_line<>''
+UNION ALL
+select 'light','',line_id,alarm_tower,'','','',alarm_level,0
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGLIVE_2022 a
+where a.date_time>={0} and a.date_time<{1} AND 
+LINE_ID IS NOT NULL and LINE_ID<>''
+UNION ALL
+select warntype,'', lineid, '','','','',warnlevel||'',count(id) as c
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_weather_tower a
+where a.warntime>={0} and a.warntime<{1}
+group by lineid, warntype, warnlevel
+]]>
+  </GetEffectLine>
+    <GetEffectLineFore>
+    <![CDATA[
+SELECT 'fire' as envtype,'' as alarm_time,a.alarm_line,a.alarm_tower as st_tower,'','' as et_tower,'', a.ALARM_LEVEL as value,0
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[sg_com_mountain_h_FIREFORECAST_2022  a
+where ALARM_TIME>={0} and ALARM_TIME<{1} AND 
+alarm_line IS NOT NULL and alarm_line<>''
+UNION ALL
+select 'light','',line_id,alarm_tower,'','','',alarm_level,0
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_H_LIGHTNINGWARN_2022 a
+where a.date_time>={0} and a.date_time<{1} AND 
+LINE_ID IS NOT NULL and LINE_ID<>''
+UNION ALL
+select warntype, '', lineid, '','','','',warnlevel||'',count(id) as c
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_alarm_weather_tower_forecast a
+where a.warntime>={0} and a.warntime<{1}
+group by lineid, warntype, warnlevel
+]]>
+  </GetEffectLineFore>
+</ROOT>

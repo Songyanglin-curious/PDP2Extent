@@ -1,0 +1,585 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <test>
+    <GetList1>
+      <![CDATA[
+        SELECT 批准开工时间 AS JIHUA,
+        实际开工时间 AS SHIJI,
+        工作主题 AS JIANXIUNEIRONG, 
+        申请单位 AS SHENQINGDANWEI, 
+        检修业务状态 AS USERSTATE ,
+        t.ABSTRACT AS CZP,
+        批准完工时间 AS JIHUAEND,
+        实际完工时间 AS SHIJIEND
+        FROM OPTKUSER.V_REPAIR r
+        LEFT JOIN OPTKUSER.TRPRTKRELATION rl ON r.SHEETID = rl.RPRTKID 
+        LEFT JOIN OPTKUSER.TTICKET t ON t.TICKETID = rl.CMDID]]>
+    </GetList1>
+    <GetListByState>
+      <![CDATA[same:GetList]]>
+      <![CDATA[
+        WHERE 工作主题 LIKE '%{0}%' AND 检修业务状态='{1}']]>
+    </GetListByState>
+    <GetListByStateTime>
+      <![CDATA[same:GetList]]>
+      <![CDATA[
+        WHERE 工作主题 LIKE '%{0}%' AND 检修业务状态='{1}' AND 批准开工时间>={2} AND 批准开工时间<{3}]]>
+    </GetListByStateTime>
+    <GetMuluList>
+      <![CDATA[same:GetList]]>
+      <![CDATA[
+        WHERE 工作主题 LIKE '%{0}%' AND 批准开工时间>={1} AND 批准开工时间<{2}]]>
+    </GetMuluList>
+  </test>
+  <jiangsu>
+    <Fields>
+      <![CDATA[PLAN_ID,PZKSSJ,PZJSSJ,content,'' as dept,CASE WHEN END_DATE IS NULL THEN CASE WHEN START_DATE IS NULL THEN '待执行' ELSE '执行中' END ELSE '已完结' END as state,'' as czp,START_DATE AS real_start_date,END_DATE as real_end_date]]>
+    </Fields>
+    <GetList>
+      <![CDATA[
+    select * from (
+    select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'GENERATOR' AS dev_type,s.name||d.name as devname
+from ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_generator_f_outageplan p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_generator_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'ACLINE',d.name
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_ACLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_acline_b d ON p.dev_id=d.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'PWRTRANSFM',s.name||d.name
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_PWRTRANSFM_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_pwrtransfm_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BUSBAR',s.name||d.name
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_BUSBAR_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_busbar_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BREAKER',s.name||d.name
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_BREAKER_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_breaker_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DIS',s.name||d.name
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DIS_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_dis_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCLINE',d.name
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_dcline_b d ON p.dev_id=d.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCPOLE',s.name||d.name
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_DCPOLE_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_dcpole_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+) A 
+]]>
+    </GetList>
+    <GetListByState>
+      <![CDATA[same:GetList]]>
+      <![CDATA[
+        WHERE content LIKE '%{0}%' AND state={1} ]]>
+    </GetListByState>
+    <GetListByStateTime>
+      <![CDATA[same:GetList]]>
+      <![CDATA[
+        WHERE content LIKE '%{0}%' AND state={1} AND PZKSSJ<{3} AND PZJSSJ>{2}]]>
+    </GetListByStateTime>
+    <GetMuluList>
+      <![CDATA[same:GetList]]>
+      <![CDATA[
+        WHERE content LIKE '%{0}%' AND PZKSSJ<{2} AND PZJSSJ>{1}]]>
+    </GetMuluList>
+    <NoFinishWhere>
+      <![CDATA[ WHERE p.END_DATE IS NULL]]>
+    </NoFinishWhere>
+    <GetNoFinishList>
+      <![CDATA[
+    select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'GENERATOR' AS dev_type,s.name||d.name as devname,s.ID,s.LATITUDE,s.LONGITUDE
+from ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_generator_f_outageplan p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_generator_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PLANT_B s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'ACLINE',d.name,'','',''
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_ACLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_acline_b d ON p.dev_id=d.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'PWRTRANSFM',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_PWRTRANSFM_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_pwrtransfm_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[) s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BUSBAR',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_BUSBAR_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_busbar_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[) s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BREAKER',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_BREAKER_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_breaker_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[)  s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DIS',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DIS_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_dis_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[)  s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCLINE',d.name,'','',''
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_dcline_b d ON p.dev_id=d.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCPOLE',d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_DCPOLE_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_dcpole_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_HVDCGROUNDSTATION_B s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+]]>
+    </GetNoFinishList>
+    <GetBaseList>
+      <![CDATA[
+    SELECT * FROM (
+    select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'GENERATOR' AS dev_type,s.name||d.name as devname,s.ID,s.LATITUDE,s.LONGITUDE
+from ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_generator_f_outageplan p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_generator_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_PLANT_B s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'ACLINE',d.name,'','',''
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_ACLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_acline_b d ON p.dev_id=d.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'PWRTRANSFM',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_PWRTRANSFM_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_pwrtransfm_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[) s ON d.st_id=s.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BUSBAR',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_BUSBAR_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_busbar_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[) s ON d.st_id=s.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BREAKER',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_BREAKER_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_breaker_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[)  s ON d.st_id=s.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DIS',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DIS_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_dis_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[)  s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCLINE',d.name,'','',''
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_DEV_DCLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_dev_dcline_b d ON p.dev_id=d.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCPOLE',d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_DCPOLE_F_OUTAGEPLAN p LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_con_dcpole_b d ON p.dev_id=d.id LEFT JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[SG_CON_HVDCGROUNDSTATION_B s ON d.st_id=s.id 
+    ) AA 
+]]>
+    </GetBaseList>
+    <GetDayList>
+      <![CDATA[same:GetBaseList]]>
+      <![CDATA[ WHERE PZKSSJ<={0} and PZJSSJ>{0}]]>
+    </GetDayList>
+    <GetRangeList>
+      <![CDATA[same:GetBaseList]]>
+      <![CDATA[ WHERE PZKSSJ<{1} and PZJSSJ>{0}]]>
+    </GetRangeList>    
+  </jiangsu>
+  <Fields>
+    <![CDATA[PLAN_ID,start_date,end_date,content,'' as dept,CASE WHEN END_DATE IS NULL THEN CASE WHEN START_DATE IS NULL THEN '待执行' ELSE '执行中' END ELSE '已完结' END as state,'' as czp,START_DATE AS real_start_date,END_DATE as real_end_date]]>
+  </Fields>
+  <GetList>
+    <![CDATA[
+    select * from (
+    select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'GENERATOR' AS dev_type,s.name||d.name as devname
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_generator_f_outageplan p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_generator_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'ACLINE',d.name
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_b d ON p.dev_id=d.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'PWRTRANSFM',s.name||d.name
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_PWRTRANSFM_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_pwrtransfm_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BUSBAR',s.name||d.name
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_BUSBAR_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_busbar_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BREAKER',s.name||d.name
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_BREAKER_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_breaker_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DIS',s.name||d.name
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DIS_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dis_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCLINE',d.name
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_b d ON p.dev_id=d.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCPOLE',s.name||d.name
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_DCPOLE_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_dcpole_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_commonsubstation_b s ON d.st_id=s.id
+) A 
+]]>
+  </GetList>
+  <GetListByState>
+    <![CDATA[same:GetList]]>
+    <![CDATA[
+        WHERE content LIKE '%{0}%' AND state={1} ]]>
+  </GetListByState>
+  <GetListByStateTime>
+    <![CDATA[same:GetList]]>
+    <![CDATA[
+        WHERE content LIKE '%{0}%' AND state={1} AND START_DATE<{3} AND END_DATE>{2}]]>
+  </GetListByStateTime>
+  <GetMuluList>
+    <![CDATA[same:GetList]]>
+    <![CDATA[
+        WHERE content LIKE '%{0}%' AND START_DATE<{2} AND END_DATE>{1}]]>
+  </GetMuluList>
+  <NoFinishWhere>
+    <![CDATA[ WHERE p.END_DATE IS NULL]]>
+  </NoFinishWhere>
+  <GetNoFinishList>
+    <![CDATA[
+    select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'GENERATOR' AS dev_type,s.name||d.name as devname,s.ID,s.LATITUDE,s.LONGITUDE
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_generator_f_outageplan p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_generator_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PLANT_B s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'ACLINE',d.name,'',0,0
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_b d ON p.dev_id=d.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'PWRTRANSFM',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_PWRTRANSFM_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_pwrtransfm_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[) s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BUSBAR',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_BUSBAR_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_busbar_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[) s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BREAKER',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_BREAKER_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_breaker_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[)  s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DIS',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DIS_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dis_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[)  s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCLINE',d.name,'',0,0
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_b d ON p.dev_id=d.id WHERE p.END_DATE IS NULL
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCPOLE',d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_DCPOLE_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_dcpole_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_HVDCGROUNDSTATION_B s ON d.st_id=s.id WHERE p.END_DATE IS NULL
+]]>
+  </GetNoFinishList>
+  <GetBaseList>
+    <![CDATA[
+    SELECT * FROM (
+    select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'GENERATOR' AS dev_type,s.name||d.name as devname,s.ID,s.LATITUDE,s.LONGITUDE
+from ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_generator_f_outageplan p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_generator_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PLANT_B s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'ACLINE',d.name,'',0,0
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_b d ON p.dev_id=d.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'PWRTRANSFM',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_PWRTRANSFM_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_pwrtransfm_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[) s ON d.st_id=s.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BUSBAR',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_BUSBAR_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_busbar_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[) s ON d.st_id=s.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'BREAKER',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_BREAKER_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_breaker_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[)  s ON d.st_id=s.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DIS',s.name||d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DIS_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dis_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[(]]><![CDATA[same:sgc/main:GetStationCoordinate]]><![CDATA[)  s ON d.st_id=s.id
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCLINE',d.name,'',0,0
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_dcline_b d ON p.dev_id=d.id 
+UNION ALL 
+select ]]><![CDATA[same:Fields]]><![CDATA[,p.dev_id,'DCPOLE',d.name,s.ID,s.LATITUDE,s.LONGITUDE
+from 
+]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_DCPOLE_F_OUTAGEPLAN p LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_con_dcpole_b d ON p.dev_id=d.id LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_HVDCGROUNDSTATION_B s ON d.st_id=s.id 
+    ) AA 
+]]>
+  </GetBaseList>
+  <GetDayList>
+    <![CDATA[same:GetBaseList]]>
+    <![CDATA[ WHERE START_DATE<={0} and END_DATE>{0}]]>
+  </GetDayList>
+  <GetRangeList>
+    <![CDATA[same:GetBaseList]]>
+    <![CDATA[ WHERE START_DATE<{1} and END_DATE>{0}]]>
+  </GetRangeList>
+  <dump>
+    <![CDATA[
+where least(auth_start_date,nvl(start_date,auth_end_date))<{1} AND (end_date IS NULL OR greatest(auth_end_date,end_date)>{0})]]>
+  </dump>
+  <sql>
+    <GetAllList>
+      <![CDATA[select b.plan_id_d,b.auth_start_date,b.auth_end_date,b.start_date,b.end_date,b.dept,b.status,d.outage_dev_id,d.outage_dev_name,d.st_id from 
+  ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_evn_outageplan_b_day b 
+  JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_evn_outageplan_r_day_dev d ON b.plan_id_d=d.plan_id_d
+      where ((auth_end_date>{0} AND auth_start_date<{1}) OR (start_date < {1} AND (end_date>{0} OR end_date IS NULL))) AND STATUS<>1004
+      ORDER BY auth_start_date
+      ]]>
+    </GetAllList>
+    <GetRealList>
+      <![CDATA[select b.status,d.outage_dev_id,d.st_id,b.plan_id_d from 
+  ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_evn_outageplan_b_day b 
+  JOIN ]]>
+      <![CDATA[same:SearchCommonSql:SchemaName]]>
+      <![CDATA[sg_evn_outageplan_r_day_dev d ON b.plan_id_d=d.plan_id_d
+      where ((auth_end_date>{0} AND auth_start_date<{1}) OR (start_date < {1} AND (end_date>{0} OR end_date IS NULL))) AND STATUS<>1004
+      ]]>
+    </GetRealList>
+  </sql>
+  <GetAllList type="file" datatype="json" field="data" path="~/App_Data/test/getoutagedaydata/data.txt">
+  </GetAllList>
+</ROOT>

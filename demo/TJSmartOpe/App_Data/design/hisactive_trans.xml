@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="33" desc="历史有功">
+  <inits>
+    <init id="deviceid" desc="设备id" type="request" arg="deviceid"></init>
+    <init id="devicename" type="request" arg="devicename"></init>
+  </inits>
+  <consts>
+    <const id="arrX" desc="语句"></const>
+    <const id="showtitle" type="string"></const>
+    <const id="st" type="time" arg="y"></const>
+	<const id="et" type="time" arg="d,d,1"></const>
+	<const id="hisActiveOption"></const>
+  </consts>
+  <datasources>
+    <datasource type="load" id="hisActive" desc="油温，环境温度" node="sc/device_archives:GetHisActive">
+			<cols>
+				<col id="col_st" name="st" from="st"></col>
+				<col id="col_et" name="et" from="et"></col>
+				<col id="col_id" name="id" from="deviceid"></col>
+				<col id="col_total" name="total" desc="total"></col>
+				<col id="col_his" name="his" desc="his"></col>
+			</cols>
+		</datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a id="ahisactive" s_height="350px" s_width="100%" s_padding="0px 10px"></a>
+      <div desc="2#主变历史有功情况">
+        <a s_height="50px" s_width="100%" s_align-items="center" s_display="flex" s_justify-content="center"></a>
+        <label>
+          <a  class="linearGradient"></a>
+          <sa value="showtitle"></sa>
+        </label>
+      </div>
+      <div>
+        <a s_height="300px" s_width="100%"></a>
+        <!-- <echart id="echarthisactive" desc="图表" >
+          <a>
+            <option>
+              <![CDATA[
+             {
+				  "legend":{"show":false,textStyle:{color:'#f5efef'}},
+				  "grid":{"left":"60","top":"35","right":"50","bottom":"20"},
+				  "tooltip":{
+                     "trigger":"axis",
+                     "axisPointer":{"type":"shadow"},
+                      backgroundColor:'rgba(52,72,119,0.8)',
+                      borderColor:'rgb(53,76,147)',
+                      borderWidth:1,
+                      textStyle:{
+                          align:'left'
+                      },
+                      formatter: '时间: {b}点 <br />{a1}: {c0}'
+					  },
+                    "xAxis":[
+						{
+						"type":"category",
+            "axisLine":{"lineStyle":{"color":"#37A0BA"}}
+            }
+            ],
+                    "yAxis":[
+						{"type":"value",
+            "axisLine":{"lineStyle":{"color":"#37A0BA"}}
+            }
+						],
+                    "series":[
+						              {"name":"Placeholder",
+						              "type":"bar",
+						              "stack": 'Total',
+                          "itemStyle": {
+                            borderColor: 'transparent',
+                            color: 'transparent'
+                           },
+                           "emphasis": {
+                              itemStyle: {
+                                borderColor: 'transparent',
+                                color: 'transparent'
+                              }
+                          },
+                          data:[210,220,230,240,250,260,210,220,230,240,250,260,210,220,230,240,250,260,210,220,230,240,250,260]
+						          },
+						          {"name":"历史有功",
+						          "type":"bar",
+                       "stack": 'Total',
+                        "barWidth":'12',
+                       "itemStyle":{color:'#33B8C9'},
+                       data:[210,220,230,240,250,260,210,220,230,240,250,260,210,220,230,240,250,260,210,220,230,240,250,260]
+						          },
+                     ],
+                     }
+            ]]>
+            </option>
+          </a>
+          <sa xaxis="arrX" s_height="300+'px'"></sa>
+
+        </echart> -->
+		<ecommonchart id="echart20" desc="图表">
+			<sa option="hisActiveOption"></sa>
+		</ecommonchart>
+      </div>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+          var vm=this;
+          vm.showtitle=vm.devicename+"历史有功情况";
+           this.arrX=new Array();
+           this.arrX=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+           this.setHisActiveOption = function(total,his,xlabel){
+				var option = {
+					"legend":{"show":false,textStyle:{color:'#f5efef'}},
+					"grid":{"left":"60","top":"35","right":"50","bottom":"20"},
+					"tooltip":{
+						"trigger":"axis",
+						"axisPointer":{"type":"shadow"},
+						backgroundColor:'rgba(52,72,119,0.8)',
+						borderColor:'rgb(53,76,147)',
+						borderWidth:1,
+						textStyle:{
+							align:'left'
+						},
+						formatter: '时间: {b} <br />{a1}: {c0}MW'
+					},
+					"xAxis":[
+						{
+						"type":"category",
+						"axisLine":{"lineStyle":{"color":"#37A0BA"}},
+						data: xlabel,
+						"axisLabel":{formatter: function (value) {
+							return Ysh.Time.formatString(value,'000100');
+						}},
+						}
+					],
+					"yAxis":[
+						{"type":"value",
+						"name":"历史有功(MW)",
+						"axisLine":{"lineStyle":{"color":"#37A0BA"}},
+						"splitLine":{"lineStyle":{"color":"#37A0BA"}},
+						}
+					],
+					"series":[
+						{"name":"Placeholder",
+						"type":"bar",
+						"stack": 'Total',
+						"itemStyle": {
+							borderColor: 'transparent',
+							color: 'transparent'
+							},
+							"emphasis": {
+							itemStyle: {
+								borderColor: 'transparent',
+								color: 'transparent'
+							}
+						},
+						data:total,
+						},
+						{"name":"历史有功",
+						"type":"bar",
+							"stack": 'Total',
+							"barWidth":'12',
+							"itemStyle":{color:'#33B8C9'},
+							data:his
+						},
+					],
+                }
+				return option
+           	}
+					]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+			var start = new Date(Ysh.Time.formatString(new Date(), 111000) + " 00:00:00");
+			var end = new Date(Ysh.Time.add('d',1,start))
+		 	 this.load_hisActive(true,() => {
+				var total = []
+				var his = []
+				var xlabel = []
+				//var resData = ProjectSGC.timeLeftJoin(start,end,'hh',1,this.hisActive,0,"time");
+				this.hisActive.forEach(temp => {
+					total.push(temp.total)
+					his.push(temp.his)
+					xlabel.push(temp.time)
+				})
+				this.hisActiveOption = this.setHisActiveOption(total,his,xlabel)
+			});
+			]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

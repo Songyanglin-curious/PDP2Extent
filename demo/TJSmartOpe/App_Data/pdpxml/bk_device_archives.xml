@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds0><![CDATA[
+        --树控件
+          select devicestrid as deviceid,D.devicedesc as devicename,c_nameshort as typename,deptdesc as stationname,voltagedesc as voltagename
+          from tdevice{{0}} d
+          --JOIN DEVICEPARAM.DBDEVICE B ON d.DEVICENAME=B.DEVICENAME
+          left join tdepartment{{0}} t on d.ownerdepartidx=departidx
+          left join tvoltage{{0}} v on t.voltageidx=v.voltageidx
+          left join ttype p on d.typeidx=p.typeidx
+          where voltagedesc is not null and deptdesc is not null and (p.typeidx=1 or p.typeidx=38) and voltagevalue > 150 AND t.ISOWNSDJK=1
+          AND voltagedesc!='1000kV'
+          ORDER BY v.voltagevalue desc, typename desc,deptdesc , D.devicedesc
+        ]]></ds0>
+<dsSta><![CDATA[
+        --显示厂站
+		SELECT DISTINCT VOLTAGENAME||STATIONNAME AS STA FROM(
+		select devicestrid as deviceid,D.devicedesc as devicename,c_nameshort as typename,deptdesc as stationname,voltagedesc as voltagename
+		from tdevice_TJ d
+		--JOIN DEVICEPARAM.DBDEVICE B ON d.DEVICENAME=B.DEVICENAME
+		left join tdepartment_TJ t on d.ownerdepartidx=departidx
+		left join tvoltage_TJ v on t.voltageidx=v.voltageidx
+		left join ttype p on d.typeidx=p.typeidx
+		where voltagedesc is not null and deptdesc is not null and (p.typeidx=1 or p.typeidx=38) and voltagevalue > 150 AND t.ISOWNSDJK=1
+		AND voltagedesc!='1000kV' AND voltagedesc={0} {{1}})
+		ORDER BY STA
+        ]]></dsSta>
+<dsDev><![CDATA[
+        --显示设备
+		SELECT DISTINCT VOLTAGENAME1||DEVICENAME AS DEV FROM(
+		select devicestrid as deviceid,D.devicedesc as devicename,c_nameshort as typename,deptdesc as stationname,v.voltagedesc as voltagename,v1.voltagedesc as voltagename1
+		from tdevice_TJ d
+		--JOIN DEVICEPARAM.DBDEVICE B ON d.DEVICENAME=B.DEVICENAME
+		left join tdepartment_TJ t on d.ownerdepartidx=departidx
+		left join tvoltage_TJ v on t.voltageidx=v.voltageidx
+		left join tvoltage_TJ v1 on d.voltageidx=v1.voltageidx
+		left join ttype p on d.typeidx=p.typeidx
+		where v.voltagedesc is not null and deptdesc is not null and (p.typeidx={0}) and v.voltagevalue > 150 AND t.ISOWNSDJK=1
+		AND v.voltagedesc!='1000kV')
+		WHERE STATIONNAME={1}
+		ORDER BY TO_NUMBER(SUBSTR(DEV,0,INSTR(DEV,'k')-1))
+        ]]></dsDev>
+<dsSel_Dev><![CDATA[
+        --显示某个设备
+		SELECT DISTINCT VOLTAGENAME1||DEVICENAME AS DEV,deviceid FROM(
+		select devicestrid as deviceid,D.devicedesc as devicename,c_nameshort as typename,deptdesc as stationname,v.voltagedesc as voltagename,v1.voltagedesc as voltagename1
+		from tdevice_TJ d
+		--JOIN DEVICEPARAM.DBDEVICE B ON d.DEVICENAME=B.DEVICENAME
+		left join tdepartment_TJ t on d.ownerdepartidx=departidx
+		left join tvoltage_TJ v on t.voltageidx=v.voltageidx
+		left join tvoltage_TJ v1 on d.voltageidx=v1.voltageidx
+		left join ttype p on d.typeidx=p.typeidx
+		where v.voltagedesc is not null and deptdesc is not null and (p.typeidx={0}) and v.voltagevalue > 150 AND t.ISOWNSDJK=1
+		AND v.voltagedesc!='1000kV')
+		WHERE STATIONNAME={1} {{2}}
+		ORDER BY TO_NUMBER(SUBSTR(DEV,0,INSTR(DEV,'k')-1))
+        ]]></dsSel_Dev>
+<ds1><![CDATA[
+        --显示设备
+		SELECT DISTINCT VOLTAGENAME||STATIONNAME AS STATIONNAME FROM(
+		select devicestrid as deviceid,D.devicedesc as devicename,c_nameshort as typename,deptdesc as stationname,v.voltagedesc as voltagename,v1.voltagedesc as voltagename1
+		from tdevice_TJ d
+		--JOIN DEVICEPARAM.DBDEVICE B ON d.DEVICENAME=B.DEVICENAME
+		left join tdepartment_TJ t on d.ownerdepartidx=departidx
+		left join tvoltage_TJ v on t.voltageidx=v.voltageidx
+		left join tvoltage_TJ v1 on d.voltageidx=v1.voltageidx
+		left join ttype p on d.typeidx=p.typeidx
+		where v.voltagedesc is not null and deptdesc is not null and (p.typeidx=1 or p.typeidx=38) and v.voltagevalue > 150 AND t.ISOWNSDJK=1
+		AND v.voltagedesc!='1000kV')
+		WHERE deviceid={0}
+        ]]></ds1></ROOT>

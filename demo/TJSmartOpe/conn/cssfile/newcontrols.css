@@ -1,0 +1,114 @@
+body{
+	margin: 0;
+	padding: 0;
+	font-family: "微软雅黑";
+	font-size: 1rem;
+}
+.pdpLabel{
+	color: #8c8c8c;
+    font-size: 12px;
+}
+.pdpText{
+	width: 185px;
+	height: 32px;
+	padding: 1px 7px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+}
+.pdpBtnDefault,.pdpTagSBtn,.pdpTagBBtn,.pdpBtnScreen,.pdpBtn2,.pdpBtn3,.pdpIconScreenBtn,.pdpIconBgfBtn{
+	height: 26px;
+	line-height: 24px;
+	color: #fff;
+	background: #2da5a4;
+	border-radius: 3px;
+	padding: 0 10px;
+	cursor: pointer;
+    font-size: 12px;
+    border-style: none;
+}
+.pdpBtnDefault:hover{
+	color: #fff;
+	background: #14bcbb;
+}
+.pdpTagSBtn{
+	color: #fff;
+	background: #f19f34;
+}
+.pdpTagBBtn{
+	color: #8c8c8c;
+	background: #edf1f1;
+}
+.pdpBtnScreen{
+	background: rgba(255,255,255,0.1);
+}
+.pdpBtnScreen:hover{
+	color: #fff;
+	background: #e5ab16;
+}
+.pdpBtnSelect{
+	background: #e5ab16;
+}
+.pdpBtn2:hover{
+	color: #fff;
+	background: #2da5a4;
+}
+.pdpBtn3:hover{
+	color: #fff;
+	background: #e5ab16;
+}
+.pdpIconScreenBtn{
+	background: #19d2d0;
+}
+.pdpIconScreenBtn:hover{
+	background: #16c0be;
+}
+.pdpIconBgfBtn{
+	border: 1px solid #e5e5e5;
+	color: #8c8c8c;
+	background: #fff;
+}
+.pdpIconBgfBtn:hover{
+	border: 1px solid #2da5a4;
+	color: #fff;
+	background: #2da5a4;
+}
+.pdpSelect{
+	width: 110px;
+	height: 26px;
+	color: #787878;
+	font-size: 12px;
+}
+.pdpIframe{
+	border-style: none;
+}
+.pdpTable{
+	border-collapse: collapse;
+}
+.pdpTable tr:nth-child(odd){
+	background: #f1f8f8;
+}
+.pdpTable tr:nth-child(even){
+	background: #fff;
+}
+.pdpTable tr:first-child{
+	background: #e6f1f0;
+}
+.pdpTable td {
+	padding: 5px 7px;
+	text-align: center;
+	font-size: 13px;
+	border: 1px solid #cfe8e8;
+	color: #282828;
+}
+.pdpTitleLabel{
+    display: inline-block;
+	color: #282828;
+    font-size: 18px;
+    padding: 8px 20px 8px 18px;
+}
+.pdpEchartsLabel{
+    display: block;
+	color: #8c8c8c;
+    font-size: 14px;
+    padding: 10px 20px 0px 58px;
+}

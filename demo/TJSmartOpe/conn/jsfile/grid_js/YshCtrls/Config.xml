@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Config>
+  <CopyFile>
+    <SourcePath><![CDATA[]]></SourcePath>
+    <TargetPath><![CDATA[]]></TargetPath>
+    <TextEdit><![CDATA[]]></TextEdit>
+    <ShowInfo><![CDATA[]]></ShowInfo>
+  </CopyFile>
+  <Service>
+    <FilePath><![CDATA[]]></FilePath>
+    <ServiceName><![CDATA[]]></ServiceName>
+    <AutoStart><![CDATA[False]]></AutoStart>
+    <ImmediatelyStart><![CDATA[False]]></ImmediatelyStart>
+  </Service>
+  <MergeFile>
+    <TargetPath><![CDATA[E:\自定义表格\Code\FreeGridWebSiteDebug\conn\jsfile\grid_js\YshCtrls\yshobject.js]]></TargetPath>
+    <TextEdit><![CDATA[1]]></TextEdit>
+    <ShowInfo><![CDATA[1]]></ShowInfo>
+    <OrderByFileName><![CDATA[1]]></OrderByFileName>
+  </MergeFile>
+</Config>

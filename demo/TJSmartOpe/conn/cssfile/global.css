@@ -1,0 +1,50 @@
+@charset "gb2312";
+/* CSS Document */
+*
+{
+    margin: 0px;
+    padding: 0px;
+    list-style-image: none;
+    list-style-type: none;
+}
+img
+{
+    border: 0px;
+}
+
+body, td, th
+{
+    font-family: "ËÎÌו";
+    font-size: 12px;
+    color: #5b5e65;
+}
+a:link
+{
+    color: #5b5e65;
+    text-decoration: none;
+}
+
+a:visited
+{
+    text-decoration: none;
+    color: #5b5e65;
+}
+a:hover
+{
+    text-decoration: none;
+    color: #5b5e65;
+}
+a:active
+{
+    text-decoration: none;
+    color: #5b5e65;
+}
+.clear
+{
+    clear: both;
+    font-size: 1px;
+    width: 1px;
+    height: 0;
+    visibility: hidden;
+    text-indent: 45px;
+}

@@ -1,0 +1,59 @@
+
+h2
+{
+	font: bold 14px Verdana, Arial, Helvetica, sans-serif;
+	color: #000;
+	margin: 0px;
+	padding: 0px 0px 0px 15px;
+}
+#tabsM
+{
+	float: left;
+	width: 100%;
+	background: #eeeeee;
+	font-size: 93%;
+	font: bold 11px/1.5em Verdana;
+	line-height: normal;
+	border-bottom: 1px solid #acb9c1;
+}
+#tabsM ul
+{
+	margin: 0;
+	padding: 0px 10px 0 0;
+	list-style: none;
+}
+#tabsM li
+{
+	display: inline;
+	margin: 0px 0px 0px 0px;
+	padding: 0;
+}
+#tabsM a
+{
+	float: left;
+	height: 27px;
+	background: url(../../i/tableft.gif) no-repeat left top;
+	margin: 0;
+	padding: 0 0 0 5px;
+	text-decoration: none;
+}
+
+#tabsM a span
+{
+	float: left;
+	display: block;
+	height: 27px;
+	background: url(../../i/tabright.gif) no-repeat right top;
+	padding: 8px 10px 4px 5px;
+	color: #444444;
+}
+.backContent
+{
+	background-color: #ebf0f3;
+	border-left: 1px solid #acb9c1;
+	border-right: 1px solid #acb9c1;
+	border-bottom: 1px solid #acb9c1;
+	vertical-align: top;
+	text-align: center;
+	height: 100%;
+}

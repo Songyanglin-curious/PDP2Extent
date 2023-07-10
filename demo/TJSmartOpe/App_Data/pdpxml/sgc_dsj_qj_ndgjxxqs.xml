@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds55><![CDATA[
+				select A.num,A.sgnum as sgnum1,B.sgnum as sgnum2 from (
+
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("ACCID_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' AND STA_DAY<=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) A
+				left join
+				(
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("ACCID_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01 00:00:00'
+				AND STA_DAY<=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) B on A.num = B.num
+				]]></ds55>
+<ds68><![CDATA[
+
+				select A.num,A.sgnum as sgnum1,B.sgnum as sgnum2 from (
+
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("LIMIT_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' AND STA_DAY<=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) A
+				left join
+				(
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("LIMIT_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01 00:00:00'
+				AND STA_DAY<=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) B on A.num = B.num
+
+				]]></ds68>
+<dsBW><![CDATA[
+
+				select A.num,A.sgnum as sgnum1,B.sgnum as sgnum2 from (
+
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("VARBIT_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' AND STA_DAY<=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) A
+				left join
+				(
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("VARBIT_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01 00:00:00'
+				AND STA_DAY<=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) B on A.num = B.num
+
+				]]></dsBW>
+<dsGZ><![CDATA[
+
+				select A.num,A.sgnum as sgnum1,B.sgnum as sgnum2 from (
+
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("INFORM_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' AND STA_DAY<=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) A
+				left join
+				(
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("INFORM_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01 00:00:00'
+				AND STA_DAY<=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) B on A.num = B.num
+
+				]]></dsGZ>
+<ds72><![CDATA[
+
+				select A.num,A.sgnum as sgnum1,B.sgnum as sgnum2 from (
+
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("EXC_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' AND STA_DAY<=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) A
+				left join
+				(
+				select rownum as num,SGNUM from
+				(
+				select B.dayid,isnull(sgnum,0) as SGNUM from (
+				SELECT "STA_DAY" as dayid,SUM("EXC_NUM") AS SGNUM
+				FROM "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				WHERE STA_DAY>=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01 00:00:00'
+				AND STA_DAY<=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				GROUP BY STA_DAY
+				) A
+				right join
+				(
+				select dayid from
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				)
+				) B
+				on A.dayid = B.dayid
+				order by b.dayid
+				)
+				) B on A.num = B.num
+				]]></ds72>
+<ds76><![CDATA[   select C.num,C.SGNUM as SGNUM1,D.SGNUM as SGNUM2 from (
+
+				select rownum as num, isnull(SGNUM,0) as SGNUM from
+				(
+				SELECT b.dayid,SGNUM from
+				(
+				select
+				"STA_DAY",SIGNALNUM AS SGNUM
+				FROM "MONITORSIGNAL"."QJ_JKGJXX_QXTJ{{0}}"
+				WHERE STA_DAY>=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' AND STA_DAY<=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+				AND  QXLX = '频发缺陷'
+				)A
+				right join
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				) B on A."STA_DAY" = B.dayid
+				ORDER BY b.dayid
+				)
+				) C
+				left join
+				(
+				select rownum as num, isnull(SGNUM,0) as SGNUM from
+				(
+				SELECT b.dayid,SGNUM from
+				(
+				select
+				"STA_DAY",SIGNALNUM AS SGNUM
+				FROM "MONITORSIGNAL"."QJ_JKGJXX_QXTJ{{0}}"
+				WHERE STA_DAY>=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01 00:00:00' AND STA_DAY<=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31 23:59:59'
+				AND  QXLX = '频发缺陷'
+				)A
+				right join
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				) B on A."STA_DAY" = B.dayid
+				ORDER BY b.dayid
+				)
+				) D on C.num = D.num
+				]]></ds76>
+<ds80><![CDATA[   select C.num,C.SGNUM as SGNUM1,D.SGNUM as SGNUM2 from (
+
+				select rownum as num, isnull(SGNUM,0) as SGNUM from
+				(
+				SELECT b.dayid,SGNUM from
+				(
+				select
+				"STA_DAY",SIGNALNUM AS SGNUM
+				FROM "MONITORSIGNAL"."QJ_JKGJXX_QXTJ{{0}}"
+				WHERE STA_DAY>=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' AND STA_DAY<=substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59'
+				AND  QXLX = '误发信号'
+				)A
+				right join
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				) B on A."STA_DAY" = B.dayid
+				ORDER BY b.dayid
+				)
+				) C
+				left join
+				(
+				select rownum as num, isnull(SGNUM,0) as SGNUM from
+				(
+				SELECT b.dayid,SGNUM from
+				(
+				select
+				"STA_DAY",SIGNALNUM AS SGNUM
+				FROM "MONITORSIGNAL"."QJ_JKGJXX_QXTJ{{0}}"
+				WHERE STA_DAY>=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01 00:00:00' AND STA_DAY<=substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31 23:59:59'
+				AND  QXLX = '误发信号'
+				)A
+				right join
+				(
+				SELECT TO_CHAR(ADD_dayS(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'YYYY-MM-dd '), ROWNUM - 1),'YYYY-MM-dd') dayid
+				FROM DUAL
+				CONNECT BY ROWNUM <=
+				dayS_BETWEEN(TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-12-31', 'yyyy-mm-dd'),
+				TO_DATE(substr(ADD_dayS(TO_DATE(substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01', 'YYYY-MM-dd '), -1),0,4) || '-01-01', 'yyyy-mm-dd')) + 1
+				) B on A."STA_DAY" = B.dayid
+				ORDER BY b.dayid
+				)
+				) D on C.num = D.num]]></ds80>
+<ds42><![CDATA[
+				select SUM(ACCID_NUM) AS accidnum, '事故' as wname
+				from "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				where STA_DAY between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				union all
+				select SUM(EXC_NUM) AS excnum, '异常' as wname
+				from "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				where STA_DAY between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				union all
+				select SUM(LIMIT_NUM) AS limitnum, '越限' as wname
+				from "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				where STA_DAY between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				union all
+				select SUM(VARBIT_NUM) AS varbitnum, '变位' as wname
+				from "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				where STA_DAY between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				union all
+				select SUM(INFORM_NUM) AS informnum, '告知' as wname
+				from "SG_THEME"."SG_RPT_DSC_S_ALARMINFONUM"
+				where STA_DAY between substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-01-01 00:00:00' and substr(TRUNC(SYSDATE, 'YEAR'),0,4) || '-12-31 23:59:59' AND DATASOURCE_ID={0}
+				]]></ds42></ROOT>

@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="29" desc="空白页">
+  <inits>
+    <init id="init1" desc="设备id" type="request" arg="deviceid"></init>
+    <init id="init2" desc="设备名称" type="request" arg="devicename"></init>
+    <init id="init3" desc="变电站" type="request" arg="staname"></init>
+    <init id="init4" desc="全路径" type="request" arg="fullpath"></init>
+    <init id="area0" desc="地区后缀" type="request" arg="areasuffix"></init>
+    <init id="init_starttime" desc="开始时间" type="request" arg="starttime"></init>
+    <init id="init_endtime" desc="结束时间" type="request" arg="endtime"></init>
+    <init id="color" desc="背景色" type="request" arg="color"></init>
+    <init id="class" desc="类" type="request" arg="class"></init>
+  </inits>
+  <consts>
+    <const id="starttime" desc="开始时间" arg="d" type="time"></const>
+    <const id="endtime" desc="结束时间" arg="d,d,1" type="time"></const>
+    <const id="t1" desc="开始时间" type="string"></const>
+    <const id="t2" desc="结束时间" type="string"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds0" desc="设备列表" db="MONITORSIGNAL" type="simple">
+      <sql>
+        <![CDATA[
+        select HAPPENTIME,DEVICENAME||'跳闸' AS EVENTNAME,LOSTSIGNAL 
+        from "MONITORSIGNAL".TJUMPMSG{{3}}
+        WHERE DEVICENAME={0} AND happentime>={{1}} AND happentime<={{2}}
+        ORDER BY happentime DESC
+        ]]>
+      </sql>
+      <cols>
+        <col id="col0" desc="设备id" name="deviceid" from="init4"></col>
+        <col id="col_starttime" desc="开始时间" name="starttime" from="t1"></col>
+        <col id="col_endtime" desc="结束时间" name="endtime" from="t2"></col>
+        <col id="colarea" desc="地区后缀" name="area0" from="area0"></col>
+        <col id="col4" desc="发生时间" name="happentime"></col>
+        <col id="col5" desc="跳闸记录" name="DEVICENAME"></col>
+        <col id="col6" desc="跳闸记录" name="lostsignal"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a class="divBox"></a>
+	  <sa s_background="color"></sa>
+      <c>
+        <div id="div2" desc="容器">
+          <a class="divBoxTitleWrapper"></a>
+          <c>
+            <label id="label8" desc="文字" from="init2">
+            	<a class="divBoxTitle"></a>
+            </label>
+            <label id="label7" desc="文字">
+              <a id="aBreak" class="divBoxTitle" value="事故跳闸记录"></a>
+            </label>
+          </c>
+        </div>
+        <div id="div21" desc="容器">
+          <a class="feac mb10"></a>
+          <c>
+            <label id="label24" desc="文字">
+              <a class="pdpLabel" value="日期：" s_color="#fff"></a>
+            </label>
+			      <idate id="time25" desc="日期" from="starttime">
+			        <a type="date" format="yyyy-MM-dd" class="id time" s_width="110px"></a>
+			      </idate>
+            <label id="label26" desc="文字">
+              <a class="pdpLabel" value="--" s_color="#fff"></a>
+            </label>
+			      <idate id="time27" desc="日期" from="endtime">
+			        <a type="date" format="yyyy-MM-dd" class="id time" s_width="110px"></a>
+			      </idate>
+            <button id="button28" desc="默认按钮">
+              <a type="button" value="搜索" class="pdpBtnDefault ml10 blueBtn"></a>
+              <e>
+                <onclick>
+                  <list type="script" value="this.selTime();"></list>
+                  <list type="select" ds="ds0" async="true"></list>
+                </onclick>
+              </e>
+            </button>
+          </c>
+        </div>
+        <scrolltable id="scrolltable14" desc="滚动表格" from="ds0">
+          <sa stripe="true" height="200" item-height="35"></sa>
+          <c>
+            <icol id="icol15" desc="序号">
+              <a key="index" width="50"></a>
+            </icol>
+            <icol id="icol16" desc="发生时间" from="col4">
+              <a width="150"></a>
+            </icol>
+            <icol id="icol17" desc="事件名称" from="col5">
+              <a width="250"></a>
+            </icol>
+            <icol id="icol18" desc="跳闸过程" from="col6">
+              <a minWidth="200"></a>
+            </icol>
+          </c>
+        </scrolltable>
+      </c>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[ 
+        this.endtime = this.init_endtime;
+        this.starttime = this.init_starttime;
+        this.t1 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.init_starttime, true, false), 111000) + " 00:00:00" +"','yyyy-mm-dd hh24:mi:ss')";
+        this.t2 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.init_endtime, true, false), 111000) + " 23:59:59" +"','yyyy-mm-dd hh24:mi:ss')";
+        //this.select_ds0();
+        //时间限制
+        this.selTime = function()
+        {
+          this.starttime=Ysh.Time.formatString(Ysh.Time.toString(this.time25, true, false), 111000);
+          this.endtime=Ysh.Time.formatString(Ysh.Time.toString(this.time27, true, false), 111000);
+          this.t1 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.time25, true, false), 111000) + " 00:00:00" +"','yyyy-mm-dd hh24:mi:ss')";
+          this.t2 = "TO_DATE ('"+ Ysh.Time.formatString(Ysh.Time.toString(this.time27, true, false), 111000) + " 23:59:59" +"','yyyy-mm-dd hh24:mi:ss')";
+          var arr1 = this.starttime.split("-");
+          var arr2 = this.endtime.split("-");
+          var date1=new Date(parseInt(arr1[0]),parseInt(arr1[1])-1,parseInt(arr1[2]),0,0,0); 
+          var date2=new Date(parseInt(arr2[0]),parseInt(arr2[1])-1,parseInt(arr2[2]),0,0,0);
+          if(date1.getTime()>date2.getTime()) 
+          {                                
+            alert('结束日期不能小于开始日期',this);
+          }          
+          window.pdp.timechanged(this.time25,this.time27,6);
+        }
+        ]]></value>
+      </list>
+      <list type="select" ds="ds0" async="true"></list>
+    </script>
+    <script event="mounted"></script>
+  </scripts>
+</root>

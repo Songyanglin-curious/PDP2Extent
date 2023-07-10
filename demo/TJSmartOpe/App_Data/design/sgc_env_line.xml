@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="196" desc="发布111">
+  <includes>
+    <![CDATA[/conn/cssfile/sgc/typhoon.css;/conn/cssfile/htimeline1.css;/conn/jsfile/sgc/lineenv.js]]>
+  </includes>
+  <inits>
+    <init id="dynfile" type="request" arg="dynfile"></init>
+    <init id="lineid" type="request" arg="lineid"></init>
+    <init id="st" type="request" arg="st"></init>
+    <init id="et" type="request" arg="et"></init>
+    <init id="main" type="request" arg="main"></init>
+    <init id="types" type="request" arg="types"></init>
+    <init id="closename" type="request" arg="closename"></init>
+    <init id="noaudit" type="request" arg="noaudit"></init>
+  </inits>
+  <consts>
+    <const id="towerline"></const>
+    <const id="linename"></const>
+    <const id="judge"></const>
+    <const id="start_st_id"></const>
+    <const id="start_st_name"></const>
+    <const id="end_st_id"></const>
+    <const id="end_st_name"></const>
+    <const id="loading" type="bool" arg="false"></const>
+    <const id="otypes"></const>
+    <const id="show" type="bool" arg="true"></const>
+  </consts>
+  <ctrls>
+    <div>
+      <a s_height="170px" v-loading="'loading'" s_width="100%" s_position="absolute" s_z-index="190" s_left="0" s_bottom="0" s_opacity="0.8"></a>
+      <sa s_height="show" s_width="show"></sa>
+      <sf s_height="{0}?'177px':'0'" s_width="{0}?'100%':'30px'"></sf>
+      <img>
+        <a s_position="absolute" s_left="55px" s_top="-27px" s_width="24px" s_height="24px" s_z-index="100"></a>
+        <sa src="show"></sa>
+        <sf src="{0}?'/i/sgc/yincang.png':'/i/sgc/xianshi.png'"></sf>
+        <e>
+          <onclick>
+            <list type="script" value="this.show=!this.show;"></list>
+          </onclick>
+        </e>
+      </img>
+    <div>
+      <a s_width="100%" s_height="100%"></a>
+      <label>
+        <s position="absolute" cursor="pointer" right="70px" top="5px" z-index="7"></s>
+        <sa value="closename"></sa>
+        <sf value="{0}||'返回'"></sf>
+        <e>
+          <click>
+            <list type="script" value="this.main.showBar();"></list>
+          </click>
+        </e>
+      </label>
+      <lineenv-head id="thead">
+        <a ref="head"></a>
+        <s position="absolute" z-index="10"></s>
+        <sa id="lineid" name="linename"></sa>
+        <e>
+        </e>
+      </lineenv-head>
+      <div>
+        <a s_padding-left="60px" s_height="100%"></a>
+        <lineenv>
+          <a ref="path"></a>
+          <sa datalist="towerline" name="linename" judge="judge"></sa>
+          <e>
+            <click>
+              <list type="script">
+                <value>
+                  <![CDATA[this.locateItem(item,bText);]]>
+                </value>
+              </list>
+            </click>
+            <clickgroup>
+              <list type="script">
+                <value>
+                  <![CDATA[this.locateGroup(group);]]>
+                </value>
+              </list>
+            </clickgroup>
+            <clickenv>
+              <list type="script">
+                <value>
+                  <![CDATA[this.locateEnv(env);]]>
+                </value>
+              </list>
+            </clickenv>
+            <clickother>
+              <![CDATA[this.locateOther(o);]]>
+            </clickother>
+          </e>
+        </lineenv>
+      </div>
+    </div>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="file" value="denv"></list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.refresh();
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="beforeDestroy">
+      <list type="script">
+        <value>
+          <![CDATA[
+          ProjectSGC.Map.hideIcon("lineenv");
+          for (var i = 0;i < this.otypes.length;i++)
+          ProjectSGC.Map.hideIcon("line" + this.otypes[i].name);
+                  ProjectSGC.Map.postMessage({ eventType: "menuope", menuname: "showTowerLine", data: { clear:true} });
+                 // ProjectSGC.Map.postMessage({ eventType: "menuope", menuname: "showTowerAcross",selstate:false});
+                        
+          ProjectSGC.Global.getMainObject("vMain").legendBottom = "";
+          if (this.main&&this.main.closeLine)
+            this.main.closeLine();
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

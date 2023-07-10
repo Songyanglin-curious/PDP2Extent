@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+    <Conditions db="SGAPP" sql="GetAllData" remarks="公共的条件可以写在外边，不同类型可以类型里">
+        <devType name="设备类型" db="SGAPP" type="list" src="GetAllDevType" if="WhereDevType"></devType>
+        <part name="部件" db="SGAPP" type="list" src="GetAllPart" if="WherePart"></part>
+        <Group type="group" multi="">
+            <defectType name="缺陷状态" db="SGAPP" type="list" src="GetAllDefectType" if="WhereDefectType"></defectType>
+            <defectLevel name="缺陷等级" db="SGAPP" type="list" src="GetAllDefectLevel" if="WhereDefectLevel"></defectLevel>
+        </Group>
+        <Group type="group" multi="">
+            <voltage name="电压等级" db="SGAPP" type="list" src="GetAllVoltage" if="WhereVoltage"></voltage>
+            <findWay name="发现方式" db="SGAPP" type="list" src="GetAllFindWay" if="WhereFindWay"></findWay>
+        </Group>
+        <manufacturer name="生产厂家" db="SGAPP" type="list" src="GetAllManufacturer" if="WhereManufacturer"></manufacturer>
+        <name name="关键字" placeholder="请输入缺陷设备/部件" type="text" value="" ifcol="DEFECT_DEV,PART" dismulti="1"></name>
+    </Conditions>
+    <GetAllData>
+        <![CDATA[SELECT ]]>
+        <![CDATA[same:BaseCols]]>
+        <![CDATA[]]>
+        <![CDATA[same:BaseSrc]]>
+        <![CDATA[ WHERE 1=1 {0}]]>
+    </GetAllData>
+    <cols>
+        <![CDATA[
+        缺陷设备    缺陷编号    缺陷状态    缺陷发现时间    缺陷性质    缺陷所在单位       消缺时间    是否延期消缺    距超期时间      缺陷描述    设备类型    设备编号    设备种类    设备型号    部件    部件种类    电压等级    生产厂家
+        ---------------------收缩列表
+        登记时间 登记人 投运时间   发现人 发现人单位 发现方式
+        缺陷内容
+        处理结果
+        完成情况
+        ]]>
+    </cols>
+    <BaseCols>
+        <![CDATA[
+        DEFECT_DEV,DEFECT_NUM,DEFECT_TYPE,DEFECT_FIND_TIME,DEFECT_LEVEL,DEFECT_BELONG_DEPT,XIAOQUE_TIME,IS_DEFERRAL_XIAOQUE,SPAN_EXPIRE,DEFECT_DESCRIBE,DEV_TYPE,DEV_NUM,DEV_CATEGORY,DEV_MODEL,PART,PART_TYPE,VOLTAGE_CLASS,MANUFACTURER,REGISTRANT_TIME,REGISTRANTER,START_USE_DAY,FINDER,FINDER_DEPT,FIND_WAY,DEFECT_CONTENT,HANDEL_RESULT,COMPLETE_STATE
+        ]]>
+    </BaseCols>
+    <BaseSrc>
+        <![CDATA[ FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN ]]>
+    </BaseSrc>
+    <GetAllDevCategory>
+        <![CDATA[select DISTINCT DEV_CATEGORY,DEV_CATEGORY from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE length(DEV_CATEGORY) > 0]]>
+    </GetAllDevCategory>
+    <GetAllDevType>
+        <![CDATA[select DISTINCT DEV_TYPE,DEV_TYPE from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE length(DEV_TYPE) > 0]]>
+    </GetAllDevType>
+    <GetAllDefectLevel>
+        <![CDATA[select DISTINCT DEFECT_LEVEL,DEFECT_LEVEL from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE length(DEFECT_LEVEL) > 0]]>
+    </GetAllDefectLevel>
+    <GetAllPartType>
+        <![CDATA[select DISTINCT PART_TYPE,PART_TYPE from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE length(PART_TYPE) > 0]]>
+    </GetAllPartType>
+    <GetAllPart>
+        <![CDATA[select DISTINCT PART,PART from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE length(PART) > 0]]>
+    </GetAllPart>
+    <GetAllDefectType>
+        <![CDATA[select DISTINCT DEFECT_TYPE,DEFECT_TYPE from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE length(DEFECT_TYPE) > 0]]>
+    </GetAllDefectType>
+    <GetAllVoltage>
+        <![CDATA[select DISTINCT VOLTAGE_CLASS,VOLTAGE_CLASS,CAST(regexp_replace(VOLTAGE_CLASS, '[^0-9]*([0-9]+)[^0-9]*', '\1') AS DECIMAL(10, 0)) AS VOL_NUM from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE length(VOLTAGE_CLASS) > 0 ORDER BY VOL_NUM DESC ]]>
+    </GetAllVoltage>
+    <GetAllFindWay>
+        <![CDATA[select DISTINCT FIND_WAY,FIND_WAY from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE length(FIND_WAY) > 0]]>
+    </GetAllFindWay>
+    <GetAllManufacturer>
+        <![CDATA[select DISTINCT MANUFACTURER,MANUFACTURER from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_SC_QUEXIAN WHERE length(MANUFACTURER) > 0]]>
+    </GetAllManufacturer>
+
+
+    <WhereDevCategory>
+        <![CDATA[ AND DEV_CATEGORY IN ({0})]]>
+    </WhereDevCategory>
+    <WhereDevType>
+        <![CDATA[ AND DEV_TYPE IN ({0})]]>
+    </WhereDevType>
+    <WhereDefectLevel>
+        <![CDATA[ AND DEFECT_LEVEL IN ({0})]]>
+    </WhereDefectLevel>
+    <WherePartType>
+        <![CDATA[ AND PART_TYPE IN ({0})]]>
+    </WherePartType>
+    <WherePart>
+        <![CDATA[ AND PART IN ({0})]]>
+    </WherePart>
+    <WhereDefectType>
+        <![CDATA[ AND DEFECT_TYPE IN ({0})]]>
+    </WhereDefectType>
+    <WhereVoltage>
+        <![CDATA[ AND VOLTAGE_CLASS IN ({0})]]>
+    </WhereVoltage>
+    <WhereFindWay>
+        <![CDATA[ AND FIND_WAY IN ({0})]]>
+    </WhereFindWay>
+    <WhereManufacturer>
+        <![CDATA[ AND MANUFACTURER IN ({0})]]>
+    </WhereManufacturer>
+
+</ROOT>

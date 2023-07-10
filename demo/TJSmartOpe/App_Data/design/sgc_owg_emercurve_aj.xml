@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="1" desc="空白页">
+  <inits>
+    <init id="title" type="request" arg="title"></init>
+    <init id="cityid" type="request" arg="cityid"></init>
+    <init id="num" type="request" arg="num"></init>
+    <init id="leaders" type="request" arg="leaders"></init>
+    <init id="css" type="request" arg="css"></init>
+    <init id="minutes" type="request" arg="minutes"></init>
+    <init id="f" type="request" arg="f"></init>
+  </inits>
+  <consts>
+    <const id="option"></const>
+  </consts>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <s height="162px" width="225px" position="absolute" z-index="1000" background="url(/i/sgc/hbowg/icon/emerbk.png)100% 100% / 100% 100%"></s>
+      <sa style="css"></sa>
+      <e>
+      <onclick>
+         <list type="script">
+        <value>
+          <![CDATA[
+          var owg = ProjectSGC.Global.getMainObject("owg");
+          owg.appEmergency.showfloatPage(this.num , this.title , this.cityid);
+          /*var vMain = ProjectSGC.Global.getMainObject("vMain");
+          if(owg.appEmergency.pages)
+          Ysh.Array.each(owg.appEmergency.pages, function (p) { vMain.destroyFloatPage(p); });
+          owg.appEmergency.pages = [];
+          owg.appEmergency.pages.push(vMain.floatPage("sgc_owg_emergencylist", {
+                        top:owg.top+"px",height:"calc(100% - "+owg.top+"px)",num:this.num,cityname:this.title ,cityid:this.cityid,main: {
+                            closeFloat: function () {
+                            }
+                        }
+                    }));*/
+          
+          ]]>
+        </value>
+      </list>
+      </onclick>
+      </e>
+      <div>
+        <s line-height="25px" text-align="center"></s>
+        <label from="title">
+          <s font-size="14px"></s>
+        </label>
+        <label>
+          <s font-size="14px"></s>
+          <a value="应急基干分队"></a>
+        </label>
+      </div>
+      <div>
+        <a s_height="calc(100% - 25px)" s_padding="5px 5px 0px 5px"></a>
+        <c>
+          <div>
+            <s line-height="22px" text-align="left"></s>
+            <label >
+              <a value="保障车辆"></a>
+              <s font-size="12px"></s>
+            </label>
+            <label >
+              <s font-size="18px" margin-left="4px"></s>
+              <sa value="num[0]"></sa>
+            </label>
+            <label >
+              <a value="辆"></a>
+              <s font-size="12px" margin-left="4px"></s>
+            </label>
+          </div>
+          <div>
+            <s line-height="22px" text-align="left"></s>
+            <label >
+              <a value="保障人员"></a>
+              <s font-size="12px"></s>
+            </label>
+            <label >
+              <s font-size="18px" margin-left="4px"></s>
+              <sa value="num[1]"></sa>
+            </label>
+            <label >
+              <a value="人"></a>
+              <s font-size="12px" margin-left="4px"></s>
+            </label>
+          </div>
+          <img>
+            <a src="/i/sgc/hbowg/hr.png" width="100%" s_display="flex" s_margin-top="5px"></a>
+          </img>
+          <loop id="loop1" from="leaders" >
+            <a ref="loop1"></a>
+            <c>
+              <div>
+                <s line-height="16px" text-align="left" display="flex" align-items="center" margin-top="10px"></s>
+                <sa s_margin-top="leaders.length>2?'5px':'10px'" />
+                <label >
+                  <a value="队长："></a>
+                  <s font-size="12px"></s>
+                  <sa value="item_loop1[0]"></sa>
+                </label>
+                <label >
+                  <a value="："></a>
+                  <s font-size="12px"></s>
+                </label>
+                <img>
+                <a src="/i/sgc/hbowg/icon/emerperson.png" height="14px" ></a>
+                <sa s_margin-left="item_loop1[0].length==2?'12px':'0px'" />
+                </img>
+                <label >
+                  <s font-size="12px" margin-left="5px"></s>
+                  <sa value="item_loop1[1]"></sa>
+                </label>
+                
+              </div>
+            </c>
+         </loop>
+          
+        </c>
+      </div>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+          if(!this.title)
+          this.title = "北京";
+          if(!this.num)
+          this.num=[200,100];
+          
+]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

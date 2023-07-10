@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds100><![CDATA[
+select id,h.deptid,h.deptname,h.deviceid,h.devicename,devicetype,event,content,affect,h.reporter,h.checker,eventtime,
+to_char(eventtime,'yyyy-mm-dd'),
+to_char(eventtime,'yyyy-mm-dd')||' '||h.devicename||' '||case event when null then ' ' else event end as event  
+from ys_db.ysh_ts_event_happen h
+join ys_db.ysh_ts_event_solve s on h.id = s.happenid
+where s.endtime is not null
+        ]]></ds100></ROOT>

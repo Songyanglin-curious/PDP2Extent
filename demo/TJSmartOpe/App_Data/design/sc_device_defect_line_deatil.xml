@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="11" desc="变电站设备缺陷详细页">
+    <includes>
+        <![CDATA[ 
+        /conn/pdpjs/pdpproject.css;
+        ]]>
+    </includes>
+    <inits>
+        <init id="x" desc="距屏幕坐标原点x" type="request" arg="x"></init>
+        <init id="y" desc="距屏幕坐标原点y" type="request" arg="y"></init>
+        <init id="id" desc="设备缺陷id" type="request" arg="id"></init>
+    </inits>
+    <consts>
+        <const id="dsInitDefect" desc="所有的缺陷的数据源" type="object[]"></const>
+        <const id="dsDefect" desc="表格的缺陷的数据源" type="2d" length="6"></const>
+        <const id="currentImgIndex" type="number" arg="0"></const>
+        <const id="defectImgs" type="string[]" arg=""></const>
+        <const id="isShowNoImgText" arg="none"></const>
+
+    </consts>
+    <datasources></datasources>
+
+    <ctrls>
+        <div desc="根容器" style="width:100%;height:100%;background:#11424B;">
+            <!-- position:absolute;z-index:101 -->
+            <!-- <sa s_left="x" s_top="y"></sa> -->
+            <div>
+                <a s_height="calc(100% )" s_width="100%" ref="tableRef"></a>
+                <table style="border-top:none">
+                    <a s_width="100%" class="detail-table-record "></a>
+                    <loop id="loop1" from="dsDefect">
+                        <tr>
+                            <td>
+                                <sa v-if="index == 0"></sa>
+                                <a class="detail-table-content vertical-text" rowspan="2"></a>
+                                <label>
+                                    <a value="设备信息区"></a>
+                                </label>
+                            </td>
+                            <td>
+                                <sa v-if="index == 2"></sa>
+                                <a class="detail-table-content vertical-text" rowspan="2"></a>
+                                <label>
+                                    <a value="巡视信息区"></a>
+                                </label>
+                            </td>
+                            <td>
+                                <sa v-if="index == 4"></sa>
+                                <a class="detail-table-content vertical-text" rowspan="4"></a>
+                                <label>
+                                    <a value="缺陷信息区"></a>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-title" style="width:100px;"></a>
+                                <label>
+                                    <sa value="item_loop1[0]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-content"></a>
+                                <label>
+                                    <sa value="item_loop1[1]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-title" style="width:100px;"></a>
+                                <label>
+                                    <sa value="item_loop1[2]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-content"></a>
+                                <label>
+                                    <sa value="item_loop1[3]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-title" style="width:100px;"></a>
+                                <label>
+                                    <sa value="item_loop1[4]"></sa>
+                                </label>
+                            </td>
+                            <td>
+                                <a class="detail-table-content"></a>
+                                <label>
+                                    <sa value="item_loop1[5]"></sa>
+                                </label>
+                            </td>
+                        </tr>
+                    </loop>
+                    <tr>
+                        <td>
+                            <a class="detail-table-title" style="width:100px;"></a>
+                            <label>
+                                <a value="缺陷详情"></a>
+                            </label>
+                        </td>
+                        <td>
+
+                            <a class="detail-table-content" colspan="5"></a>
+                            <label>
+                                <sa value="dsInitDefect['DEFECT_DETAIL']"></sa>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="detail-table-title" style="width:100px;"></a>
+                            <label>
+                                <a value="缺陷图片"></a>
+                            </label>
+                        </td>
+                        <td style="height:400px;">
+
+                            <a class="detail-table-content" colspan="5"></a>
+                            <div style="height:400px;;width:100%;background:#07404B;">
+                                <a v-fulltowindow=""></a>
+                                <loop id="loop2" from="defectImgs">
+                                    <img style="width:100%; height:100%;position:relative;" onerror="this.src = '/i/sgc/shengchan/no_img.png';this.onerror = null;">
+                                        <sa src="item_loop2['url']"></sa>
+                                        <e>
+                                            <onerror>
+                                                <list type="script" value="this.showNoImgText();"></list>
+                                            </onerror>
+                                        </e>
+                                        <label style="top:50%;left:50%;z-index:10;position:absolute;">
+                                            <a value="无图片"></a>
+                                            <sa s_display="isShowNoImgText"></sa>
+
+                                        </label>
+                                    </img>
+                                </loop>
+                            </div>
+                            <!-- <div style="height:100% ;width:100%;overflow: hidden;
+                            position: relative;background:#07404B;">
+                                <a v-fulltowindow=""></a>
+                                <div style="height:calc(100% - 0px);width: 100%;position:absolute;top:0;" ref="carouselWrapRef">
+                                    <Carousel style="height:100%;">
+                                        <a class="img-switch" ref="carouselRef"></a>
+                                        <sa v-model="currentImgIndex"></sa>
+                                        <loop id="loop2" from="defectImgs">
+                                            <CarouselItem style="height:100%;">
+                                                <img style="width:100%; height:100%;">
+                                                    <sa src="item_loop2['url']"></sa>
+
+                                                </img>
+                                            </CarouselItem>
+                                        </loop>
+                                    </Carousel>
+                                </div>
+
+                                <div style="height:0px;width: 100%;position:absolute;bottom:0;overflow:auto;display:flex;">
+                                    <loop id="loop3" from="defectImgs">
+                                        <div style="cursor: pointer;">
+                                            <e>
+                                                <onclick args="index,item_loop3">
+                                                    <list type="script" value="this.switchDefectImg(index,item_loop3)"></list>
+                                                </onclick>
+                                            </e>
+                                            <img style="height:100px;">
+                                                <sa src="item_loop3['url']"></sa>
+
+                                            </img>
+                                        </div>
+
+
+                                    </loop>
+                                </div>
+                            </div> -->
+
+
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </ctrls>
+    <css>
+        <![CDATA[ 
+       
+        ]]>
+    </css>
+    <scripts>
+        <script event="created">
+            <list type="file" value="sc_defect" part="line_defect_detail"></list>
+            <list type="script">
+                <value>
+                    <![CDATA[
+                        this.m = null;
+                        this.maxBlock = function () {
+                          if (this.m) {
+                            this.m.restore();
+                            this.m = null;
+                          } else this.m = Ysh.Web.maxElement(this.$el);
+                          this.resize();
+                        };
+                        this.getCodeImg = function (url) {
+                          return "/conn/aashx/GetImg.ashx?url=" + url;
+                        };
+                        this.showNoImgText = function () {
+                          this.isShowNoImgText = "block";
+                        };
+                    ]]>
+                </value>
+            </list>
+        </script>
+        <script event="resize">
+            <list type="script">
+                <value>
+                    <![CDATA[
+                        
+                    ]]>
+                </value>
+            </list>
+        </script>
+        <script event="mounted">
+            <list type="script">
+                <value>
+                    <![CDATA[
+                        var vm = this;
+                    ]]>
+                </value>
+            </list>
+        </script>
+    </scripts>
+</root>

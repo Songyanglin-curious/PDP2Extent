@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="33" desc="设备价值">
+  <inits>
+    <init id="devicename" type="request" arg="devicename"></init>
+    <init id="deviceid" desc="设备id" type="request" arg="deviceid"></init>
+  </inits>
+  <consts>
+    <const id="showtitle" type="string"></const>
+    <const id="devValueData" desc="设备价值数据" type="2d" length="8"></const>
+  </consts>
+  <datasources>
+
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a id="avalue" s_height="100%" s_width="100%" s_padding="0px 10px"></a>
+      <div>
+        <a s_display="flex" s_align-items="center" s_justify-content="center" s_margin-bottom="20px"></a>
+        <label>
+          <a class="linearGradient"></a>
+          <sa value="showtitle"></sa>
+        </label>
+      </div>
+      <div>
+        <a s_height="calc(100% -50px)" s_width="100%"></a>
+        <itable desc="iview表格" from="devValueData">
+          <a class="recordTable"></a>
+          <sa show-header="false"></sa>
+          <icol desc="标题1" from="devValueData_0">
+            <a className="demo-column"></a>
+          </icol>
+          <icol desc="内容1" from="devValueData_1">
+            <a className="demo-column2"></a>
+          </icol>
+          <icol desc="标题2" from="devValueData_2">
+            <a className="demo-column"></a>
+          </icol>
+          <icol desc="内容2" from="devValueData_3">
+            <a className="demo-column2"></a>
+          </icol>
+          <icol desc="标题3" from="devValueData_4">
+            <a className="demo-column"></a>
+          </icol>
+          <icol desc="内容3" from="devValueData_5">
+            <a className="demo-column2"></a>
+          </icol>
+          <icol desc="标题4" from="devValueData_6">
+            <a className="demo-column"></a>
+          </icol>
+          <icol desc="内容4" from="devValueData_7">
+            <a className="demo-column2"></a>
+          </icol>
+        </itable>
+      </div>
+    </div>
+  </ctrls>
+  <css>
+   <![CDATA[
+		.linearGradient{
+			background: linear-gradient(to right, #032D33 0%, #055C69 50%, #032D33 100%);
+			padding-top:8px;
+			padding-bottom:8px;
+			padding-left:10px;
+			padding-right:10px;
+		}
+    .demo-column {
+      background: #075C6E;
+    }
+	]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="script">
+        <value>
+          <![CDATA[
+          var vm = this, pvm = parent.pdp;
+          vm.showtitle=vm.devicename+"设备价值";
+
+          this.oneArrTo2D = function(arr,length,num){
+            var newArr = []
+            var total = Math.ceil(length / num)
+            for (var i = 0; i < total; i++) {
+                a = arr.slice(i * num, (i + 1) * num)
+                newArr.push(a)
+            }
+            return newArr
+      }
+      this.getData = function(){
+        PDP.read("SGAPP","sc/archive_trans:GetDevValue",[this.deviceid],function(res){
+            if(res.check("获取设备价值数据",true)){
+                var value = res.value[0];
+                vm.devValueData = vm.oneArrTo2D(value,40,8);
+            }
+          })
+      }
+      this.getData();
+					]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+					]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

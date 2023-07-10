@@ -1,0 +1,142 @@
+﻿.Flajaxian_FileBox
+{
+    font-family:Arial,Verdana,sans-serif;
+    font-size:12px;
+    z-index:900;
+    position:absolute;
+    left:0px;
+    top:0px;
+    background-color:White;
+    display:none;
+}
+.Flajaxian_FileBoxHeader
+{
+    width:250px;
+    height:16px;
+    border:solid 1px #C8C8C8;
+}
+.Flajaxian_FileBoxHeaderText
+{
+    float:right;
+    width:230px;
+    text-align:center
+}
+.Flajaxian_FileBoxHeaderArrowHolder
+{
+    float:left;
+    width:16px;
+    cursor:pointer;
+}
+.Flajaxian_FileBoxFileList
+{
+    width:250px;
+    overflow:auto;
+    border-left:solid 1px #C8C8C8;
+    border-right:solid 1px #C8C8C8;
+    border-bottom:solid 1px #C8C8C8;
+}
+.Flajaxian_FileBoxFileListRow
+{
+    float:left;
+    width:230px;
+    padding-left:2px;
+    text-align:left;
+}
+.Flajaxian_FileBoxFileListRow:hover
+{
+    background-color:#FFC;    
+}
+.Flajaxian_FileBoxFileListRowError
+{
+    float:left;
+    width:230px;
+    padding-left:2px;
+    background-color:#F66;
+    text-align:left;
+}
+.Flajaxian_FileBoxFileListRowUploading
+{
+    float:left;
+    width:230px;
+    padding-left:2px;
+    background-color:#FFC;
+    text-align:left;
+}
+.Flajaxian_FileBoxFileListRowUploaded
+{
+    float:left;
+    width:230px;
+    padding-left:2px;
+    color:#999;
+    text-align:left;
+}
+.Flajaxian_FileBoxFileListRowCloseBtn
+{
+    float:left;
+    width:16px;
+    padding-right:2px;
+    cursor:pointer;
+}
+
+a.delbtn 
+{
+    background-color: transparent;
+    margin: 4px;
+    border: 0px;
+    text-decoration: none;
+    color: Red;
+    font-weight: bold;
+}
+
+a:hover.delbtn 
+{
+    background-color: transparent;
+    margin: 4px;
+    border: 0px;
+    text-decoration: none;
+    color: Red;
+    font-weight: bold;
+}
+
+a:visited.delbtn 
+{
+    background-color: transparent;
+    margin: 4px;
+    border: 0px;
+    text-decoration: none;
+    color: Red;
+    font-weight: bold;
+}
+
+.FileList
+{
+    margin-top:10px;
+    margin-left:5px;
+     float:left;
+}
+    
+.file
+{
+   float:left;
+   margin-right:20px; 
+   white-space:nowrap;
+   margin-bottom:6px;
+
+}
+    
+.Container
+{
+    float:left;
+}
+    
+.Uploader
+{
+   float:right;
+        margin-top:10px; 
+}
+
+
+.noimg
+{
+    background-image:none;
+}

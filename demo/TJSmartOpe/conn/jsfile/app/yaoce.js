@@ -1,0 +1,1 @@
+_app.yaoce = _app._dlg({ name: "遥测曲线", file: "sc_sbcx_yc", width: "100%", height: "100%" }); 

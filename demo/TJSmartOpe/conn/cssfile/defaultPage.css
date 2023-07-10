@@ -1,0 +1,44 @@
+﻿body
+{
+}
+td
+{
+    font-size: 13px;
+}
+A:link
+{
+    color: #333333;
+    text-decoration: none;
+}
+A:visited
+{
+    color: #666666;
+    text-decoration: none;
+}
+A:hover
+{
+    color: #ff3300;
+    text-decoration: underline;
+}
+.btn_2k3
+{
+    background: url('../../i/frmMain_files/login.jpg');
+    width: 84px;
+    height: 54px;
+	cursor:pointer;
+	border-style: none;
+    border-color: inherit;
+    border-width: medium;
+}
+.tblLogin
+{
+    background: url('../../i/frmMain_files/backLogin.jpg') no-repeat;
+    width: 419px;
+    height: 160px;
+}
+.tdLeft
+{
+}
+.tdRight
+{
+}

@@ -1,0 +1,33 @@
+﻿html
+{
+	width:100%;
+	height:100%;	
+}
+body 
+{
+	margin:10px;
+}
+
+#search-box
+{
+	width:99%;	
+	background:#eee;
+	border: solid 1px #d5d5d5;
+	margin-bottom:5px;
+}
+
+#tool-button
+{
+	width:99%;	
+	background:#d5d5d5;
+	border: solid 1px #d5d5d5;
+	margin-bottom:5px;
+	padding:5px 0px 5px 0px;
+	text-align:center;
+}
+
+#tool-button input
+{
+	padding:2px 5px 2px 5px;
+	margin-left:20px;
+}

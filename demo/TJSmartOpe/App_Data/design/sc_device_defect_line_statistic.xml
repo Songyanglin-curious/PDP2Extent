@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="11" desc="线路缺陷统计" includes="/conn/cssfile/shengchan/sbzc.css;">
+
+    <inits>
+    </inits>
+    <consts>
+        <const id="startTime" desc="开始时间" type="time" arg="y"></const>
+        <const id="endTime" desc="结束时间" type="time" arg="y,y,1"></const>
+        <const id="defectInfo" type="object[]"></const>
+        <const id="handelYWDWDefectInfo" type="object[]"></const>
+        <const id="defectCount" type="object[]"></const>
+        <const id="lineStatistic" type="object"></const>
+        <const id="lineDefectStatistic" type="object"></const>
+    </consts>
+    <datasources></datasources>
+    <ctrls>
+        <div desc="根容器" style="width:100%;">
+            <a class="assets-page"></a>
+            <div>
+                <div desc="" style=" padding: 20px 20px 30px;">
+                    <label value=" 线路缺陷(直升机巡视)统计" style=" color: rgb(44, 203, 202);font-size: 36px;font-weight: 800;margin-left: 20px;"></label>
+                </div>
+            </div>
+            <div desc="日期选择">
+                <a class="f ac jc"></a>
+                <label value="日期选择:"></label>
+                <idate id="time1" desc="时间" from="startTime">
+                    <a type="date" s_width="120px"></a>
+                </idate>
+                <label value="-"></label>
+                <idate id="time2" desc="时间" from="endTime">
+                    <a type="date" s_width="120px"></a>
+                </idate>
+                <button id="btnSearch" desc="按钮">
+                    <a type="button" value="查询" class="pdpBtnDefault" s_margin-left="5px"></a>
+                    <e>
+                        <onclick>
+                            <list type="script" value="this.searchByTime();"></list>
+                        </onclick>
+                    </e>
+                </button>
+            </div>
+
+            <div>
+                <a class="f ac ja mt20"></a>
+                <loop id="loop1" from="defectCount">
+                    <div>
+                        <a class="f ac jc"></a>
+                        <label>
+                            <a class="defect-icon"></a>
+                            <sa s_backgroundColor="item_loop1['color']"></sa>
+                        </label>
+                        <label>
+                            <a class="defect-title"></a>
+                            <sa value="item_loop1['title']" s_color="item_loop1['color']"></sa>
+                        </label>
+                        <label>
+                            <a class="defect-value"></a>
+                            <sa value="item_loop1['value']" s_color="item_loop1['color']"></sa>
+                        </label>
+                    </div>
+                </loop>
+            </div>
+            <div>
+
+            </div>
+            <div>
+                <div>
+                    <a class="mt20"></a>
+                    <statisticcard style="height:700px;">
+                        <sa data="defectInfo" option="lineStatistic"></sa>
+                        <e>
+                            <showMore>
+                                <list type="script" value="this.showMore('line');"></list>
+                            </showMore>
+                            <celldbclick>
+                                <list type="script" value="this.lineDBClick(row,column,tab);"></list>
+                            </celldbclick>
+                        </e>
+                    </statisticcard>
+                </div>
+
+                <div>
+                    <a class="mt10 f"></a>
+
+                    <statisticcard style="height:800px;width:calc(50% - 5px)">
+                        <sa data="defectInfo" option="lineBWStatistic"></sa>
+                        <e>
+                            <showMore>
+                                <list type="script" value="this.showMore('bw');"></list>
+                            </showMore>
+                            <celldbclick>
+                                <list type="script" value="this.bwDBClick(row,column,tab);"></list>
+                            </celldbclick>
+                        </e>
+                    </statisticcard>
+
+                    <statisticcard style="height:800px;width:calc(50% - 5px);margin-left:10px;">
+                        <sa data="defectInfo" option="lineBJStatistic"></sa>
+                        <e>
+                            <showMore>
+                                <list type="script" value="this.showMore('bj');"></list>
+                            </showMore>
+                            <celldbclick>
+                                <list type="script" value="this.bjDBClick(row,column,tab);"></list>
+                            </celldbclick>
+                        </e>
+                    </statisticcard>
+                </div>
+
+            </div>
+            <div>
+                <a class="mt10 f"></a>
+                <statisticcard style="height:600px;width: 100%;">
+                    <sa data="defectInfo" option="lineDefectCountStatistic"></sa>
+                    <e>
+                        <showMore>
+                            <list type="script" value="this.showMore('ywdw');"></list>
+                        </showMore>
+                        <celldbclick>
+                            <list type="script" value="this.ywdwDBClick(row,column,tab);"></list>
+                        </celldbclick>
+                    </e>
+                </statisticcard>
+            </div>
+
+
+        </div>
+
+    </ctrls>
+    <css>
+    <![CDATA[ 
+       .defect-icon{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 20px;
+       }
+       .defect-title{
+        font-size: 22px;
+       }
+       .defect-value{
+        font-size: 22px;
+        display: inline-block;
+        border: solid 1px #1F9A99;
+        width: 80px;
+        text-align: center;
+        background: #145C61;
+        margin-left: 20px;
+       }
+
+        ]]>
+  </css>
+    <scripts>
+        <script event=" created">
+            <list type="file" value="defect_statistic" part="line"></list>
+            <list type=" script">
+                <value>
+          <![CDATA[
+                
+
+                ]]>
+        </value>
+            </list>
+        </script>
+        <script event=" resize">
+            <list type=" script">
+                <value>
+          <![CDATA[ 
+                   
+                    ]]>
+        </value>
+            </list>
+        </script>
+
+        <script event=" mounted">
+            <list type=" script">
+                <value>
+          <![CDATA[
+
+                    ]]>
+        </value>
+            </list>
+        </script>
+    </scripts>
+</root>

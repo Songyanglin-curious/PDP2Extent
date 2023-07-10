@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetAllTable>
+    <![CDATA[SELECT dsname,tblname,tbldesc,otherdesc,maincols,linkurl,w,h,priority,timescale,timepresion,unit,parentcol FROM tbDataTable ORDER BY dsname]]>
+  </GetAllTable>
+  <GetAllColumn>
+    <![CDATA[SELECT dsname,tblname,colname,coldesc,reladsname,relatblname,relacolname,coltype,noask,otherdesc,dataflag,isname,priority,timescale,timepresion,unit FROM tbDataColumn]]>
+  </GetAllColumn>
+</ROOT>

@@ -1,0 +1,70 @@
+﻿.def 
+{
+    margin-left: 45px;
+    color:Gray;
+}
+.fieldset
+{
+    border: 1px solid #C0C0C0;
+    text-align:left;
+}
+.half
+{
+    width:350px;    
+}
+
+.grade
+{
+   float:left;
+   width:50px;
+   position:static; 
+   margin-left:20px;
+}
+.line
+{
+   float:right;
+   width:260px;
+   position:static;
+}
+.textarea_bitids 
+{
+    visibility:hidden;
+    height:20px;
+}
+.list_bitID
+{
+    font-size: 9pt;
+    height: 465px;
+    width:320px;
+    margin-left:20px;
+    margin-bottom:10px;
+    border:1px solid #999;
+    overflow: auto;
+}
+.bitName
+{
+    padding-left:22px;
+}
+
+#txb_exp
+{
+    overflow: auto;
+}
+
+.right
+{
+    margin-top:20px;
+    text-align: right;
+    width:280px;
+}
+
+.title
+{
+    font-size: 14ze: 16pt;
+}
+.privgroup
+{
+    vertical-align:bottom;
+    height: 15px;
+    line-height: 15px;
+}

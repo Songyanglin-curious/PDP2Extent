@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetAllTongxinLines>
+    <![CDATA[SELECT LINE_ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_r_fiberseg_acline
+UNION
+SELECT LINE_ID FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_r_fiberseg_dcline]]>
+  </GetAllTongxinLines>
+</ROOT>

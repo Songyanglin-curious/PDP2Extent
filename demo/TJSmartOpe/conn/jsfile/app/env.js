@@ -1,0 +1,1 @@
+﻿_app.env = _app._page({ name: "综合告警", page: "sgc_env_stat_line" });

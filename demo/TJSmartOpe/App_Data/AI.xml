@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetFAInfo>
+    <![CDATA[
+      select id,"DESC",m.fac from optkuser.TOPERATEPLAN p
+      left join (select count(id) fac,faid from optkuser.TOPERATEITEM group by faid) as m on p.id=m.faid
+      where yaid={0} and fatype<>1;
+    ]]>
+  </GetFAInfo>
+  <GetOperatTicket>
+    <![CDATA[
+      select content from optkuser.TOPETICKET where ticketid={0}
+    ]]>
+  </GetOperatTicket>
+  <GetSignalSetingInfo>
+    <![CDATA[
+      SELECT "SIGNAL_ID", "SIGNAL_NAME", setsignal
+      FROM "MONDB"."MONITORSIGNAL".TBSIGNALBASIS_MODEL;
+    ]]>
+  </GetSignalSetingInfo>
+  <UpdateSignalSeting>
+    <![CDATA[
+      update "MONDB"."MONITORSIGNAL".TBSIGNALBASIS_MODEL
+      set setsignal={2},settime=GETDATE() where SIGNAL_ID={1}
+    ]]>
+  </UpdateSignalSeting>
+  <GetCzpInfoById>
+    <![CDATA[SELECT CONTENT FROM OPTKUSER.TOPETICKET WHERE TICKETID={0}]]>
+  </GetCzpInfoById>
+  <GetYuanInfoById>
+    <![CDATA[SELECT "DESC" FROM OPTKUSER.TOPERATEGRP WHERE ID={0}]]>
+  </GetYuanInfoById>
+  <CheckYuanIsEmpty>
+    <![CDATA[SELECT * FROM OPTKUSER.TOPERATEITEM i join optkuser.TOPERATEPLAN p ON i.faid=p.id where p.yaid={0}]]>
+  </CheckYuanIsEmpty>
+<GetJXData>
+    <![CDATA[
+        select "TIME",device,deviceex,content,demand,remark from optkuser.trepairmessage where id={0}
+    ]]>
+  </GetJXData>
+  <IfHavePersonadjust>
+    <![CDATA[
+      select count(id) from optkuser.TOPERATEPLAN where yaid={0} and fatype=1
+    ]]>
+  </IfHavePersonadjust>
+  <AddPersonAdjust>
+    <![CDATA[
+      insert into optkuser.TOPERATEPLAN(yaid,"DESC",fatype,fromfaid)
+      select yaid,"DESC",1,id from optkuser.TOPERATEPLAN where id='{0}'
+    ]]>
+  </AddPersonAdjust>
+  <AddPersonAdjustContent>
+    <![CDATA[
+      insert into optkuser.TOPERATEITEM(faid,"INDEX","TYPE",content,devicename,adjustvalue,opetype)
+      select '{1}',"INDEX","TYPE",content,devicename,adjustvalue,opetype from optkuser.TOPERATEITEM 
+      where faid='{0}'
+    ]]>
+  </AddPersonAdjustContent>
+  <GetPAId>
+    <![CDATA[
+      select id,fromfaid from optkuser.TOPERATEPLAN where yaid={0} and fatype=1
+    ]]>
+  </GetPAId>
+  <GetSectionId>
+    <![CDATA[
+       select SECTIONID from optkuser.TOPERATEGRP where id={0}
+     ]]>
+  </GetSectionId>
+  <GetYuanIdBySection>
+    <![CDATA[select id from optkuser.TOPERATEGRP where SECTIONID={0}]]>
+  </GetYuanIdBySection>
+  <UpDateSectionState>
+  	<![CDATA[
+        update OPTKUSER.TWORKINGJOB SET STATE=1 WHERE SECTIONID={0}
+      ]]>
+  </UpDateSectionState>
+  <DeleteDevice>
+  	<![CDATA[
+         delete from OPTKUSER.TDEVICEPRESET  WHERE id={0}
+       ]]>
+  </DeleteDevice>
+  <DeleteDeviceBreak>
+		<![CDATA[
+         delete from dbDeviceFaultSection  WHERE FaultID={0} AND sectionid={1}
+       ]]>
+	</DeleteDeviceBreak>
+	<AddDevice>
+  	<![CDATA[
+        INSERT INTO OPTKUSER.TDEVICEPRESET("CARETYPE",
+		"CAREPOINT","CARECONTENT","DEVICETYPE","DEVICEIDX","DEVICEDESC","SECTIONID") 
+		VALUES('特定关注','{0}',{1},1,'{2}','<NULL>','{3}')
+        ]]>
+  </AddDevice>
+	<AddBreakDevice>
+		<![CDATA[
+        INSERT INTO dbDeviceFaultSection (FaultID, SectionID)
+		VALUES({0},'{1}')
+        ]]>
+	</AddBreakDevice>
+	<UpDateDevice>
+  	<![CDATA[
+          update OPTKUSER.TDEVICEPRESET set carecontent={1} WHERE id={0}
+        ]]>
+  </UpDateDevice>
+  <GetImportantDevice>
+    <![CDATA[
+      SELECT 1 FROM dbImportantDevice WHERE id_name={0} AND DeviceType={1}
+    ]]>
+  </GetImportantDevice>
+  <InsertImportantDevice>
+    <![CDATA[
+      INSERT INTO dbImportantDevice(id_name,DeviceType,IsImportant)
+		  VALUES({0}, {1}, {2})
+    ]]>
+  </InsertImportantDevice>
+  <UpdateImportantDevice>
+    <![CDATA[
+      UPDATE dbImportantDevice SET IsImportant={2} WHERE id_name={0} AND DeviceType={1};
+    ]]>
+  </UpdateImportantDevice>
+  <!-- 保存断面开始 -->
+  <SaveDeviceSection>
+    <![CDATA[
+      INSERT INTO dbdevicesection(name) VALUES({0})
+    ]]>
+  </SaveDeviceSection>
+  <UpdateDeviceSection>
+    <![CDATA[
+      UPDATE dbDeviceSection set name={1} where id={0}
+    ]]>
+  </UpdateDeviceSection>
+  <GetDeviceSection>
+    <![CDATA[
+      SELECT * from dbDeviceSection where id={0}
+    ]]>
+  </GetDeviceSection>
+  <DeleteDeviceSection>
+    <![CDATA[
+      DELETE from dbDeviceSection where id={0}
+    ]]>
+  </DeleteDeviceSection>
+  <SaveDeviceSectionItem>
+    <![CDATA[
+      INSERT INTO dbdevicesectionitem(sectionid,devicestrid,devicename,deviceidx) VALUES({0},{1},{2},{3})
+    ]]>
+  </SaveDeviceSectionItem>
+  <UpdateDeviceSectionItem>
+    <![CDATA[
+      UPDATE dbDeviceSectionItem set devicename = {2},deviceidx={3} where sectionid={0} and devicestrid={1}
+    ]]>
+  </UpdateDeviceSectionItem>
+  <GetDeviceSectionItem>
+    <![CDATA[
+      SELECT sectionid,devicestrid,devicename FROM dbDeviceSectionItem WHERE sectionid IN ({{0}}) ORDER BY sectionid,deviceidx
+    ]]>
+  </GetDeviceSectionItem>
+  <DeleteDeviceSectionItem>
+    <![CDATA[
+      DELETE from dbDeviceSectionItem where sectionid={0} and devicestrid={1}
+    ]]>
+  </DeleteDeviceSectionItem>
+  <GetDeviceNameByID>
+    <![CDATA[
+      select devicestrid,deviceidx,devicename,typeidx from optkuser.tdevice where devicestrid={0}
+    ]]>
+  </GetDeviceNameByID>
+  <GetParentDeviceNameByID>
+    <![CDATA[
+      select devicestrid,deviceidx,devicename,typeidx from optkuser.tdevice where deviceidx in 
+      (select deviceidx from OPTKUSER.TCOMBINEDEVICE where partDeviceidx={0})
+    ]]>
+  </GetParentDeviceNameByID>
+  <!-- 保存断面结束 -->
+  <!-- 保存故障集开始 -->
+  <SaveDeviceFault>
+    <![CDATA[
+      INSERT INTO dbDeviceFault(DeviceName, DeviceStrID, DeviceType, FaultDesc) VALUES({0},{1},{2},{3})
+    ]]>
+  </SaveDeviceFault>
+  <UpdateDeviceFault>
+    <![CDATA[
+      UPDATE dbDeviceFault set DeviceName={1},DeviceStrID={2},DeviceType={3},FaultDesc={4} where ID={0}
+    ]]>
+  </UpdateDeviceFault>
+  <DeleteDeviceFault>
+    <![CDATA[
+      DELETE FROM dbDeviceFault where ID={0}
+    ]]>
+  </DeleteDeviceFault>
+  <!-- 保存故障集结束 --> 
+  <SaveYuanSection>
+    <![CDATA[UPDATE OPTKUSER.TOPERATEGRP SET SECTIONID={1} WHERE ID={0}]]>
+  </SaveYuanSection>
+  <GetSectionIdByType>
+    <![CDATA[SELECT SECTIONID FROM TWORKINGJOB WHERE state=0 AND RELATYPE={0} AND RELAID={1}]]>
+  </GetSectionIdByType>
+  <SaveTypeSection>
+    <![CDATA[INSERT INTO TWORKINGJOB (sectionid,workdetail,starttime,state,relatype,relaid) VALUES ({0},{1},GETDATE(),0,{2},{3})]]>
+  </SaveTypeSection>
+  <SetSectionLoad>
+    <![CDATA[
+UPDATE l6_1_{{0}} cload 
+JOIN cdb_node_{{0}} node ON cload.node_name = node.node_name
+JOIN cdb_bus_{{0}} bus ON node.Bus_Name=bus.Bus_Name 
+SET Pl = Pl * {1} 
+WHERE 
+(node.PS_NAME IN ('华北.板桥', '华北.滨海', '华北.东丽', '华北.津北郊', '华北.静海', '华北.芦台', '华北.吴庄',  '华北.南蔡', '华北.北疆', '华北.海河', '华北.盘山') OR node.PS_Name LIKE '天津%')
+]]>
+  </SetSectionLoad>
+  <SetLoadProcess>
+    <![CDATA[
+
+DELIMITER $$
+CREATE PROCEDURE SetLoadLevel (IN SliceID CHAR(8), IN LoadLEVEL FLOAT)
+BEGIN
+-- 声明变量
+DECLARE LoadTableName CHAR(128);
+DECLARE NoadTableName CHAR(128);
+DECLARE BusTableName CHAR(128);
+
+SET @LoadTableName = CONCAT('L6_1_', SliceID);
+SET @NoadTableName = CONCAT('cdb_node_', SliceID);
+SET @BusTableName = CONCAT('cdb_bus_', SliceID);
+
+
+
+END$$
+DELIMITER ;]]>
+  </SetLoadProcess>
+  <SaveRunwayPreset>
+    <![CDATA[INSERT INTO OPTKUSER.TRUNWAYPRESET (STANAME,OBJECTNAME,STATE,TYPE,SECTIONID) VALUES ({0},{1},{2},1,{3})]]>
+  </SaveRunwayPreset>
+  <GetDeviceByFault>
+    <![CDATA[SELECT DeviceName FROM dbDeviceFault WHERE ID={0}]]>
+  </GetDeviceByFault>
+  <GetDevicesByFaults>
+    <![CDATA[SELECT DeviceName FROM dbDeviceFault WHERE ID IN ({0})]]>
+  </GetDevicesByFaults>
+</ROOT>

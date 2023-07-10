@@ -1,0 +1,646 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <WindSpeed>
+    <![CDATA[        case
+            when {0}<0.3 then 0
+            when {0}<1.6 then 1
+            when {0}<3.4 then 2
+            when {0}<5.5 then 3
+            when {0}<8.0 then 4
+            when {0}<10.8 then 5
+            when {0}<13.9 then 6
+            when {0}<17.2 then 7
+            when {0}<20.8 then 8
+            when {0}<24.5 then 9
+            when {0}<28.5 then 10
+            when {0}<32.7 then 11
+            when {0}<37.0 then 12
+            when {0}<41.5 then 13
+            when {0}<46.1 then 14
+            when {0}<51.0 then 15
+            else 16
+        end]]>
+  </WindSpeed>
+  <WindDirection>
+    <![CDATA[        case
+            when WIND_DIRECTION=0 then '北风'
+            when WIND_DIRECTION=360 then '北风'
+            when WIND_DIRECTION=90 then '东风'
+            when WIND_DIRECTION=180 then '南风'
+            when WIND_DIRECTION=270 then '西风'
+            else
+            case
+                when WIND_DIRECTION<90 then '东北风'
+                when WIND_DIRECTION<180 then '东南风'
+                when WIND_DIRECTION<270 then '西南风'
+                else '西北风'
+            end
+        end]]>
+  </WindDirection>
+  <GetDayForecast>
+    <![CDATA[
+select MAX(TEMPERATURE) AS MAXT,MIN(TEMPERATURE) AS MINT,MAX(WEATHER_CONDITION_RESULT) AS WTYPE 
+FROM (
+SELECT AVGTMP AS TEMPERATURE,WEATHER AS WEATHER_CONDITION_RESULT 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[sg_com_weatherstation_h_city_forecast_@T@{2:yyyy} w
+JOIN (SELECT forcast_time ftm,MAX(DATE_TIME) AS dtm from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_WEATHERSTATION_H_CITY_FORECAST_@T@{2:yyyy}
+where CITY_CODE={1} AND forcast_time>={2} AND forcast_time<{3} AND forcast_time>={4}
+GROUP BY forcast_time) m ON w.forcast_time=m.ftm AND w.DATE_TIME=m.dtm
+WHERE CITY_CODE='{1}' AND forcast_time>={2} AND forcast_time<{3} AND forcast_time>={4}
+UNION ALL
+SELECT TEMPERATURE,WEATHER_CONDITION_RESULT 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO
+WHERE WEATHER_SOURCE_ID='{0}' AND CREATETIME>={2} AND CREATETIME<{3} AND CREATETIME<{4}
+) a
+]]>
+  </GetDayForecast>
+  <GetDayHistory>
+    <![CDATA[
+select MAX(TEMPERATURE) AS MAXT,MIN(TEMPERATURE) AS MINT,MAX(WEATHER_CONDITION_RESULT) AS WTYPE 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO
+WHERE WEATHER_SOURCE_ID='{0}' AND CREATETIME>={1} AND CREATETIME<{2}]]>
+  </GetDayHistory>
+  <GetHourForecast>
+    <![CDATA[SELECT * FROM (
+SELECT
+WEATHER AS WEATHER_CONDITION_RESULT,HUMIDITY,AVGTMP AS TEMPERATURE,forcast_time AS CREATETIME,]]><![CDATA[same:WindDirection]]><![CDATA[ as WIND_DIR_RESULT,]]><![CDATA[same:sgc/tq:WindSpeed:ind_velocity]]><![CDATA[ AS WIND_LEVEL_RESULT,ind_velocity as WINDSPEED--,PRESSURE,TIEMSPAN,RAIN,CLOUD,WIND_DIRECTION 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[sg_com_weatherstation_h_city_forecast_@T@{2:yyyy} w
+JOIN (SELECT forcast_time ftm,MAX(DATE_TIME) AS dtm from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_WEATHERSTATION_H_CITY_FORECAST_@T@{2:yyyy}
+where CITY_CODE={1} AND forcast_time>={2} AND forcast_time<{3} AND forcast_time>={4}
+GROUP BY forcast_time) m ON w.forcast_time=m.ftm AND w.DATE_TIME=m.dtm
+WHERE CITY_CODE='{1}' AND forcast_time>={2} AND forcast_time<{3} AND forcast_time>={4}
+UNION ALL
+SELECT
+WEATHER_CONDITION_RESULT,HUMIDITY,TEMPERATURE,CREATETIME,WIND_DIR_RESULT,WIND_LEVEL_RESULT,WINDSPEED--,PRESSURE,0 AS TIEMSPAN,RAIN,CLOUD,WIND_DIRECTION 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO
+WHERE WEATHER_SOURCE_ID='{0}' AND CREATETIME>={2} AND CREATETIME<{3} AND CREATETIME<{4}
+) A
+ORDER BY CREATETIME]]>
+  </GetHourForecast>
+  <GetHourHistory>
+    <![CDATA[select 
+WEATHER_CONDITION_RESULT,HUMIDITY,TEMPERATURE,CREATETIME,WIND_DIR_RESULT,WIND_LEVEL_RESULT,WINDSPEED,PRESSURE,'' AS TIEMSPAN,RAIN,CLOUD,WIND_DIRECTION 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO
+WHERE WEATHER_SOURCE_ID='{0}' AND CREATETIME>={1} AND CREATETIME<{2}
+ORDER BY CREATETIME]]>
+  </GetHourHistory>
+  <GetStationForecast>
+    <![CDATA[select WEATHER_CONDITION_RESULT,HUMIDITY,TEMPERATURE,CREATETIME,WIND_DIR_RESULT,WIND_LEVEL_RESULT,WINDSPEED,PRESSURE,TIEMSPAN,RAIN,CLOUD,WIND_DIRECTION
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_STATION_WEATHERSOURCE s
+JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_FORECAST_INFO w ON s.WEATHER_SOURCE_ID=w.WEATHER_SOURCE_ID
+WHERE s.STATION_ID={0} AND w.CREATETIME>={1} AND w.CREATETIME<{2}
+ORDER BY CREATETIME]]>
+  </GetStationForecast>
+  <GetDayForecast151>
+    <![CDATA[
+select TO_CHAR(CREATETIME,'YYYY-MM-DD')||' 00:00:00' AS FORECASTTIME, 
+MAX(TEMPERATURE) AS MAXT,
+MIN(TEMPERATURE) AS MINT,
+MAX(WEATHER_CONDITION_RESULT) AS WTYPE1,
+MAX(WEATHER_CONDITION_RESULT) AS WTYPE2,
+MAX(WIND_DIR_RESULT),
+MAX(WIND_LEVEL_RESULT)
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_FORECAST_INFO
+WHERE WEATHER_SOURCE_ID='{0}' AND CREATETIME>={1} AND CREATETIME<{2}
+GROUP BY TO_CHAR(CREATETIME,'YYYY-MM-DD')
+ORDER BY TO_CHAR(CREATETIME,'YYYY-MM-DD')
+]]>
+  </GetDayForecast151>
+  <GetDayForecast15>
+    <![CDATA[
+select CREATETIME AS FORECASTTIME, 
+MAX(TEMPERATURE) AS MAXT,
+MIN(TEMPERATURE) AS MINT,
+MAX(WEATHER_CONDITION_RESULT) AS WTYPE1,
+MAX(WEATHER_CONDITION_RESULT) AS WTYPE2,
+MAX(WIND_DIR_RESULT),
+MAX(WIND_LEVEL_RESULT)
+FROM (
+SELECT TO_CHAR(forcast_time,'yyyy-mm-dd')||' 00:00:00' AS CREATETIME,AVGTMP AS TEMPERATURE,WEATHER AS WEATHER_CONDITION_RESULT,]]><![CDATA[same:WindDirection]]><![CDATA[ AS WIND_DIR_RESULT,]]><![CDATA[same:sgc/tq:WindSpeed:ind_velocity]]><![CDATA[ AS WIND_LEVEL_RESULT 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[sg_com_weatherstation_h_city_forecast_@T@{2:yyyy} w
+JOIN (SELECT forcast_time ftm,MAX(DATE_TIME) AS dtm from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_WEATHERSTATION_H_CITY_FORECAST_@T@{2:yyyy}
+where CITY_CODE={1} AND forcast_time>={2} AND forcast_time<{3} AND forcast_time>={4}
+GROUP BY forcast_time) m ON w.forcast_time=m.ftm AND w.DATE_TIME=m.dtm
+WHERE CITY_CODE='{1}' AND forcast_time>={2} AND forcast_time<{3} AND forcast_time>={4}
+UNION ALL
+SELECT TO_CHAR(CREATETIME,'yyyy-mm-dd')||' 00:00:00' AS CREATETIME,TEMPERATURE,WEATHER_CONDITION_RESULT,WIND_DIR_RESULT,WIND_LEVEL_RESULT
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO
+WHERE WEATHER_SOURCE_ID='{0}' AND CREATETIME>={2} AND CREATETIME<{3} AND CREATETIME<{4}
+) A
+GROUP BY CREATETIME
+ORDER BY CREATETIME
+]]>
+  </GetDayForecast15>
+  <GetSourceByStation>
+    <![CDATA[select WEATHER_SOURCE_ID from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_STATION_WEATHERSOURCE WHERE STATION_ID={0}]]>
+  </GetSourceByStation>
+  <GetSourceByTower>
+    <![CDATA[select WEATHER_SOURCE_ID from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_WEATHER_SOURCE WHERE TOWER_ID={0}]]>
+  </GetSourceByTower>
+  <GetSourceByPosition>
+    <![CDATA[select top 1 id,ys_db.distance(y,x,{0},{1}) dist 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_source_info 
+    order by dist]]>
+  </GetSourceByPosition>
+  <GetFSourceByPosition>
+    <![CDATA[select top 1 code,ys_db.distance(longitude,latitude,{0},{1}) dist 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[sg_dic_region_hb 
+    order by dist]]>
+  </GetFSourceByPosition>
+  <GetSourceName>
+    <![CDATA[select NAME from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_SOURCE_INFO WHERE ID={0}]]>
+  </GetSourceName>
+  <GetTowerName>
+    <![CDATA[SELECT TOWERNO,LONGITUDE,LATITUDE FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_TOWER_B WHERE ID={0}]]>
+  </GetTowerName>
+  <GetEffectStation>
+    <![CDATA[SELECT S.ID,P.ID,M.ID,V.NAME AS VOLNAME,S.NAME,P.NAME_ABBREVIATION AS GRIDNAME,M.NAME_ABBREVIATION AS MANAGENAME FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_STATION_WEATHERSOURCE R 
+     JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_SUBSTATION_B S ON R.STATION_ID=S.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON S.TOP_AC_VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON S.PG_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_COMPANY_B M ON S.MANAGE_DEPT_ID=M.ID
+    WHERE R.WEATHER_SOURCE_ID={0}
+    ORDER BY LENGTH(V.NAME) DESC, V.NAME DESC,S.NAME]]>
+  </GetEffectStation>
+  <GetEffectLineAC>
+    <![CDATA[SELECT L.ID,P.ID,D.ID,V.NAME AS VOLNAME,L.NAME,P.NAME_ABBREVIATION AS GRIDNAME,D.NAME_ABBREVIATION AS DISPATCHNAME 
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_WEATHER_SOURCE R JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_acline_r_tower T ON R.TOWER_ID=T.TOWER_ID JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B L ON T.LINE_ID=L.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON L.GRID_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID
+    WHERE R.WEATHER_SOURCE_ID={0}]]>
+  </GetEffectLineAC>
+  <GetEffectLineDC>
+    <![CDATA[SELECT L.ID,P.ID,D.ID,V.NAME AS VOLNAME,L.NAME,P.NAME_ABBREVIATION AS GRIDNAME,D.NAME_ABBREVIATION AS DISPATCHNAME 
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_WEATHER_SOURCE R JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[sg_dev_Dcline_r_tower T ON R.TOWER_ID=T.TOWER_ID JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B L ON T.LINE_ID=L.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON L.GRID_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID
+    WHERE R.WEATHER_SOURCE_ID={0}]]>
+  </GetEffectLineDC>
+  <GetEffectLine0>
+    <![CDATA[SELECT * FROM (]]><![CDATA[same:GetEffectLineAC]]><![CDATA[
+    UNION
+    ]]><![CDATA[same:GetEffectLineDC]]><![CDATA[) A ORDER BY LENGTH(VOLNAME) DESC,VOLNAME DESC,NAME ]]>
+  </GetEffectLine0>
+  <GetEffectLine>
+    <![CDATA[SELECT DISTINCT LINE_ID FROM 
+    ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_WEATHER_SOURCE 
+    WHERE WEATHER_SOURCE_ID={0}]]>
+  </GetEffectLine>
+  <GetEffectLine2>
+    <![CDATA[SELECT L.ID,P.ID,D.ID,V.NAME AS VOLNAME,L.NAME,P.NAME_ABBREVIATION AS GRIDNAME,D.NAME_ABBREVIATION AS DISPATCHNAME 
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TOWER_WEATHER_SOURCE R 
+    JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B L ON R.LINE_ID=L.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON L.VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON L.GRID_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_ORG_DCC_B D ON L.DISPATCH_ORG_ID=D.ID
+    WHERE R.WEATHER_SOURCE_ID={0}
+    ORDER BY LENGTH(V.NAME) DESC,V.NAME DESC,L.NAME]]>
+  </GetEffectLine2>
+  <GetEffectPlant>
+    <![CDATA[SELECT S.ID,P.ID,T.NAME AS TYPENAME,V.NAME AS VOLNAME,S.NAME,P.NAME_ABBREVIATION AS GRIDNAME FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_STATION_WEATHERSOURCE R 
+     JOIN ]]><![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PLANT_B S ON R.STATION_ID=S.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_VOLTAGETYPE V ON S.MAX_VOLTAGE_TYPE=V.CODE LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_CON_PWRGRID_B P ON S.CONNECTIVE_PG_ID=P.ID LEFT JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DIC_PLANTSTATIONTYPE T ON S.PLANT_TYPE=T.CODE
+    WHERE R.WEATHER_SOURCE_ID={0}
+    ORDER BY LENGTH(V.NAME) DESC,V.NAME DESC,S.NAME]]>
+  </GetEffectPlant>
+  <RealMinMaxWind>
+    <![CDATA[
+      select min(windspeed) as minwind, max(windspeed) as maxwind
+from(select * from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info a 
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id) b
+on a.weather_source_id=b.weather_source_id and a.createtime=b.maxtime)
+    ]]>
+  </RealMinMaxWind>
+  <RealWindRank>
+    <![CDATA[
+select * from(
+select a.weather_source_id,a.windspeed,b.maxtime,c.city from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info a 
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id) b
+on a.weather_source_id=b.weather_source_id and a.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_source_info c on a.weather_source_id=c.id
+order by windspeed desc)
+    ]]>
+  </RealWindRank>
+  <RealEffectStation>
+    <![CDATA[
+select  *  from (
+select distinct s.id, v.name as volname, s.name as subname, p.name_abbreviation as gridname,m.name_abbreviation as managename
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_station_weathersource r 
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_substation_b s on r.station_id=s.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on s.top_ac_voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on s.pg_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_org_company_b m on s.manage_dept_id=m.id
+left join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info w on w.weather_source_id=r.weather_source_id
+left join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+where w.windspeed>={0} and w.windspeed<{1} and w.createtime=b.maxtime  )
+order by length(volname) desc, volname desc, subname    
+    ]]>
+  </RealEffectStation>
+  <RealEffectLine>
+    <![CDATA[
+select distinct l.id as lid, v.name as volname, l.name as linename, p.name_abbreviation as pname, d.name_abbreviation as dname
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info w
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tower_weather_source r on r.weather_source_id=b.weather_source_id
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_r_tower t on r.tower_id=t.tower_id 
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_b l on t.line_id=l.id 
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on l.voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on l.grid_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_org_dcc_b d on l.dispatch_org_id=d.id
+where w.windspeed>={0} and w.windspeed<{1} 
+    ]]>
+  </RealEffectLine>
+  <RealEffectPlant>
+    <![CDATA[
+select distinct s.id as sid, t.name as typename, v.name as volname, s.name as plantname, p.name_abbreviation as gridname
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info w
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_station_weathersource r on b.weather_source_id=r.weather_source_id
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_plant_b s on r.station_id=s.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on s.max_voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on s.connective_pg_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_plantstationtype t on s.plant_type=t.code
+where w.windspeed>={0} and w.windspeed<{1}   
+    ]]>
+  </RealEffectPlant>
+  <RealMinMaxRain>
+    <![CDATA[
+select min(rain) as minrain, max(rain) as maxrain
+from( select * from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info a 
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id ) b
+on a.weather_source_id=b.weather_source_id and a.createtime=b.maxtime )    
+    ]]>
+  </RealMinMaxRain>
+  <RealRainRank>
+    <![CDATA[
+select * from(
+select a.weather_source_id,a.rain,b.maxtime,c.city from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info a 
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id) b
+on a.weather_source_id=b.weather_source_id and a.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_source_info c on a.weather_source_id=c.id
+order by rain desc)    
+    ]]>
+  </RealRainRank>
+  <RealRainEffectStation>
+    <![CDATA[
+select  *  from (
+select distinct s.id, v.name as volname, s.name as subname, p.name_abbreviation as gridname,m.name_abbreviation as managename
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_station_weathersource r 
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_substation_b s on r.station_id=s.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on s.top_ac_voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on s.pg_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_org_company_b m on s.manage_dept_id=m.id
+left join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info w on w.weather_source_id=r.weather_source_id
+left join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+where w.rain>={0} and w.rain<{1} and w.createtime=b.maxtime  )
+order by length(volname) desc, volname desc, subname    
+    ]]>
+  </RealRainEffectStation>
+  <RealRainEffectLine>
+    <![CDATA[
+select distinct l.id as lid, v.name as volname, l.name as linename, p.name_abbreviation as pname, d.name_abbreviation as dname
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info w
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tower_weather_source r on r.weather_source_id=b.weather_source_id
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_r_tower t on r.tower_id=t.tower_id 
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_b l on t.line_id=l.id 
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on l.voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on l.grid_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_org_dcc_b d on l.dispatch_org_id=d.id
+where w.rain>={0} and w.rain<{1}     
+    ]]>
+  </RealRainEffectLine>
+  <RealRainEffectPlant>
+    <![CDATA[
+select distinct s.id as sid, t.name as typename, v.name as volname, s.name as plantname, p.name_abbreviation as gridname
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info w
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_real_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_station_weathersource r on b.weather_source_id=r.weather_source_id
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_plant_b s on r.station_id=s.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on s.max_voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on s.connective_pg_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_plantstationtype t on s.plant_type=t.code
+where w.rain>={0} and w.rain<{1} 
+    ]]>
+  </RealRainEffectPlant>
+  <ForecastMinMaxWind>
+    <![CDATA[
+select min(windspeed),max(windspeed) from
+(select * from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info a
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id) b
+on a.weather_source_id=b.weather_source_id and a.createtime=b.maxtime)
+    ]]>
+  </ForecastMinMaxWind>
+  <ForecastWindRank>
+    <![CDATA[
+select * from(
+select a.weather_source_id,a.windspeed,b.maxtime,c.city from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info a 
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id) b
+on a.weather_source_id=b.weather_source_id and a.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_source_info c on a.weather_source_id=c.id
+order by windspeed desc)
+    ]]>
+  </ForecastWindRank>
+  <ForecastWindEffectStation>
+    <![CDATA[
+ select  *  from (
+select distinct s.id, v.name as volname, s.name as subname, p.name_abbreviation as gridname,m.name_abbreviation as managename
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_station_weathersource r 
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_substation_b s on r.station_id=s.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on s.top_ac_voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on s.pg_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_org_company_b m on s.manage_dept_id=m.id
+left join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info w on w.weather_source_id=r.weather_source_id
+left join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+where w.windspeed>={0} and w.windspeed<{1} and w.createtime=b.maxtime  )
+order by length(volname) desc, volname desc, subname   
+    ]]>
+  </ForecastWindEffectStation>
+  <ForecastWindEffectLine>
+    <![CDATA[
+select distinct l.id as lid, v.name as volname, l.name as linename, p.name_abbreviation as pname, d.name_abbreviation as dname
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info w
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tower_weather_source r on r.weather_source_id=b.weather_source_id
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_r_tower t on r.tower_id=t.tower_id 
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_b l on t.line_id=l.id 
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on l.voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on l.grid_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_org_dcc_b d on l.dispatch_org_id=d.id
+where w.windspeed>={0} and w.windspeed<{1}    
+    ]]>
+  </ForecastWindEffectLine>
+  <ForecastWindEffectPlant>
+    <![CDATA[
+select distinct s.id as sid, t.name as typename, v.name as volname, s.name as plantname, p.name_abbreviation as gridname
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info w
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_station_weathersource r on b.weather_source_id=r.weather_source_id
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_plant_b s on r.station_id=s.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on s.max_voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on s.connective_pg_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_plantstationtype t on s.plant_type=t.code
+where w.windspeed>={0} and w.windspeed<{1}  
+    ]]>
+  </ForecastWindEffectPlant>
+  <ForecastMinMaxRain>
+    <![CDATA[
+select min(rain),max(rain)
+from( select * from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info a 
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id ) b
+on a.weather_source_id=b.weather_source_id and a.createtime=b.maxtime )    
+    ]]>
+  </ForecastMinMaxRain>
+  <ForecastRainRank>
+    <![CDATA[
+select * from(
+select a.weather_source_id,a.rain,b.maxtime,c.city from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info a 
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id) b
+on a.weather_source_id=b.weather_source_id and a.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_source_info c on a.weather_source_id=c.id
+order by rain desc)       
+    ]]>
+  </ForecastRainRank>
+  <ForecastRainEffectStation>
+    <![CDATA[
+ select  *  from (
+select distinct s.id, v.name as volname, s.name as subname, p.name_abbreviation as gridname,m.name_abbreviation as managename
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_station_weathersource r 
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_substation_b s on r.station_id=s.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on s.top_ac_voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on s.pg_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_org_company_b m on s.manage_dept_id=m.id
+left join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info w on w.weather_source_id=r.weather_source_id
+left join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+where w.rain>={0} and w.rain<{1} and w.createtime=b.maxtime   )
+order by length(volname) desc, volname desc, subname    
+    ]]>
+  </ForecastRainEffectStation>
+  <ForecastRainEffectLine>
+    <![CDATA[
+select distinct l.id as lid, v.name as volname, l.name as linename, p.name_abbreviation as pname, d.name_abbreviation as dname
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info w
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_tower_weather_source r on r.weather_source_id=b.weather_source_id
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_r_tower t on r.tower_id=t.tower_id 
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dev_acline_b l on t.line_id=l.id 
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on l.voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on l.grid_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_org_dcc_b d on l.dispatch_org_id=d.id
+where w.rain>={0} and w.rain<{1}       
+    ]]>
+  </ForecastRainEffectLine>
+  <ForecastRainEffectPlant>
+    <![CDATA[
+select distinct s.id as sid, t.name as typename, v.name as volname, s.name as plantname, p.name_abbreviation as gridname
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info w
+join ( select weather_source_id, max(createtime) as maxtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_forecast_info group by weather_source_id) b
+on w.weather_source_id=b.weather_source_id and w.createtime=b.maxtime
+join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_station_weathersource r on b.weather_source_id=r.weather_source_id
+join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_plant_b s on r.station_id=s.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_voltagetype v on s.max_voltage_type=v.code
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_pwrgrid_b p on s.connective_pg_id=p.id
+left join ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_dic_plantstationtype t on s.plant_type=t.code
+where w.rain>={0} and w.rain<{1}     
+    ]]>
+  </ForecastRainEffectPlant>
+  <FBLB>
+    <![CDATA[
+      select  distinct b.name,i.tower_interval,t.name,i.ice_coating_thickness,i.estimated_duration 
+     from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_test_icing i join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_B b on i.id=b.id
+     join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_test_icetype t on i.ice_type=t.ice_type
+     join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DIC_VOLTAGETYPE v on b.voltage_type=v.code
+     where  createtime={0} and (b.voltage_type={1} or 0={1}) and (i.ice_type={2} or 0={2})
+     and i.ice_coating_thickness>={3}and i.ice_coating_thickness<={4}
+    ]]>
+  </FBLB>
+  <DYDJ>
+    <![CDATA[ 
+     SELECT 0,'电压等级' 
+        union all
+ select distinct v.code,v.name from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_test_icing i, ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DIC_VOLTAGETYPE v,
+ ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_DEV_ACLINE_B b where b.voltage_type=v.code and i.id=b.id    
+ ]]>
+  </DYDJ>
+  <FBLX>
+    <![CDATA[
+           SELECT 0,'覆冰类型' 
+        union all
+select distinct i.ice_type,t.name from  ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_test_icing i, ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_test_icetype t 
+where createtime={0} and i.ice_type=t.ice_type
+    ]]>
+  </FBLX>
+  <FBHD>
+    <![CDATA[
+    select min(ice_coating_thickness) as minthick , max(ice_coating_thickness) as maxthick from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_test_icing 
+    where createtime={0}
+    ]]>
+  </FBHD>
+  <GetRecentWeatherTime>
+    <![CDATA[select max(createtime) from  ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lastrealtime_info where createtime<{0}]]>
+  </GetRecentWeatherTime>
+  <GetRecentTemperatureTime>
+    <![CDATA[select MAX(createtime) from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_temperature_line  where createtime<{0}]]>
+  </GetRecentTemperatureTime>
+  <GetRecentRainTime>
+    <![CDATA[select MAX(createtime) from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_rain_line  where createtime<{0}]]>
+  </GetRecentRainTime>
+  <GetRecentWeatherInfo>
+    <![CDATA[SELECT id,weather_condition_result,x,y FROM 
+]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_lastrealtime_info 
+WHERE CREATETIME={0} ]]>
+  </GetRecentWeatherInfo>
+  <GetWeatherTimes1>
+    <![CDATA[SELECT DISTINCT createtime FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO WHERE createtime<={0} AND createtime>={2}
+    union all
+select createtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_temperature_line where createtime>{0} and timetype='grid']]>
+  </GetWeatherTimes1>
+  <GetWeatherTimes0>
+    <![CDATA[SELECT DISTINCT date_time FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_WEATHERSTATION_H_LIVE_@T@{0:yyyy} WHERE date_time<={0} AND date_time>={2}
+    union all
+select createtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_temperature_line where createtime>{0} and timetype='grid']]>
+  </GetWeatherTimes0>
+  <GetWeatherTimes db="SGAPP" datatype="array" type="union" args="now,year,start,end">
+    <his>
+      <![CDATA[SELECT DISTINCT createtime FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO WHERE createtime<={now} AND createtime>={start} AND createtime<={end}]]>
+    </his>
+    <fore>
+      <![CDATA[select createtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_temperature_line where createtime>{now} and createtime<={end} and timetype='grid']]>
+    </fore>
+  </GetWeatherTimes>
+  <GetRainTimes0>
+    <![CDATA[SELECT createtime FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_rain_line WHERE createtime<={0} AND createtime>={2} and timetype='station'
+union all
+select createtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_rain_line where createtime>{0} and timetype='grid']]>
+  </GetRainTimes0>
+  <GetRainTimes datatype="array" db="SGAPP" type="union" args="now,year,start,end">
+    <his>
+      <![CDATA[SELECT createtime FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_rain_line WHERE createtime<={now} AND createtime>={start} AND createtime<={end} and timetype='station']]>
+    </his>
+    <fore>
+      <![CDATA[select createtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_rain_line where createtime>{now} and createtime<={end} and timetype='grid']]>
+    </fore>    
+  </GetRainTimes>
+  <GetTemperatureTimes datatype="array" db="SGAPP" type="union" args="now,year,start,end">
+    <his>
+      <![CDATA[SELECT createtime FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_temperature_line WHERE createtime<={now} AND createtime>={start} AND createtime<={end} and timetype='station']]>
+    </his>
+    <fore>
+      <![CDATA[select createtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_temperature_line where createtime>{now} and createtime<={end} and timetype='grid']]>
+    </fore>
+  </GetTemperatureTimes>
+  <GetHourForecastGrid>
+    <![CDATA[SELECT * FROM (
+SELECT
+'' WEATHER_CONDITION_RESULT,HUMIDITY,TEMPERATURE,date_time CREATETIME ,'' WIND_DIR_RESULT,0 WIND_LEVEL_RESULT,wind_velocity,0 PRESSURE,0 TIEMSPAN,RAIN,0 CLOUD,WIND_DIRECTION 
+from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[sg_con_grid_h_weatherforecast_{{4}}
+WHERE id='{5}' AND date_time>={1} AND date_time<{2} AND date_time>={3}
+UNION
+SELECT
+WEATHER_CONDITION_RESULT,HUMIDITY,TEMPERATURE,CREATETIME,WIND_DIR_RESULT,WIND_LEVEL_RESULT,WINDSPEED,PRESSURE,0 AS TIEMSPAN,RAIN,CLOUD,WIND_DIRECTION 
+from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO
+WHERE WEATHER_SOURCE_ID='{0}' AND CREATETIME>={1} AND CREATETIME<{2} AND CREATETIME<{3}
+) A
+ORDER BY CREATETIME]]>
+  </GetHourForecastGrid>
+  <GetCloudTimes>
+    <![CDATA[SELECT yuntime FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_cloud_image WHERE yuntime<={0} AND yuntime>={2}]]>
+  </GetCloudTimes>
+  <GetWindTimes datatype="array" db="SGAPP" type="union" args="now,year,start,end">
+    <his>
+      <![CDATA[SELECT createtime FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_windspeed_line WHERE createtime<={now} AND createtime>={start} AND createtime<={end} and timetype='station']]>
+    </his>
+    <fore>
+      <![CDATA[select createtime from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_windspeed_line where createtime>{now} and createtime<={end} and timetype='grid']]>
+    </fore>
+  </GetWindTimes>
+  <IsInGrid>
+    <![CDATA[SELECT ST_Contains( st_setsrid((SELECT geom FROM ys_db.public.provice_region WHERE admincode = '{0}'),4326), st_geometryfromtext('POINT({1})',4326))]]>
+  </IsInGrid>
+  <GetDataByPos>
+    <![CDATA[ select  top 1 temperature,rain,wind_direction,wind_level_result 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO 
+    where createtime='{2}'
+    order by ys_db.distance(longitude,latitude,{0},{1})]]>
+  </GetDataByPos>
+  <GetNearestHisPoint>
+    <![CDATA[    SELECT top 1 id
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_weather_source_info
+    order by ys_db.distance(y,x,{0},{1})]]>
+  </GetNearestHisPoint>
+  <GetNearestForePoint>
+    <![CDATA[select top 1 code 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[sg_dic_region_hb
+    order by ys_db.distance(longitude,latitude,{0},{1})
+    ]]>
+  </GetNearestForePoint>
+  <GetHisDataByPoint>
+    <![CDATA[ select temperature,rain,wind_direction,wind_level_result 
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO 
+    where weather_source_id='{0}' and createtime='{1}']]>
+  </GetHisDataByPoint>
+  <GetForeDataByPoint>
+    <![CDATA[select avgtmp,rain,wind_direction,]]><![CDATA[same:sgc/tq:WindSpeed:ind_velocity]]><![CDATA[
+    from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_WEATHERSTATION_H_CITY_FORECAST_@T@{1:yyyy} w
+    JOIN (SELECT MAX(DATE_TIME) AS dtm from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_WEATHERSTATION_H_CITY_FORECAST_@T@{1:yyyy}
+where forcast_time='{1}' and CITY_CODE='{0}'
+GROUP BY forcast_time) m ON w.DATE_TIME=m.dtm
+    where forcast_time='{1}' and CITY_CODE='{0}']]>
+  </GetForeDataByPoint>
+  <GetWeatherByTimePoint db="SGAPP" args="time" fields="ID,LONGITUDE,LATITUDE,name,WEATHER_CONDITION_RESULT,TEMPERATURE,HUMIDITY,WIND_DIR_RESULT,WIND_LEVEL_RESULT">
+    <![CDATA[SELECT w.weather_source_id,s.y AS LONGITUDE,s.x AS LATITUDE,s.NAME,w.WEATHER_CONDITION_RESULT,w.TEMPERATURE,w.HUMIDITY,w.WIND_DIR_RESULT,w.WIND_LEVEL_RESULT 
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_REAL_INFO w 
+LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_SOURCE_INFO s ON w.weather_source_id=s.id 
+where CREATETIME='{time}']]>
+  </GetWeatherByTimePoint>
+  <GetForeWeatherByTimePoint db="SGAPP" args="time" fields="ID,LONGITUDE,LATITUDE,name,WEATHER_CONDITION_RESULT,TEMPERATURE,HUMIDITY,WIND_DIR_RESULT,WIND_LEVEL_RESULT">
+    <![CDATA[SELECT w.city_code,s.LONGITUDE,s.LATITUDE,s.NAME,w.WEATHER,w.AVGTMP,w.HUMIDITY,]]><![CDATA[same:WindDirection]]><![CDATA[ as WIND_DIR_RESULT,]]><![CDATA[same:sgc/tq:WindSpeed:ind_velocity]]><![CDATA[ AS WIND_LEVEL_RESULT 
+FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_WEATHERSTATION_H_CITY_FORECAST_2022 w 
+JOIN (SELECT MAX(DATE_TIME) AS dtm,CITY_CODE AS cc from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[SG_COM_WEATHERSTATION_H_CITY_FORECAST_2022
+where forcast_time={time} GROUP BY forcast_time,CITY_CODE) m ON w.DATE_TIME=m.dtm AND w.CITY_CODE=m.cc
+LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[sg_dic_region_hb s ON w.city_code=s.code 
+where forcast_time='{time}']]>
+  </GetForeWeatherByTimePoint>
+</ROOT>

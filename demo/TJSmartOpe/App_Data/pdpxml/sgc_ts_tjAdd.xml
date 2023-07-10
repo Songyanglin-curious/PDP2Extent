@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<dsUNDW><![CDATA[
+select e.name,e.owner from sg_db.sg_sys_ua_user_b u
+join sg_db.sg_org_employee_b e on u.user_employee_id=e.id
+where u.user_name='{0}'
+        ]]></dsUNDW>
+<dsDWN><![CDATA[
+select name from sg_db.sg_con_pwrgrid_b where id='{0}'
+        ]]></dsDWN>
+<dsSelectDW><![CDATA[
+select id,name from sg_db.sg_con_pwrgrid_b order by name
+        ]]></dsSelectDW>
+<dsBusBar><![CDATA[
+select id,busname from (
+select bus.id,sub.name||v.name||bus.name busname from sg_db.sg_dev_busbar_b bus
+join sg_db.sg_con_commonsubstation_b sub on bus.st_id = sub.id
+join sg_db.sg_dic_voltagetype v on bus.voltage_type =v.code
+where bus.owner='990100' order by busname)
+union
+select deviceid id,devicename busname from ys_db.ysh_ts_event_happen
+where devicetype='母线'
+        ]]></dsBusBar>
+<dsLine><![CDATA[
+select id,linename from (
+select id,name as linename from sg_db.sg_dev_acline_b where owner='990100' order by name)
+union
+select deviceid id,devicename linename from ys_db.ysh_ts_event_happen
+where devicetype='线路'
+        ]]></dsLine>
+<dsTransform><![CDATA[
+select id,transfname from (
+select tf.id as id,sub.name||tf.name transfname from sg_db.sg_dev_pwrtransfm_b tf
+join sg_db.sg_con_commonsubstation_b sub on tf.st_id = sub.id
+where tf.owner='990100' order by transfname )
+union 
+select deviceid id,devicename transfname from ys_db.ysh_ts_event_happen
+where devicetype='变压器'
+        ]]></dsTransform>
+<dsOther><![CDATA[
+select deviceid,devicename from ys_db.ysh_ts_event_happen
+where devicetype='其他'
+        ]]></dsOther>
+<ds100><![CDATA[
+select id,h.deptid,h.deptname,h.deviceid,h.devicename,devicetype,event,content,affect,h.reporter,h.checker,eventtime,
+s.happenid,s.solvetime,s.resulttime,s.endtime,s.solution,s.result,s.reporter,s.checker
+from ys_db.ysh_ts_event_happen h
+left join ys_db.ysh_ts_event_solve s on h.id = s.happenid
+where h.id = {0}
+        ]]></ds100>
+<dsIsExists><![CDATA[ select count(*) from ys_db.ysh_ts_event_solve where happenid={0}  ]]></dsIsExists></ROOT>

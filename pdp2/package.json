@@ -2,7 +2,7 @@
     "name": "pdp2",
     "displayName": "pdp2",
     "description": "",
-    "version": "0.0.3",
+    "version": "0.0.5",
     "engines": {
         "vscode": "^1.79.0"
     },
@@ -17,13 +17,31 @@
             {
                 "command": "pdp2.designFormat",
                 "title": "Design Format"
+            },
+            {
+                "command": "pdp2.debug",
+                "title": "Active Debug"
+            },
+            {
+                "command": "pdp2.sql",
+                "title": "Replace SQL"
             }
         ],
         "keybindings": [
             {
                 "command": "pdp2.designFormat",
-                "key": "ctrl+alt+p",
-                "when": "editorLangId == xml"
+                "key": "ctrl+alt+p f",
+                "when": "editorTextFocus && editorLangId == xml"
+            },
+            {
+                "command": "pdp2.debug",
+                "key": "ctrl+alt+p c",
+                "when": "editorTextFocus && (editorLangId == 'xml' || editorLangId == 'javascript')"
+            },
+            {
+                "command": "pdp2.sql",
+                "key": "ctrl+alt+p s",
+                "when": "editorTextFocus && editorLangId == xml"
             }
         ]
     },
@@ -50,6 +68,7 @@
     },
     "dependencies": {
         "prettier": "^2.8.8",
+        "prettier-plugin-sql": "^0.15.1",
         "sax": "^1.2.4"
     },
     "repository": {

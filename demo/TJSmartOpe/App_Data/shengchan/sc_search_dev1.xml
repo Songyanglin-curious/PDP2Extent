@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="36" desc="表格">
+  <inits>
+    <init id="filter" type="request" arg="filter"></init>
+  </inits>
+  <consts>
+    <const id="conditions"></const>
+    <const id="show" type="bool" arg="true"></const>
+    <const id="lst" type="2d" length="30"></const>
+    <const id="hTbl" type="number" arg="300"></const>
+  </consts>
+  <ctrls>
+    <div id="div0" desc="根容器" style="width:100%;height:100%;background-color:#013a46b3">
+      <search from="conditions" xml="shengchan/device_search"></search>
+      <div ref="divIf">
+        <search-block show="show">
+          <sa conditions="conditions"></sa>
+        </search-block>
+        <div style="text-align:center;height:30px;line-height:30px;">
+          <image style="cursor:pointer;">
+            <sa src="show"></sa>
+            <sf from="{0}?'︽收起':'︾展开'" src="{0}?'/i/sgc/shengchan/foldbtn.png':'/i/sgc/shengchan/expandbtn.png'"></sf>
+            <e>
+              <onclick>
+                <list type="script" value="this.show=!this.show;"></list>
+              </onclick>
+            </e>
+          </image>
+        </div>
+        <div class="search-item" style="justify-content:center">
+          <label type="button" class="button selected" value="查询">
+            <e>
+              <onclick>
+                <list type="script" value="this.search();"></list>
+              </onclick>
+            </e>
+          </label>
+          <label type="button" class="button selected" value="重置">
+            <e>
+              <onclick>
+                <list type="script" value="this.resetConditions();"></list>
+              </onclick>
+            </e>
+          </label>
+        </div>
+      </div>
+      <div style="padding:10px;background-color:#013f4c">
+        <div ref="divResult">
+          <search-useful id="result" title="设备查询>" ref="search">
+            <sa conditions="conditions"></sa>
+            <e>
+              <onchange>
+                <list type="script" value="this.resize();"></list>
+              </onchange>
+            </e>
+          </search-useful>
+        </div>
+          <pagetable from="lst" fSetData="addExtend">
+            <sa height="hTbl"></sa>
+            <icol desc="" type="expand" width="30px" render1="page.renderType">
+              <table show="params.row.lst_6=='主变压器'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">变压器参数</td>
+                  <repeat list="冷却方式,额定容量(MVA),电压比,短路阻抗(高-中)(%),短路阻抗(高-低)(%),短路阻抗(中-低)(%),空载电流(%),油号,上层油温限值(℃)">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="9" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+              <table show="params.row.lst_6=='断路器'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">断路器参数</td>
+                  <repeat list="结构型式,操作机构型式,灭弧介质,断口数量(个),SF6气体额定压力(Mpa),SF6气体报警压力(Mpa),SF6气体闭锁压力(Mpa),合闸闭锁操作压力(Mpa),分闸闭锁操作压力(Mpa),额定短路开断电流(kA)">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="10" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+         <table show="params.row.lst_6=='隔离开关'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">隔离开关参数</td>
+                  <repeat list="额定短时耐受电流(kA),主回路电阻(μΩ),机构型式,操作型式,单相或三相机构">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="5" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+         <table show="params.row.lst_6=='电抗器'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">电抗器参数</td>
+                  <repeat list="冷却方式,绝缘介质,导磁结构,额定容量(kVar),额定电抗(Ω),额定电抗率(%),额定电感(mH)">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="7" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+         <table show="params.row.lst_6=='电容器'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">电容器参数</td>
+                  <repeat list="绝缘介质,电容器组内部保护方式,单台保护方式,单台容量(kVar),整组容量(kVar)">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="5" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+         <table show="params.row.lst_6=='电流互感器'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">电流互感器参数</td>
+                  <repeat list="结构型式,绝缘类型,密封型式,额定电流比,准确级(测量),准确级(保护)">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="6" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+         <table show="params.row.lst_6=='电压互感器'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">电压互感器参数</td>
+                  <repeat list="绝缘介质,结构型式,铁芯结构,二次绕组总数量(个)">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="4" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+       <table show="params.row.lst_6=='避雷器'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">避雷器参数</td>
+                  <repeat list="爬电比距(mm/kV),每相节数,陡波冲击电流下残压(kV),操作冲击电流下残压(kV),全电流初始值(运行电压)(μA),阻性电流初始值(运行电压)(μA)">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="6" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+       <table show="params.row.lst_6=='母线'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">母线参数</td>
+                  <repeat list="结构型式,安装方式,长度(m)">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="3" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+       <table show="params.row.lst_6=='组合电器'" style="width:100%">
+                <tr>
+                  <td rowspan="2" style="text-align:center">组合电器参数</td>
+                  <repeat list="类型,电流互感器布置方式,进出线方式,SF6气体额定压力(非断路器气室)(Mpa),SF6气体压力降低报警压力(非断路器气室)(Mpa),断路器数量(台),隔离开关数量(组),接地开关数量(组),避雷器数量(台),电流互感器数量(台),电压互感器数量(台)">
+                    <c>
+                      <td style="text-align:center">
+                        {item}
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+                <tr>
+                  <repeat type="number" start="17" length="11" offset="1">
+                    <c>
+                      <td style="text-align:center">
+                        <label from="lst_{item}"></label>
+                      </td>
+                    </c>
+                  </repeat>
+                </tr>
+              </table>
+            </icol>
+            <icol desc="序号" type="index" width="50px"></icol>
+            <icol desc="所属电网" from="lst_1"></icol>
+            <icol desc="变电站" from="lst_2"></icol>
+            <icol desc="间隔大类" from="lst_3"></icol>
+            <icol desc="间隔单元" from="lst_4"></icol>
+            <icol desc="设备名称" from="lst_5"></icol>
+            <icol desc="设备类型" from="lst_6"></icol>
+            <icol desc="电压等级" from="lst_7"></icol>
+            <icol desc="相别" from="lst_8"></icol>
+            <icol desc="型号" from="lst_9"></icol>
+            <icol desc="生产厂家" from="lst_10"></icol>
+            <icol desc="出厂日期" from="lst_11" format="111000"></icol>
+            <icol desc="投运日期" from="lst_12" format="111000"></icol>
+            <icol desc="运行年限" from="lst_0">
+              <label from="lst_12">
+                <sf from="page.getAge({0})"></sf>
+              </label>
+            </icol>
+            <icol desc="设备编码" from="lst_14"></icol>
+            <icol desc="资产编码" from="lst_15"></icol>
+          </pagetable>
+      </div>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsearch" part="dev"></list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          this.resize();
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

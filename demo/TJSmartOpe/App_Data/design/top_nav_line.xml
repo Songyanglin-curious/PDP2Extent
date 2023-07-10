@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="33" desc="线路监测头部导航条">
+    <inits>
+        <init id="lineName3D" type="request" arg="lineName3D"></init>
+    </inits>
+    <consts>
+        <const id="zxjcData" desc="在线监测导航条数据" type="object"></const>
+    </consts>
+    <datasources></datasources>
+    <ctrls>
+        <div id="div0" desc="线路监测头部导航条">
+            <a id="avalue"  s_width="100%"></a>
+            <div ref="navzxjc" style="display: flex; justify-content: space-between;background:#1A2835;padding: 7px 20px;position:relative;z-index: 1000;">
+                <div style="margin-left:10px;display: inline-block;position:relative;z-index: 100;">
+                    <label style="padding: 9px 20px;">
+                        <a value="三跨点" id="btnYcjxt" class="input_button_new"></a>
+                    </label>
+                </div>
+                <div style="display: flex;align-items: center;justify-content: center;position:absolute;left: 0;right: 0;">
+                    <label style=" color: #35A6F6;font-size: 24px;letter-spacing: 12px;">
+                        <sa value="lineName3D"></sa>
+                    </label>
+                </div>
+                <div style="display: flex;align-items: center;position:relative;z-index: 100;">
+                    <dropdownswitch >
+                        <a style="margin:0 10px;"></a>
+                        <sa iconurl="zxjcData.iconurl" type="zxjcData.type" size="zxjcData.size" title="zxjcData.title" menu="zxjcData.menu"></sa>
+                        <e>
+                            <on-change>
+                                <list type="script" value="this.zxjcNavChange(item,menu)"></list>
+                            </on-change>
+                        </e>
+                    </dropdownswitch>
+                    <div style="margin:0 10px;cursor: pointer;display: flex;align-items:center;align-self: self-start;" >
+                        <e>
+                            <onclick>
+                                <list type="script" value="this.backNavPage();"></list>
+                            </onclick>
+                        </e>
+                        <img>
+                            <a src="/i/sgc/swcjdh//exit.png"></a>
+                        </img>
+                        <label>
+                            <a value="导航首页"></a>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ctrls>
+    <css>
+        <![CDATA[
+	]]>
+    </css>
+    <scripts>
+        <script event="created">
+            <list type="script">
+                <value>
+                    <![CDATA[
+                    this.zxjcData = {
+                        iconurl: '/i/sgc/swcjdh/swkz.png',
+                        title: '输电在线监测控制',
+                        type: "switch",
+                        size: { iconWidth: 26, iconHeight: 26, dropdownTop: 30 },
+                        menu: [
+                            { text: '可视化视频', id: 1, value: true },
+                            // { text: '可视化监测点显示', id: 2, value: true },
+                        ]
+                    };
+                    this.zxjcNavChange = function(item,menu){
+                        if (!item.id) retuen;
+                        var id = Number(item.id);
+                        switch (id) {
+                            case 1:
+                                console.log("可视化视频");
+                                vMain.sendBusinessMsg("", { eventSource: "zxjcVideo", data: item.value });
+                                break;
+                            case 4:
+                                console.log("可视化监测点显示")
+                                break;
+                            default:
+                                console.log("未知选项")
+                        }
+                    }
+                    this.backNavPage = function(){
+                        vLayout.showHomePage();
+                    }
+					]]>
+                </value>
+            </list>
+        </script>
+        <script event="mounted">
+            <list type="script">
+                <value>
+                    <![CDATA[
+					]]>
+                </value>
+            </list>
+        </script>
+    </scripts>
+</root>

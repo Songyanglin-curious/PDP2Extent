@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="13" desc="电容器档案卡">
+  <includes>
+    <![CDATA[
+        /conn/pdpjs/ctrl/itabs.js;
+      ]]>
+  </includes>
+  <inits>
+    <init id="decid" desc="设备Id" type="request" arg="id"></init>
+    <init id="devname" desc="设备名称" type="request" arg="devname"></init>
+    <init id="devtype" desc="设备类型" type="request" arg="devtype"></init>
+  <init id="argtype" desc="参数类型" type="request" arg="argtype"></init>
+  </inits>
+  <consts>
+    <const id="mainHeight" desc="内容高度"></const>
+    <const id="commendHeight" desc="推荐区高度"></const>
+    <const id="paramsdata" desc="台帐参数" type="2d" length="2"></const>
+    <const id="rundata" desc="台帐参数" type="2d" length="2"></const>
+    <const id="daystart" desc="本日开始时间" type="time" arg="d"></const>
+    <const id="dayend" desc="本日开始时间" type="time" arg="d,d,1"></const>
+    <const id="timeend2" desc="结束时间2" type="time" arg="d,d,0"></const>
+    <const id="time" desc="时间" type="string"></const>
+    <const id="t1" desc="开始时间" type="string"></const>
+    <const id="t2" desc="结束时间" type="string"></const>
+    <const id="fileName" desc="动态文件名字" arg="samemodel_trans" type="string"></const>
+    <const id="datasearch" desc="动态文件参数" type="string"></const>
+    <const id="color1" desc="颜色" arg=",,,,,,,,," type="string[]"></const>
+    <const id="class1" desc="类" arg="tjPdpTable,tjPdpTable,tjPdpTable,tjPdpTable,tjPdpTable,tjPdpTable,tjPdpTable,tjPdpTable,tjPdpTable,tjPdpTable" type="string[]"></const>
+    <const id="show0" desc="运行信息未选中" type="string" arg=""></const>
+    <const id="show1" desc="运行信息选中" type="string" arg="none"></const>
+    <const id="show3" desc="运行信息未选中" type="string" arg=""></const>
+    <const id="show4" desc="运行信息选中" type="string" arg="none"></const>
+    <const id="starttime" desc="颜色" arg=",,,,,,,,," type="string[]"></const>
+    <const id="endtime" desc="颜色" arg=",,,,,,,,," type="string[]"></const>
+  <const id="aJump"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds0" desc="设备信息" db="SGAPP" type="simple">
+      <sql>
+        <![CDATA[
+          select '' devicename,'' devicedesc,''  as staname,'' as subname
+        ]]>
+      </sql>
+      <cols>
+        <col id="col0" desc="设备id" name="devicestrid" from="decid"></col>
+        <col id="col1" desc="设备名称" name="devicename"></col>
+        <col id="col2" desc="设备名称" name="devicedesc"></col>
+        <col id="col3" desc="变电站" name="staname"></col>
+        <col id="col4" desc="绕组名称" name="subname"></col>
+      </cols>
+    </datasource>
+    <datasource id="ds1" desc="设备台帐" db="SGAPP" type="simple">
+      <sql>
+        <![CDATA[
+		      select '' as stationname,'' as voltagename,'' AS bianyaqileixing,'投运' devicestate,'' factory_name,'' as lengquefangshi,
+		      '' as tiaoyafangshi,'' as chuchangriqi,
+		      '' devmode_name,
+		      '' AS gyceddy,
+		      '' AS zyceddy,
+		      '' AS dyceddy,
+		      '' rundept,'' as rundate
+        ]]>
+      </sql>
+      <cols>
+        <col id="col10" desc="设备id" name="devicestrid" from="col1"></col>
+        <col id="col12" desc="变电站名称" name="stationname"></col>
+        <col id="col13" desc="电压等级" name="voltagename"></col>
+        <col id="col14" desc="相数" name="xiangshu"></col>
+        <col id="col15" desc="设备状态" name="devicestate"></col>
+        <col id="col_fac" desc="制造厂家" name="factory_name"></col>
+        <col id="col17" desc="冷却方式" name="lengquefangshi"></col>
+        <col id="col18" desc="调压方式" name="tiaoyafangshi"></col>
+        <col id="col19" desc="出厂日期" name="chuchangriqi"></col>
+        <col id="col_model" desc="型号" name="devmode_name"></col>
+        <col id="col1120" desc="额定电压高压侧" name="gyceddy"></col>
+        <col id="col1124" desc="额定电压中压侧" name="zyceddy"></col>
+        <col id="col1128" desc="额定电压低压侧" name="dyceddy"></col>
+        <col id="col1135" desc="投运日期" name="rundate"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a class="divWrapper" s_display="flex" s_justify-content="flex-start" s_background="#113D48" s_width="100%" s_height="100%"></a>
+      <c>
+        <href>
+          <a ref="href"></a>
+          <sa href="aJump"></sa>
+        </href>
+        <div id="divMain">
+          <a ref="divMain" s_height="100%" s_background-color="#113D48" s_width="calc(100% - 395px)" s_padding="0 8px"  ></a>
+          <c>
+            <itabs>
+              <a ref="tabs" class="sTab" s_margin-top="10px"></a>
+              <sa data-source="dsTab"></sa>
+              <e>
+                <on-click>
+                  <list type="script" value="this.fileIndex(name);"></list>
+                </on-click>
+                <on-tab-remove>
+                  <list type="script" value=""></list>
+                </on-tab-remove>
+              </e>
+            </itabs>
+            <div>
+              <s height="calc(100% - 60px)" overflow-y="auto"></s>
+              <c>
+            <subfile id="filehealth" desc="健康评估">
+              <a file="/App_Data/design/health_trans"></a>
+              <sa deviceid="decid" fullpath="col1" devicename="devname" paramslist="paramsdata"  show0="show0" show1="show1"></sa>
+            </subfile>
+            <subfile id="fileparameter" desc="基本信息">
+              <a file="/App_Data/design/parameter_capacitor"></a>
+              <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]"  show0="show3" show1="show4"></sa>
+            </subfile>
+            <subfile id="filerun" desc="运行信息">
+              <a v-if="false" file="/App_Data/design/run_trans"></a>
+              <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]"  show0="show3" show1="show4"></sa>
+            </subfile>
+            <subfile id="filefuhe" desc="负荷曲线">
+              <a v-if="false" file="/App_Data/design/fuhe_trans"></a>
+              <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]"  show0="show3" show1="show4"></sa>
+            </subfile>
+            <subfile id="filehisactive" desc="历史有功">
+              <a v-if="false" file="/App_Data/design/hisactive_trans"></a>
+              <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]"  show0="show3" show1="show4"></sa>
+            </subfile>
+            <subfile id="filedefect" desc="设备缺陷">
+              <a file="/App_Data/design/defect_trans"></a>
+              <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]"  show0="show3" show1="show4"></sa>
+            </subfile>
+            <subfile id="filemaintenance" desc="告警历史">
+              <a file="/App_Data/design/alarmhis_trans"></a>
+              <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]"  show0="show3" show1="show4"></sa>
+            </subfile>
+            <subfile id="filemaintenance" desc="检修记录">
+              <a file="/App_Data/design/maintenance_trans"></a>
+              <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]"  show0="show3" show1="show4"></sa>
+            </subfile>
+            <subfile id="filetechnicaltrans" desc="设备技改">
+              <a file="/App_Data/design/technicaltrans_trans"></a>
+              <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]"  show0="show3" show1="show4"></sa>
+            </subfile>
+            <subfile id="filevalue" desc="设备价值">
+              <a file="/App_Data/design/value_trans"></a>
+              <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]"  show0="show3" show1="show4"></sa>
+            </subfile>
+          </c>
+        </div>
+        </c>
+        </div>
+        <div id="divRight">
+          <a ref="divRight" s_height="100%" s_width="400px" s_background-color="transprent"></a>
+          <c>
+            <div id="divQrcode">
+              <a s_display="none" s_width="100%" class="fcac" s_background="#f3f5f7" s_padding="15px 0" s_border="1px solid #d5d5d5"></a>
+              <c>
+              </c>
+            </div>
+            <div id="divCommend" desc="3">
+              <a s_height="100%" s_background-color="#113D48" s_overflow="auto" s_padding="10px 15px" s_color="#787878"></a>
+              <subfile id="filesamemodel" desc="同型号其他变压器">
+                <a file="/App_Data/design/samemodel_trans"></a>
+                <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]" color="color1[1]" class="class1[1]"  show0="show3" show1="show4"></sa>
+              </subfile>
+              <subfile id="filehisflowover" desc="历史越限">
+                <a file="/App_Data/design/hisflowover_trans"></a>
+                <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]" color="color1[1]" class="class1[1]"  show0="show3" show1="show4"></sa>
+              </subfile>
+              <subfile id="fileaccidenttrip" desc="事故跳闸记录">
+                <a file="/App_Data/design/accidenttrip_trans"></a>
+                <sa devicename="devname" deviceid="decid" areasuffix="area0" starttime="this.starttime[1]" endtime="this.endtime[1]" color="color1[1]" class="class1[1]"  show0="show3" show1="show4"></sa>
+              </subfile>
+              <c>
+              </c>
+            </div>
+          </c>
+        </div>
+      </c>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="select" ds="ds0" async="true"></list>
+      <list type="select" ds="ds1" async="true"></list>
+      <list type="script">
+        <value>
+          <![CDATA[ 
+            var vm=this;
+          this.dsTab = { value: this.argtype, type: "card", tablist: [] };
+			     this.dsTab.tablist.push({ label: "健康评估", name: "ahealth", disabled: false });
+           this.dsTab.tablist.push({ label: "基本信息", name: "aparameter", disabled: false });
+           //this.dsTab.tablist.push({ label: "运行信息", name: "arun", disabled: false });
+          //this.dsTab.tablist.push({ label: "负荷曲线", name: "afuhe", disabled: false });
+          //this.dsTab.tablist.push({ label: "历史有功", name: "ahisactive", disabled: false });
+          this.dsTab.tablist.push({ label: "设备缺陷", name: "adefect", disabled: false });
+          //this.dsTab.tablist.push({ label: "告警历史", name: "aalarmhis", disabled: false });
+           this.dsTab.tablist.push({ label: "检修记录", name: "amaintenance", disabled: false });
+           this.dsTab.tablist.push({ label: "设备技改", name: "atechnicaltrans", disabled: false });
+           this.dsTab.tablist.push({ label: "设备价值", name: "avalue", disabled: false });
+        //子页面改变时间之后返回到父页面
+        //未改变时默认为二层传过来的时间
+        this.t1=this.init_starttime;
+        this.t2 = this.init_endtime;
+        for(var i=0;i<10;i++){
+						    this.starttime[i]= this.t1;
+                this.endtime[i] = this.t2;
+				}
+        //改变的时候子页面掉用这个函数
+        this.timechanged = function(starttime,endtime,num) {
+            this.starttime[num] = starttime;
+            this.endtime[num] = endtime;
+        }
+          
+        this.datasearch = {deviceid:this.decid,facname:this.col_fac,model:this.col_model,areasuffix:this.area0,starttime:this.init_starttime,endtime:this.init_endtime,swidw:"basic"};
+          
+        this.daystart = this.init_starttime;
+        //var timeend = new Date(this.init_endtime);
+        //timeend = new Date(timeend.valueOf() + 24*60*60*1000);
+        //this.dayend = Ysh.Time.formatString(timeend, '111111');
+        this.dayend = this.init_endtime;
+        //this.select_ds3();
+        
+          var temp = "变电站名称,电压等级,相数,设备状态,制造厂家,冷却方式,调压方式,出厂日期,型号,额定电压高压侧,额定电压中压侧,额定电压低压侧,运维单位,投运日期".split(',');
+          
+          var paramslist = [];
+          for (var i = 0;i < temp.length;i++) {
+            paramslist.push([temp[i],this.ds1.length == 0 ? "" : this.ds1[0][i]]);
+          }
+          this.paramsdata = paramslist;
+          this.getRunItem = function(name) {
+            var idx = this.col_name.indexOf(name);
+            if (idx < 0)
+              return ["","","",""];
+            return this.ds2[idx];
+          }
+          this.getLoadRate = function(l,r) {
+            if (r == "" || r == "0") return "";
+            if (l === "") return "";
+            return (parseFloat(l) / parseFloat(r)).toFixed(2);
+          }
+          
+          var vm = this;
+          window.flyTo = function(s) {
+            var link = vm.$refs.href;
+            link.href = s;
+            $(vm.$refs.divMain).scrollTop(0);
+            $(vm.$refs.divMain).scrollTop($(s).parent().parent().offset().top);
+            vm.show1="none";
+            vm.show0="";
+            vm.show4="none";
+            vm.show3="";
+            for(var i=0;i<10;i++){
+						    vm.color1[i]="";
+						    vm.class1[i]="tjPdpTable";
+				    }
+           switch(s)
+            {
+              case "#aBase":
+                vm.color1[0]="#30477B";
+                vm.class1[0]="tjPdpTableNew";
+                vm.show1="";
+                vm.show0="none";
+                vm.fileName = "samemodel_trans";
+                vm.datasearch = {deviceid:vm.decid,facname:vm.col_fac,model:vm.col_model,areasuffix:vm.area0,starttime:vm.init_starttime,endtime:vm.init_endtime,swidw:"basic"}
+                break;
+              case "#aTdjl":
+                vm.color1[3]="#30477B";
+                vm.class1[3]="tjPdpTableNew";
+                vm.fileName = "samemodel_trans";
+                vm.datasearch = {deviceid:vm.decid,facname:vm.col_fac,model:vm.col_model,areasuffix:vm.area0,starttime:vm.init_starttime,endtime:vm.init_endtime,swidw:"basic"}
+                break;
+              case "#aAlert":
+                vm.color1[4]="#30477B";
+                vm.class1[4]="tjPdpTableNew";
+                vm.fileName = "samemodel_trans";
+                vm.datasearch = {deviceid:vm.decid,facname:vm.col_fac,model:vm.col_model,areasuffix:vm.area0,starttime:vm.init_starttime,endtime:vm.init_endtime,swidw:"basic"}
+                break;
+              case "#aBreak":
+                vm.color1[6]="#30477B";
+                vm.class1[6]="tjPdpTableNew";
+                vm.fileName = "samemodel_trans";
+                vm.datasearch = {deviceid:vm.decid,facname:vm.col_fac,model:vm.col_model,areasuffix:vm.area0,starttime:vm.init_starttime,endtime:vm.init_endtime,swidw:"basic"}
+                break;
+              case "#aJiance":
+                vm.color1[8]="#30477B";
+                vm.class1[8]="tjPdpTableNew";
+                vm.fileName = "samemodel_trans";
+                vm.datasearch = {deviceid:vm.decid,facname:vm.col_fac,model:vm.col_model,areasuffix:vm.area0,starttime:vm.init_starttime,endtime:vm.init_endtime,swidw:"basic"}
+                break;
+              case "#aXunshi":
+                vm.color1[9]="#30477B";
+                vm.class1[9]="tjPdpTableNew";
+                vm.fileName = "samemodel_trans";
+                vm.datasearch = {deviceid:vm.decid,facname:vm.col_fac,model:vm.col_model,areasuffix:vm.area0,starttime:vm.init_starttime,endtime:vm.init_endtime,swidw:"basic"}
+                break;
+              case "#aRun":
+              case "#aCurve":
+                vm.color1[1]="#30477B";
+                vm.class1[1]="tjPdpTableNew";
+                vm.show3="none";
+                vm.show4="";
+				        vm.fileName = "samemodel_trans2";
+                //vm.datasearch = {deviceid:vm.decid,facname:vm.col_fac,model:vm.col_model,areasuffix:vm.area0,starttime:vm.init_starttime,endtime:vm.init_endtime}
+                break;
+              case "#aDefect":
+                vm.color1[2]="#30477B";
+                vm.class1[2]="tjPdpTableNew";
+                vm.fileName = "samemodel_trans";
+                vm.datasearch = {deviceid:vm.decid,facname:vm.col_fac,model:vm.col_model,areasuffix:vm.area0,starttime:vm.init_starttime,endtime:vm.init_endtime,swidw:"qx"}
+                break;
+              case "#aJianxiu":
+                vm.color1[7]="#30477B";
+                vm.class1[7]="tjPdpTableNew";
+                vm.fileName = "samemodel_trans";
+                vm.datasearch = {deviceid:vm.decid,facname:vm.col_fac,model:vm.col_model,areasuffix:vm.area0,starttime:vm.init_starttime,endtime:vm.init_endtime,swidw:"jx"}
+                break;
+            }
+          }
+          this.fileIndex=function(fileid)
+          {
+            this.aJump = "#" + fileid;
+            this.$nextTick(function() {
+            this.$refs.href.click();
+            });
+          return;
+            switch(fileid)
+            {
+              case "1":
+                document.getElementById("filehealth").scrollIntoView();
+            }
+          }
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          var h = Math.max(document.documentElement.clientHeight, 768);
+          this.mainHeight = h + "px";
+          this.commendHeight = (h - 132) + "px";
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

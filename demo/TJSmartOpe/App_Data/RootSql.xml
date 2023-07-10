@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <Authority Descr="流程权限配置脚本">
+    <SelFlowPriv>
+      <![CDATA[
+        SELECT * FROM tbPrivBit
+      ]]>
+    </SelFlowPriv>
+    <SelFlowPrivInfo>
+      <![CDATA[
+        SELECT * FROM tbPrivBit
+      ]]>
+    </SelFlowPrivInfo>
+    <InsertFlowPriv>
+      <![CDATA[
+        INSERT INTO tbPrivBit (bitnum, bitdesc, flowid) VALUES ('{1}', '{2}', '{3}')
+      ]]>
+    </InsertFlowPriv>
+    <UpdateFlowPriv>
+      <![CDATA[
+        UPDATE tbPrivBit SET
+          bitnum  = '{1}',
+          bitdesc = '{2}',
+          flowid  = '{3}'
+        WHERE bitnum = '{0}'
+    ]]>
+    </UpdateFlowPriv>
+    <DelFlowPriv>
+      <![CDATA[
+        DELETE FROM tbPrivBit
+        WHERE bitnum = '{0}'
+      ]]>
+    </DelFlowPriv>
+    <GetFlowFXCS>
+      <![CDATA[
+      SELECT * FROM tbFlowFXCS order by flowid,nodeid,fxnum
+    ]]>
+    </GetFlowFXCS>
+    <InsertFlowFXCS>
+      <![CDATA[
+        INSERT INTO tbFlowFXCS (fxnum, fxName, nodeid, flowid) VALUES ('{1}', '{2}', '{3}', '{4}')
+      ]]>
+    </InsertFlowFXCS>
+    <UpdateFlowFXCS>
+      <![CDATA[
+        UPDATE tbFlowFXCS SET
+          fxnum  = '{1}',
+          fxName = '{2}',
+          nodeid  = '{3}',
+          flowid  = '{4}'
+        WHERE fxid = '{0}'
+    ]]>
+    </UpdateFlowFXCS>
+    <DelFlowFXCS>
+      <![CDATA[
+        DELETE FROM tbFlowFXCS
+        WHERE fxid = '{0}'
+      ]]>
+    </DelFlowFXCS>
+  </Authority>
+</ROOT>

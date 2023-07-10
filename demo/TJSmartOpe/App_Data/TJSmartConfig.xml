@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <UpdatePG>
+    <![CDATA[true]]>
+  </UpdatePG>
+  <TianJiaXiZhang>
+    <![CDATA[true]]>
+  </TianJiaXiZhang>
+  <GetTLine>
+    <![CDATA[true]]>
+  </GetTLine>
+  <GWS84ToGCJ02>
+    <![CDATA[false]]>
+  </GWS84ToGCJ02>
+  <UpdateTb_th_log>
+    <![CDATA[true]]>
+  </UpdateTb_th_log>
+<UpdateSplitData desc="是否缓存分区信息">
+    <![CDATA[false]]>
+  </UpdateSplitData>
+<GetFibersegLine desc="是否加载光缆信息">
+    <![CDATA[false]]>
+  </GetFibersegLine>
+</ROOT>
+

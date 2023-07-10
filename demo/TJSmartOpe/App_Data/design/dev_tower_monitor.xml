@@ -1,0 +1,524 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="36" desc="表格">
+	<includes>
+		<![CDATA[ /conn/cssfile/mikeNewStyle.css]]>
+	</includes>
+	<inits>
+		<init id="id" type="request" arg="id"></init>
+	</inits>
+	<consts>
+		<const id="dsTowerByLineId" desc="根据线路id获取的杆塔数据" type="2d" length="9"></const>
+		<const id="data_monitor" desc="监测类型数据源" type="2d" length="2" arg="0,全部,3,可视化"></const>
+		<const id="monitorType" desc="监测类型数据源" type="2d" length="2" arg="0,全部,1,杆塔倾斜,2,覆冰,3,可视化,4,微风振动"></const>
+		<const id="sel_monitor" desc="选中的监测类型" type="number" arg="0"></const>
+		<const id="iCheckBox_alert" desc="仅显示告警内容的checkbox" type="bool" arg="false"></const>
+		<const id="serach_keyword" desc="关键字"></const>
+		<const id="table_data" desc="表格数据源" type="2d" length="9"></const>
+		<const id="alert_text" desc="表格列的文字"></const>
+		<const id="show1" desc="是否显示" type="bool" arg="true"></const>
+		<const id="show2" desc="是否显示" type="bool" arg="false"></const>
+		<const id="h0"></const>
+		<const id="floatPage"></const>
+	</consts>
+
+	<ctrls>
+		<div id="div0" desc="根容器">
+			<s width="100%" height="100%" background="url('/i/xyd/main-bg.png')"></s>
+			<div>
+				<a class="ml20 mr20"></a>
+				<div desc="搜索条件容器" ref="divSearch" style="padding:10px 0">
+					<a class="f  ac "></a>
+					<div style="flex:1;flex-wrap:wrap">
+						<a class="f ac"></a>
+						<div>
+							<div style="flex-wrap:wrap">
+								<a class="f ac "></a>
+								<loop id="loop1" from="data_monitor">
+									<div>
+										<a class="normal-item normaltab-normal"></a>
+										<sa class="item_loop1[0] == sel_monitor ? 'normaltab-active' : ''"></sa>
+										<label>
+											<sa value="item_loop1[1]"></sa>
+										</label>
+										<e>
+											<onclick args="item_loop1">
+												<list type="script" value="this.searchTab(item_loop1);"></list>
+											</onclick>
+										</e>
+									</div>
+								</loop>
+							</div>
+						</div>
+					</div>
+					<div>
+						<a class=" f ac"></a>
+						<icheckbox desc="仅显示告警" id="iCheckBox_alert">
+							<a ref="iCheckBox_alert"></a>
+							<sa v-model="iCheckBox_alert"></sa>
+							<label style="color:#5CB4B4">
+								<a value="仅显示告警"></a>
+							</label>
+							<e>
+								<on-change>
+									<list type="script">
+										<value>
+											<![CDATA[
+                        if(this.iCheckBox_alert){
+                            this.serach_keyword = ""
+                        }
+                        this.trimTableData()
+                        ]]>
+										</value>
+									</list>
+								</on-change>
+							</e>
+						</icheckbox>
+
+						<label value="|" style="margin-right:10px"></label>
+						<href>
+							<a href=""></a>
+							<a></a>
+							<label style="color:#5CB4B4">
+								<a value="统计"></a>
+							</label>
+						</href>
+					</div>
+				</div>
+
+				<div ref="searchKey">
+					<a class="input-default mb10"></a>
+					<iinput desc="关键词输入框" from="serach_keyword" style="width:100%">
+						<a placeholder="请输入关键字" class="linear-gradient-span mr10" prefix="ios-search"></a>
+						<e>
+							<on-change>
+								<list type="script" value="this.searchkeyWord();"></list>
+							</on-change>
+						</e>
+					</iinput>
+				</div>
+
+				<div desc="scroll表格容器" style="border-radius: 10px;padding: 15px 10px;background: #11677D50;">
+					<a id="container" class="top-bottom-lineear"></a>
+					<scrolltable id="itable1" desc="iview表格" from="table_data">
+						<a ref="itable1" highlight-field="table_data_3"></a>
+						<sa stripe="true" border="true" click-highlight="true" height="h0" item-height="45"></sa>
+						<icol show="false">
+							<a type="selection" width="60px"></a>
+						</icol>
+						<icol desc="操作" from="">
+							<a width="60" align="center"></a>
+							<img>
+								<a s_margin-left="5px" s_width="18px" s_height="20px" src="/i/sgc/operate/locate.png"></a>
+								<s cursor="pointer"></s>
+								<e>
+									<onclick>
+										<list type="script">
+											<value>
+												<![CDATA[this.locateTower(this.params.row);]]>
+											</value>
+										</list>
+									</onclick>
+								</e>
+							</img>
+						</icol>
+						<icol desc="视频" from="">
+							<a width="60" align="center"></a>
+
+							<img style="width:25px">
+								<a s_width="18px" s_height="18px"></a>
+								<s cursor="pointer"></s>
+								<sa src="videoColor(this.params.row.table_data_2)"></sa>
+								<e>
+									<onclick>
+										<list type="script">
+											<value>
+												<![CDATA[this.locateAlertVideo(this.params.row);]]>
+											</value>
+										</list>
+									</onclick>
+								</e>
+							</img>
+						</icol>
+						<icol desc="杆塔号" from="table_data_1">
+							<a minWidth="100" align="center"></a>
+						</icol>
+						<icol desc="监测类型" from="table_data_2">
+							<a minWidth="150" align="center"></a>
+							<div style="display:flex;">
+								<Poptip id="alertitem" trigger="hover" loop="table_data_2">
+									<a class="alert-poptip"></a>
+									<sa content="showAlertContent(item_alertitem)" class="poptipColor(item_alertitem)"></sa>
+									<img style="width:28px;margin:0 5px;">
+										<sa src="showIcon(item_alertitem)"></sa>
+										<e>
+											<click>
+												<list type="script">
+													<value>
+														<![CDATA[this.locateAlertVideo(this.params.row);]]>
+													</value>
+												</list>
+											</click>
+										</e>
+									</img>
+								</Poptip>
+							</div>
+						</icol>
+					</scrolltable>
+
+				</div>
+			</div>
+		</div>
+	</ctrls>
+	<css>
+		<![CDATA[ 
+            .tableAlert{
+                color:red
+            }
+            .tower-title{
+                font-size:20px;
+                height:49px;
+                width: 272px;
+                background: url("/i/sgc/swxl/titleBg.png");
+                line-height: 49px;
+                text-align: center;
+            }
+            .alert-poptip .ivu-poptip-popper{
+                min-width: 70px;
+            }
+            .alert-poptip .ivu-poptip-popper .ivu-poptip-inner{
+                background:#fff
+            }
+            .poptipAlertColor .ivu-poptip-popper .ivu-poptip-inner .ivu-poptip-body-content-inner{
+                color:red
+            }
+            .normal-item{
+                padding: 3px 15px;
+                margin-right: 15px;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+            .normaltab-normal{
+                border-image: linear-gradient(90deg, #132636, #365d79, #132636) 1;
+                border-top: 1px solid;
+                border-bottom: 1px solid;
+                border-left: 1px solid #132737;
+                border-right: 1px solid #132737;
+                box-shadow: 0 0 3px 1px #34747d inset;
+                color: #fff;
+            }
+            .normaltab-active{
+                border-image: linear-gradient(90deg, #132636, #2f98e4, #132636) 1;
+                border-top: 1px solid;
+                border-bottom: 1px solid;
+                border-left: 1px solid #132737;
+                border-right: 1px solid #132737;
+                box-shadow: 0 0 3px 1px #5091be inset;
+                color: #9EFFFF;
+            }
+        ]]>
+	</css>
+	<scripts>
+		<script event="created">
+			<list type="script">
+				<value>
+					<![CDATA[ 
+        var vm = this
+        this.locateTower = function(row) {
+          ProjectSGC.Map.postMessage({
+            eventType: 'menuopeLine', menuname: 'locationTower', selstate: true, 
+            data: {
+               lineid:this.id,num:parseInt(row.table_data_3)
+            }
+        });
+        }
+        this.locateAlertVideo = function(row){
+            vm.floatPage.invoke("tabContorl",[row.table_data_2])
+        }
+
+        var imgUrl = ["/i/townTest/town1.png","/i/townTest/town2.png","/i/townTest/town3.png",];
+        this.showFloatPage = function() {
+          var vMain= ProjectSGC.Global.getMainObject("vMain");
+          if (!vMain) return;
+          //拼接需要的数据
+          var alertData = [];
+          this.dsTowerByLineId.forEach(item =>{
+            if(item[2] == 3){
+                var alertItem = {};
+                alertItem.id = item[0];
+                alertItem.num = item[6];
+                alertItem.title = item[5];
+                alertItem.msg = item[7] + " " + item[4];
+                alertItem.alertLevel = item[3];
+                alertItem.img = item[8];
+                alertData.push(alertItem);
+            }
+          })
+          if(alertData.length>0){
+            vm.floatPage = vMain.floatPage("dev_tower_slide", {
+              left: 0, top: 0,data:alertData
+           });
+          }
+        }
+		this.destroyFloatpage = function(){
+			var vMain= ProjectSGC.Global.getMainObject("vMain");
+			if (!vMain) return;
+			vMain.destroyFloatPage(this.floatPage);
+		}
+        this.getTowerData = function(){
+            var strId = this.id.toString()
+            var o;
+            var sqlNode = ""
+            if(strId.slice(0,4) === "1201" ){
+                sqlNode = "sgc/env:GetAcLineTowerNo"
+            }else{
+                sqlNode = "sgc/env:GetDcLineTowerNo"
+            }
+            PDP.read("SGC",sqlNode,[this.id],function(res){
+                if(res.check("线路杆塔",true)){
+                    var data1 = res.value
+                    var sortData = []
+                    sortData = data1.sort(function(x,y) { return Ysh.Compare.compareNumber(x[1],y[1]); });
+                    var sqlRequest = [];
+                    if(sortData.length > 0 ){
+                        for(var i = 0 ; i < sortData.length ; i++){
+                            sqlRequest.push({ type: 'select', db: 'SGAPP', sql: "sc/towerMonitor:GetTowerByID", args: [sortData[i][0]]})
+                        }
+                    }else{
+                        return 
+                    }
+                    PDP.exec(sqlRequest,function(res){
+                        
+                        if(!res.check("获取杆塔告警数据",true))
+                            return;
+                        var data2 = res.value
+                        var data3 = [];
+                        for (var i =0 ;i < sortData.length ;i++){
+                            data3[i] = []
+                            if(data2[i].length === 0){
+                                data2[i][0] = ["","","","","",""]
+                            }
+                            data3[i] = sortData[i].concat(data2[i][0])
+                        }
+                        for( var j =0 ;j < data3.length ;j++){
+                            var arr = []
+                            arr[0] = data3[j][0];
+                            arr[1] = data3[j][3];
+                            arr[2] = data3[j][4];
+                            arr[3] = data3[j][5];
+                            arr[4] = data3[j][6];
+                            arr[5] = data3[j][2];
+                            arr[6] = data3[j][1];
+                            arr[7] = data3[j][7];
+                            arr[8] = data3[j][8];
+                            data3[j] = arr;
+                        }
+                        vm.dsTowerByLineId = data3
+                        vm.table_data = vm.mergeData(vm.dsTowerByLineId)
+                        vm.showFloatPage();
+                    })
+                    
+                }
+            })
+        }
+        
+        this.getSearchTab = function(){
+            this.data_monitor = [];
+            this.data_monitor.push([0,"全部"])
+            //过滤出不重复的
+            var arr = []
+            this.dsTowerByLineId.forEach(item =>{
+                if(!arr.includes(item[2])){
+                    arr.push(item[2])
+                }
+            })
+            if(arr.length >0){
+                arr.forEach(item =>{
+                    this.monitorType.forEach(el =>{
+                        if(item ==  el[0]){
+                            this.data_monitor.push(el)
+                        }
+                    })
+                })
+            }
+        }
+        this.mergeData = function(data){
+            var groups = Ysh.Array.groupBy(data, [0], false);
+            var lst = [];
+            for (var i = 0; i < groups.length; i++) {
+                var g = groups[i];
+                lst.push([g.name[0], g.data[0][5], g.data,g.data[0][6]]);
+            }
+            return lst
+        }
+        this.trimTableData = function(){
+            var data = []
+            //this.sel_monitor 默认为0,代表全部
+            if(this.sel_monitor == 0 ){
+                data = this.dsTowerByLineId;
+                this.show1 = true;
+                this.show2 = false;
+            }else{
+                this.show1 = false;
+                this.show2 = true;
+               data = this.dsTowerByLineId.filter(item =>{
+                    return item[2] == this.sel_monitor
+                })
+            }
+            var data1 = [];
+            //iCheckBox_alert true为选中，默认false，不选中
+            if(this.iCheckBox_alert){
+                data1 = data.filter(item =>{
+                    //筛选出告警状态的数据
+                    return item[3] == 1;
+                })
+            }else{
+                data1 = data
+            }
+            this.table_data = this.mergeData(data1);
+        }
+        this.searchTab = function(tab){
+            this.sel_monitor = tab[0];
+            this.serach_keyword = ""
+            this.trimTableData()
+        }
+
+       this.searchkeyWord = function(){
+        /*
+        if(!this.serach_keyword){
+            return
+        }*/
+
+        var  data = this.dsTowerByLineId.filter(item =>{
+           return  [item[4],item[5]].join(",").includes(this.serach_keyword)
+        })
+        this.table_data = this.mergeData(data);
+       }
+       
+       this.alertColor =function(item){ 
+        if(item[3] == 1){
+            return "tableAlert"
+        }else {
+            return ""
+        }
+       }
+       this.videoColor = function(rows){
+        if(!rows || rows.length === 0){
+            return ""
+        }
+        for(var i = 0; i < rows.length ;i++){
+            if(rows[i][2] == 3 && rows[i][3] == 1){
+                return "/i/sgc/swxl/monitorRed.png"
+            }
+        }
+        return "/i/sgc/swxl/monitor.png"
+       }
+       this.showIcon = function(item){
+            var arr = []
+            var str = ""
+            arr = [item[2],item[3]]
+            str = arr.join(",")
+            switch (str) {
+                case '1,0':
+                    return "/i/sgc/swxl/tower.png"
+                    break;
+                case '1,1':
+                    return "/i/sgc/swxl/towerRed.png"
+                    break;
+                case '2,0':
+                    return "/i/sgc/swxl/icing.png"
+                    break;
+                case '2,1':
+                    return "/i/sgc/swxl/icingRed.png"
+                    break;
+                case '3,0':
+                    return "/i/sgc/swxl/video.png"
+                    break;
+                case '3,1':
+                        return "/i/sgc/swxl/videoRed.png"
+                    break;
+                case '4,0':
+                    return "/i/sgc/swxl/weather.png"
+                    break;
+                case '4,1':
+                    return "/i/sgc/swxl/weatherRed.png"
+                    break;
+                default:
+                    return ""
+                }
+           
+       }
+        this.showAlertContent = function(item){
+            return item[4]
+        }
+        this.poptipColor = function(item){
+            if(item[3] === 1){
+                return "poptipAlertColor"
+            }
+        }
+        this.getTowerData()
+       ]]>
+				</value>
+			</list>
+		</script>
+
+		<script event="resize">
+			<list type="script">
+				<value>
+					<![CDATA[ 
+                    var hAll = this.$el.clientHeight;
+                    var hSearch =  this.$refs.divSearch.offsetHeight;
+                    var hSearchKey =  this.$refs.searchKey.offsetHeight;
+                    this.h0 = hAll - hSearch -hSearchKey- 50;
+                ]]>
+				</value>
+			</list>
+		</script>
+		<script event="mounted">
+			<list type="script">
+				<value>
+					<![CDATA[
+		  var vm = this;
+        window.setTimeout(()=>{
+            this.resize()
+        },0)
+        
+        window.addEventListener('message', function (event) {
+
+            if (!event.data)
+                return;
+            var data = event.data;
+			//点击杆塔
+            if ((data.eventSource == "3dLine")||(data.eventType == 5)){
+              vm.$refs.itable1.locate(data.data.num);
+            }
+			//点击切换可视化视频
+			if (data.eventSource == "zxjcVideo"){
+				if(data.data){
+					vm.showFloatPage();
+				}else{
+					vm.destroyFloatpage();
+				}
+			}
+			//点击可视化卡片
+			if (data.eventSource == "monitorCard"){
+				ProjectSGC.Map.postMessage({
+					eventType: 'menuopeLine', menuname: 'locationTower', selstate: true, 
+					data: {
+					   lineid:vm.id,num:parseInt(data.data.num)
+					}
+				});
+				vm.$refs.itable1.locate(data.data.num);
+			}
+            
+        });
+          ]]>
+				</value>
+			</list>
+		</script>
+		<script event="beforeDestroy">
+			<![CDATA[
+			this.destroyFloatpage();
+			]]>
+		</script>
+	</scripts>
+</root>

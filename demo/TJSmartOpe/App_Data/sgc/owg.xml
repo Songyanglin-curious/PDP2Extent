@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetSupplyLines>
+    <![CDATA[select cfgkey,cfgvalue from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_scene_settings where id=12]]>
+  </GetSupplyLines>
+  <GetSrcPaths>
+    <![CDATA[SELECT a.grpindex,a.devicedesc,b.orderindex,b.devicedesc,b.deviceid 
+    FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaName]]><![CDATA[YSH_TPOWERSRCPATH a
+    join ]]><![CDATA[same:SearchDistrictCommonSql:SchemaName]]><![CDATA[YSH_TPOWERSRCPATH b on a.grpindex=b.grpindex and a.orderindex=0 and b.orderindex>0
+    order by a.grpindex, b.orderindex]]>
+  </GetSrcPaths>
+</ROOT>

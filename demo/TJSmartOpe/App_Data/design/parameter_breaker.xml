@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="33" desc="基本信息页面">
+  <inits>
+    <init id="deviceid" desc="设备id" type="request" arg="deviceid"></init>
+    <init id="devicename" type="request" arg="devicename"></init>
+  </inits>
+  <consts>
+    <const id="h0" desc="内容高度" type="int" arg="215"></const>
+    <const id="showtitle" type="string"></const>
+    <const id="showtitle2" type="string"></const>
+  </consts>
+  <datasources>
+    <datasource id="ds_DataOr" desc="设备信息原始数据" db="ConnMain" type="xml" node="sc/device_archives:GetParameterBreaker">
+
+      <cols>
+        <col desc="输入参数0：设备id" from="deviceid"></col>
+      </cols>
+    </datasource>
+    <datasource id="ds_handle" desc="设备信息处理之后数据" db="ConnMain" type="simple">
+      <cols>
+        <col id="col_title1" desc="表头1" name="title1"></col>
+        <col id="col_content1" desc="内容1" name="content1"></col>
+        <col id="col_title2" desc="表头2" name="title2"></col>
+        <col id="col_content2" desc="内容2" name="content2"></col>
+        <col id="col_title3" desc="表头3" name="title3"></col>
+        <col id="col_content3" desc="内容3" name="content3"></col>
+      </cols>
+    </datasource>
+    <datasource id="dsbj" desc="部件" db="ConnMain" type="simple">
+      <sql>
+        <![CDATA[
+            select '本体' as col1,'北京弘通' as col2,'ZBZ-4.0' as col3,'未经更换' as col4,'13年' as col5
+            union all
+            select '套管' as col1,'合并宏源' as col2,'200A' as col3,'2018-10-20' as col4,'1年' as col5
+            union all
+            select '分接开关' as col1,'西安旭日辉' as col2,'XHYX166B' as col3,'2015-07-03' as col4,'4年' as col5
+            union all
+            select '电缆箱' as col1,'泉州七星电器' as col2,'DF8-1' as col3,'2009-08-25' as col4,'10年' as col5
+    ]]>
+      </sql>
+      <cols>
+
+        <col id="col1" desc="col1" name="col1"></col>
+        <col id="col2" desc="col2" name="col2"></col>
+        <col id="col3" desc="col3" name="col3"></col>
+        <col id="col4" desc="col4" name="col4"></col>
+        <col id="col5" desc="col5" name="col5"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <div id="div0" desc="根容器">
+      <a id="aparameter" class='wh100'></a>
+      <div desc="设备基本信息">
+        <a s_height="50px" s_width="100%" s_align-items="center" s_display="flex" s_justify-content="center"></a>
+        <label>
+          <a value="设备基本信息" class="linearGradient"></a>
+        </label>
+      </div>
+      <div>
+        <a s_display="flex" s_align-items="center" s_justify-content="space-between" s_margin-bottom="15px"></a>
+        <div>
+          <a s_align-items="center" s_display="flex" s_justify-content="flex-start" s_margin-bottom="15px" s_margin-top="15px"></a>
+          <label>
+            <a value="" class="smallSign"></a>
+          </label>
+          <label>
+            <sa value="showtitle"></sa>
+          </label>
+        </div>
+        <div>
+          <image>
+            <a src="/i/search/zytype.png" ></a>
+            <e>
+              <onclick>
+                <list type="script" value=""></list>
+              </onclick>
+            </e>
+          </image>
+        </div>
+      </div>
+      <div>
+        <a s_width="100%"></a>
+        <itable desc="iview表格" from="ds_handle">
+          <a class="recordTable" ></a>
+          <sa show-header="false" ></sa>
+          <icol desc="标题1" from="col_title1">
+            <a className="demo-column"></a>
+          </icol>
+          <icol desc="内容1" from="col_content1">
+            <a className="demo-column2"></a>
+          </icol>
+          <icol desc="标题2" from="col_title2">
+            <a className="demo-column"></a>
+          </icol>
+          <icol desc="内容2" from="col_content2">
+            <a className="demo-column2"></a>
+          </icol>
+          <icol desc="标题3" from="col_title3">
+            <a className="demo-column"></a>
+          </icol>
+          <icol desc="内容3" from="col_content3">
+            <a className="demo-column2"></a>
+          </icol>
+        </itable>
+      </div>
+      <div desc="设备部件信息" show="false">
+        <a s_height="50px" s_width="100%" s_align-items="center" s_display="flex" s_justify-content="center"></a>
+        <label>
+          <a value="设备部件信息" class="linearGradient"></a>
+        </label>
+      </div>
+      <div show="false">
+        <div>
+          <a s_display="flex" s_align-items="center" s_justify-content="flex-start" s_margin-bottom="15px"></a>
+          <label>
+            <a value="" class="smallSign"></a>
+          </label>
+          <label>
+            <sa value="showtitle2"></sa>
+          </label>
+          <label>
+            <a value="SF6气体绝缘变压器"></a>
+          </label>
+        </div>
+        <itable desc="iview表格" from="dsbj">
+          <a ref="itable1" s_margin-left="15px" s_margin-right="15px"></a>
+          <sa stripe="true" highlight-row="true" border="true" disabled-hover="true"></sa>
+          <icol desc="部件名称" from="col1">
+          </icol>
+          <icol desc="部件厂家" from="col2">
+          </icol>
+          <icol desc="部件型号" from="col3">
+          </icol>
+          <icol desc="更换日期" from="col4">
+          </icol>
+          <icol desc="使用年限" from="col5">
+          </icol>
+        </itable>
+      </div>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="select" ds="dsbj"></list>
+      <list type="select" ds="ds_DataOr"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          var vm = this, pvm = parent.pdp;
+           vm.showtitle="设备名称："+vm.devicename;
+          vm.showtitle2=vm.devicename+"设备种类："
+          var data=[];
+          var temp=[];
+              data = ['变电站','间隔大类','间隔单元','设备名称','设备类型','电压等级','相别','型号','生产厂家', '出厂日期', '投运日期','设备编码','资产编号','备注',
+              '结构型式','操作机构型式','灭弧介质','端口数量','SF6气体额定压力','SF6气体报警压力','SF6气体闭锁压力',
+              '合闸闭锁操作压力','分闸闭锁操作压力', '额定短路开断电流'
+              ];
+              this.select_ds_DataOr();
+              temp = this.ds_DataOr[0];
+        
+          for(var i=0; i<data.length; i=i+3){
+              var s = [];
+              for(var j=i;j<i+3;j++){
+                  if(j>=data.length){
+                      s.push("");
+                      s.push("");
+                      continue;
+                  }
+                  s.push(data[j]);
+                  s.push(temp[j]);
+              }
+              this.ds_handle.push(s);
+          }
+					]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+					]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

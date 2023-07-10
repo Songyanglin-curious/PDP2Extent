@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="36" desc="资产清单">
+  <includes>
+    <![CDATA[/conn/cssfile/ctrl/itable.css]]>
+  </includes>
+  <inits>
+    <init id="filter" type="request" arg="filter"></init>
+    <init id="col" type="request" arg="col"></init>
+    <init id="order" type="request" arg="order"></init>
+  </inits>
+  <consts>
+    <const id="conditions"></const>
+    <const id="show" type="bool" arg="true"></const>
+    <const id="lst" type="2d" length="30"></const>
+    <const id="hTbl" type="number" arg="300"></const>
+    <const id="loading" type="bool" arg="false"></const>
+    <const id="searchkey"></const>
+    <const id="defSort"></const>
+  </consts>
+  <ctrls>
+    <div id="container" desc="根容器" style="width:100%;height:100%;background-color:#013a46b3">
+      <search from="conditions" xml="shengchan/zc_search"></search>
+      <div ref="divIf">
+        <search-block id="sb0" show="show">
+          <sa conditions="conditions"></sa>
+          <e>
+            <sizechanged>
+              <![CDATA[this.$nextTick(function() {this.resize();});]]>
+            </sizechanged>
+          </e>
+        </search-block>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;height:30px;line-height:30px;">
+          <image style="cursor:pointer;width:51px;height:14px;margin-left:10px;">
+            <sa src="show"></sa>
+            <sf from="{0}?'︽收起':'︾展开'" src="{0}?'/i/sgc/shengchan/foldbtn.png':'/i/sgc/shengchan/expandbtn.png'"></sf>
+            <e>
+              <onclick>
+                <list type="script" value="this.changeExpand();"></list>
+              </onclick>
+            </e>
+          </image>
+          <div class="search-item" style="justify-content:center;margin-right:10px;">
+            <label type="button" class="button selected" value="重置">
+              <e>
+                <onclick>
+                  <list type="script" value="this.resetConditions();"></list>
+                </onclick>
+              </e>
+            </label>
+          </div>
+        </div>
+      </div>
+      <!-- 共用一个 conditions 上面点击后会修改 conditions 引发下边useful 监听的触发-->
+      <div style="padding:10px;background-color:#013f4c">
+        <a id="container"></a>
+        <div ref="divResult">
+          <search-useful id="result" title="资产查询>" ref="search">
+            <sa conditions="conditions"></sa>
+            <e>
+              <onchange>
+                <list type="script" value="this.search();"></list>
+              </onchange>
+            </e>
+          </search-useful>
+        </div>
+        <pagetable from="lst" v-loading="'loading'">
+          <a highlight-field="lst_0"></a>
+          <sa height="hTbl" border="true" items="20" stripe="true" click-highlight="true"></sa>
+          <e>
+            <on-row-dblclick>
+              <![CDATA[this.dblclick(row,index);]]>
+            </on-row-dblclick>
+          </e>          
+          <icol desc="序号" type="index" width="50px" show="false"></icol>
+          <icol desc="资产编码" from="lst_1" sortable="1">
+            <search-text>
+              <sa text="lst_1" keyword="searchkey"></sa>
+            </search-text>
+          </icol>
+          <icol desc="资产名称" from="lst_2" sortable="1">
+            <search-text>
+              <sa text="lst_2" keyword="searchkey"></sa>
+            </search-text>
+          </icol>
+          <icol desc="所属站线名称" from="lst_3" sortable="1">
+            <search-text>
+              <sa text="lst_3" keyword="searchkey"></sa>
+            </search-text>
+          </icol>
+          <icol desc="资产数量" from="lst_4" sortable="1">
+          </icol>
+          <icol desc="资产状态" from="lst_5" sortable="1" dtype="number">
+          </icol>
+          <icol desc="资产原值,(万元)" format="wan" from="lst_6" sortable="1" dtype="number" sortType="this.initAsset"></icol>
+          <icol desc="资产净值,(万元)" format="wan" from="lst_7" dtype="number" sortType="this.netAsset">
+            <a sortable="1"></a>
+          </icol>
+          <icol desc="资产残值,(万元)" format="wan" from="lst_17" dtype="number" sortType="this.salvageAsset">
+            <a sortable="1"></a>
+          </icol>
+          <icol desc="净残值率,(%)" from="lst_8" sortable="1" dtype="number"></icol>
+          <icol desc="折旧年限" from="lst_9" sortable="1" dtype="number" sortType="this.depreciableYear">
+          </icol>
+          <icol desc="累计折旧,(万元)" format="wan" from="lst_10" sortable="1" dtype="number" sortType="this.accumulatedAepreciation"></icol>
+          <icol desc="开始计提,折旧日期" from="lst_11" format="111000" sortable="1"></icol>
+          <icol desc="完成提足月" from="lst_12" sortable="1" format="[y].[m]" sortType="this.wctzy"></icol>
+          <icol desc="到期/超期,天数" from="lst_12" key="dqts" sortable="1" dtype="number" sortkey="lst_12">
+            <label from="lst_12">
+              <sf from="page.getDays({0},true)"></sf>
+            </label>
+          </icol>
+          <icol show="false" desc="折旧超期天数" from="lst_12" key="cqts" sortable="1" dtype="number" sortkey="-lst_12">
+            <label from="lst_12">
+              <sf from="page.getDays({0},false)"></sf>
+            </label>
+          </icol>
+          <icol desc="资产增加方式" from="lst_15" sortable="1"></icol>
+          <icol desc="资产存放地点" from="lst_16" sortable="1"></icol>
+        </pagetable>
+      </div>
+    </div>
+  </ctrls>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsearch" part="zc"></list>
+      <list type="file" value="dsearch" part="base"></list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+          /*this.resize();*/
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

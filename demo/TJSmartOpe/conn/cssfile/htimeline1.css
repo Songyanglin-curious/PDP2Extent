@@ -1,0 +1,111 @@
+﻿.htl {
+    font-size:0px;
+    position:relative;
+    background-color:transparent;
+}
+
+.htllinerow {
+    display: inline-flex;
+    align-items: center;
+    height: 1.5rem;
+    font-size: 0;
+}
+
+.htlitem {
+}
+
+    .htlitem:after {
+        content: url(/i/sgc/3k/rail.png);
+        position: absolute;
+        left: 10px;
+        right: auto;
+        bottom: -5px;
+        height: 30px;
+        width: 100px;
+        z-index:1111111;
+        color:red;
+    }
+
+.htlextendrow {
+    position: relative;
+    height: 5rem;
+    font-size:0;
+}
+
+.htltextrow {
+    height: 2rem;
+    font-size: 1rem;
+    line-height:2rem;
+    position:relative;
+}
+
+.htlextend {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
+    width:50px;
+}
+
+.htltext {
+    position: absolute;
+    display:inline-block;
+    height: 100%;
+}
+
+.htltext span {
+    left:-50%;
+    position:relative;
+}
+
+.htllink {
+    width:50px;
+    display:inline-block;
+}
+
+.htllinkimg {
+    position:absolute;
+    z-index:21;
+}
+
+.htllinkimg img {
+    margin-left:-16px;
+}
+
+.htlgrouprow {
+    position: absolute;
+    z-index: -2;
+    left: 0px;
+    top: 0px;
+    height: 11rem;
+    font-size: 1rem;
+}
+
+.htlgroup {
+    position: absolute;
+    height: calc(100% - 10px);
+    bottom: 5px;
+    background-color: #ccc;
+    border-radius: 5px 5px;
+    display: inline-flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom:5px;
+    color:#aaaaaa;
+}
+
+.dlg .htlgroup {
+    background-color: white;
+    border: 1px solid #f4f4f4;
+}
+
+.htlgroupitem
+{
+    height:1rem;
+    line-height:1rem;
+}
+
+.htlgroupitem img {
+    margin-right:2px;
+}

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds0><![CDATA[
+        select HAPPENTIME,DEVICENAME||'跳闸' AS EVENTNAME,LOSTSIGNAL 
+        from "MONITORSIGNAL".TJUMPMSG{{3}}
+        WHERE DEVICENAME={0} AND happentime>={{1}} AND happentime<={{2}}
+        ORDER BY happentime DESC
+        ]]></ds0></ROOT>

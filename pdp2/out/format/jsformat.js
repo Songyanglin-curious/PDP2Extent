@@ -7,7 +7,7 @@ const format_1 = require("../utils/format");
 const prettier = require("prettier/standalone");
 // 引入js解析器插件
 const parserBabel = require("prettier/parser-babel");
-function jsFormat(xmlDomObj) {
+function jsFormat(edit, xmlDomObj) {
     const editor = vscode.window.activeTextEditor;
     if (!editor)
         return; // 检查编辑器是否激活
@@ -25,7 +25,7 @@ function jsFormat(xmlDomObj) {
         }
     }
     // 创建一个WorkspaceEdit对象
-    const edit = new vscode.WorkspaceEdit();
+    // const edit = new vscode.WorkspaceEdit();
     const tabSize = editor.options.tabSize ? Number(editor.options.tabSize) : 4;
     for (let i = 0; i < cdatas.length; i++) {
         const cdata = cdatas[i];
@@ -40,14 +40,13 @@ function jsFormat(xmlDomObj) {
         let endPosition = document.positionAt(cdataParent.endTag.startPosition);
         let range = new vscode.Range(startPosition, endPosition); // 创建一个范围对象
         let formatStr = formatJsString(value, startTagPosition, endPosition, tabSize);
-        console.log(formatStr);
         edit.replace(document.uri, range, formatStr);
     }
     // 使用工作区应用编辑器对象来执行TextEdit数组中的所有操作
     // vscode.workspace.applyEdit(new vscode.WorkspaceEdit().set(document.uri, textEdits));
-    vscode.workspace.applyEdit(edit).then(() => {
-        return edit;
-    });
+    // vscode.workspace.applyEdit(edit).then(() => {
+    //     return edit;
+    // });
 }
 exports.default = jsFormat;
 function formatJsString(text, startPosition, endPosition, tabSize) {

@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>时间选择</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <meta content="MSHTML 6.00.2600.0" name="GENERATOR">
+    <style>
+		a:link {  text-decoration: none; color: #0000ff}
+		a:visited {  text-decoration: none; color: #0000ff}
+		a:active {  text-decoration: none}
+		a:hover {  text-decoration: none; color: #ff6600}
+		td { vertical-align:middle }
+	</style>
+</head>
+<body bgcolor='#D6DFF7' onload="fload()" scroll="no">
+    <script language="javascript">
+        function fload() {
+            function showTime(fmt, bit) { if (!fmt) return true; if (fmt.length < 3) return false; return fmt.substr(fmt.length - bit, 1) == "1"; }
+            var aa = window.dialogArguments;
+            var tm = "";
+            var fmt = "";
+            if (aa) {
+                tm = getWholeTime(aa[0]);
+                fmt = aa[1];
+            }
+            var h = 0, m = 0, s = 0;
+            if (tm == "") {
+                var dt = new Date();
+                if (showTime(fmt, 3)) {
+                    h = dt.getHours();
+                } else {
+                    tdHour.style.display = "none";
+                }
+                if (showTime(fmt, 2)) {
+                    m = dt.getMinutes();
+                } else {
+                    tdMinute.style.display = "none";
+                }
+                if (showTime(fmt, 1)) {
+                    s = dt.getSeconds();
+                } else {
+                    tdSecond.style.display = "none";
+                }
+            }
+            else {
+                if (showTime(fmt, 3)) {
+                    h = tm.substr(0, 2);
+                } else {
+                    tdHour.style.display = "none";
+                }
+                if (showTime(fmt, 2)) {
+                    m = tm.substr(2, 2);
+                } else {
+                    tdMinute.style.display = "none";
+                }
+                if (showTime(fmt, 1)) {
+                    s = tm.substr(4, 2);
+                } else {
+                    tdSecond.style.display = "none";
+                }
+            }
+            selectTime(h, m, s);
+        }
+
+        function getWholeTime(t) {
+            if (typeof (t) == "undefined") return "";
+            try {
+                var str = "";
+                var arr = t.split(':');
+                var a = parseInt(arr[0], 10);
+                var b = parseInt(arr[1], 10);
+                var c = parseInt(arr[2], 10);
+                if (a >= 0 && a < 24 && b >= 0 && b < 60 && c >= 0 && c < 60) {
+                    a = a > 9 ? a : "0" + a;
+                    b = b > 9 ? b : "0" + b;
+                    c = c > 9 ? c : "0" + c;
+                    return a + "" + b + "" + c;
+                }
+                return "";
+            } catch (e) {
+                return "";
+            }
+        }
+
+        function getTimeStr(h, m, s) {
+            var ret = "";
+            if ((h < 0) || (h > 23) || (m < 0) || (m > 59) || (s < 0) || (s > 59))
+                return "";
+            if (h < 10)
+                ret = "0";
+            ret += (h + ":");
+            if (m < 10)
+                ret += "0";
+            ret += (m + ":");
+            if (s < 10)
+                ret += "0";
+            return ret + s;
+        }
+
+        function selectTime(h, m, s) {
+            hour.selectedIndex = h;
+            minute.selectedIndex = m;
+            second.selectedIndex = s
+        }
+
+        function fkeydown() {
+            if (event.keyCode == 27) {
+                event.returnValue = null;
+                window.returnValue = null;
+                window.close();
+            }
+        }
+
+        function onSelectTime() {
+            window.returnValue = getTimeStr(hour.value, minute.value, second.value);
+            window.close();
+        }
+
+        document.onkeydown = fkeydown;
+    </script>
+    <table style="width:100%;height:100%;"><tr><td style="text-align:center;">
+    <table>
+        <tr valign="middle" height="25px">
+            <td colspan="2" style="text-align:center;>
+                <span id="tdHour">
+                    <select id="hour">
+                        <option value="0">00点</option>
+                        <option value="1">01点</option>
+                        <option value="2">02点</option>
+                        <option value="3">03点</option>
+                        <option value="4">04点</option>
+                        <option value="5">05点</option>
+                        <option value="6">06点</option>
+                        <option value="7">07点</option>
+                        <option value="8">08点</option>
+                        <option value="9">09点</option>
+                        <option value="10">10点</option>
+                        <option value="11">11点</option>
+                        <option value="12">12点</option>
+                        <option value="13">13点</option>
+                        <option value="14">14点</option>
+                        <option value="15">15点</option>
+                        <option value="16">16点</option>
+                        <option value="17">17点</option>
+                        <option value="18">18点</option>
+                        <option value="19">19点</option>
+                        <option value="20">20点</option>
+                        <option value="21">21点</option>
+                        <option value="22">22点</option>
+                        <option value="23">23点</option>
+                    </select>
+                </span><span id="tdMinute"><select id="minute">
+                    <option value="0">00分</option>
+                    <option value="1">01分</option>
+                    <option value="2">02分</option>
+                    <option value="3">03分</option>
+                    <option value="4">04分</option>
+                    <option value="5">05分</option>
+                    <option value="6">06分</option>
+                    <option value="7">07分</option>
+                    <option value="8">08分</option>
+                    <option value="9">09分</option>
+                    <option value="10">10分</option>
+                    <option value="11">11分</option>
+                    <option value="12">12分</option>
+                    <option value="13">13分</option>
+                    <option value="14">14分</option>
+                    <option value="15">15分</option>
+                    <option value="16">16分</option>
+                    <option value="17">17分</option>
+                    <option value="18">18分</option>
+                    <option value="19">19分</option>
+                    <option value="20">20分</option>
+                    <option value="21">21分</option>
+                    <option value="22">22分</option>
+                    <option value="23">23分</option>
+                    <option value="24">24分</option>
+                    <option value="25">25分</option>
+                    <option value="26">26分</option>
+                    <option value="27">27分</option>
+                    <option value="28">28分</option>
+                    <option value="29">29分</option>
+                    <option value="30">30分</option>
+                    <option value="31">31分</option>
+                    <option value="32">32分</option>
+                    <option value="33">33分</option>
+                    <option value="34">34分</option>
+                    <option value="35">35分</option>
+                    <option value="36">36分</option>
+                    <option value="37">37分</option>
+                    <option value="38">38分</option>
+                    <option value="39">39分</option>
+                    <option value="40">40分</option>
+                    <option value="41">41分</option>
+                    <option value="42">42分</option>
+                    <option value="43">43分</option>
+                    <option value="44">44分</option>
+                    <option value="45">45分</option>
+                    <option value="46">46分</option>
+                    <option value="47">47分</option>
+                    <option value="48">48分</option>
+                    <option value="49">49分</option>
+                    <option value="50">50分</option>
+                    <option value="51">51分</option>
+                    <option value="52">52分</option>
+                    <option value="53">53分</option>
+                    <option value="54">54分</option>
+                    <option value="55">55分</option>
+                    <option value="56">56分</option>
+                    <option value="57">57分</option>
+                    <option value="58">58分</option>
+                    <option value="59">59分</option>
+                </select>
+                </span><span id="tdSecond"><select id="second">
+                    <option value="0">00秒</option>
+                    <option value="1">01秒</option>
+                    <option value="2">02秒</option>
+                    <option value="3">03秒</option>
+                    <option value="4">04秒</option>
+                    <option value="5">05秒</option>
+                    <option value="6">06秒</option>
+                    <option value="7">07秒</option>
+                    <option value="8">08秒</option>
+                    <option value="9">09秒</option>
+                    <option value="10">10秒</option>
+                    <option value="11">11秒</option>
+                    <option value="12">12秒</option>
+                    <option value="13">13秒</option>
+                    <option value="14">14秒</option>
+                    <option value="15">15秒</option>
+                    <option value="16">16秒</option>
+                    <option value="17">17秒</option>
+                    <option value="18">18秒</option>
+                    <option value="19">19秒</option>
+                    <option value="20">20秒</option>
+                    <option value="21">21秒</option>
+                    <option value="22">22秒</option>
+                    <option value="23">23秒</option>
+                    <option value="24">24秒</option>
+                    <option value="25">25秒</option>
+                    <option value="26">26秒</option>
+                    <option value="27">27秒</option>
+                    <option value="28">28秒</option>
+                    <option value="29">29秒</option>
+                    <option value="30">30秒</option>
+                    <option value="31">31秒</option>
+                    <option value="32">32秒</option>
+                    <option value="33">33秒</option>
+                    <option value="34">34秒</option>
+                    <option value="35">35秒</option>
+                    <option value="36">36秒</option>
+                    <option value="37">37秒</option>
+                    <option value="38">38秒</option>
+                    <option value="39">39秒</option>
+                    <option value="40">40秒</option>
+                    <option value="41">41秒</option>
+                    <option value="42">42秒</option>
+                    <option value="43">43秒</option>
+                    <option value="44">44秒</option>
+                    <option value="45">45秒</option>
+                    <option value="46">46秒</option>
+                    <option value="47">47秒</option>
+                    <option value="48">48秒</option>
+                    <option value="49">49秒</option>
+                    <option value="50">50秒</option>
+                    <option value="51">51秒</option>
+                    <option value="52">52秒</option>
+                    <option value="53">53秒</option>
+                    <option value="54">54秒</option>
+                    <option value="55">55秒</option>
+                    <option value="56">56秒</option>
+                    <option value="57">57秒</option>
+                    <option value="58">58秒</option>
+                    <option value="59">59秒</option>
+                </select>
+                </span>
+            </td>
+        </tr>
+        <tr valign="middle" height="25px">
+            <td colspan="2" align="center" style='font-size: 12px'>
+                <a href="#" onclick='onSelectTime();'>确定</a> &nbsp;<a href="#" onclick='window.returnValue="00:00:00";window.close();'>清空</a>
+                &nbsp;<a href="#" onclick='window.close();'>取消</a>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" style='font-size: 14px;'>
+                <a href="#" onclick='window.returnValue=currtime.innerText;window.close();'>选择</a>
+            </td>
+            <td align="left" style='font-size: 14px;color:Red'>
+                <div id='currtime'>
+                </div>
+            </td>
+        </tr>
+    </table>
+    </td></tr></table>
+</body>
+
+<script language="javascript"><!--
+    function getCurrTime() {
+        var dt = new Date();
+        currtime.innerText = getTimeStr(dt.getHours(), dt.getMinutes(), dt.getSeconds());
+        setTimeout("getCurrTime()", 1000);
+    }
+	getCurrTime();
+--></script>
+
+</html>

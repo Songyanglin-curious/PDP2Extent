@@ -1,0 +1,10 @@
+<public:component>
+<script type="text/javascript">
+
+    if (typeof Ysh != "undefined") {
+        Ysh.Web.Event.attachEvent(element, "mouseover", function () { event.srcElement.className = "btnOver"; });
+        Ysh.Web.Event.attachEvent(element, "mouseout", function () { event.srcElement.className = "btnDefault"; });
+        Ysh.Web.Event.attachEvent(element, "focus", function () { event.srcElement.blur(); });
+    }
+</script>
+</public:component>

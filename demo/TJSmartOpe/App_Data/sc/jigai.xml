@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+    <!-- 获得变电站 -->
+    <GetJigaiData>
+        <![CDATA[
+        select '项目编码' ,project_num ,'项目库别' , project_distinct,'项目流程状态' ,project_process_state,'项目类型' ,project_type ,
+        '项目开始时间' ,project_start_time,'项目结束时间' ,project_end_time,'项目起始年度' , project_start_year,'专业类别' , professional_category, 
+         '出资省单位' , contributi_province_unit,'总投资' ,total,'当年资金' ,current_year_totaal,'资产性质' ,assets_attr,
+         '实施市单位' ,executive_city_unit ,'实施省单位',executive_province_unit,'编辑部门名称' ,dept_name,'电压等级' ,voltage_class,
+         'OBJ_ID' ,obj_id,'专业细分' ,professional_segmentation,'改造目的' , retrofit_aim ,'改造原因' ,retrofit_cause,
+         '立项依据',create_project_basic,
+         '项目内容',project_content,
+          project_name
+         FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_jigai
+          WHERE  obj_id  = {0}
+        ]]>
+    </GetJigaiData>
+
+    <!--         select '项目编码' ,'2104GY20008A','项目库别' ,'技改年度计划','项目流程状态' ,'已批复','项目类型' ,'限下',
+        '项目开始时间' ,'2022-01-01 00:00:00','项目结束时间' ,'2022-12-31 00:00:00','项目起始年度' ,'2022','专业类别' ,'电网一次', 
+         '出资省单位' ,'华北分部','总投资' ,'329.67','当年资金' ,'282.35','资产性质' ,'分部',
+         '实施单位' ,'国网河北检修公司','实施省单位' ,'国网河北省电力公司','编辑部门名称' ,'运维检修部','电压等级' ,'交流1000kV',
+         'OBJ_ID' ,'149b856d768afa98957a8ca4de017b14965f010ca0','专业细分' ,'变电交流','改造目的' ,'提升电网安全稳定水平','改造原因' ,'',
+         '立项依据','1.1.1.4 变压器容量不满足N-1要求的，宜安排更换。',
+         '项目内容','（一）设备现状：1000kV保定站1000kV1号和2号主变,型号:ODFPS-1000000/1000,中国保定天威保变电气有限公司生产,2016年11月投入运行。近5年无技改大修履历。（二）存在问题：1000kV变压器主体变手动排油阀设置在本体底部,变压器发生火灾时,变压器油通过破口发生喷溅、溢出,现场运维人员无法靠近变压器手动启动排油阀,不利于初期火灾快速有效控制。在特高压变压器主体变设置可手动远程启动应急排油系统(调补变暂不考虑)。一方面能够及时排除变压器内部存油,另一方面可有效减少因热膨胀效应而溢出的油量,有利于降低火灾扑救难度。（三）方案规模：停电对1000kV保定站1000kV1号和2号主变主体变开展应急排油系统改造,实现远程操作电动排油功能,总工期12天,其中非停电工期8天,停电工期4天。',
+         '国网河北检修公司1000kV保定站1000kV1号和2号主变加装快速排油系统' -->
+</ROOT>

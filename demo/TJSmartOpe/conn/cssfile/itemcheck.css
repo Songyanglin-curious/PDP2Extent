@@ -1,0 +1,123 @@
+﻿.abs
+{
+    z-index:1;
+	left:0px;
+	top:0px;
+	position:absolute;
+	width:100%;
+	height:100%;
+}
+.checklist
+{
+    z-index:1;
+    background:#ffffE1;
+    position:absolute;            
+    text-align:left;
+    padding:10px 10px 10px 10px;
+    border:1px #ccc solid;
+}
+.checklist ul
+{  
+    list-style: none;
+    margin: 0px;  
+}
+.checklist li
+{
+    list-style: none;             
+    margin: 0px;           
+    line-height:25px;
+    font-weight:bold;             
+}
+.checklist span
+{
+	margin: 0px;           
+    line-height:25px;
+    padding:4px 0px 2px 0px;	
+}    
+.error
+{
+	color:Red;
+}	
+.tip-img
+{
+    cursor:hand;
+}
+a.his
+{
+			
+	text-decoration:none;
+	color:#a31515;	
+}
+a.his:hover
+{
+	color:#a31515;	
+}        
+a.his:link
+{
+	color:#a31515;	
+}
+		
+fieldset
+{
+	width:100%;
+	margin-bottom:5px;
+	padding-bottom:5px;
+	padding-left:5px;
+	margin-top:5px;
+}
+his
+{
+	color:#a31515;	
+} 
+	
+/*提示文字样式*/
+#HintMsg
+{
+	width:271px;
+	position:absolute;
+	display:none;
+	z-index:999999999;
+}
+#HintMsg .HintTop
+{
+	height:9px;
+	background:url(/i/hintbg1.gif) no-repeat;
+	overflow:hidden;
+}
+#HintMsg .HintInfo
+{
+	padding:0 5px;
+	border-left:1px solid #000;
+	border-right:1px solid #000;
+	background:#FFFFE1;
+	line-height:1.5em;
+}
+#HintMsg .HintInfo b
+{
+	display:block;
+	margin-bottom:6px;
+	padding-left:15px;
+	background:url(/i/hint.gif) left center no-repeat;
+	height:13px;
+	line-height:16px;
+}
+#HintMsg .HintInfo b span
+{
+	display:block;
+	float:right;
+	text-indent:-9999px;
+	background:url(/i/close2.gif) no-repeat;
+	width:12px;
+	height:12px;
+	cursor:pointer;
+}
+#HintMsg .HintFooter
+{
+	height:22px;
+	background:url(/i/hintbg2.gif) no-repeat;
+}
+p
+{
+	margin:0px;
+	padding:4px 0px 3px 0px;
+}

@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;/conn/jsfile/shengchan/data.js" desc="设备投运时间统计">
+  <inits></inits>
+  <consts>
+    <const id="option" type="object" arg=""></const>
+    <const id="counts" type="object" arg=""></const>
+    <const id="devtypes" type="2d" length="2" arg="ALL,全部"></const>
+    <const id="seldevtype" type="string" arg="ALL"></const>
+    <const id="hEarch"></const>
+    <const id="newTop" type="object[]" fields="deviceName,station,useTime,useYear"></const>
+    <const id="longUseTop" type="object[]" fields="deviceName,station,useTime,useYear"></const>
+  </consts>
+  <datasources>
+    <datasource type="load" id="devices" desc="设备运行时间" node="sc/sbzc:GetDevices">
+      <cols>
+        <col id="col_station" name="station" desc="station"></col>
+        <col id="col_deviceName" name="deviceName" desc="deviceName"></col>
+        <col id="col_type" name="type" desc="type"></col>
+        <col id="col_voltage" name="voltage" desc="voltage"></col>
+        <col id="col_model" name="model" desc="model"></col>
+        <col id="col_manufacturer" name="manufacturer" desc="manufacturer"></col>
+        <col id="col_useTime" name="useTime" desc="useTime"></col>
+      </cols>
+    </datasource>
+  </datasources>
+  <ctrls>
+    <title-div ref="divContent" id="ttt">
+      <a title='设备投运时间统计' title1="单位：个"></a>
+      <sa content-style='{ }'></sa>
+      <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+      <div>
+        <a ref="divTabs" class="tabs-wrap"></a>
+        <yshtab id="yshtab1" desc="标签卡" from="seldevtype" source="devtypes" >
+          <a tabstyle="nbTab aequilateTabs" ></a>
+          <e>
+            <onclick>
+              <list type="script" value="this.refresh();"></list>
+            </onclick>
+          </e>
+        </yshtab>
+      </div>
+      <div>
+        <ecommonchart id="echart01" desc="图表" >
+          <sa option="option" s_height="hEarch"></sa>
+        </ecommonchart>
+      </div>
+      <div ref="divTable" style=" display: flex;justify-content: space-between;align-items: start;">
+        <div style="width: 50%;padding:0 5px">
+          <label value="最新设备top5" style="display:block">
+            <a class="tab-title"></a>
+          </label>
+          <div style="height:300px">
+            <a id="container"></a>
+            <itable from="newTop" style="width:100%">
+              <a item-height="35"   items="5" class="smalltable"></a>
+              <sa border="true" stripe="true"></sa>
+              <icol minWidth="120" desc="设备名称" from="deviceName"></icol>
+              <icol minWidth="80" desc="所属变电站" from="station"></icol>
+              <icol minWidth="80" desc="投运时间" from="useTime" format="111000"></icol>
+              <icol minWidth="50" desc="运行年限" from="useYear"></icol>
+            </itable>
+          </div>
+        </div>
+        <div style="width: 50%;padding:0 5px">
+          <label value="最久设备top5" style="display:block">
+            <a class="tab-title"></a>
+          </label>
+          <div style="height:300px">
+            <a id="container"></a>
+            <itable from="longUseTop" style="width:100%">
+              <a item-height="35"  items="5" class="smalltable"></a>
+              <sa border="true" stripe="true"></sa>
+              <icol minWidth="120" desc="设备名称" from="deviceName"></icol>
+              <icol minWidth="80" desc="所属变电站" from="station"></icol>
+              <icol minWidth="80" desc="投运时间" from="useTime" format="111000"></icol>
+              <icol minWidth="50" desc="运行年限" from="useYear"></icol>
+            </itable>
+          </div>
+
+        </div>
+      </div>
+    </title-div>
+  </ctrls>
+  <css>
+    <![CDATA[
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsbzc" part="tobig"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+            this.getTabs = function(){
+              var devtypes = [['ALL','全部']];
+              var tabs = [];
+              /*
+              this.devices.forEach(item => {
+                if(!tabs.includes(item.type)){
+                  tabs.push(item.type)
+                }
+              })*/
+              var temp = [];
+              tabs = ProjectShanxi.allDevtypes;
+              tabs.forEach(item => {
+                temp = [];
+                temp = [item,item]
+                devtypes.push(temp);
+              })
+              this.devtypes = devtypes;
+ 
+            }
+
+            this.handelDevices = function(){
+              this.devices.forEach(item => {
+                item['year'] =  item.useTime ? Ysh.Time.formatString(Ysh.Time.toString(item.useTime),'100000') + '年' : '未登记时间'
+                item['useYear'] =  Ysh.Time.diff("y",new Date(item.useTime),new Date())
+              })
+
+            }
+            this.refresh = function(){
+              var subDevices = [];
+              if(this.seldevtype == 'ALL'){
+                subDevices = this.devices;
+              }else{
+                this.devices.forEach(item => {
+                  if(this.seldevtype == item.type ){
+                    subDevices.push(item)
+                  }
+                })
+              }
+              this.newTop = subDevices.slice(-5);
+              this.longUseTop = subDevices.slice(0,5)
+              this.getOption(subDevices)
+            }
+            this.getOption = function(subDevices){
+              var xAxis = [];
+              var start = this.devices[0].useTime
+              var end = new Date();
+              for (var tm = new Date(start); tm <= end; tm = Ysh.Time.add('y', 1, tm)) {
+                xAxis.push(Ysh.Time.formatString(Ysh.Time.toString(tm),'100000') + '年')
+              }
+              var yearCounts = {};
+              subDevices.forEach(item => {
+                yearCounts[item.year] = !yearCounts[item.year] ? 1 : yearCounts[item.year] +1;
+              })
+              var years = Object.keys(yearCounts);
+              var yAxis = [];
+              years.forEach(key => {
+                yAxis.push([key,yearCounts[key]])
+              })
+              var seriesName = this.seldevtype == 'ALL' ? '所有设备' : this.seldevtype
+              this.option = ProjectShanxi.Curve.getScatter2DOption(seriesName,xAxis,yAxis); 
+            }         
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="resize">
+      <list type="script">
+        <value>
+          <![CDATA[ 
+                var hAll = this.$el.clientHeight;
+                var htabs =  this.$refs.divTabs.offsetHeight || 0;
+                var htable =  this.$refs.divTable.offsetHeight;
+                this.hEarch = hAll  - htabs -htable-10-60  + 'px';
+              ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+          <![CDATA[
+         this.load_devices(true,() => {
+          this.getTabs();
+          this.handelDevices();
+          this.refresh();
+          this.$nextTick(function(){
+            this.resize();
+          })
+        });
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

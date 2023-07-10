@@ -1,0 +1,445 @@
+﻿/*
+v=1.21.604.1 
+mike
+通用样式表*/
+
+/*user agent stylesheet reset*/
+:root {
+    --base-view-param: 120; /*视窗基数，1920*1080分辨率下16：9是120*/
+    --base-background-color: #fff;
+    --base-font-size: 1.4rem; /*基础字号*/
+    --base-color: #fff;
+    --base-space: 1.5rem; /*基本间隔*/
+    --h1-font-size: 2.2rem;
+    --h1-margin: 2rem;
+    --h3-font-size: 1.8rem;
+    --h3-margin: 1.8rem;
+    /*滚动条*/
+    --scrollbar-thumb-bg: #d6d6d6; /*滚动条滑块儿颜色*/
+    --scrollbar-track-bg: #4b4b4b; /*滚动条滑道颜色*/
+    /*ivu-table样式配置区*/
+    --ivu-table-bg: #242017; /*itable背景色*/
+    --ivu-table-th-bg: #4D412B; /*th背景色*/
+    --ivu-table-td-bg: #242017; /*td背景色*/
+    --ivu-table-tr2n-td-bg: #0C0B07; /*隔行变色时偶数行单元格背景色*/
+    --ivu-table-hover-bg: #ebf7ff; /*鼠标悬浮时行背景色*/
+    --ivu-table-font-size: 1.4rem; /*表格内容字号*/
+    --ivu-table-row-height: 38px; /*表格行高*/
+    --ivu-table-color: white; /*表格内容字颜色*/
+    --ivu-table-border-color: #695B3E; /*表格边框颜色*/
+    /*imodal弹框*/
+    --ivu-modal-bg: #fff; /*弹窗背景*/
+    --ivu-modal-header-bg: #fff; /*弹窗标题部分背景颜色*/
+    --ivu-modal-header-color: #17233d; /*弹窗标题部分文字颜色*/
+    /*表单控件*/
+    --btn-default-bg: #061920; /*按钮默认背景色*/
+    --btn-default-color: #fff; /*按钮默认字颜色*/
+    --btn-default-border-color: #226A70; /*按钮默认边框颜色*/
+    --btn-default-hover-bg: #226A70; /*按钮默认鼠标悬浮背景色*/
+    --btn-default-hover-color: #fff; /*按钮默认鼠标悬浮字颜色*/
+    --btn-default-sel-bg: #19be6b; /*按钮默认选中背景色*/
+    /*--ivu-formcomp目前作用于iinput、iselect*/
+    --ivu-formcomp-width-small: calc(var(--base-view-param) * 0.4px); /*表单控件框小号*/
+    --ivu-formcomp-width-medium: calc(var(--base-view-param) * 1px); /*表单控件框中号(默认)*/
+    --ivu-formcomp-width-big: calc(var(--base-view-param) * 1.6px); /*表单控件框大号*/
+    --ivu-formcomp-height: 3.2rem; /*表单控件框高度*/
+    --ivu-formcomp-bg: transparent; /*#061920; 表单控件框背景色*/
+    --ivu-formcomp-border-color: #585858; /*transparent表单控件框边框颜色*/
+    --ivu-formcomp-color: var(--base-color); /*表单控件框字颜色*/
+    --ivu-formcomp-font-size: var(--base-font-size); /*表单控件框字号*/
+    --ivu-formcomp-focus-border-color: #57a3f3; /*表单控件框focus时边框颜色*/
+    --ivu-formcomp-focus-box-shadow-color: rgb(45 140 240 / 20%); /*表单控件框focus时阴影颜色*/
+    --ivu-select-dropdown-bg: #fff; /*iselect控件下拉框背景色*/
+    --ivu-select-item-font-size: var(--base-font-size); /*iselect控件下拉框item字号*/
+    --ivu-select-item-color: var(--base-font-size); /*iselect控件下拉框item字颜色*/
+    --ivu-select-item-selected-color: #2d8cf0; /*iselect控件下拉框item选中项字颜色*/
+    --ivu-select-item-hover-bg: #f3f3f3; /*iselect控件下拉框item鼠标悬浮时背景色*/
+    --ivu-select-arrow-color: #808695; /*iselect控件下拉框展开箭头颜色*/
+    --ivu-select-box-shadow: 0 1px 6px rgb(0 0 0 / 20%); /*iselect控件下拉框阴影*/
+    /*about datepicker*/
+    --ivu-date-picker-header-height: 3.2rem; /*datepicker头部高度*/
+    --ivu-date-picker-header-border: 1px solid #e8eaec; /*datepicker头部边框*/
+    --ivu-date-picker-dark-color: #c5c8ce; /*datepicker下拉框暗色，翻页按钮、星期、上下月日期等*/
+    --ivu-date-picker-hover-color: #2d8cf0; /*datapicker翻页按钮悬浮颜色*/
+    --ivu-date-picker-cells-cell-bg: #e1f0fe; /*datepicker的Cell悬浮时背景*/
+    --ivu-date-picker-cells-cell-today: #2d8cf0; /*datepicker今天徽标颜色*/
+    --ivu-date-picker-cells-cell-selected-bg: #2d8cf0; /*datepicker选中日期背景色*/
+    --ivu-date-picker-cells-cell-selected-color: #fff; /*datepicker选中日期字颜色*/
+    /*Tabs 标签页*/
+    --ivu-tabs-color: #515a6e; /*标签卡文字颜色*/
+    --ivu-tabs-bar-margin-bottom: 16px; /*标签卡margin-bottom*/
+    --ivu-tabs-nav-container-height: 32px; /*标签卡bar高度*/
+    --ivu-tabs-nav-container-font-size: 1.4rem; /*标签卡bar字号*/
+    --ivu-tabs-tab-border: 1px solid #dcdee2; /*标签卡item边框*/
+    --ivu-tabs-tab-background: #f8f8f9; /*标签卡item背景色*/
+    --ivu-tabs-tab-hover-color: #57a3f3; /*标签卡item悬浮字颜色*/
+    --ivu-tabs-tab-hover-background: #f8f8f9; /*标签卡item悬浮背景色*/
+    --ivu-tabs-tab-active-background: #fff; /*标签卡active item背景色*/
+    --ivu-tabs-tab-active-border-color: #dcdee2; /*标签卡active item边框色*/
+    --ivu-tabs-tab-active-color: #2d8cf0; /*标签卡active item文字颜色*/
+    --ivu-tabs-tab-margin-right: 0; /*标签卡item间距*/
+    --ivu-tabs-close-color: #999; /*标签卡close图标颜色*/
+    --ivu-tabs-close-font-size: 22px; /*标签卡close图标大小*/
+}
+
+/*@media screen and (max-width: 1600px) {
+    :root{
+        --base-font-size: 1.4rem;
+}
+}*/
+
+html{
+    height: 100%;
+    font-size: 10px;    
+}
+
+body{
+    height: 100%;
+    background: var(--base-background-color);
+    font-size: var(--base-font-size);
+    color: var(--base-color);
+}
+
+body,p,h1,h2,h3,h4,h5,h6{
+    margin: 0;    
+}
+
+li{
+    list-style: none;
+}
+
+h1{
+    font-size: var(--h1-font-size);
+    margin: var(--h1-margin) 0;
+}
+
+h3{
+    font-size: var(--h3-font-size);
+    margin: var(--h3-margin) 0;
+}
+
+input[type="button" i] {
+    appearance: auto;
+    user-select: none;
+    white-space: pre;
+    display:inline-flex;
+    justify-content:center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--btn-default-color);
+    background-color: var(--btn-default-bg);
+    box-sizing: border-box;
+    /*padding: 2px 8px;*/
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--btn-default-border-color);
+    border-image: initial;
+    border-radius: 5px;
+}
+
+input[type="button" i]:hover{
+    background-color: var(--btn-default-hover-bg);
+    color: var(--btn-default-hover-color);
+}
+
+::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width : 7px;  /*高宽分别对应横竖滚动条的尺寸*/
+    height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    background: var(--scrollbar-thumb-bg);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    background: var(--scrollbar-track-bg);
+    border-radius: 6px;
+}
+
+/*通用css类*/
+/*应用flex布局，默认主轴X向（水平向、横向）*/
+.f{
+    display: flex;
+}
+
+/*忽略自身空间，分配容器空间*/
+.f1{
+    flex: 1;
+}
+
+/*主轴Y向（竖直向、纵向）*/
+.dc{
+    flex-direction: column;
+}
+
+/*一行放不下，换行*/
+.ww{
+    flex-wrap: wrap;
+}
+
+/*主轴起点对齐*/
+.js{
+    justify-content: flex-start;
+}
+
+/*主轴居中*/
+.jc{
+    justify-content: center;
+}
+
+/*主轴起点对齐*/
+.je{
+    justify-content: flex-end;
+}
+
+/*主轴两端对齐*/
+.jb{
+    justify-content: space-between;
+}
+
+/*主轴item间距1比1*/
+.jev{
+    justify-content: space-evenly;
+}
+
+/*主轴item间距1比2*/
+.ja{
+    justify-content: space-around;
+}
+
+/*交叉轴居中*/
+.ac{
+    align-items: center;
+}
+
+/*交叉轴起点对齐*/
+.as{
+    align-items: flex-start;
+}
+
+/*交叉轴终点对齐*/
+.ae{
+    align-items: flex-end;
+}
+
+/*充满交叉轴*/
+.ast{
+    align-items: stretch;
+}
+
+/*多行交叉轴起点对齐*/
+.acs{
+    align-content: flex-start;
+}
+
+/*多行交叉轴终点对齐*/
+.ace{
+    align-content: flex-end;
+}
+
+/*多行交叉轴居中对齐*/
+.acc{
+    align-content: center;
+}
+
+/*item交叉轴起点对齐*/
+.ass{
+    align-self: flex-start;
+}
+
+/*item交叉轴居中*/
+.asc{
+    align-self: center;
+}
+
+/*item交叉轴终点对齐*/
+.ase{
+    align-self: flex-end;
+}
+
+/*margin*/
+.m10{margin: 10px;}
+.mt10{margin-top: 10px;}
+.ml10{margin-left: 10px;}
+.mr10{margin-right: 10px;}
+.mb10{margin-bottom: 10px;}
+.m20{margin: 20px;}
+.mt20{margin-top: 20px;}
+.ml20{margin-left: 20px;}
+.mr20{margin-right: 20px;}
+.mb20{margin-bottom: 20px;}
+.mbs{margin: var(--base-space);}
+.mtbs{margin-top: var(--base-space);}
+.mbbs{margin-bottom: var(--base-space);}
+.mlbs{margin-left: var(--base-space);}
+.mrbs{margin-right: var(--base-space);}
+.mau{margin: auto;}
+.mtau{margin-top: auto;}
+.mlau{margin-left: auto;}
+.mrau{margin-right: auto;}
+.mbau{margin-bottom: auto;}
+.mt0{margin-top: 0;}
+.ml0{margin-left: 0;}
+.mr0{margin-right: 0;}
+.mb0{margin-bottom: 0;}
+
+/*padding*/
+.p20{padding: 20px;}
+.p10{padding: 10px;}
+.pt10{padding-top: 10px;}
+.pl10{padding-left: 10px;}
+.pr10{padding-right: 10px;}
+.pb10{padding-bottom: 10px;}
+.pbs{padding: var(--base-space);}
+.ptbs{padding-top: var(--base-space);}
+.pbbs{padding-bottom: var(--base-space);}
+.plbs{padding-left: var(--base-space);}
+.prbs{padding-right: var(--base-space);}
+.pt0{padding-top: 0;}
+.pl0{padding-left: 0;}
+.pr0{padding-right: 0;}
+.pb0{padding-bottom: 0;}
+
+/*text-align*/
+.tal{text-align: left;}
+.tar{text-align: right;}
+.tac{text-align: center;}
+
+/*width\height*/
+.wh100{
+    width: 100%;
+    height: 100%;
+}
+
+/*position*/
+.poa{
+    position: absolute;
+}
+
+.por{
+    position: relative;
+}
+
+/*文字渐变*/
+.linear-gradient-span{
+    background-image: -webkit-linear-gradient(#2700ff,#ff7600);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.linear-gradient-span1{
+    background-image: -webkit-linear-gradient(#29afc7, #69bbb8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/*按钮类*/
+input.default-btn-sel[type="button" i]{
+    background: var(--btn-default-sel-bg);
+}
+
+input.default-btn-sel[type="button" i]:hover{
+    background: var(--btn-default-sel-bg);
+}
+
+a.default-btn{
+    background: var(--btn-default-bg);
+    border-style: none;
+    color: var(--btn-default-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+a.default-btn:hover{
+    color: var(--btn-default-hover-color);
+    background: var(--btn-default-hover-bg);
+}
+.pdpBtnDefault{
+	height: 26px;
+	line-height: 24px;
+	color: #fff;
+	background-color: #2da5a4 !important;
+	border-radius: 3px;
+	padding: 0 10px;
+	cursor: pointer;
+    font-size: 12px;
+    border-style: none;
+}
+.pdpBtnDefault:hover{
+	color: #fff;
+	background-color: #14bcbb !important;
+}
+
+/*表单控件*/
+.small-select{
+    width: var(--ivu-formcomp-width-small);
+}
+
+.big-select{
+    width: var(--ivu-formcomp-width-big);
+}
+
+/*表格右键导出*/
+.mBar {
+    position: absolute;
+    border: 0px;
+    z-index: 9999;
+}
+
+.mBorder {
+    border: 1px solid #919CD0;
+}
+
+.mText {
+    font-family: 黑体;
+    font-size: 15px;
+    font-weight: normal;
+    background-color: #FFFFFF;
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #FFFFFF;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 6px;
+    padding-right: 8px;
+    cursor: default;
+    text-align: center;
+    vertical-align: middle;
+    color: #1a827c;
+}
+
+.mBarText {
+    vertical-align: middle;
+}
+
+.mImage {
+    background-color: #FFFFFF;
+    /*#96A5CC;*/
+    border-top: 1px solid #FFFFFF;
+    /*#96A5CC;*/
+    border-bottom: 1px solid #FFFFFF;
+    /*#96A5CC;*/
+    border-left: 1px solid #FFFFFF;
+    /*#96A5CC;*/
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 3px;
+    cursor: default;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.mSub {
+    background-color: #FFFFFF;
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #FFFFFF;
+    border-right: 1px solid #FFFFFF;
+    padding-right: 5px;
+    text-align: right;
+    vertical-align: middle;
+}

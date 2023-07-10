@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root maxid="28" includes="/conn/pdpjs/ctrl/xjdpCtrl.js;/conn/cssfile/shengchan/sbzc.css;" desc="线路长度">
+  <inits>
+  </inits>
+  <consts>
+    <const id="optioncount" type="object" arg=""></const>
+    <const id="optionlength" type="object" arg=""></const>
+    <const id="list" ></const>
+    <const id="listnew" type="2d" length="10"></const>
+    <const id="listold" type="2d" length="10"></const>
+    <const id="hTbl" ></const>
+    <const id="contentstyle" type="object"></const>
+    <const id="names" ></const>
+  </consts>
+  <ctrls>
+  <div id="div0" desc="根容器">
+  <a class="pdiv"></a>
+    <div>
+      <a class="f" ref="divtop"  s_width="100%"></a>
+      <sa s_height="hTbl+'px'"></sa>
+      <title-div style="flex:1;" id="t">
+        <a title='线路长度统计' title1="单位：条" ></a>
+        <sa content-style='{ }'></sa>
+         <e>
+        <click><![CDATA[this.maxBlock();]]></click>
+      </e>
+        <ecommonchart desc="图表">
+            <a ref="hchart" s_width="100%" ></a>
+            <sa option="optionlength" s_height="(hTbl - 160)+'px'" ></sa>
+        </ecommonchart>
+        <table from="list" >
+            <a  class="common-table" width="100%" height="100px"></a>
+          <tr>
+               <td>
+                 <a class="tab-twotitle"></a>
+              <label >
+              <a value="线路长度"></a>
+              </label>
+              <label >类型 </label>
+            </td>
+              <repeat type="number" start="0" length="5" offset="1">
+                  <c>
+                    <td style="text-align:center">
+                      <label from="names[{item}]"></label>
+                    </td>
+                  </c>
+                </repeat>
+              <td ><a v-text="'总计'"></a></td>
+          </tr>
+          <tr>
+              <td ><a v-text="'线路'"></a></td>
+              <repeat type="number" start="0" length="6" offset="1">
+                  <c>
+                    <td style="text-align:center">
+                      <label from="list[{item}]"></label>
+                    </td>
+                  </c>
+                </repeat>
+          </tr>
+        </table>
+      </title-div>
+    </div>
+    <div>
+    <a class="f" ref="divbottom"  s_width="100%"></a>
+      <title-div>
+        <a title='线路长度排行top5' title1=" " class="f1" s_margin-top="10px" s_width="100%"></a>
+        <sa content-style="contentstyle"  isShowIcon="false"></sa>
+          <div>
+            <a class=" f dc "  s_width="50%" s_padding="5px"></a>
+            <label>
+                <a class="tab-title" value="最短线路top5"></a>
+            </label>
+            <div>
+              <a id="container"></a>
+              <itable from="listnew" >
+                <a class="smalltable" width="100%"></a>
+                <sa  border="true"  stripe="true" ></sa>
+                <icol desc="线路名称" from="listnew_1" >
+                  <a minWidth="100"></a>
+                </icol>
+                <icol desc="线路长度(公里)" from="listnew_3">
+                  <label from="listnew_3">
+                  <sf from="parseFloat({0}).toFixed(2)"></sf>
+                  </label>
+                </icol>            
+              </itable>
+            </div>
+
+          </div>
+          <div>
+          <a class=" f dc "  s_width="50%" s_padding="5px"></a>
+            <label>
+              <a class="tab-title" value="最长线路top5"></a>
+            </label>
+            <div>
+              <a id="container"></a>
+              <itable from="listold" >
+                <a class="smalltable" width="100%"></a>
+                <sa border="true"  stripe="true" ></sa>
+                <icol desc="线路名称" from="listold_1" >
+                  <a minWidth="100"></a>
+                </icol>
+                <icol desc="线路长度(公里)" from="listold_3">
+                  <label from="listold_3">
+                  <sf from="parseFloat({0}).toFixed(2)"></sf>
+                  </label>
+                </icol>
+              </itable>
+            </div>
+
+          </div>
+      </title-div>
+    </div>
+  </div>
+  </ctrls>
+  <css>
+    <![CDATA[
+    ]]>
+  </css>
+  <scripts>
+    <script event="created">
+      <list type="file" value="dsbzc" part="lineright"></list>
+      <list type="file" value="dsbzc" part="tobig"></list>
+      <list type="script">
+        <value>
+          <![CDATA[
+          
+          ]]>
+        </value>
+      </list>
+    </script>
+    <script event="mounted">
+      <list type="script">
+        <value>
+         <![CDATA[
+            this.refresh();
+            this.$nextTick(function () {
+                this.resize();
+            });
+          ]]>
+        </value>
+      </list>
+    </script>
+  </scripts>
+</root>

@@ -1,0 +1,81 @@
+﻿.nTab
+{
+    float: left;
+    margin: 0 auto;
+    background-position: left;
+    background-repeat: repeat-y;
+    margin-bottom: 2px;
+    font-family: Verdana;
+    font-size: 9pt;
+}
+.nTab .TabTitle
+{
+    float:left;
+    height: 24px;
+    overflow: hidden;
+    margin-bottom: 1px;
+    text-align: center;
+}
+.nTab .TabTitle ul
+{
+    margin: 0;
+    padding: 0;
+}
+.nTab .TabTitle li
+{
+    float: left;
+    cursor: default;
+    width: 94px;
+    height: 24px;
+    padding-top: 6px;
+    padding-right: 0px;
+    padding-left: 0px;
+    list-style-type: none;
+    font-family: Verdana;
+}
+.nTab .TabTitle .active
+{
+    background: url(/i/tabactive1.gif);
+}
+.nTab .TabTitle .normal
+{
+    background: url(/i/tabnormal1.png) no-repeat;
+}
+.nTab .TabContent
+{
+    width: auto;
+    background: #fff;
+    margin: 0px auto;
+    padding: 10px 0 0 0;
+}
+.none
+{
+    display: none;
+}
+.schSP
+{
+    padding:0;
+    vertical-align: middle;
+    height: 24px;
+    display:inline;
+    margin-top:0px;
+    float:left;
+}
+.arrUp
+{
+    height: 25px;
+    width: 25px;
+    cursor: hand;
+    vertical-align: middle;
+    float:left;
+    background: url(/i/arrUp.png);
+}
+.arrDown
+{
+    height: 25px;
+    width: 25px;
+    float:left;
+    cursor: hand;
+    vertical-align: middle;
+    background: url(/i/arrDown.png);
+}

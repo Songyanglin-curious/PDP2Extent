@@ -1,0 +1,413 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+  <GetLineLoadRate>
+    <![CDATA[select L.CLOUDID,R.LASTTIME,R.LASTVALUE  
+from MONITORSIGNAL.TBYCFINIALVALUE_SD R
+JOIN MONITORSIGNAL.B_DEVICE_SD L 
+ON R.DEV_ID=L.DEV_ID
+WHERE MEASTYPE='电流值'
+AND L.DTID=1 AND L.CLOUDID IS NOT NULL
+UNION ALL
+select L.CLOUDID,R.LASTTIME,R.LASTVALUE  
+from MONITORSIGNAL.TBYCFINIALVALUE_RZ R
+JOIN MONITORSIGNAL.B_DEVICE_RZ L 
+ON R.DEV_ID=L.DEV_ID
+WHERE MEASTYPE='电流值'
+AND L.DTID=1 AND L.CLOUDID IS NOT NULL
+]]>
+  </GetLineLoadRate>
+  <GetLineInfo>
+    <![CDATA[SELECT L.ID,L.NAME,L.VOLTAGE_TYPE,L.START_ST_ID,L.END_ST_ID,P.IMAXLONG_20 FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B L JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_P P ON L.ID=P.ID 
+    WHERE L.START_ST_ID IS NOT NULL AND L.END_ST_ID IS NOT NULL AND P.IMAXLONG_20 IS NOT NULL 
+    UNION ALL 
+    SELECT L.ID,L.NAME,L.VOLTAGE_TYPE,L.START_ST_ID,L.END_ST_ID,P.IH FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B L JOIN ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_P P ON L.ID=P.ID
+    WHERE L.START_ST_ID IS NOT NULL AND L.END_ST_ID IS NOT NULL AND P.IH IS NOT NULL]]>
+  </GetLineInfo>
+  <GetLineInfo1>
+    <![CDATA[SELECT L.ID,L.NAME,L.VOLTAGE_TYPE,L.START_ST_ID,L.END_ST_ID FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_ACLINE_B L 
+    WHERE L.START_ST_ID IS NOT NULL AND L.END_ST_ID IS NOT NULL AND L.ID NOT IN (SELECT ID FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_LINE_INFO) 
+    UNION ALL 
+    SELECT L.ID,L.NAME,L.VOLTAGE_TYPE,L.START_ST_ID,L.END_ST_ID FROM ]]>
+    <![CDATA[same:SearchCommonSql:SchemaName]]>
+    <![CDATA[SG_DEV_DCLINE_B L 
+    WHERE L.START_ST_ID IS NOT NULL AND L.END_ST_ID IS NOT NULL AND L.ID NOT IN (SELECT ID FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_LINE_INFO) ]]>
+  </GetLineInfo1>
+  <GetTransLoad>
+    <![CDATA[select T.CLOUDID,R.LASTTIME,R.LASTVALUE
+from MONITORSIGNAL.TBYCFINIALVALUE_SD R
+JOIN MONITORSIGNAL.B_DEVICE_SD T
+ON R.DEV_ID=T.DEV_ID
+WHERE MEASTYPE='有功功率'
+AND T.DTID=3 AND T.CLOUDID IS NOT NULL
+UNION ALL
+select T.CLOUDID,R.LASTTIME,R.LASTVALUE
+from MONITORSIGNAL.TBYCFINIALVALUE_RZ R
+JOIN MONITORSIGNAL.B_DEVICE_RZ T
+ON R.DEV_ID=T.DEV_ID
+WHERE MEASTYPE='有功功率'
+AND T.DTID=3 AND T.CLOUDID IS NOT NULL]]>
+  </GetTransLoad>
+  <GetTransInfo>
+    <![CDATA[select ID,NAME,ST_ID,MVA_RATE from ]]>
+  <![CDATA[same:SearchCommonSql:SchemaName]]>
+  <![CDATA[SG_DEV_PWRTRANSFM_B T
+ORDER BY ID]]>
+  </GetTransInfo>
+  <GetLoadValue>
+   <![CDATA[SELECT to_char(m.dayid,'hh24:mi'),m.id,m.v00, n.v00
+    FROM (
+    select dayid, aa.id,aa.v00 from 
+    (select * from  ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}}   where id={1} and create_time>={2} and create_time<{3})aa 
+    right join ( SELECT rownum,TO_DATE('2019-10-30', 'YYYY-MM-DD') + (ROWNUM-1)  units hour as dayid
+    FROM  sysmaster: sysshmvals   CONNECT BY  level <= 24) da on aa.create_time=da.dayid
+    ) m 
+    left join (select to_date(create_time,'YYYY-MM-DD hh24:mi') as create_time,id,v00 from ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} where id={1} and create_time>={4} and create_time<{3} ) n 
+    on m.dayid=n.create_time
+     ]]>
+        
+  </GetLoadValue>      
+  <GetLoadValue1>
+   <![CDATA[select '', to_char(DAYID,'hh24:mi'),id,v00 ,diff FROM(
+   select '',create_time +diff units minute as create_time,id,v00 ,diff from (SELECT m.create_time,m.id,m.v00,0 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v01,1 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v02,2 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v03,3 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v04,4 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v05,5 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v06,6 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v07,7 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v08,8 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v09,9 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v10,10 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v11,11 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v12,12 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v13,13 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v14,14 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v15,15 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v16,16 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v17,17 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v18,18 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v19,19 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v20,20 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v21,21 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v22,22 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v23,23 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v24,24 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v25,25 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v26,26 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v27,27 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v28,28 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v29,29 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v30,30 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all
+    SELECT m.create_time,m.id,m.v31,31 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v32,32 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v33,33 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v34,34 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v35,35 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v36,36 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v37,37 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v38,38 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v39,39 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v40,40 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v41,41 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v42,42 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v43,43 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v44,44 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v45,45 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v46,46 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v47,47 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v48,48 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v49,49 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v50,50 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v51,51 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v52,52 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v53,53 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v54,54 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v55,55 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v56,56 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v57,57 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v58,58 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    union all 
+    SELECT m.create_time,m.id,m.v59,59 as diff
+    FROM ]]><![CDATA[same:SearchCommonSql:SchemaName]]><![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{{0}} m where id={1} and m.create_time>={2} and m.create_time<{3}
+    )O) q 
+        right join(
+    SELECT rownum,TO_DATE({2}, 'YYYY-MM-DD') + {{4}}
+    ) p on q.create_time=p.dayid
+    order by dayid
+    ]]>     
+  </GetLoadValue1>
+  <SG>
+    <Transfmwd>
+      <MaxTime>
+        <![CDATA[SELECT MAX(CREATE_TIME) FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{0} WHERE MEAS_TYPE='00002001']]>
+      </MaxTime>
+      <Load>
+        <![CDATA[SELECT s.ID,s.LONGITUDE,s.LATITUDE,V00,V01,V02,V03,V04,V05,V06,V07,V08,V09,V10,V11,V12,V13,V14,V15,V16,V17,V18,V19,V20,V21,V22,V23,V24,V25,V26,V27,V28,V29,V30,V31,V32,V33,V34,V35,V36,V37,V38,V39,V40,V41,V42,V43,V44,V45,V46,V47,V48,V49,V50,V51,V52,V53,V54,V55,V56,V57,V58,V59,t.MVA_RATE
+    FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_TRANSFMWD_H1_MEA_{1} m JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_TRANSFMWD_B t ON m.ID=t.ID JOIN (]]>
+        <![CDATA[
+      select ID,LONGITUDE,LATITUDE from 
+    ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_SUBSTATION_B
+      union ALL
+      select ID,LONGITUDE,LATITUDE from ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_B 
+      union ALL
+      select ID,LONGITUDE,LATITUDE from ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_CONVERSUBSTATION_B 
+      union ALL
+      select ID,LONGITUDE,LATITUDE from ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_HVDCGROUNDSTATION_B ]]>
+        <![CDATA[) s ON t.ST_ID=s.ID
+  WHERE m.MEAS_TYPE='00002001' AND m.CREATE_TIME={0} AND t.MVA_RATE>0]]>
+      </Load>
+      <GetLoadRate>
+        <![CDATA[SELECT T.TRANSFM_ID,M.CREATE_TIME,round(M.V00/T.MVA_RATE,4) FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TRANSFMWD_REALTIME_MEA M JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_TRANSFMWD_B T ON M.TRANSFMWD_ID=T.ID JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_PWRTRANSFM_B TR ON T.TRANSFM_ID=TR.ID
+WHERE T.WIND_TYPE=1001 AND TR."USAGE"<>2002 AND T.NAME LIKE '%高' AND M.MEAS_TYPE='00002001' AND T.MVA_RATE>0]]>
+      </GetLoadRate>
+      <GetPSLoadRate>
+        <![CDATA[SELECT s.ID,s.LONGITUDE,s.LATITUDE,round(M.V00/T.MVA_RATE,4) FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_TRANSFMWD_REALTIME_MEA M JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_TRANSFMWD_B T ON M.TRANSFMWD_ID=T.ID JOIN (]]>
+        <![CDATA[select ID,LONGITUDE,LATITUDE from ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_SUBSTATION_B
+      union ALL
+      select ID,LONGITUDE,LATITUDE from ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_B 
+      union ALL
+      select ID,LONGITUDE,LATITUDE from ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_CONVERSUBSTATION_B 
+      union ALL
+      select ID,LONGITUDE,LATITUDE from ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_HVDCGROUNDSTATION_B ]]>
+        <![CDATA[) s ON t.ST_ID=s.ID
+WHERE M.MEAS_TYPE='00002001' AND T.MVA_RATE>0 AND M.V00 IS NOT NULL]]>
+      </GetPSLoadRate>
+    </Transfmwd>
+    <Generator>
+      <MaxTime>
+        <![CDATA[SELECT MAX(CREATE_TIME) FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_GENERATOR_H1_MEA_{0} WHERE MEAS_TYPE='00002001']]>
+      </MaxTime>
+      <Load>
+        <![CDATA[SELECT p.ID,p.LONGITUDE,p.LATITUDE,V00,V01,V02,V03,V04,V05,V06,V07,V08,V09,V10,V11,V12,V13,V14,V15,V16,V17,V18,V19,V20,V21,V22,V23,V24,V25,V26,V27,V28,V29,V30,V31,V32,V33,V34,V35,V36,V37,V38,V39,V40,V41,V42,V43,V44,V45,V46,V47,V48,V49,V50,V51,V52,V53,V54,V55,V56,V57,V58,V59,g.MVA_RATE
+    FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_GENERATOR_H1_MEA_{1} m JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_GENERATOR_B g ON m.ID=g.ID JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_B p ON g.ST_ID=p.ID
+  WHERE m.MEAS_TYPE='00002001' AND m.CREATE_TIME={0} AND g.MVA_RATE>0]]>
+      </Load>
+    </Generator>
+    <Line>
+      <GetLoadRate>
+        <![CDATA[select line_id,create_time,v00 from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_line_realtime_mea where meas_type='00002001']]>
+      </GetLoadRate>
+      <MaxTime>
+        <![CDATA[SELECT MAX(CREATE_TIME) FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_ACLINE_H1_MEA_{0} WHERE MEAS_TYPE='00002001']]>
+      </MaxTime>
+      <LoadValue>
+        <![CDATA[SELECT V00,V01,V02,V03,V04,V05,V06,V07,V08,V09,V10,V11,V12,V13,V14,V15,V16,V17,V18,V19,V20,V21,V22,V23,V24,V25,V26,V27,V28,V29,V30,V31,V32,V33,V34,V35,V36,V37,V38,V39,V40,V41,V42,V43,V44,V45,V46,V47,V48,V49,V50,V51,V52,V53,V54,V55,V56,V57,V58,V59 FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_ACLINE_H1_MEA_{0} m
+        join ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_DEV_ACLINEEND_B l on m.ACLINEEND_ID = l.ID
+         WHERE MEAS_TYPE='00002001' AND  l.LINE_ID={1}
+        ]]>
+      </LoadValue>
+    </Line>
+    <NewEnergy>
+      <MaxTime>
+        <![CDATA[SELECT MAX(CREATE_TIME) FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_H1_MEA_{0} m JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_B p ON m.ID=p.ID 
+        WHERE m.MEAS_TYPE='30022001' AND p.plant_type BETWEEN 1004 AND 1005]]>
+      </MaxTime>
+      <Load>
+        <![CDATA[SELECT p.ID,p.LONGITUDE,p.LATITUDE,V00,V01,V02,V03,V04,V05,V06,V07,V08,V09,V10,V11,V12,V13,V14,V15,V16,V17,V18,V19,V20,V21,V22,V23,V24,V25,V26,V27,V28,V29,V30,V31,V32,V33,V34,V35,V36,V37,V38,V39,V40,V41,V42,V43,V44,V45,V46,V47,V48,V49,V50,V51,V52,V53,V54,V55,V56,V57,V58,V59,s.CAPACITY
+    FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_H1_MEA_{1} m JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_B p ON m.ID=p.ID JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_S s ON p.ID=s.ID AND s.VOLTAGE_TYPE=9999 AND s.STATE_CODE=1003
+  WHERE m.MEAS_TYPE='30022001' AND m.CREATE_TIME={0} AND s.CAPACITY>0 AND p.plant_type BETWEEN 1004 AND 1005]]>
+      </Load>
+    </NewEnergy>
+    <AllLoad>
+      <MaxTime>
+        <![CDATA[SELECT MAX(CREATE_TIME) FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_H1_MEA_{0} m JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_B p ON m.ID=p.ID 
+        WHERE m.MEAS_TYPE='30022001' AND p.plant_type BETWEEN 1004 AND 1005]]>
+      </MaxTime>
+      <Load>
+        <![CDATA[SELECT p.ID,p.LONGITUDE,p.LATITUDE,V00,V01,V02,V03,V04,V05,V06,V07,V08,V09,V10,V11,V12,V13,V14,V15,V16,V17,V18,V19,V20,V21,V22,V23,V24,V25,V26,V27,V28,V29,V30,V31,V32,V33,V34,V35,V36,V37,V38,V39,V40,V41,V42,V43,V44,V45,V46,V47,V48,V49,V50,V51,V52,V53,V54,V55,V56,V57,V58,V59,s.CAPACITY
+    FROM ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_H1_MEA_{1} m JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_B p ON m.ID=p.ID JOIN ]]>
+        <![CDATA[same:SearchCommonSql:SchemaName]]>
+        <![CDATA[SG_CON_PLANT_S s ON p.ID=s.ID AND s.VOLTAGE_TYPE=9999 AND s.STATE_CODE=1003
+  WHERE m.MEAS_TYPE='30022001' AND m.CREATE_TIME={0} AND s.CAPACITY>0 AND p.plant_type BETWEEN 1004 AND 1005]]>
+      </Load>      
+    </AllLoad>
+  </SG>
+</ROOT>

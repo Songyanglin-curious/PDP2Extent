@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+  <Conditions db="SGC" sql="GetAllData" remarks="公共的条件可以写在外边，不同类型可以类型里">
+    <Group type="group" multi="1">
+      <grid name="电网" db="SGC"  type="list" src="GetAllGrid" if="WhereGrid"></grid>
+      <voltage name="电压等级" db="SGC" type="src" src="GetAllVoltage" if="WhereVoltage"></voltage>
+    </Group>
+    <type name="类型"  db="SGC" type="types" src="GetAllType" deal="this.fType" multi="1" ifcol="col4">
+      <Breaker value="断路器" db="SGC" sql="GetBreakers" grid="" voltage="" age="">
+        <Group type="group" multi="1">
+          <dlq_jg name="结构形式" db="SGC" type="list" src="GetAllJgxs" if="WhereJg"></dlq_jg>
+          <dlq_czjgxs name="操作机构形式" db="SGC" type="list" src="GetAllczjgxs" ifcol="col25"></dlq_jgczjgxs>
+          <dlq_mhjz name="灭弧介质" db="SGC" type="list" src="GetAllmhjz"  ifcol="col26"></dlq_mhjz>
+        </Group>
+      </Breaker>
+      <Trans value="主变压器" db="SGC" sql="GetTrans" grid="" voltage="" age="">
+        <byq_lq name="冷却方式" db="SGC" type="list" src="GetByqLqfs" if="WhereByqLqfs"></byq_lq>
+        <byq_edgl name="额定功率" db="SGC" type="number" options="250,300,400,1000" max="7" if="col16" unit="MVA"></byq_edgl>
+      </Trans>
+      <Switch value="隔离开关" db="SGC" sql="GetSwitch" grid="" voltage="" age="">
+          <glkg_jg name="机构型式" db="SGC" type="list" src="GetGljgxs"  ifcol="col36"></glkg_jg>
+          <glkg_czxs name="操作型式" db="SGC" type="list" src="GetGlczxs" ifcol="col37"></glkg_czxs>
+          <glkg_dx name="单相或三相机构" db="SGC" type="list" src="GetGldx"  ifcol="col38"></dlq_dx>
+      </Switch>
+  <Reactor value="电抗器" db="SGC" sql="GetSwitch" grid="" voltage="" age="">
+          <dkq_lq name="冷却方式" db="SGC" type="list" src="GetDklq"  ifcol="col39"></dkq_lq>
+          <dkq_jyjz name="绝缘介质" db="SGC" type="list" src="GetDkjy" ifcol="col40"></dkq_jyjz>
+          <dkq_dc name="导磁结构" db="SGC" type="list" src="GetDkdc"  ifcol="col41"></dkq_dc>
+  </Reactor>
+  <Capacitor value="电容器" db="SGC" sql="GetCapacitor" grid="" voltage="" age="">
+          <drq_jyjz name="绝缘介质" db="SGC" type="list" src="GetDrjy"  ifcol="col46"></drq_jyjz>
+          <drq_bh name="电容器组内部保护方式" db="SGC" type="list" src="GetDrbh" ifcol="col47"></drq_bh>
+          <drq_dh name="单合保护方式" db="SGC" type="list" src="GetDrdh"  ifcol="col48"></drq_dh>
+  </Capacitor>
+  <Current value="电流互感器" db="SGC" sql="GetCurrent" grid="" voltage="" age="">
+         <dl_jg name="结构型式" db="SGC" type="list" src="GetDljg"  ifcol="col51"></dl_jg>
+          <dl_jy name="绝缘类型" db="SGC" type="list" src="GetDljy" ifcol="col52"></dl_jy>
+          <dl_mf name="密封型式" db="SGC" type="list" src="GetDlmf"  ifcol="col53"></dl_mf>
+  </Current>
+  <Voltage value="电压互感器" db="SGC" sql="GetVoltage" grid="" voltage="" age="">
+          <dy_jg name="结构型式" db="SGC" type="list" src="GetDyjg"  ifcol="col58"></dy_jy>
+          <dy_jy name="绝缘类型" db="SGC" type="list" src="GetDyjy" ifcol="col57"></dy_jy>
+          <dy_tx name="铁芯结构" db="SGC" type="list" src="GetDytx"  ifcol="col59"></dy_tx>
+  </Voltage>
+  <Lightning value="避雷器" db="SGC" sql="GetLightning" grid="" voltage="" age="">
+       <blq_xs name="每节相数" db="SGC" type="number" options="1,2,3,4" max="15" if="col62"></blq_xs>
+  </Lightning>
+  <Generatrix value="母线" db="SGC" sql="GetGeneratrix" grid="" voltage="" age="">
+          <mx_jg name="结构型式" db="SGC" type="list" src="GetMxjg"  ifcol="col67"></mx_jg>
+          <mx_az name="安装方式" db="SGC" type="list" src="GetMxaz" ifcol="col68"></mx_az>
+  </Generatrix>
+  <Combined value="组合电器" db="SGC" sql="GetCombined" grid="" voltage="" age="">
+          <zh_lx name="类型" db="SGC" type="list" src="GetZhlx"  ifcol="col70"></zh_lx>
+          <zh_dl name="电流互感器布置方式" db="SGC" type="list" src="GetZhdl" ifcol="col71"></zh_dl>
+          <zh_jc name="进出线方式" db="SGC" type="list" src="GetZhjc"  ifcol="col72"></zh_jc>
+          <zh_dl name="断路器数量" db="SGC" type="number" options="1,2,3,4" max="7" if="col75" unit="台"></zh_dl>
+          <zh_gl name="隔离开关数量" db="SGC" type="number" options="1,2,3,4" max="7" if="col76" unit="组"></zh_gl>
+          <zh_jd name="接地开关数量" db="SGC" type="number" options="1,2,3,4" max="7" if="col77" unit="台"></zh_jd>
+          <zh_bl name="避雷器数量" db="SGC" type="number" options="1,2,3,4" max="7" if="col78" unit="台"></zh_bl>
+          <zh_dlhg name="电流互感器数量" db="SGC" type="number" options="1,2,3,4" max="7" if="col79" unit="台"></zh_dlhg>
+          <zh_dyhg name="电压互感器数量" db="SGC" type="number" options="1,2,3,4" max="7" if="col80" unit="台"></zh_dyhg>
+  </Combined>
+    </type>
+    <age name="运行年限" db="SGC" type="age" options="5,10,20" unit="年" multi="1" if="col10">
+    </age>
+    <factory name="生产厂家" db="SGC" type="list" src="GetAllFactory" multi="1" if="WhereFactory"></factory>
+  </Conditions>
+    <station name="厂站" db="SGC" type="list" src="GetAllStation" multi="1" if="WhereStation"></station>
+  <cols>
+    <![CDATA[
+    变电站	间隔大类	间隔单元	设备名称	设备类型	电压等级	相别	型号	生产厂家	出厂日期	投运日期	年龄	设备编码	资产编号	备注	冷却方式	"额定容量
+(MVA)"	电压比	短路阻抗(高-中)(%)	短路阻抗(高-低)(%)	短路阻抗(中-低)(%)	空载电流(%)	油号	上层油温限值(℃)	结构型式	操作机构型式	灭弧介质	断口数量(个)	"SF6气体额定压力
+(Mpa)"	"SF6气体报警压力
+(Mpa)"	"SF6气体闭锁压力
+(Mpa)"	"合闸闭锁操作压力
+(Mpa)"	"分闸闭锁操作压力
+(Mpa)"	"额定短路开断电流
+(kA)"	*额定短时耐受电流(kA)	"*主回路电阻
+(μΩ)"	机构型式	操作型式	单相或三相机构	*冷却方式	*绝缘介质	*导磁结构	*额定容量(kVar)	"*额定电抗
+(Ω)"	"额定电抗率
+(%)"	"*额定电感
+(mH)"	*绝缘介质	*电容器组内部保护方式	*单台保护方式	"*单台容量
+(kVar)"	"*整组容量
+(kVar)"	*结构型式	*绝缘类型	*密封型式	*额定电流比	准确级(测量)	准确级(保护)	*绝缘介质	*结构型式	*铁芯结构	"*二次绕组总数量
+(个)"	"*爬电比距
+(mm/kV)"	*每相节数	"陡波冲击电流下残压
+(kV)"	"操作冲击电流下残压
+(kV)"	"全电流初始值(运行电压)
+(μA)"	"阻性电流初始值(运行电压)
+(μA)"	*结构型式	安装方式	"长度
+(m)"	*类型	*电流互感器布置方式	*进出线方式	*SF6气体额定压力(非断路器气室)(Mpa)	*SF6气体压力降低报警压力(非断路器气室)(Mpa)	"*断路器数量
+(台)"	"*隔离开关数量
+(组)"	"*接地开关数量
+(组)"	"*避雷器数量
+(台)"	"*电流互感器数量
+(台)"	"*电压互感器数量
+(台)"]]>
+  </cols>
+  <GetAllData>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE 1=1 {0}]]>
+  </GetAllData>
+  <GetAllGrid>
+    <![CDATA[select distinct grid_name,grid_name from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_station]]>
+  </GetAllGrid>
+  <GetAllVoltage>
+    <![CDATA[SELECT DISTINCT col5,col5 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE length(col5)>0]]>
+  </GetAllVoltage>
+  <GetAllFactory>
+    <![CDATA[SELECT DISTINCT col8,col8 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE length(col8)>0]]>
+  </GetAllFactory>
+  <GetAllType>
+    <![CDATA[select distinct col4,col4 from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device where length(col4)>0]]>
+  </GetAllType>
+  <GetAllJgxs>
+    <![CDATA[SELECT distinct col24,col24 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='断路器' AND length(col24)>0]]>
+  </GetAllJgxs>
+  <GetAllczjgxs>
+    <![CDATA[SELECT distinct col25,col25 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='断路器' AND length(col25)>0]]>
+  </GetAllczjgxs>
+  <GetAllmhjz>
+    <![CDATA[SELECT distinct col26,col26 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='断路器' AND length(col26)>0]]>
+  </GetAllmhjz>
+  <GetGljgxs>
+    <![CDATA[SELECT distinct col36,col36 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='隔离开关' AND length(col36)>0]]>
+  </GetGljgxs>
+  <GetGlczxs>
+    <![CDATA[SELECT distinct col37,col37 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='隔离开关' AND length(col37)>0]]>
+  </GetGlczxs>
+  <GetGldx>
+    <![CDATA[SELECT distinct col38,col38 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='隔离开关' AND length(col38)>0]]>
+  </GetGldx>
+  <GetDklq>
+    <![CDATA[SELECT distinct col39,col39 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电抗器' AND length(col39)>0]]>
+  </GetDklq>
+  <GetDkjy>
+    <![CDATA[SELECT distinct col40,col40 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电抗器' AND length(col40)>0]]>
+  </GetDkjy>
+  <GetDkdc>
+    <![CDATA[SELECT distinct col41,col41 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电抗器' AND length(col41)>0]]>
+  </GetDkdc>
+  <GetDrjy>
+    <![CDATA[SELECT distinct col46,col46 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电容器' AND length(col46)>0]]>
+  </GetDrjy>
+  <GetDrbh>
+    <![CDATA[SELECT distinct col47,col47 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电容器' AND length(col47)>0]]>
+  </GetDrbh>
+  <GetDrdh>
+    <![CDATA[SELECT distinct col48,col48 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电容器' AND length(col48)>0]]>
+  </GetDrdh>
+  <GetDljg>
+    <![CDATA[SELECT distinct col51,col51 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电流互感器' AND length(col51)>0]]>
+  </GetDljg>
+  <GetDljy>
+    <![CDATA[SELECT distinct col52,col52 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电流互感器' AND length(col52)>0]]>
+  </GetDljy>
+  <GetDlmf>
+    <![CDATA[SELECT distinct col53,col53 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电流互感器' AND length(col53)>0]]>
+  </GetDlmf>
+  <GetDyjg>
+    <![CDATA[SELECT distinct col58,col58 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电压互感器' AND length(col58)>0]]>
+  </GetDljg>
+  <GetDyjy>
+    <![CDATA[SELECT distinct col57,col57 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电压互感器' AND length(col57)>0]]>
+  </GetDyjy>
+  <GetDytx>
+    <![CDATA[SELECT distinct col59,col59 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='电压互感器' AND length(col59)>0]]>
+  </GetDytx>
+  <GetMxjg>
+    <![CDATA[SELECT distinct col67,col67 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='母线' AND length(col67)>0]]>
+  </GetMxjg>
+  <GetMxaz>
+    <![CDATA[SELECT distinct col68,col68 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='母线' AND length(col68)>0]]>
+  </GetMxaz>
+ <GetZhlx>
+    <![CDATA[SELECT distinct col70,col70 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='组合电器' AND length(col70)>0]]>
+  </GetZhlx>
+  <GetZhdl>
+    <![CDATA[SELECT distinct col71,col71 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='组合电器' AND length(col71)>0]]>
+  </GetZhdl>
+ <GetZhjc>
+    <![CDATA[SELECT distinct col72,col72 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE COL4='组合电器' AND length(col72)>0]]>
+  </GetZhjc>
+  <WhereStation>
+    <![CDATA[ AND col0 IN ({0})]]>
+  </WhereStation>
+  <BaseCols>
+    <![CDATA['',b.grid_name,a.col0,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11,col12,col13,col14]]>
+  </BaseCols>
+  <BaseSrc>
+    <![CDATA[ FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device a LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_station b ON a.col0=b.name]]>
+  </BaseSrc>
+  <GetBreakers>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col24,col25,col26,col27,col28,col29,col30,col31,col32,col33]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='断路器' {0}]]>
+  </GetBreakers>
+  <GetTrans>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col15,col16,col17,col18,col19,col20,col21,col22,col23]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='主变压器' {0}]]>    
+  </GetTrans>
+  <GetSwitch>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col34,col35,col36,col37,col38]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='隔离开关' {0}]]>    
+  </GetSwitch>
+  <GetReactor>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col39,col40,col41,col42,col43,col44,col45]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='电抗器' {0}]]>    
+  </GetReactor>
+  <GetCapacitor>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col46,col47,col48,col49,col50]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='电容器' {0}]]>    
+  </GetCapacitor>
+  <GetCurrent>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col51,col52,col53,col54,col55,col56]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='电流互感器' {0}]]>    
+  </GetCurrent>
+  <GetVoltage>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col57,col58,col59,col60]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='电压互感器' {0}]]>    
+  </GetVoltage>
+  <GetLightning>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col61,col62,col63,col64,col65,col66]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='避雷器' {0}]]>    
+  </GetLightning>
+  <GetGeneratrix>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col67,col68,col69]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='母线' {0}]]>    
+  </GetGeneratrix>
+  <GetCombined>
+    <![CDATA[SELECT ]]><![CDATA[same:BaseCols]]><![CDATA[,col70,col71,col72,col73,col74,col75,col76,col77,col78,col79,col80]]>
+    <![CDATA[same:BaseSrc]]>
+    <![CDATA[ WHERE col4='组合电器' {0}]]>    
+  </GetCombined>
+  <WhereType><![CDATA[ AND col4 IN ({0})]]></WhereType>
+  <NoWhereType><![CDATA[ AND col4 NOT IN ({0})]]></NoWhereType>
+  <WhereGrid><![CDATA[ AND grid_name IN ({0})]]></WhereGrid>
+  <WhereVoltage><![CDATA[ AND col5 IN ({0})]]></WhereVoltage>
+  <WhereFactory><![CDATA[ AND col8 IN ({0})]]></WhereFactory>
+  <GetByqLqfs>
+    <![CDATA[SELECT distinct col15,col15 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device WHERE col4='主变压器' AND length(col15)>0]]>
+  </GetByqLqfs>
+  <WhereByqLqfs><![CDATA[ AND col15 IN ({0})]]></WhereByqLqfs>
+  <WhereJg><![CDATA[ AND col24 IN ({0})]]></WhereJg>
+</ROOT>

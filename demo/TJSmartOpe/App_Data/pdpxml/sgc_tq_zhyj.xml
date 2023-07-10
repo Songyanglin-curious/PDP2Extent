@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ROOT>
+<ds4><![CDATA[SELECT gudid,datatext FROM PDP2.TBysh_sc_deviceITEM2]]></ds4>
+<ds4_insert><![CDATA[INSERT INTO PDP2.TBysh_sc_deviceITEM2 (gudid,datatext) VALUES ({0},{1})]]></ds4_insert>
+<ds4_table><![CDATA[PDP2.TBysh_sc_deviceITEM2]]></ds4_table>
+<ds4_cols><col5 type="">gudid</col5><col6 type="">datatext</col6></ds4_cols></ROOT>
