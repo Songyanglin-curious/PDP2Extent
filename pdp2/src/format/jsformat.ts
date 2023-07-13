@@ -72,7 +72,7 @@ function formatJsString(text: any, startPosition: vscode.Position, endPosition: 
         const formatedOffset = tagStartColumn + 2 * tabSize;
         // 其他情况
         // 在格式化后的字符串前面加上10个空格
-        let indented = formatted.split("\n").map((line: string, index: number, array: string[]) => {
+        let indented = formatted.split("\n").map((line: string) => {
             return generateEmptyString(formatedOffset) + line;
         }).join("\n");
         const cdataStart = `\n${generateEmptyString(cdataOffset)}<![CDATA[\n`

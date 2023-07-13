@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ROOT>
     <GetDevArchive>
-        <![CDATA[            select  d.id as deviceid,
-        col3 as devicename,
-        col4 as typename,
-        name as stationname,
-        group_name as voltagename,
-        case when '{1}'=d.id then 'true' else '' end as selected
-        from ]]>
+
+        <![CDATA[select  d.id as deviceid,
+                 col3 as devicename,
+                 col4 as typename,
+                 name as stationname,
+                 group_name as voltagename,
+                 case when '{1}'=d.id then 'true' else '' end as selected
+                 from
+        ]]>
         <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+
         <![CDATA[ysh_sc_device d
-        left join ]]>
+                 left join
+        ]]>
         <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+
         <![CDATA[YSH_SC_STATION t on d.col0=t.name
-        left join ]]>
+                 left join
+        ]]>
         <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+
         <![CDATA[ysh_search_order tt on d.col4=tt.col_value and tt.col_name='type'
-        order by voltagename desc,idx,tt.order_index desc,col3
-    ]]>
+                 order by voltagename desc,idx,tt.order_index desc,col3
+        ]]>
     </GetDevArchive>
 
     <GetSameModelTrans>

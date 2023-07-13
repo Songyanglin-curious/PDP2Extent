@@ -2,13 +2,16 @@
 <ROOT>
     <!-- 获取油色谱 -->
     <GetOilChromatogram db="SGAPP" type="sql" fields="Time,H2,CH4,C2H2,C2H4,C2H6,CO,CO2,O2,TOTHYD,H2O,CMBUGAS,N2,GASINSALM" args="startTime,endTime,id">
-        <![CDATA[
-        SELECT TIMESTAMP,H2,CH4,C2H2,C2H4,C2H6,CO,CO2,O2,TOTHYD,H2O,CMBUGAS,N2,GASINSALM 
-        FROM HISDB.OIL_CHROMATOGRAM_INFO 
-        WHERE SENSOR_ID = (SELECT SENSOR_ID FROM YS_DB.SENSOR_INFO_R WHERE DEVICE_ID = {id})
-        AND "TIMESTAMP" >= {startTime}  AND   "TIMESTAMP" < {endTime} ORDER BY "TIMESTAMP";
-        ]]>
-    </GetOilChromatogram>
+        <![CDATA[SELECT TIMESTAMP,H2,CH4,C2H2,C2H4,C2H6,CO,CO2,O2,TOTHYD,H2O,CMBUGAS,N2,GASINSALM
+                 
+                 FROM HISDB.OIL_CHROMATOGRAM_INFO
+                 
+                 WHERE               SENSOR_ID = (SELECT SENSOR_ID
+                 FROM YS_DB.SENSOR_INFO_R
+                 WHERE DEVICE_ID = {id})
+                 AND "TIMESTAMP" >= {startTime}  AND   "TIMESTAMP" < {endTime}
+                 ORDER BY "TIMESTAMP";
+        ]]></GetOilChromatogram>
     <!-- 获取标题 -->
     <GetDeviceTitle db="SGAPP" type="sql" fields="Name" args="id">
         <![CDATA[ 

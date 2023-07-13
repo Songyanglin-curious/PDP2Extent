@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { designFormat } from './format';
 import { changeDebug } from './debug';
-import { replaceSchema } from './sql';
+import { adjustSql } from './sql';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -16,11 +16,14 @@ export function activate(context: vscode.ExtensionContext) {
     })
     // 替换SQL
     const sql = vscode.commands.registerCommand('pdp2.sql', () => {
-        replaceSchema();
+        adjustSql();
     })
+    // 设置自定义配置
+
     context.subscriptions.push(format);
     context.subscriptions.push(debug);
-    context.subscriptions.push(sql);
+    // context.subscriptions.push(sql);
+    // context.subscriptions.push(config);
 
 }
 

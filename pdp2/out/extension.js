@@ -17,11 +17,13 @@ function activate(context) {
     });
     // 替换SQL
     const sql = vscode.commands.registerCommand('pdp2.sql', () => {
-        (0, sql_1.replaceSchema)();
+        (0, sql_1.adjustSql)();
     });
+    // 设置自定义配置
     context.subscriptions.push(format);
     context.subscriptions.push(debug);
-    context.subscriptions.push(sql);
+    // context.subscriptions.push(sql);
+    // context.subscriptions.push(config);
 }
 exports.activate = activate;
 // This method is called when your extension is deactivated

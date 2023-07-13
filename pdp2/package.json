@@ -43,7 +43,18 @@
                 "key": "ctrl+alt+p s",
                 "when": "editorTextFocus && editorLangId == xml"
             }
-        ]
+        ],
+        "configuration": {
+            "title": "PDP2 Config",
+            "properties": {
+                "pdp2Config.root": {
+                    "type": "string",
+                    "default": "TJSmartOpe",
+                    "description": "网站根目录文件夹",
+                    "scope": "workspace"
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "pnpm run compile",
@@ -68,8 +79,8 @@
     },
     "dependencies": {
         "prettier": "^2.8.8",
-        "prettier-plugin-sql": "^0.15.1",
-        "sax": "^1.2.4"
+        "sax": "^1.2.4",
+        "sql-formatter": "^12.2.3"
     },
     "repository": {
         "type": "git",

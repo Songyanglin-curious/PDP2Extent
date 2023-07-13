@@ -8,9 +8,12 @@
     </GetSubstation>
     <!-- 获取间隔的数据源 -->
     <GetInterval>
-        <![CDATA[ 
-        SELECT distinct b.col2 ,b.col2 FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_alert_msg  a LEFT JOIN ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[ysh_sc_device  b ON a.device_id = b.id WHERE  b.col0 = {0};
-        ]]>
+        <![CDATA[SELECT distinct b.col2 ,b.col2 FROM]]>
+        <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+        <![CDATA[ysh_alert_msg  a LEFT JOIN]]>
+        <![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]>
+        <![CDATA[ysh_sc_device  b ON a.device_id = b.id WHERE  b.col0 = {0};]]>
+
     </GetInterval>
     <!-- 获取设备数据源 -->
     <GetDevice>
