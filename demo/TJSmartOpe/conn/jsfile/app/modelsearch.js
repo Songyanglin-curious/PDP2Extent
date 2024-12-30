@@ -1,1 +1,0 @@
-﻿_app.modelsearch = _app._dlg({ name: "设备型号清单", file: "sc_search_model", width: "100%", height: "100%" });

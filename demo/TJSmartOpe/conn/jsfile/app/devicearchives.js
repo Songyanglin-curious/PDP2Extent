@@ -1,1 +1,0 @@
-_app.devicearchives = _app._dlg({ name: "设备档案", file: "device_archives", width: "100%", height: "100%" });

@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ROOT>
-  <GetEffectStation>
-    <![CDATA[select DISTINCT ID,WARNLEVEL from ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_ALARM_WEATHER_STATION WHERE warntype={0} and warntime={1} ]]>
-  </GetEffectStation>
-  <GetEffectLine>
-    <![CDATA[SELECT LINEID,NUM,WARNLEVEL FROM ]]><![CDATA[same:SearchDistrictCommonSql:SchemaAppName]]><![CDATA[YSH_WEATHER_ALARM_WEATHER_TOWER WHERE warntype={0} and warntime={1} ORDER BY LINEID,WARNLEVEL,NUM]]>
-  </GetEffectLine>
-</ROOT>

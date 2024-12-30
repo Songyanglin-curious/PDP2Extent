@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ROOT>
-<ds_data><![CDATA[
-              select '±500kV阜延直流线','2020-08-03 12:24','A相','故录','阜康换流站','延庆换流站','阜延直流线/A相/','','三相电压曲线三相电流曲线','阜延直流线' from dual
-        ]]></ds_data></ROOT>

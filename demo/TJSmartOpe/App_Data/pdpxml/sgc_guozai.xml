@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ROOT>
-<dsdevname><![CDATA[
-        SELECT id,name FROM SG_DEV_TRANSFMWD_B WHERE id={0}
-        ]]></dsdevname></ROOT>

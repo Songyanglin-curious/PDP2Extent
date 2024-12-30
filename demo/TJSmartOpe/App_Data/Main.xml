@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ROOT>
-  <GetCzpInfoById>
-    <![CDATA[SELECT CONTENT FROM OPTKUSER.TOPETICKET WHERE TICKETID={0}]]>
-  </GetCzpInfoById>
-</ROOT>
-

@@ -1,1 +1,0 @@
-_app.quexian = _app._page({ name: "缺陷", page: "sc_device_defect", width: 0.6,legend:"/i/sgc/legend/defect.png" });

@@ -1,1 +1,0 @@
-_app.line_defect_more = _app._dlg({ name: "线路缺陷统计更多", file: "sc_device_defect_line_more", width: "100%", height: "100%" });

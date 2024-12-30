@@ -1,1 +1,0 @@
-﻿_app.factorysearch = _app._dlg({ name: "生产厂家清单", file: "sc_search_factory", width: "100%", height: "100%" });

@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ROOT>
-<ds7><![CDATA[
-        SELECT T.JIHUA,T.SHIJI,T.JIANXIUNEIRONG,T.SHENQINGDANWEI,T.USERSTATE,T.USERSTATE as CZP
-        FROM OPTKUSER.V_REPAIR T 
-        WHERE T.TICKETID={0}]]></ds7></ROOT>

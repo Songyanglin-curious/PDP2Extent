@@ -1,1 +1,0 @@
-_app.station_monitor = _app._dlg({ name: "变电站在线监测", file: "sc_station_monitor", width: "100%", height: "100%" });

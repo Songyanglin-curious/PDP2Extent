@@ -1,1 +1,0 @@
-﻿_app.zichansearch = _app._dlg({ name: "资产清单", file: "sc_search_zc", width: "100%", height: "100%" });

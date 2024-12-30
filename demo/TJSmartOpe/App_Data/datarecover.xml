@@ -1,5 +1,0 @@
-﻿<ROOT>
-  <SG_DEV_ACLINE_B desc="交流线路" db="SGC" tab="SG_DB.SG_DEV_ACLINE_B"></SG_DEV_ACLINE_B>
-  <SG_DEV_DCLINE_B desc="直流线路" db="SGC" tab="SG_DB.SG_DEV_ACLINE_B"></SG_DEV_DCLINE_B>
-  
-</ROOT>
